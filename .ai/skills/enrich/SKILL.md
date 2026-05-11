@@ -1,6 +1,6 @@
 ---
 name: enrich
-description: Step 2 of the lee-espanol pipeline. Read a Spanish story at D:\localai\lee-espanol\stories\NN-slug\story.md and produce the enrichment data at D:\localai\lee-espanol\stories\NN-slug\enrichment.toml (same folder, sibling file) — per-word Russian translation + POS + lemma + grammar explanation, and per-sentence Russian translation. The renderer consumes this file to generate the popup popups. Use when the user asks to enrich a story or invokes /enrich.
+description: Step 2 of the lee-espanol pipeline. Read a Spanish story at stories/NN-slug/story.md and produce the enrichment data at stories/NN-slug/enrichment.toml (same folder, sibling file) — per-word Russian translation + POS + lemma + grammar explanation, and per-sentence Russian translation. The renderer consumes this file to generate the popup popups. Use when the user asks to enrich a story or invokes /enrich.
 ---
 
 # enrich
@@ -9,14 +9,14 @@ Step **2** of the 3-step lee-espanol pipeline. Reads a pure-Spanish `.md` story 
 
 ## Inputs
 
-- **Source story**: `D:\localai\lee-espanol\stories\NN-slug\story.md` (frontmatter + Spanish body)
-- **Reader profile**: `D:\localai\lee-espanol\profile.md` (for A1 vocabulary calibration)
+- **Source story**: `stories/NN-slug/story.md` (frontmatter + Spanish body)
+- **Reader profile**: `profile.md` (for A1 vocabulary calibration)
 
 If the user does not specify which story, scan all `stories/NN-slug/` subfolders, find those containing `story.md` but **no `enrichment.toml`** yet, and pick the most recent one; confirm with the user before generating.
 
 ## Output
 
-A single TOML file: `D:\localai\lee-espanol\stories\NN-slug\enrichment.toml` — co-located with `story.md` in the same `stories/NN-slug/` folder.
+A single TOML file: `stories/NN-slug/enrichment.toml` — co-located with `story.md` in the same `stories/NN-slug/` folder.
 
 UTF-8, no BOM. Always overwrite cleanly — do not append.
 
@@ -172,7 +172,7 @@ tr = "Площадь полна людей."
 5. **Build the sentences array**:
    - One `[[sentences]]` entry per terminator, in story order
    - `text` is the full Spanish sentence, `tr` is the Russian translation
-6. **Write the file** to `D:\localai\lee-espanol\stories\NN-slug\enrichment.toml` (overwrite if exists)
+6. **Write the file** to `stories/NN-slug/enrichment.toml` (overwrite if exists)
 7. **Report to user**:
    - Path
    - Word count and sentence count enriched

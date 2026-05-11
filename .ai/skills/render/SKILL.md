@@ -1,6 +1,6 @@
 ---
 name: render
-description: Step 3 of the lee-espanol pipeline. Read the Spanish story at D:\localai\lee-espanol\stories\NN-slug\story.md and its enrichment data at D:\localai\lee-espanol\stories\NN-slug\enrichment.toml (sibling files in the same NN-slug folder), then produce a fully self-contained, thematically unique HTML page at D:\localai\lee-espanol\stories\NN-slug\index.html in the same folder, and refresh the project-wide table-of-contents at D:\localai\lee-espanol\index.html. Each render is bespoke design (palette, typography, inline SVG, CSS textures) reflecting the story's tone; every Spanish word is wrapped with a Russian-language popup carrying translation + POS + lemma + optional grammar block + SpanishDict link (proper nouns get explanation popups without the link). Use when the user asks to "render the story", "make HTML", "build page", or invokes /render.
+description: Step 3 of the lee-espanol pipeline. Read the Spanish story at stories/NN-slug/story.md and its enrichment data at stories/NN-slug/enrichment.toml (sibling files in the same NN-slug folder), then produce a fully self-contained, thematically unique HTML page at stories/NN-slug/index.html in the same folder, and refresh the project-wide table-of-contents at index.html. Each render is bespoke design (palette, typography, inline SVG, CSS textures) reflecting the story's tone; every Spanish word is wrapped with a Russian-language popup carrying translation + POS + lemma + optional grammar block + SpanishDict link (proper nouns get explanation popups without the link). Use when the user asks to "render the story", "make HTML", "build page", or invokes /render.
 ---
 
 # render
@@ -9,9 +9,9 @@ Step **3** of the 3-step lee-espanol pipeline. Turns a `.md` story + its `.toml`
 
 ## Inputs
 
-- **Source story**: `D:\localai\lee-espanol\stories\NN-slug\story.md` (frontmatter + Spanish body)
-- **Enrichment**: `D:\localai\lee-espanol\stories\NN-slug\enrichment.toml` (vocabulary + sentence translations, produced by the `enrich` skill)
-- **Reader profile**: `D:\localai\lee-espanol\profile.md` (for tone calibration)
+- **Source story**: `stories/NN-slug/story.md` (frontmatter + Spanish body)
+- **Enrichment**: `stories/NN-slug/enrichment.toml` (vocabulary + sentence translations, produced by the `enrich` skill)
+- **Reader profile**: `profile.md` (for tone calibration)
 
 If the user does not specify which story, scan all `stories/NN-slug/` subfolders, find those that contain both `story.md` and `enrichment.toml` but **no `index.html`** yet, and pick the most recent one; confirm with the user before generating.
 
@@ -19,7 +19,7 @@ If `enrichment.toml` is missing, **stop and tell the user to run `/enrich` first
 
 ## Output
 
-A single self-contained file: `D:\localai\lee-espanol\stories\NN-slug\index.html` — written into the same `stories/NN-slug/` folder that already contains `story.md` and `enrichment.toml`. No separate CSS/JS files; everything inlined. External dependencies allowed: Google Fonts CDN only (no other CDNs, no analytics, no trackers).
+A single self-contained file: `stories/NN-slug/index.html` — written into the same `stories/NN-slug/` folder that already contains `story.md` and `enrichment.toml`. No separate CSS/JS files; everything inlined. External dependencies allowed: Google Fonts CDN only (no other CDNs, no analytics, no trackers).
 
 ## Design contract — fully unique per story
 
@@ -187,7 +187,7 @@ Every story page must include a discrete back-link to the project-wide table of 
 
 ### Index page (project-wide table of contents)
 
-A single project-wide index lives at `D:\localai\lee-espanol\index.html`. It lists every story as a clickable row.
+A single project-wide index lives at `index.html` (project root). It lists every story as a clickable row.
 
 **Aesthetic**: compact "printed-document" / typewriter — explicitly **distinct** from any individual story's design (no parchment, no manuscript ornament, no sci-fi gold-on-navy, no SVG illustrations). The index is a quiet, tight TOC that frames the stories without competing visually.
 
@@ -226,9 +226,9 @@ The back-link on each rendered story page must use `../../index.html` (two level
 
 ## Workflow
 
-1. Read `D:\localai\lee-espanol\stories\NN-slug\story.md` (frontmatter + body)
-2. Read `D:\localai\lee-espanol\stories\NN-slug\enrichment.toml` (vocabulary + sentences)
-3. Read `D:\localai\lee-espanol\profile.md` for tone calibration
+1. Read `stories/NN-slug/story.md` (frontmatter + body)
+2. Read `stories/NN-slug/enrichment.toml` (vocabulary + sentences)
+3. Read `profile.md` for tone calibration
 4. List all `stories/NN-slug/` subfolders and read each `story.md` frontmatter — needed for the project-wide index refresh in step 9
 5. **Invoke `frontend-design` skill** to plan the visual approach for this story's tone/setting; record the chosen palette, fonts, illustration concept, and layout
 6. Tokenize the body, look each word up in `[words.*]`, walk the sentence-terminators in lockstep with `[[sentences]]`
@@ -240,8 +240,8 @@ The back-link on each rendered story page must use `../../index.html` (two level
    - `<body>` containing: `<a class="back" href="../../index.html">← Índice</a>` near the top, then `<main>` with the story
    - Inline `<svg>` illustration(s)
    - Inline `<script>` with the popup behavior (gate the SpanishDict link on presence of `data-lemma`; render `data-grammar` via `mdToHtml`)
-8. Write to `D:\localai\lee-espanol\stories\NN-slug\index.html` (the `stories/NN-slug/` folder already exists from steps 1–2 — `story.md` and `enrichment.toml` live there)
-9. **Refresh the project-wide index** at `D:\localai\lee-espanol\index.html`:
+8. Write to `stories/NN-slug/index.html` (the `stories/NN-slug/` folder already exists from steps 1–2 — `story.md` and `enrichment.toml` live there)
+9. **Refresh the project-wide index** at `index.html` (project root):
    - Enumerate every `stories/NN-slug/` subfolder, read each `story.md` frontmatter (`title`, `protagonist`, `setting`, `length_words`, `date_generated`)
    - Regenerate the `<div class="entries">…</div>` block; update the entry counter (`.toc-head .stat`)
    - Preserve everything else in the index file (masthead, intro, colophon, CSS)
@@ -251,7 +251,7 @@ The back-link on each rendered story page must use `../../index.html` (two level
     - Index updated (path + new entry count)
     - Any words from the body that were missing from the `.toml` (so the user can extend `enrich` and re-render)
     - Thematic summary of the page in one short paragraph (palette, font pair, illustration motif)
-    - Optional command to open in browser: `start "" "D:\localai\lee-espanol\stories\NN-slug\index.html"` and `start "" "D:\localai\lee-espanol\index.html"`
+    - Optional command to open in browser: `start "" "stories/NN-slug/index.html"` and `start "" "index.html"`
 
 ## Quality bar
 
@@ -264,7 +264,7 @@ The back-link on each rendered story page must use `../../index.html` (two level
 
 ## Anti-checklist
 
-- No reused design from a prior render in `D:\localai\lee-espanol\*\index.html`
+- No reused design from a prior render in `stories/*/index.html`
 - No external JS libraries (no jQuery, no Tailwind CDN, no Bootstrap, no markdown library)
 - No tracking scripts, no analytics, no Google Tag Manager
 - No emoji used as primary illustration (Unicode dingbats sparingly OK as accents)

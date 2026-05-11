@@ -1,6 +1,6 @@
 ---
 name: story
-description: Step 1 of the lee-espanol pipeline. Generate the next pure-Spanish A1 short story for the "Space Expansion" universe. Reads profile.md and prior stories, writes pure Spanish (no inline translations, no keywords, no grammar sidebars) to D:\localai\lee-espanol\stories\NN-slug\story.md. The downstream skills `enrich` and `render` consume this file. Use when the user asks for a new story, the next pilot, or invokes /story.
+description: Step 1 of the lee-espanol pipeline. Generate the next pure-Spanish A1 short story for the "Space Expansion" universe. Reads profile.md and prior stories, writes pure Spanish (no inline translations, no keywords, no grammar sidebars) to stories/NN-slug/story.md. The downstream skills `enrich` and `render` consume this file. Use when the user asks for a new story, the next pilot, or invokes /story.
 ---
 
 # story
@@ -15,12 +15,11 @@ All three files live **together in a single `stories/NN-slug/` folder**. Each st
 
 This skill is concerned **only** with step 1. It outputs pure Spanish. No translations, no glossary, no grammar notes — those live in step 2.
 
-## Project paths (absolute)
+## Project paths (relative to project root)
 
-- **Profile** (load first, every run): `D:\localai\lee-espanol\profile.md`
-- **Pilots roadmap**: `D:\localai\lee-espanol\pilots.md`
-- **Story output**: `D:\localai\lee-espanol\stories\NN-slug\story.md` (create the folder if absent)
-- **Prior stories** (for lore continuity): `D:\localai\lee-espanol\stories\<NN-slug>\story.md` — one per story folder under `stories/`
+- **Profile** (load first, every run): `profile.md`
+- **Story output**: `stories/NN-slug/story.md` (create the folder if absent)
+- **Prior stories** (for lore continuity): `stories/<NN-slug>/story.md` — one per story folder under `stories/`
 
 ## Workflow
 
@@ -28,7 +27,7 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
 2. **List `stories/`** — find existing `NN-slug/` subfolders (those starting with two digits and a hyphen). Determine the next sequential `NN`. Skim each `stories/<NN-slug>/story.md` for lore continuity (recurring universe terms, factions, places, dates).
 3. **Pick the concept**:
    - If the user named a specific pilot or concept, use it.
-   - Otherwise, propose the next pilot from `pilots.md` and confirm before writing.
+   - Otherwise, propose a next concept consistent with established lore and tone, and confirm before writing.
 4. **Write the Spanish text** to spec:
    - 150–300 words (target ~270 for pilots)
    - A1 grammar: present indicative, `ir + a + infinitivo`, basic *pretérito perfecto* / *indefinido*. Avoid *subjuntivo*.
