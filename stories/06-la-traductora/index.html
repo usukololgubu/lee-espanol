@@ -6,18 +6,21 @@
   <title>La traductora — Lee Español</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
   <style id="design">
     :root {
-      --paper: #e7e9eb;
-      --ink: #1c2330;
-      --ink-soft: #4d5667;
-      --ink-dim: #828a99;
-      --rust: #8a3b1e;
-      --rust-deep: #5e2410;
-      --rust-soft: #c47a55;
-      --bone: #ede2cb;
-      --rule: #b3b8c2;
+      --paper:        #ece8df;
+      --paper-soft:   #e3dfd4;
+      --paper-edge:   #c9c4b6;
+      --ink:          #15140f;
+      --ink-mid:      #4a4943;
+      --ink-soft:     #7a7870;
+      --mars:         #b94327;
+      --mars-deep:    #7a2812;
+      --mars-soft:    #d97a5e;
+      --mars-tint:    #ecccbf;
+      --rule:         #4a4943;
+      --rule-soft:    #b6b1a3;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -26,167 +29,235 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Lora', Georgia, serif;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
       font-size: 19px;
-      line-height: 1.85;
+      line-height: 1.7;
       color: var(--ink);
-      font-feature-settings: "liga" 1, "onum" 1;
-      background: var(--paper);
+      background:
+        repeating-linear-gradient(0deg, transparent 0 39px, rgba(74, 73, 67, 0.04) 39px 40px),
+        var(--paper);
+      background-attachment: fixed;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
     .frame {
-      max-width: 640px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 5rem 1.6rem 6rem;
+      padding: 3rem 1.5rem 5rem;
     }
 
-    .strap {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.32em;
-      color: var(--ink-dim);
-      text-align: center;
-      margin: 0 0 2.4rem;
+    /* file-card header */
+    .docbar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      border-bottom: 2px solid var(--rule);
+      padding-bottom: 0.7rem;
     }
-    .strap .dot {
-      margin: 0 0.55em;
-      opacity: 0.55;
+    .docbar .left { color: var(--ink); font-weight: 700; }
+    .docbar .right { color: var(--mars); font-weight: 700; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--rule);
+      margin: 0 0 3.2rem;
+    }
+    .grid .cell {
+      padding: 0.9rem 0.9rem 1rem;
+      border-right: 1px solid var(--rule-soft);
+    }
+    .grid .cell:last-child { border-right: 0; }
+    .grid .label {
+      display: block;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+    }
+    .grid .value {
+      font-family: 'Newsreader', serif;
+      font-size: 0.98rem;
+      color: var(--ink);
+      line-height: 1.25;
+    }
+    .grid .value.mono {
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
     }
 
     h1 {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-weight: 400;
-      font-size: 2.7rem;
-      line-height: 1.15;
-      letter-spacing: 0.04em;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+      font-size: 3.6rem;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
       color: var(--ink);
-      text-align: center;
-      margin: 0 0 0.6rem;
+      margin: 0 0 0.5rem;
     }
-
-    .meta {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.36em;
-      color: var(--ink-dim);
-      text-align: center;
-      margin: 0;
+    .subtitle {
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin: 0 0 3rem;
     }
-
-    .rule-thin {
-      border: 0;
-      border-top: 1px solid var(--rule);
-      width: 56px;
-      margin: 2rem auto 3.2rem;
-    }
+    .subtitle .red { color: var(--mars); }
 
     article.story p {
       margin: 0 0 1.4rem;
+      max-width: 60ch;
     }
 
-    /* the inscription paragraph — paper of the placa */
+    /* the inscription paragraph — framed transcription excerpt */
     [data-story-body] p:nth-of-type(7) {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 1rem;
-      letter-spacing: 0.16em;
-      line-height: 1.85;
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.7rem;
+      line-height: 1.4;
+      letter-spacing: -0.005em;
+      color: var(--mars-deep);
       text-align: center;
-      color: var(--bone);
-      background: var(--rust);
-      padding: 2.1rem 1.8rem;
-      margin: 2.6rem -0.6rem 2.6rem;
-      border-top: 1px solid var(--rust-deep);
-      border-bottom: 1px solid var(--rust-deep);
-      box-shadow: inset 0 0 0 1px rgba(94, 36, 16, 0.18);
+      background: var(--mars-tint);
+      border: 1px solid var(--mars-deep);
+      padding: 1.8rem 1.6rem;
+      margin: 2.6rem 0 2.6rem;
+      max-width: none;
+      position: relative;
+    }
+    [data-story-body] p:nth-of-type(7)::before {
+      content: "EXCERPTO TRADUCIDO · LÍNEA 1";
+      display: block;
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-style: normal;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--paper);
+      background: var(--mars-deep);
+      padding: 0.5rem 1rem 0.55rem;
+      text-align: left;
+    }
+    [data-story-body] p:nth-of-type(7) {
+      padding-top: 3.6rem;
     }
 
-    /* word + sentence underlines */
+    /* word / sentence indicators */
     article .w {
-      border-bottom: 1px dotted var(--ink-dim);
+      border-bottom: 1px dotted var(--ink-soft);
+      transition: color 130ms ease, border-bottom-color 130ms ease, background-color 130ms ease;
     }
     article .w:hover {
-      color: var(--rust);
-      border-bottom-color: var(--rust);
+      color: var(--mars);
+      border-bottom-color: var(--mars);
     }
     article .s {
       border-bottom: 0;
     }
 
-    /* the inscription paragraph styles its hoverables bone-on-rust */
+    /* indicators inside the excerpt */
     [data-story-body] p:nth-of-type(7) .w {
-      border-bottom-color: rgba(237, 226, 203, 0.30);
+      border-bottom-color: rgba(122, 40, 18, 0.40);
     }
     [data-story-body] p:nth-of-type(7) .w:hover {
-      color: #ffffff;
-      border-bottom-color: var(--bone);
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+      background: rgba(255, 255, 255, 0.45);
     }
 
-    .closing {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.7em;
-      color: var(--ink-dim);
-      text-align: center;
-      margin: 3.6rem 0 0;
+    .footstamp {
+      margin: 4.5rem 0 0;
+      padding: 1rem 1.1rem;
+      border: 1px dashed var(--rule);
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
+    .footstamp .red { color: var(--mars); font-weight: 700; }
 
     .home-wrap {
-      text-align: center;
-      margin: 4.4rem 0 0;
+      margin: 2rem 0 0;
     }
     a.home {
       display: inline-block;
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.32em;
-      color: var(--ink-soft);
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
       text-decoration: none;
-      border-bottom: 1px solid var(--ink-dim);
+      border-bottom: 1px solid var(--ink-soft);
       padding-bottom: 2px;
     }
     a.home:hover {
-      color: var(--rust);
-      border-bottom-color: var(--rust);
+      color: var(--mars);
+      border-bottom-color: var(--mars);
     }
 
     /* ---- popup look ---- */
     .pop {
-      font-family: 'Lora', Georgia, serif;
-      background: #f5f1e8;
+      font-family: 'Newsreader', Georgia, serif;
+      background: var(--paper);
       color: var(--ink);
-      border: 1px solid var(--rule);
-      box-shadow: 0 16px 36px -18px rgba(28, 35, 48, 0.40);
+      border: 1px solid var(--ink);
+      box-shadow: 4px 4px 0 0 var(--ink-soft);
       max-width: 320px;
       padding: 0.95rem 1.05rem 1.05rem;
-      border-radius: 2px;
+      border-radius: 0;
     }
     .pop-lemma {
-      font-family: 'Marcellus SC', Georgia, serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.05em;
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.18rem;
       color: var(--ink);
-      margin: 0 0 0.15rem;
+      margin: 0 0 0.1rem;
     }
     .pop-pos {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: 0.75rem;
-      color: var(--ink-soft);
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mars);
       margin: 0 0 0.7rem;
     }
     .pop-tr {
-      font-size: 0.92rem;
+      font-family: 'Newsreader', serif;
+      font-size: 0.94rem;
       line-height: 1.55;
       color: var(--ink);
       margin: 0 0 0.5rem;
     }
     .pop-grammar {
-      font-size: 0.78rem;
+      font-family: 'Newsreader', serif;
+      font-size: 0.81rem;
       line-height: 1.6;
-      color: var(--ink-soft);
-      border-top: 1px solid var(--rule);
+      color: var(--ink-mid);
+      border-top: 1px solid var(--rule-soft);
       padding-top: 0.6rem;
       margin-top: 0.6rem;
     }
@@ -194,34 +265,44 @@
     .pop-grammar p:last-child { margin-bottom: 0; }
     .pop-grammar b { color: var(--ink); font-weight: 600; }
     .pop-grammar i {
-      font-style: italic;
-      color: var(--rust);
-      font-variant: small-caps;
-      letter-spacing: 0.04em;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-style: normal;
+      font-size: 0.85em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mars);
     }
     .pop-grammar code {
-      font-family: 'Courier New', monospace;
-      font-size: 0.92em;
-      background: rgba(28, 35, 48, 0.06);
-      padding: 0 3px;
-      border-radius: 2px;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.84em;
+      background: var(--paper-soft);
+      color: var(--ink);
+      padding: 1px 4px;
+      border: 1px solid var(--paper-edge);
     }
     .pop-grammar u {
       text-decoration: none;
-      color: var(--rust);
+      color: var(--mars);
+      background: var(--mars-tint);
+      padding: 0 2px;
       font-weight: 600;
     }
     .pop-link {
       display: inline-block;
-      margin-top: 0.65rem;
-      font-family: 'Marcellus SC', serif;
-      font-size: 0.7rem;
+      margin-top: 0.7rem;
+      font-family: 'Space Mono', ui-monospace, monospace;
+      font-size: 0.68rem;
       letter-spacing: 0.18em;
-      color: var(--rust);
+      text-transform: uppercase;
+      color: var(--mars);
       text-decoration: none;
-      border-bottom: 1px solid var(--rust-soft);
+      border: 1px solid var(--mars);
+      padding: 0.32rem 0.55rem;
     }
-    .pop-link:hover { color: var(--rust-deep); border-bottom-color: var(--rust); }
+    .pop-link:hover {
+      color: var(--paper);
+      background: var(--mars);
+    }
   </style>
 <style data-popup-invariants>
 /* Behavior-critical — designer styles override visuals via higher specificity. */
@@ -245,10 +326,32 @@
 <body>
   <div class="frame">
     <header>
-      <p class="strap">Instituto de Lenguas <span class="dot">·</span> Marte <span class="dot">·</span> Sección Lenguas Perdidas</p>
+      <div class="docbar">
+        <span class="left">Instituto de Lenguas · Marte</span>
+        <span class="right">Sección · Lenguas Perdidas</span>
+      </div>
+
+      <div class="grid">
+        <div class="cell">
+          <span class="label">Expediente</span>
+          <span class="value mono">06 / 0511</span>
+        </div>
+        <div class="cell">
+          <span class="label">Procedencia</span>
+          <span class="value">Cinturón de asteroides</span>
+        </div>
+        <div class="cell">
+          <span class="label">Materia</span>
+          <span class="value">Placa de metal</span>
+        </div>
+        <div class="cell">
+          <span class="label">Clasificación</span>
+          <span class="value mono">Origen desconocido</span>
+        </div>
+      </div>
+
       <h1>La traductora</h1>
-      <p class="meta">Pilot 06 <span class="dot">·</span> A1 <span class="dot">·</span> 268 palabras</p>
-      <hr class="rule-thin">
+      <p class="subtitle">Pilot 06 · A1 · 268 palabras · <span class="red">Pendiente de informe</span></p>
     </header>
 
     <article class="story">
@@ -602,7 +705,10 @@
       </div>
     </article>
 
-    <p class="closing">·  ·  ·</p>
+    <div class="footstamp">
+      <span>Archivado · Expediente 06</span>
+      <span class="red">Origen desconocido</span>
+    </div>
 
     <p class="home-wrap"><a class="home" href="../../index.html">← Índice</a></p>
   </div>
