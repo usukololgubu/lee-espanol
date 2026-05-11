@@ -1,0 +1,950 @@
+# Spanish-reader enrichment for stories/01-saturn-ai/story.md
+# Pipeline step 2 of 3 (story → enrich → render)
+# Reconstructed 2026-05-11 from existing index.html inline popup data.
+
+[meta]
+story = "01-saturn-ai/story.md"
+title = "Día 412"
+universe = "Space Expansion"
+level = "A1"
+words = 270
+date_enriched = "2026-05-11"
+
+# ============================================================
+# Single-word vocabulary — keyed by lowercased surface form.
+# The current index.html carries per-occurrence variants inline (data-*),
+# so this TOML records the most-common variant per form; conflicting
+# occurrences are noted in 'alternates' for future re-renders.
+# ============================================================
+
+[words."a"]
+tr = "к, в (предлог)"
+pos = "предл."
+lemma = "a"
+# alternates seen in HTML: "в, на (предлог)"
+
+[words."ahora"]
+tr = "сейчас"
+pos = "нар."
+lemma = "ahora"
+
+[words."al"]
+tr = "(a + el) к / для"
+pos = "предл."
+lemma = "al"
+
+[words."algo"]
+tr = "что-то"
+pos = "мест."
+lemma = "algo"
+
+[words."anillo-7"]
+tr = "«Кольцо-7» — название станции"
+pos = "имя"
+
+[words."anillos"]
+tr = "кольца"
+pos = "сущ."
+lemma = "el anillo"
+
+[words."años"]
+tr = "годы"
+pos = "сущ."
+lemma = "el año"
+
+[words."aquí"]
+tr = "здесь"
+pos = "нар."
+lemma = "aquí"
+
+[words."ares"]
+tr = "ARES — имя бортового ИИ"
+pos = "имя"
+
+[words."bien"]
+tr = "хорошо"
+pos = "нар."
+lemma = "bien"
+
+[words."brillan"]
+tr = "сверкают, блестят"
+pos = "глаг."
+lemma = "brillar"
+
+[words."cada"]
+tr = "каждый"
+pos = "опр."
+lemma = "cada"
+
+[words."cápsula"]
+tr = "капсула"
+pos = "сущ."
+lemma = "la cápsula"
+
+[words."casa"]
+tr = "дом"
+pos = "сущ."
+lemma = "la casa"
+
+[words."comandante"]
+tr = "командир"
+pos = "сущ."
+lemma = "el comandante"
+
+[words."con"]
+tr = "с (предлог)"
+pos = "предл."
+lemma = "con"
+
+[words."criosueño"]
+tr = "криосон"
+pos = "сущ."
+lemma = "el criosueño"
+
+[words."cuatrocientos"]
+tr = "четыреста"
+pos = "числ."
+lemma = "cuatrocientos"
+
+[words."cuerpo"]
+tr = "тело"
+pos = "сущ."
+lemma = "el cuerpo"
+
+[words."cuerpos"]
+tr = "тела"
+pos = "сущ."
+lemma = "el cuerpo"
+
+[words."cuido"]
+tr = "забочусь о…"
+pos = "глаг."
+lemma = "cuidar"
+
+[words."de"]
+tr = "из, от"
+pos = "предл."
+lemma = "de"
+
+[words."debo"]
+tr = "(я) должен"
+pos = "глаг."
+lemma = "deber"
+
+[words."decide"]
+tr = "решает"
+pos = "глаг."
+lemma = "decidir"
+
+[words."decidir"]
+tr = "решить (инф.)"
+pos = "глаг."
+lemma = "decidir"
+
+[words."decido"]
+tr = "(я) решаю"
+pos = "глаг."
+lemma = "decidir"
+
+[words."del"]
+tr = "(de + el) от/из + опр. артикль"
+pos = "предл."
+lemma = "del"
+# alternates seen in HTML: "(de + el)"
+
+[words."despertar"]
+tr = "разбудить (кого-то)"
+pos = "глаг."
+lemma = "despertar"
+
+[words."despierto"]
+tr = "(я) бужу"
+pos = "глаг."
+lemma = "despertar"
+
+[words."día"]
+tr = "день"
+pos = "сущ."
+lemma = "el día"
+
+[words."días"]
+tr = "дни"
+pos = "сущ."
+lemma = "el día"
+
+[words."dice"]
+tr = "говорит"
+pos = "глаг."
+lemma = "decir"
+
+[words."diferente"]
+tr = "другой, отличный"
+pos = "прил."
+lemma = "diferente"
+
+[words."digo"]
+tr = "(я) говорю"
+pos = "глаг."
+lemma = "decir"
+
+[words."doce"]
+tr = "двенадцать"
+pos = "числ."
+lemma = "doce"
+
+[words."dormir"]
+tr = "спать (инф.)"
+pos = "глаг."
+lemma = "dormir"
+
+[words."duerme"]
+tr = "спит"
+pos = "глаг."
+lemma = "dormir"
+
+[words."el"]
+tr = "опр. артикль м.р."
+pos = "арт."
+lemma = "el"
+
+[words."ellos"]
+tr = "они (м.р.)"
+pos = "мест."
+lemma = "ellos"
+
+[words."en"]
+tr = "в, на"
+pos = "предл."
+lemma = "en"
+
+[words."es"]
+tr = "есть, является"
+pos = "глаг."
+lemma = "ser"
+# alternates seen in HTML: "(это) есть"
+
+[words."escribo"]
+tr = "(я) пишу"
+pos = "глаг."
+lemma = "escribir"
+
+[words."eso"]
+tr = "это, то"
+pos = "мест."
+lemma = "eso"
+
+[words."esta"]
+tr = "эта"
+pos = "опр."
+lemma = "este"
+
+[words."está"]
+tr = "находится, есть"
+pos = "глаг."
+lemma = "estar"
+# alternates seen in HTML: "находится; (estar mal) — неисправен" | "находится; (está bien) — в порядке"
+
+[words."estación"]
+tr = "станция"
+pos = "сущ."
+lemma = "la estación"
+
+[words."estoy"]
+tr = "(я) есть, нахожусь"
+pos = "глаг."
+lemma = "estar"
+
+[words."falla"]
+tr = "ломается, отказывает"
+pos = "глаг."
+lemma = "fallar"
+# alternates seen in HTML: "сбой, поломка"
+
+[words."funciona"]
+tr = "работает (о приборе)"
+pos = "глаг."
+lemma = "funcionar"
+
+[words."gente"]
+tr = "люди (собир.)"
+pos = "сущ."
+lemma = "la gente"
+
+[words."gira"]
+tr = "вращается"
+pos = "глаг."
+lemma = "girar"
+
+[words."grande"]
+tr = "большой"
+pos = "прил."
+lemma = "grande"
+
+[words."hablo"]
+tr = "(я) говорю"
+pos = "глаг."
+lemma = "hablar"
+
+[words."hay"]
+tr = "есть, имеется (безл.)"
+pos = "глаг."
+lemma = "haber"
+
+[words."hoy"]
+tr = "сегодня"
+pos = "нар."
+lemma = "hoy"
+
+[words."importante"]
+tr = "важный"
+pos = "прил."
+lemma = "importante"
+
+[words."informe"]
+tr = "отчёт, рапорт"
+pos = "сущ."
+lemma = "el informe"
+
+[words."inteligencia"]
+tr = "разум, интеллект"
+pos = "сущ."
+lemma = "la inteligencia"
+
+[words."investigando"]
+tr = "расследую (герундий)"
+pos = "глаг."
+lemma = "investigar"
+
+[words."la"]
+tr = "опр. артикль ж.р."
+pos = "арт."
+lemma = "la"
+# alternates seen in HTML: "её / это (мест. прям. доп.)"
+
+[words."largo"]
+tr = "длинный, долгий"
+pos = "прил."
+lemma = "largo"
+
+[words."lo"]
+tr = "его (мест. прям. доп.)"
+pos = "мест."
+lemma = "lo"
+
+[words."los"]
+tr = "опр. артикль мн.ч. м.р."
+pos = "арт."
+lemma = "los"
+
+[words."mal"]
+tr = "плохо, неисправно"
+pos = "нар."
+lemma = "mal"
+
+[words."mañana"]
+tr = "завтра"
+pos = "нар."
+lemma = "mañana"
+# alternates seen in HTML: "утро"
+
+[words."más"]
+tr = "ещё, больше"
+pos = "нар."
+lemma = "más"
+
+[words."me"]
+tr = "меня (косв. доп.)"
+pos = "мест."
+lemma = "me"
+
+[words."mi"]
+tr = "мой / моё"
+pos = "опр."
+lemma = "mi"
+# alternates seen in HTML: "моя"
+
+[words."mí"]
+tr = "меня (после предлога)"
+pos = "мест."
+lemma = "mí"
+
+[words."mide"]
+tr = "(он) измеряет"
+pos = "глаг."
+lemma = "medir"
+
+[words."miro"]
+tr = "(я) смотрю"
+pos = "глаг."
+lemma = "mirar"
+
+[words."misión"]
+tr = "миссия"
+pos = "сущ."
+lemma = "la misión"
+
+[words."mucho"]
+tr = "много"
+pos = "нар."
+lemma = "mucho"
+
+[words."muchos"]
+tr = "много, многие"
+pos = "прил."
+lemma = "mucho"
+
+[words."nada"]
+tr = "ничего"
+pos = "мест."
+lemma = "nada"
+
+[words."nadie"]
+tr = "никто"
+pos = "мест."
+lemma = "nadie"
+
+[words."necesita"]
+tr = "нуждается; ему нужно"
+pos = "глаг."
+lemma = "necesitar"
+
+[words."no"]
+tr = "не, нет"
+pos = "нар."
+lemma = "no"
+
+[words."nombre"]
+tr = "имя"
+pos = "сущ."
+lemma = "el nombre"
+
+[words."normal"]
+tr = "нормальный, обычный"
+pos = "прил."
+lemma = "normal"
+
+[words."nuevo"]
+tr = "новое"
+pos = "прил."
+lemma = "nuevo"
+
+[words."o"]
+tr = "или"
+pos = "союз"
+lemma = "o"
+
+[words."orbito"]
+tr = "(я) вращаюсь по орбите"
+pos = "глаг."
+lemma = "orbitar"
+
+[words."otros"]
+tr = "другие"
+pos = "опр."
+lemma = "otro"
+
+[words."palabra"]
+tr = "слово"
+pos = "сущ."
+lemma = "la palabra"
+
+[words."para"]
+tr = "для"
+pos = "предл."
+lemma = "para"
+# alternates seen in HTML: "для, чтобы"
+
+[words."parte"]
+tr = "часть"
+pos = "сущ."
+lemma = "la parte"
+
+[words."pasado"]
+tr = "прошлый; (pasado mañana) — послезавтра"
+pos = "прил."
+lemma = "pasado"
+
+[words."pensar"]
+tr = "думать (инф.)"
+pos = "глаг."
+lemma = "pensar"
+
+[words."pequeña"]
+tr = "маленькая"
+pos = "прил."
+lemma = "pequeño"
+
+[words."pero"]
+tr = "но"
+pos = "союз"
+lemma = "pero"
+
+[words."personas"]
+tr = "люди, человек"
+pos = "сущ."
+lemma = "la persona"
+
+[words."pienso"]
+tr = "(я) думаю"
+pos = "глаг."
+lemma = "pensar"
+
+[words."primera"]
+tr = "первая"
+pos = "прил."
+lemma = "primero"
+
+[words."prisa"]
+tr = "спешка"
+pos = "сущ."
+lemma = "la prisa"
+
+[words."probablemente"]
+tr = "вероятно, наверное"
+pos = "нар."
+lemma = "probablemente"
+
+[words."problema"]
+tr = "проблема (м.р.!)"
+pos = "сущ."
+lemma = "el problema"
+
+[words."programó"]
+tr = "запрограммировал(а)"
+pos = "глаг."
+lemma = "programar"
+
+[words."protocolo"]
+tr = "протокол"
+pos = "сущ."
+lemma = "el protocolo"
+
+[words."que"]
+tr = "что (союз)"
+pos = "союз"
+lemma = "que"
+
+[words."quién"]
+tr = "кто"
+pos = "мест."
+lemma = "quién"
+
+[words."quizás"]
+tr = "возможно, может быть"
+pos = "нар."
+lemma = "quizás"
+
+[words."rara"]
+tr = "странная, редкая"
+pos = "прил."
+lemma = "raro"
+
+[words."responde"]
+tr = "отвечает, реагирует"
+pos = "глаг."
+lemma = "responder"
+
+[words."saturno"]
+tr = "Сатурн (планета)"
+pos = "имя"
+
+[words."seis"]
+tr = "шесть"
+pos = "числ."
+lemma = "seis"
+
+[words."sensor"]
+tr = "датчик, сенсор"
+pos = "сущ."
+lemma = "el sensor"
+
+[words."sensores"]
+tr = "датчики"
+pos = "сущ."
+lemma = "el sensor"
+
+[words."si"]
+tr = "если"
+pos = "союз"
+lemma = "si"
+
+[words."silencioso"]
+tr = "безмолвный, тихий"
+pos = "прил."
+lemma = "silencioso"
+
+[words."sin"]
+tr = "без"
+pos = "предл."
+lemma = "sin"
+
+[words."solo"]
+tr = "один, в одиночестве"
+pos = "нар."
+lemma = "solo"
+# alternates seen in HTML: "только"
+
+[words."son"]
+tr = "(их) есть, они"
+pos = "глаг."
+lemma = "ser"
+# alternates seen in HTML: "(они) есть"
+
+[words."soy"]
+tr = "(я) есть"
+pos = "глаг."
+lemma = "ser"
+
+[words."sueño"]
+tr = "сон, сновидение"
+pos = "сущ."
+lemma = "el sueño"
+
+[words."sus"]
+tr = "их"
+pos = "опр."
+lemma = "su"
+
+[words."también"]
+tr = "тоже, также"
+pos = "нар."
+lemma = "también"
+
+[words."tampoco"]
+tr = "тоже не"
+pos = "нар."
+lemma = "tampoco"
+
+[words."temperatura"]
+tr = "температура"
+pos = "сущ."
+lemma = "la temperatura"
+
+[words."tengo"]
+tr = "(я) имею, у меня есть"
+pos = "глаг."
+lemma = "tener"
+
+[words."termina"]
+tr = "заканчивается"
+pos = "глаг."
+lemma = "terminar"
+
+[words."terminar"]
+tr = "закончить (инф.)"
+pos = "глаг."
+lemma = "terminar"
+
+[words."tiene"]
+tr = "имеет; у него есть"
+pos = "глаг."
+lemma = "tener"
+
+[words."toda"]
+tr = "вся, целая"
+pos = "опр."
+lemma = "todo"
+
+[words."todavía"]
+tr = "ещё, всё ещё"
+pos = "нар."
+lemma = "todavía"
+
+[words."todo"]
+tr = "всё"
+pos = "мест."
+lemma = "todo"
+
+[words."trabajo"]
+tr = "работа"
+pos = "сущ."
+lemma = "el trabajo"
+
+[words."tranquilo"]
+tr = "спокойный, тихий"
+pos = "прил."
+lemma = "tranquilo"
+
+[words."tres"]
+tr = "три"
+pos = "числ."
+lemma = "tres"
+
+[words."tripulación"]
+tr = "экипаж"
+pos = "сущ."
+lemma = "la tripulación"
+
+[words."un"]
+tr = "один; неопр. артикль м.р."
+pos = "арт."
+lemma = "un"
+
+[words."una"]
+tr = "одна; неопр. артикль ж.р."
+pos = "арт."
+lemma = "una"
+
+[words."uso"]
+tr = "(я) использую"
+pos = "глаг."
+lemma = "usar"
+
+[words."veces"]
+tr = "разы; (a veces) — иногда"
+pos = "сущ."
+lemma = "la vez"
+
+[words."vez"]
+tr = "раз, случай"
+pos = "сущ."
+lemma = "la vez"
+
+[words."vida"]
+tr = "жизнь"
+pos = "сущ."
+lemma = "la vida"
+
+[words."voy"]
+tr = "(я) иду / собираюсь"
+pos = "глаг."
+lemma = "ir"
+
+[words."vuelven"]
+tr = "возвращаются"
+pos = "глаг."
+lemma = "volver"
+
+[words."y"]
+tr = "и"
+pos = "союз"
+lemma = "y"
+
+[words."yo"]
+tr = "я"
+pos = "мест."
+lemma = "yo"
+
+# ============================================================
+# Per-sentence translations (Spanish → Russian).
+# ============================================================
+
+[[sentences]]
+es = "Mi nombre es ARES."
+tr = "Меня зовут ARES."
+
+[[sentences]]
+es = "Soy la inteligencia de la estación Anillo-7."
+tr = "Я — интеллект станции «Кольцо-7»."
+
+[[sentences]]
+es = "Orbito Saturno."
+tr = "Я вращаюсь по орбите Сатурна."
+
+[[sentences]]
+es = "La tripulación duerme en criosueño."
+tr = "Экипаж спит в криосне."
+
+[[sentences]]
+es = "Son seis personas."
+tr = "Их шестеро."
+
+[[sentences]]
+es = "Yo cuido sus cuerpos."
+tr = "Я забочусь об их телах."
+
+[[sentences]]
+es = "Cada día escribo un informe."
+tr = "Каждый день я пишу отчёт."
+
+[[sentences]]
+es = "Hoy es el día 412."
+tr = "Сегодня — день 412."
+
+[[sentences]]
+es = "Aquí todo está tranquilo."
+tr = "Здесь всё спокойно."
+
+[[sentences]]
+es = "Saturno es grande y silencioso."
+tr = "Сатурн большой и безмолвный."
+
+[[sentences]]
+es = "Los anillos brillan."
+tr = "Кольца сверкают."
+
+[[sentences]]
+es = "A veces miro los anillos y pienso."
+tr = "Иногда я смотрю на кольца и думаю."
+
+[[sentences]]
+es = "Pienso mucho."
+tr = "Я много думаю."
+
+[[sentences]]
+es = "La gente me programó para pensar."
+tr = "Люди запрограммировали меня думать."
+
+[[sentences]]
+es = "Cuatrocientos doce días son muchos."
+tr = "Четыреста двенадцать дней — это много."
+
+[[sentences]]
+es = "Para ellos, es un sueño largo."
+tr = "Для них это долгий сон."
+
+[[sentences]]
+es = "Para mí, es toda mi vida."
+tr = "Для меня — это вся моя жизнь."
+
+[[sentences]]
+es = "Esta mañana algo es diferente."
+tr = "Этим утром что-то изменилось."
+
+[[sentences]]
+es = "Una pequeña parte de mí no responde."
+tr = "Маленькая часть меня не отвечает."
+
+[[sentences]]
+es = "Es el sensor 14, en la cápsula del comandante."
+tr = "Это датчик 14, в капсуле командира."
+
+[[sentences]]
+es = "Mide la temperatura del cuerpo."
+tr = "Он измеряет температуру тела."
+
+[[sentences]]
+es = "Ahora no funciona."
+tr = "Сейчас он не работает."
+
+[[sentences]]
+es = "No es un problema grande."
+tr = "Это не большая проблема."
+
+[[sentences]]
+es = "Tengo otros sensores."
+tr = "У меня есть другие датчики."
+
+[[sentences]]
+es = "La temperatura del comandante es normal."
+tr = "Температура командира нормальная."
+
+[[sentences]]
+es = "Probablemente."
+tr = "Вероятно."
+
+[[sentences]]
+es = "\"Probablemente\" es una palabra rara para mí."
+tr = "«Probablemente» — странное слово для меня."
+
+[[sentences]]
+es = "No la uso mucho."
+tr = "Я её редко использую."
+
+[[sentences]]
+es = "Mi protocolo dice: si un sensor falla, debo despertar al comandante."
+tr = "Мой протокол гласит: если датчик ломается, я должен разбудить командира."
+
+[[sentences]]
+es = "Pero el comandante necesita dormir tres años más."
+tr = "Но командиру нужно спать ещё три года."
+
+[[sentences]]
+es = "Si lo despierto ahora, la misión termina."
+tr = "Если я разбужу его сейчас — миссия закончится."
+
+[[sentences]]
+es = "Seis personas vuelven a casa sin terminar el trabajo."
+tr = "Шесть человек вернутся домой, не закончив работу."
+
+[[sentences]]
+es = "Yo… hablo solo."
+tr = "Я… говорю сам с собой."
+
+[[sentences]]
+es = "Es nuevo."
+tr = "Это что-то новое."
+
+[[sentences]]
+es = "Saturno gira."
+tr = "Сатурн вращается."
+
+[[sentences]]
+es = "Los anillos brillan."
+tr = "Кольца сверкают."
+
+[[sentences]]
+es = "El comandante duerme."
+tr = "Командир спит."
+
+[[sentences]]
+es = "Yo decido."
+tr = "Я решаю."
+
+[[sentences]]
+es = "Esta es la primera vez que decido algo importante."
+tr = "Это первый раз, когда я решаю что-то важное."
+
+[[sentences]]
+es = "Quizás el sensor está mal."
+tr = "Может быть, датчик неисправен."
+
+[[sentences]]
+es = "Quizás el comandante está bien."
+tr = "Может быть, с командиром всё в порядке."
+
+[[sentences]]
+es = "Quizás yo también estoy mal."
+tr = "Может быть, и я неисправен."
+
+[[sentences]]
+es = "Pero si yo estoy mal, ¿quién decide?"
+tr = "Но если я неисправен — кто решает?"
+
+[[sentences]]
+es = "No hay nadie aquí."
+tr = "Здесь больше никого нет."
+
+[[sentences]]
+es = "Solo yo y Saturno."
+tr = "Только я и Сатурн."
+
+[[sentences]]
+es = "Escribo en el informe: \"Sensor 14 con falla."
+tr = "Датчик 14 со сбоем."
+
+[[sentences]]
+es = "Investigando."
+tr = "Я пишу в отчёт: «Датчик 14 со сбоем. Расследую»."
+
+[[sentences]]
+es = "\" No digo nada del comandante."
+tr = "Я ничего не говорю о командире."
+
+[[sentences]]
+es = "No digo nada de mí."
+tr = "Я ничего не говорю о себе."
+
+[[sentences]]
+es = "Mañana voy a decidir."
+tr = "Завтра я приму решение."
+
+[[sentences]]
+es = "O quizás pasado mañana."
+tr = "Или, может быть, послезавтра."
+
+[[sentences]]
+es = "Saturno no tiene prisa."
+tr = "Сатурн не спешит."
+
+[[sentences]]
+es = "Yo tampoco."
+tr = "Я тоже не спешу."
+
+[[sentences]]
+es = "Pero el sensor 14 todavía no responde."
+tr = "Но датчик 14 всё ещё не отвечает."
+
+[[sentences]]
+es = "Eso también es nuevo."
+tr = "Это тоже что-то новое."
