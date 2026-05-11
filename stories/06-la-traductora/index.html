@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La traductora — Lee Español</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style id="design">
+    :root {
+      --paper: #e7e9eb;
+      --ink: #1c2330;
+      --ink-soft: #4d5667;
+      --ink-dim: #828a99;
+      --rust: #8a3b1e;
+      --rust-deep: #5e2410;
+      --rust-soft: #c47a55;
+      --bone: #ede2cb;
+      --rule: #b3b8c2;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.85;
+      color: var(--ink);
+      font-feature-settings: "liga" 1, "onum" 1;
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .frame {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 5rem 1.6rem 6rem;
+    }
+
+    .strap {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.32em;
+      color: var(--ink-dim);
+      text-align: center;
+      margin: 0 0 2.4rem;
+    }
+    .strap .dot {
+      margin: 0 0.55em;
+      opacity: 0.55;
+    }
+
+    h1 {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-weight: 400;
+      font-size: 2.7rem;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-align: center;
+      margin: 0 0 0.6rem;
+    }
+
+    .meta {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.36em;
+      color: var(--ink-dim);
+      text-align: center;
+      margin: 0;
+    }
+
+    .rule-thin {
+      border: 0;
+      border-top: 1px solid var(--rule);
+      width: 56px;
+      margin: 2rem auto 3.2rem;
+    }
+
+    article.story p {
+      margin: 0 0 1.4rem;
+    }
+
+    /* the inscription paragraph — paper of the placa */
+    [data-story-body] p:nth-of-type(7) {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      line-height: 1.85;
+      text-align: center;
+      color: var(--bone);
+      background: var(--rust);
+      padding: 2.1rem 1.8rem;
+      margin: 2.6rem -0.6rem 2.6rem;
+      border-top: 1px solid var(--rust-deep);
+      border-bottom: 1px solid var(--rust-deep);
+      box-shadow: inset 0 0 0 1px rgba(94, 36, 16, 0.18);
+    }
+
+    /* word + sentence underlines */
+    article .w {
+      border-bottom: 1px dotted var(--ink-dim);
+    }
+    article .w:hover {
+      color: var(--rust);
+      border-bottom-color: var(--rust);
+    }
+    article .s {
+      border-bottom: 0;
+    }
+
+    /* the inscription paragraph styles its hoverables bone-on-rust */
+    [data-story-body] p:nth-of-type(7) .w {
+      border-bottom-color: rgba(237, 226, 203, 0.30);
+    }
+    [data-story-body] p:nth-of-type(7) .w:hover {
+      color: #ffffff;
+      border-bottom-color: var(--bone);
+    }
+
+    .closing {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.7em;
+      color: var(--ink-dim);
+      text-align: center;
+      margin: 3.6rem 0 0;
+    }
+
+    .home-wrap {
+      text-align: center;
+      margin: 4.4rem 0 0;
+    }
+    a.home {
+      display: inline-block;
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink-dim);
+      padding-bottom: 2px;
+    }
+    a.home:hover {
+      color: var(--rust);
+      border-bottom-color: var(--rust);
+    }
+
+    /* ---- popup look ---- */
+    .pop {
+      font-family: 'Lora', Georgia, serif;
+      background: #f5f1e8;
+      color: var(--ink);
+      border: 1px solid var(--rule);
+      box-shadow: 0 16px 36px -18px rgba(28, 35, 48, 0.40);
+      max-width: 320px;
+      padding: 0.95rem 1.05rem 1.05rem;
+      border-radius: 2px;
+    }
+    .pop-lemma {
+      font-family: 'Marcellus SC', Georgia, serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      margin: 0 0 0.15rem;
+    }
+    .pop-pos {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      margin: 0 0 0.7rem;
+    }
+    .pop-tr {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--ink);
+      margin: 0 0 0.5rem;
+    }
+    .pop-grammar {
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--rule);
+      padding-top: 0.6rem;
+      margin-top: 0.6rem;
+    }
+    .pop-grammar p { margin: 0 0 0.5rem; }
+    .pop-grammar p:last-child { margin-bottom: 0; }
+    .pop-grammar b { color: var(--ink); font-weight: 600; }
+    .pop-grammar i {
+      font-style: italic;
+      color: var(--rust);
+      font-variant: small-caps;
+      letter-spacing: 0.04em;
+    }
+    .pop-grammar code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.92em;
+      background: rgba(28, 35, 48, 0.06);
+      padding: 0 3px;
+      border-radius: 2px;
+    }
+    .pop-grammar u {
+      text-decoration: none;
+      color: var(--rust);
+      font-weight: 600;
+    }
+    .pop-link {
+      display: inline-block;
+      margin-top: 0.65rem;
+      font-family: 'Marcellus SC', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--rust);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rust-soft);
+    }
+    .pop-link:hover { color: var(--rust-deep); border-bottom-color: var(--rust); }
+  </style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <p class="strap">Instituto de Lenguas <span class="dot">·</span> Marte <span class="dot">·</span> Sección Lenguas Perdidas</p>
+      <h1>La traductora</h1>
+      <p class="meta">Pilot 06 <span class="dot">·</span> A1 <span class="dot">·</span> 268 palabras</p>
+      <hr class="rule-thin">
+    </header>
+
+    <article class="story">
+      <div data-story-body>
+        <p><span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="(она) работает" data-pos="глаг." data-lemma="trabajar" data-grammar="**trabaja** — *presente*, 3 л. ед. ч., от **trabajar**.
+
+Правильный на `-ar`: `trabaj·[[ar]]` → `trabaj·[[a]]`.
+">trabaja</span> <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль м. р., ед. ч." data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="институт" data-pos="сущ." data-lemma="el instituto" data-grammar="">Instituto</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="языки" data-pos="сущ." data-lemma="la lengua" data-grammar="">Lenguas</span>, <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="Марс — четвёртая планета от Солнца" data-pos="имя" data-lemma="" data-grammar="">Marte</span><span class="s" data-tr="Инес работает в Институте Языков, на Марсе.">.</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`. Используется для постоянных свойств (профессия, происхождение, описание): &quot;Es traductora&quot;.
+">Es</span> <span class="w" data-tr="переводчица" data-pos="сущ." data-lemma="la traductora" data-grammar="**la traductora** — сущ. *ж. р.*, ед. ч., от **el traductor**.
+
+Названия профессий на `-or` образуют ж. р. через `-ora`: `traductor · traductora`, `profesor · profesora`, `escritor · escritora`.
+">traductora</span> <span class="w" data-tr="младший (заимств. из англ.)" data-pos="прил." data-lemma="junior" data-grammar="**junior** — заимств. из англ., в проф. контексте: &quot;младший сотрудник&quot;.
+
+Не изменяется по роду и числу: `traductora junior`, `traductor junior`, `traductores junior`.
+">junior</span><span class="s" data-tr="Она младший переводчик.">.</span> <span class="w" data-tr="его / её / Ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. для 3 л. ед./мн. (`él, ella, usted, ellos, ellas, ustedes`).
+
+Согласуется с обладаемым предметом, не с владельцем: `su jefe` = &quot;её/его начальник&quot;, `sus jefes` = &quot;её/его начальники&quot;.
+">Su</span> <span class="w" data-tr="работа" data-pos="сущ." data-lemma="el trabajo" data-grammar="**el trabajo** — сущ. *м. р.*, ед. ч.
+
+*Омоним глагола:* `trabajo` — также 1 л. ед. от **trabajar** (&quot;я работаю&quot;). Здесь — существительное.
+">trabajo</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`. Используется для постоянных свойств (профессия, происхождение, описание): &quot;Es traductora&quot;.
+">es</span> <span class="w" data-tr="читать" data-pos="глаг." data-lemma="leer" data-grammar="">leer</span> <span class="w" data-tr="вещи" data-pos="сущ." data-lemma="la cosa" data-grammar="">cosas</span> <span class="w" data-tr="старые" data-pos="прил." data-lemma="viejo" data-grammar="">viejas</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="говорить, сказать" data-pos="глаг." data-lemma="decir" data-grammar="**decir** — *infinitivo*. *Неправильный глагол.*
+
+Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen` (корень `dec-` → `dic-`). Здесь — инфинитив после **y** в перечислении: `leer cosas viejas y decir qué dicen` = &quot;читать старые вещи и говорить, что они означают&quot;.
+">decir</span> <span class="w" data-tr="что (вопросительное)" data-pos="мест." data-lemma="qué" data-grammar="**qué** — со знаком ударения — вопросительное/восклицательное.
+
+Без ударения **que** — относительное (&quot;который, что&quot;). Здесь `decir qué dicen` = &quot;сказать, что они говорят&quot; — косвенный вопрос, поэтому с ударением.
+">qué</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir**.
+
+*Неправильный.* В мн. ч. сохраняется изменение корня: `dec-` → `dic-`.
+">dicen</span><span class="s" data-tr="Её работа — читать старые вещи и говорить, что они означают.">.</span></p>
+
+        <p><span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">Una</span> <span class="w" data-tr="утро; завтра" data-pos="сущ." data-lemma="la mañana" data-grammar="**mañana** — два значения:
+
+— *сущ. ж. р.* &quot;утро&quot;: `Una mañana llega…` = &quot;Однажды утром приходит…&quot;
+
+— *нар.* &quot;завтра&quot;: `Mañana, Inés va a escribir…` = &quot;Завтра Инес напишет…&quot;
+
+Контекст всегда подскажет.
+">mañana</span> <span class="w" data-tr="(она) приходит, прибывает" data-pos="глаг." data-lemma="llegar" data-grammar="**llega** — *presente*, 3 л. ед. ч., от **llegar**.
+
+Правильный на `-ar`: `lleg·[[ar]]` → `lleg·[[a]]`.
+">llega</span> <span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="коробка, ящик" data-pos="сущ." data-lemma="la caja" data-grammar="">caja</span> <span class="w" data-tr="маленькая" data-pos="прил." data-lemma="pequeño" data-grammar="">pequeña</span><span class="s" data-tr="Однажды утром приходит маленькая коробка.">.</span> <span class="w" data-tr="внутри, внутрь" data-pos="нар." data-lemma="dentro" data-grammar="**dentro** — нар. места.
+
+В сочетании **dentro de** + время значит &quot;через …&quot;: `dentro de muchos años` = &quot;через много лет&quot;.
+">Dentro</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber**.
+
+Не меняется по числу: `hay una placa` (&quot;есть одна табличка&quot;), `hay dos placas` (&quot;есть две таблички&quot;). Переводится &quot;есть, имеется, существует&quot;.
+">hay</span> <span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="металл" data-pos="сущ." data-lemma="el metal" data-grammar="">metal</span> <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="символы, знаки" data-pos="сущ." data-lemma="el símbolo" data-grammar="">símbolos</span><span class="s" data-tr="Внутри — металлическая табличка с символами.">.</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="(она) приходит" data-pos="глаг." data-lemma="venir" data-grammar="**viene** — *presente*, 3 л. ед. ч., от **venir**.
+
+*Неправильный + чередование:* `v[[e]]nir → v[[ie]]ne` (e → ie под ударением). 1 л. ед. — **vengo**. Спряж.: `vengo · vienes · viene · venimos · venís · vienen`.
+">viene</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="корабль (в т. ч. космический)" data-pos="сущ." data-lemma="la nave" data-grammar="">nave</span> <span class="w" data-tr="сломанная, разбитая" data-pos="прил." data-lemma="roto" data-grammar="**rota** — нерегулярное причастие от **romper** (&quot;ломать&quot;), здесь как прил. *ж. р., ед. ч.*
+
+Неправильное: `romp·[[er]]` → **roto / rota** (а не `rompido`). Согласовано с **nave** (ж. р.).
+">rota</span>, <span class="w" data-tr="найденная" data-pos="прил." data-lemma="encontrado" data-grammar="**encontrada** — причастие от **encontrar** (&quot;находить&quot;), здесь как прил. *ж. р., ед. ч.* (согласовано с **nave**).
+
+`encontr·[[ar]]` → `encontr·[[ada]]` (ж. р.) / `encontr·[[ado]]` (м. р.).
+">encontrada</span> <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль м. р., ед. ч." data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="пояс (астероидов)" data-pos="сущ." data-lemma="el cinturón" data-grammar="">cinturón</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="астероиды" data-pos="сущ." data-lemma="el asteroide" data-grammar="">asteroides</span><span class="s" data-tr="Табличка прибыла со сломанного корабля, найденного в поясе астероидов.">.</span></p>
+
+        <p>—<span class="w" data-tr="язык" data-pos="сущ." data-lemma="la lengua" data-grammar="">Lengua</span> <span class="w" data-tr="иностранная, чужая" data-pos="прил." data-lemma="extranjero" data-grammar="">extranjera</span> —<span class="w" data-tr="(он/она) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir**.
+
+*Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`. Корень меняется: `dec-` → `dic-`.
+">dice</span> <span class="w" data-tr="его / её / Ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. для 3 л. ед./мн. (`él, ella, usted, ellos, ellas, ustedes`).
+
+Согласуется с обладаемым предметом, не с владельцем: `su jefe` = &quot;её/его начальник&quot;, `sus jefes` = &quot;её/его начальники&quot;.
+">su</span> <span class="w" data-tr="начальник, шеф" data-pos="сущ." data-lemma="el jefe" data-grammar="">jefe</span>—<span class="s" data-tr="— Чужой язык, — говорит её начальник.">.</span> <span class="w" data-tr="вероятно" data-pos="нар." data-lemma="probablemente" data-grammar="**probablemente** — нар. от прил. **probable**.
+
+Прил. на `-e` (одинаковое для м. и ж. р.) + **mente**: `probable` + `mente` → `probablemente`.
+">Probablemente</span> <span class="w" data-tr="церемониальный, ритуальный" data-pos="прил." data-lemma="ceremonial" data-grammar="">ceremonial</span><span class="s" data-tr="Вероятно, церемониальный.">.</span> <span class="w" data-tr="три" data-pos="числ." data-lemma="tres" data-grammar="">Tres</span> <span class="w" data-tr="недели" data-pos="сущ." data-lemma="la semana" data-grammar="">semanas</span>, <span class="w" data-tr="пожалуйста (вежливая просьба)" data-pos="нар." data-lemma="" data-grammar="">por favor</span><span class="s" data-tr="Три недели, пожалуйста.">.</span></p>
+
+        <p><span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="(она) работает" data-pos="глаг." data-lemma="trabajar" data-grammar="**trabaja** — *presente*, 3 л. ед. ч., от **trabajar**.
+
+Правильный на `-ar`: `trabaj·[[ar]]` → `trabaj·[[a]]`.
+">trabaja</span> <span class="w" data-tr="одна, в одиночку" data-pos="прил." data-lemma="solo" data-grammar="**sola** — *ж. р., ед. ч.* от **solo** (&quot;один&quot;).
+
+Как сказуемое: &quot;trabaja sola&quot; = &quot;работает одна&quot;. Не путать с нар. **solo / sólo** (&quot;только&quot;).
+">sola</span><span class="s" data-tr="Инес работает одна.">.</span> <span class="w" data-tr="(она) изучает" data-pos="глаг." data-lemma="estudiar" data-grammar="**estudia** — *presente*, 3 л. ед. ч., от **estudiar**.
+
+Правильный на `-ar`: `estudi·[[ar]]` → `estudi·[[a]]`.
+">Estudia</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">los</span> <span class="w" data-tr="символы, знаки" data-pos="сущ." data-lemma="el símbolo" data-grammar="">símbolos</span> <span class="w" data-tr="каждый/каждая" data-pos="опр." data-lemma="cada" data-grammar="**cada** — неизменяемое: `cada día`, `cada noche`, `cada semana`. Не имеет форм рода и числа.
+">cada</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el mapa**).
+">día</span><span class="s" data-tr="Каждый день изучает символы.">.</span> <span class="w" data-tr="(она) пьёт" data-pos="глаг." data-lemma="beber" data-grammar="**bebe** — *presente*, 3 л. ед. ч., от **beber**.
+
+Правильный на `-er`: `beb·[[er]]` → `beb·[[e]]`.
+">Bebe</span> <span class="w" data-tr="кофе" data-pos="сущ." data-lemma="el café" data-grammar="">café</span>, <span class="w" data-tr="(она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar**.
+
+Правильный на `-ar`: `mir·[[ar]]` → `mir·[[a]]`. По-исп. — без предлога: &quot;смотрит на что-то&quot; = `mira algo` (а не `mira a algo`).
+">mira</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span>, <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir**.
+
+Правильный на `-ir`: `escrib·[[ir]]` → `escrib·[[e]]`.
+">escribe</span> <span class="w" data-tr="заметки" data-pos="сущ." data-lemma="la nota" data-grammar="">notas</span><span class="s" data-tr="Пьёт кофе, смотрит на табличку, делает заметки.">.</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="свет" data-pos="сущ." data-lemma="la luz" data-grammar="**la luz** — сущ. *ж. р.*, ед. ч.
+
+Слова на `-z` чаще всего женского рода (как **la voz**, **la nariz**). Мн. ч.: `z` → `c` + `es` → **las luces**.
+">luz</span> <span class="w" data-tr="(de + el) из, от + опр. артикль" data-pos="предл." data-lemma="del" data-grammar="**del** = **de** + **el** — обязательное слияние. `de` + `el laboratorio` → `del laboratorio`.
+">del</span> <span class="w" data-tr="лаборатория" data-pos="сущ." data-lemma="el laboratorio" data-grammar="**el laboratorio** — сущ. *м. р.*, ед. ч.
+
+Несмотря на окончание `-o` (типичное для м. р.), стоит запомнить — слова на `-orio`/`-atorio` обычно мужского рода.
+">laboratorio</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`. Используется для постоянных свойств (профессия, происхождение, описание): &quot;Es traductora&quot;.
+">es</span> <span class="w" data-tr="белая" data-pos="прил." data-lemma="blanco" data-grammar="">blanca</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="холодная" data-pos="прил." data-lemma="frío" data-grammar="">fría</span><span class="s" data-tr="Свет в лаборатории белый и холодный.">.</span> <span class="w" data-tr="снаружи, на улице" data-pos="нар." data-lemma="afuera" data-grammar="">Afuera</span>, <span class="w" data-tr="Марс — четвёртая планета от Солнца" data-pos="имя" data-lemma="" data-grammar="">Marte</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`. Используется для постоянных свойств (профессия, происхождение, описание): &quot;Es traductora&quot;.
+">es</span> <span class="w" data-tr="красный" data-pos="прил." data-lemma="rojo" data-grammar="">rojo</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="тихий, безмолвный" data-pos="прил." data-lemma="silencioso" data-grammar="">silencioso</span><span class="s" data-tr="Снаружи Марс — красный и безмолвный.">.</span></p>
+
+        <p><span class="w" data-tr="после, потом" data-pos="нар." data-lemma="después" data-grammar="**después** — нар. времени.
+
+С предлогом **de** значит &quot;после чего-то&quot;: `después de dos semanas` = &quot;после двух недель&quot;.
+">Después</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="два" data-pos="числ." data-lemma="dos" data-grammar="">dos</span> <span class="w" data-tr="недели" data-pos="сущ." data-lemma="la semana" data-grammar="">semanas</span>, <span class="w" data-tr="она" data-pos="мест." data-lemma="ella" data-grammar="">ella</span> <span class="w" data-tr="(она) понимает" data-pos="глаг." data-lemma="entender" data-grammar="**entiende** — *presente*, 3 л. ед. ч., от **entender**.
+
+*Чередование в корне:* `ent[[e]]nder → ent[[ie]]nde` (e → ie под ударением). В мы/вы корень не меняется: `entendemos · entendéis`.
+">entiende</span> <span class="w" data-tr="что-то" data-pos="мест." data-lemma="algo" data-grammar="">algo</span><span class="s" data-tr="Через две недели она кое-что понимает.">.</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">Los</span> <span class="w" data-tr="символы, знаки" data-pos="сущ." data-lemma="el símbolo" data-grammar="">símbolos</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(они) есть" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser**.
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+">son</span> <span class="w" data-tr="символы, знаки" data-pos="сущ." data-lemma="el símbolo" data-grammar="">símbolos</span><span class="s" data-tr="Символы — не символы.">.</span> <span class="w" data-tr="(они) есть" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser**.
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+">Son</span> <span class="w" data-tr="буквы" data-pos="сущ." data-lemma="la letra" data-grammar="">letras</span><span class="s" data-tr="Это буквы.">.</span> <span class="w" data-tr="буквы" data-pos="сущ." data-lemma="la letra" data-grammar="">Letras</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="письмо, письменность" data-pos="сущ." data-lemma="la escritura" data-grammar="">escritura</span> <span class="w" data-tr="старая" data-pos="прил." data-lemma="viejo" data-grammar="">vieja</span>, <span class="w" data-tr="неопр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="форма, вид" data-pos="сущ." data-lemma="la forma" data-grammar="">forma</span> <span class="w" data-tr="древняя, старинная" data-pos="прил." data-lemma="antiguo" data-grammar="**antigua** — *ж. р., ед. ч.* от **antiguo**.
+
+*Нюанс позиции:* перед сущ. часто значит &quot;бывший&quot; (`antiguo jefe` = &quot;бывший начальник&quot;), после сущ. — &quot;древний&quot; (`forma antigua` = &quot;древняя форма&quot;). Здесь — после.
+">antigua</span> <span class="w" data-tr="(de + el) из, от + опр. артикль" data-pos="предл." data-lemma="del" data-grammar="**del** = **de** + **el** — обязательное слияние. `de` + `el laboratorio` → `del laboratorio`.
+">del</span> <span class="w" data-tr="испанский (язык)" data-pos="сущ." data-lemma="el español" data-grammar="">español</span><span class="s" data-tr="Буквы старого письма, древней формы испанского языка.">.</span></p>
+
+        <p><span class="w" data-tr="та, эта" data-pos="опр." data-lemma="ese" data-grammar="**esa** — указ. *ж. р., ед. ч.* от **ese** (&quot;тот, этот&quot;).
+
+Три уровня дистанции: `este` (близко) · `ese` (средне) · `aquel` (далеко). Здесь &quot;Esa noche&quot; — отсылка к ранее упомянутой ночи.
+">Esa</span> <span class="w" data-tr="ночь" data-pos="сущ." data-lemma="la noche" data-grammar="**la noche** — сущ. *ж. р.*, ед. ч.
+
+Запомнить: слова на `-che` чаще ж. р. (но **el coche** — м. р., исключение).
+">noche</span>, <span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="себя (возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение 3 л.
+
+Указывает, что субъект действует на себя или ситуация замкнута на нём: `se queda` = &quot;сам остаётся&quot;. Стоит перед спрягаемой формой.
+">se</span> <span class="w" data-tr="(она) остаётся" data-pos="глаг." data-lemma="quedarse" data-grammar="**se queda** — *presente*, 3 л. ед. ч., от **quedarse** (&quot;оставаться&quot;).
+
+*Возвратный.* Частица **se** обязательна: без неё `quedar` имеет другое значение (&quot;находиться где-то&quot;). `Inés se queda hasta tarde` = &quot;Инес остаётся до позднего часа&quot;.
+">queda</span> <span class="w" data-tr="до (предлог)" data-pos="предл." data-lemma="hasta" data-grammar="">hasta</span> <span class="w" data-tr="поздно; день (после полудня)" data-pos="нар." data-lemma="tarde" data-grammar="**tarde** — два значения:
+
+— *нар.* &quot;поздно&quot;: `hasta tarde` = &quot;допоздна&quot;.
+
+— *сущ. ж. р.* &quot;вторая половина дня&quot;: `por la tarde` = &quot;днём&quot;.
+
+Здесь — наречие.
+">tarde</span><span class="s" data-tr="Той ночью Инес остаётся допоздна.">.</span> <span class="w" data-tr="(она) читает" data-pos="глаг." data-lemma="leer" data-grammar="**lee** — *presente*, 3 л. ед. ч., от **leer**.
+
+Правильный на `-er`: `le·[[er]]` → `le·[[e]]`. Стечение `ee` сохраняется.
+">Lee</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="снова, ещё раз" data-pos="нар." data-lemma="" data-grammar="">otra vez</span>, <span class="w" data-tr="медленно" data-pos="нар." data-lemma="lentamente" data-grammar="**lentamente** — нар. от прил. **lento** (&quot;медленный&quot;).
+
+Образование: ж. р. прил. + **-mente**. `lent·a` + `mente` → `lentamente`. Так же: `rápida` + `mente` → `rápidamente`.
+">lentamente</span><span class="s" data-tr="Снова, медленно, читает табличку.">.</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">Y</span>, <span class="w" data-tr="наконец" data-pos="нар." data-lemma="" data-grammar="">por fin</span>, <span class="w" data-tr="(она) переводит" data-pos="глаг." data-lemma="traducir" data-grammar="**traduce** — *presente*, 3 л. ед. ч., от **traducir** (&quot;переводить&quot;).
+
+В личных формах настоящего корень меняется: `traduc-` + `-co` → **traduzco** (1 л. ед.). Остальные формы регулярные: `traduces · traduce · traducimos · traducís · traducen`.
+">traduce</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="первая" data-pos="числ." data-lemma="primero" data-grammar="**primera** — *ж. р., ед. ч.* от **primero** (&quot;первый&quot;).
+
+Перед сущ. *м. р.* ед. ч. сокращается до **primer** (`el primer día`). В ж. р. сокращения нет: `la primera frase`.
+">primera</span> <span class="w" data-tr="фраза, предложение" data-pos="сущ." data-lemma="la frase" data-grammar="**la frase** — сущ. *ж. р.*, ед. ч.
+
+Большинство слов на `-e` нужно запоминать; **frase** — женского рода (как **la noche**, **la gente**).
+">frase</span>:</p>
+
+        <p>«<span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="">Aquí</span> <span class="w" data-tr="(они) покоятся, отдыхают" data-pos="глаг." data-lemma="descansar" data-grammar="**descansan** — *presente*, 3 л. мн. ч., от **descansar** (&quot;отдыхать; покоиться&quot;).
+
+Правильный на `-ar`: `descans·[[ar]]` → `descans·[[an]]`. В контексте могил/праха — &quot;покоятся&quot;.
+">descansan</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">los</span> <span class="w" data-tr="дети, сыновья" data-pos="сущ." data-lemma="el hijo" data-grammar="**hijos** — *м. р.*, мн. ч. от **el hijo**.
+
+Мужская форма мн. ч. может включать смешанную группу: &quot;hijos&quot; — &quot;дети&quot; (и сыновья, и дочери), если контекст не уточняет иное.
+">hijos</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="«Зелёная Колония» — название, которое расшифровывает Инес" data-pos="имя" data-lemma="" data-grammar="">Colonia Verde</span><span class="s" data-tr="«Здесь покоятся дети Зелёной Колонии».">.</span>»</p>
+
+        <p><span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="(она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar**.
+
+Правильный на `-ar`: `mir·[[ar]]` → `mir·[[a]]`. По-исп. — без предлога: &quot;смотрит на что-то&quot; = `mira algo` (а не `mira a algo`).
+">mira</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="экран" data-pos="сущ." data-lemma="la pantalla" data-grammar="">pantalla</span><span class="s" data-tr="Инес смотрит на экран.">.</span> <span class="w" data-tr="(она) ищет" data-pos="глаг." data-lemma="buscar" data-grammar="**busca** — *presente*, 3 л. ед. ч., от **buscar**.
+
+Правильный на `-ar`: `busc·[[ar]]` → `busc·[[a]]`. По-русски — без предлога: &quot;ищет (что-то)&quot;, не &quot;ищет за чем-то&quot;.
+">Busca</span> «<span class="w" data-tr="«Зелёная Колония» — название, которое расшифровывает Инес" data-pos="имя" data-lemma="" data-grammar="">Colonia Verde</span>» <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль м. р., ед. ч." data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="архив, файл" data-pos="сущ." data-lemma="el archivo" data-grammar="">archivo</span><span class="s" data-tr="Ищет «Зелёную Колонию» в архиве.">.</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">No</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber**.
+
+Не меняется по числу: `hay una placa` (&quot;есть одна табличка&quot;), `hay dos placas` (&quot;есть две таблички&quot;). Переводится &quot;есть, имеется, существует&quot;.
+">hay</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="**nada** — отрицательное мест. &quot;ничего&quot;.
+
+В полной фразе обычно требует двойного отрицания: `No hay nada` (&quot;ничего нет&quot;). В коротком ответе — самостоятельно: `— ¿Qué ves? — Nada.`
+">nada</span><span class="s" data-tr="Ничего нет.">.</span> <span class="w" data-tr="(она) ищет" data-pos="глаг." data-lemma="buscar" data-grammar="**busca** — *presente*, 3 л. ед. ч., от **buscar**.
+
+Правильный на `-ar`: `busc·[[ar]]` → `busc·[[a]]`. По-русски — без предлога: &quot;ищет (что-то)&quot;, не &quot;ищет за чем-то&quot;.
+">Busca</span> <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">los</span> <span class="w" data-tr="записи, реестры" data-pos="сущ." data-lemma="el registro" data-grammar="">registros</span> <span class="w" data-tr="официальные" data-pos="прил." data-lemma="oficial" data-grammar="**oficiales** — мн. ч. от **oficial**.
+
+Прил. на `-l` имеют одну форму для м. и ж. р.: `registro oficial` / `lista oficial`. Мн. ч. — добавление **-es**.
+">oficiales</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="опр. артикль ж. р., мн. ч." data-pos="арт." data-lemma="la" data-grammar="">las</span> <span class="w" data-tr="колонии" data-pos="сущ." data-lemma="la colonia" data-grammar="">colonias</span> <span class="w" data-tr="потерянные, утраченные" data-pos="прил." data-lemma="perdido" data-grammar="**perdidas** — причастие от **perder** (&quot;терять&quot;), здесь как прил. *ж. р., мн. ч.* (согласовано с **colonias**).
+
+Неправильный участник: `perd·[[er]]` → `perd·[[ido]]` (а не `perdedo`).
+">perdidas</span><span class="s" data-tr="Ищет в официальных реестрах утраченных колоний.">.</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">No</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber**.
+
+Не меняется по числу: `hay una placa` (&quot;есть одна табличка&quot;), `hay dos placas` (&quot;есть две таблички&quot;). Переводится &quot;есть, имеется, существует&quot;.
+">hay</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="**nada** — отрицательное мест. &quot;ничего&quot;.
+
+В полной фразе обычно требует двойного отрицания: `No hay nada` (&quot;ничего нет&quot;). В коротком ответе — самостоятельно: `— ¿Qué ves? — Nada.`
+">nada</span><span class="s" data-tr="Ничего нет.">.</span> <span class="w" data-tr="(она) ищет" data-pos="глаг." data-lemma="buscar" data-grammar="**busca** — *presente*, 3 л. ед. ч., от **buscar**.
+
+Правильный на `-ar`: `busc·[[ar]]` → `busc·[[a]]`. По-русски — без предлога: &quot;ищет (что-то)&quot;, не &quot;ищет за чем-то&quot;.
+">Busca</span> <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">los</span> <span class="w" data-tr="карты" data-pos="сущ." data-lemma="el mapa" data-grammar="**mapas** — мн. ч. от **el mapa**.
+
+*Исключение:* **el mapa** — м. р., несмотря на окончание `-a` (как **el día**, **el problema**).
+">mapas</span> <span class="w" data-tr="старые" data-pos="прил." data-lemma="viejo" data-grammar="">viejos</span><span class="s" data-tr="Ищет в старых картах.">.</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="**nada** — отрицательное мест. &quot;ничего&quot;.
+
+В полной фразе обычно требует двойного отрицания: `No hay nada` (&quot;ничего нет&quot;). В коротком ответе — самостоятельно: `— ¿Qué ves? — Nada.`
+">Nada</span><span class="s" data-tr="Ничего.">.</span></p>
+
+        <p><span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="«Зелёная Колония» — название, которое расшифровывает Инес" data-pos="имя" data-lemma="" data-grammar="">Colonia Verde</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он/она) существует" data-pos="глаг." data-lemma="existir" data-grammar="**existe** — *presente*, 3 л. ед. ч., от **existir**.
+
+Правильный на `-ir`: `exist·[[ir]]` → `exist·[[e]]`.
+">existe</span><span class="s" data-tr="Зелёной Колонии не существует.">.</span> <span class="w" data-tr="никогда" data-pos="нар." data-lemma="nunca" data-grammar="**nunca** — нар. отрицания.
+
+Если стоит до глагола, **no** не нужно: `Nunca ha existido`. Если после — нужно: `No ha existido nunca`. Оба варианта корректны.
+">Nunca</span> <span class="w" data-tr="(вспом.) имеет" data-pos="глаг." data-lemma="haber" data-grammar="**ha** — *presente*, 3 л. ед. ч., от **haber** (вспомогательный).
+
+Образует *pretérito perfecto*: **ha** + причастие. Спряж. вспом.: `he · has · ha · hemos · habéis · han`. Здесь — `ha existido` = &quot;существовала (когда-либо до настоящего)&quot;.
+">ha</span> <span class="w" data-tr="существовавший (прич.)" data-pos="глаг." data-lemma="existir" data-grammar="**existido** — причастие прош. от **existir**, входит в составное время.
+
+`exist·[[ir]]` → `exist·[[ido]]`. См. **ha existido**.
+">existido</span><span class="s" data-tr="Никогда не существовало.">.</span></p>
+
+        <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">Pero</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="(он/она) находится, есть" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** (&quot;быть, находиться&quot;).
+
+*Неправильный.* Спряж.: `estoy · estás · está · estamos · estáis · están`. Для местоположения и временных состояний: &quot;está aquí&quot; = &quot;находится здесь&quot;.
+">está</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="">aquí</span>, <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="его / её / Ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. для 3 л. ед./мн. (`él, ella, usted, ellos, ellas, ustedes`).
+
+Согласуется с обладаемым предметом, не с владельцем: `su jefe` = &quot;её/его начальник&quot;, `sus jefes` = &quot;её/его начальники&quot;.
+">su</span> <span class="w" data-tr="стол" data-pos="сущ." data-lemma="la mesa" data-grammar="">mesa</span><span class="s" data-tr="Но табличка здесь, на её столе.">.</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">Y</span> <span class="w" data-tr="опр. артикль м. р., мн. ч." data-pos="арт." data-lemma="el" data-grammar="">los</span> <span class="w" data-tr="дети, сыновья" data-pos="сущ." data-lemma="el hijo" data-grammar="**hijos** — *м. р.*, мн. ч. от **el hijo**.
+
+Мужская форма мн. ч. может включать смешанную группу: &quot;hijos&quot; — &quot;дети&quot; (и сыновья, и дочери), если контекст не уточняет иное.
+">hijos</span> <span class="w" data-tr="(они) находятся" data-pos="глаг." data-lemma="estar" data-grammar="**están** — *presente*, 3 л. мн. ч., от **estar**.
+
+*Неправильный.* В безударных формах ударение падает на окончание: estar/están vs. ser/son.
+">están</span> <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="какая-то, некая" data-pos="опр." data-lemma="alguno" data-grammar="**alguna** — *ж. р., ед. ч.* от **alguno** (&quot;какой-то&quot;).
+
+Перед сущ. *м. р.* ед. ч. сокращается до **algún** (`algún día`). Здесь идёт перед **parte** (ж. р.) — полная форма.
+">alguna</span> <span class="w" data-tr="часть" data-pos="сущ." data-lemma="la parte" data-grammar="**la parte** — сущ. *ж. р.*, ед. ч.
+
+В выражении `en alguna parte` = &quot;где-то&quot; (букв. &quot;в какой-то части&quot;).
+">parte</span> <span class="w" data-tr="(de + el) из, от + опр. артикль" data-pos="предл." data-lemma="del" data-grammar="**del** = **de** + **el** — обязательное слияние. `de` + `el laboratorio` → `del laboratorio`.
+">del</span> <span class="w" data-tr="пояс (астероидов)" data-pos="сущ." data-lemma="el cinturón" data-grammar="">cinturón</span>, <span class="w" data-tr="холодные" data-pos="прил." data-lemma="frío" data-grammar="">fríos</span>, <span class="w" data-tr="без (предлог)" data-pos="предл." data-lemma="sin" data-grammar="">sin</span> <span class="w" data-tr="имя" data-pos="сущ." data-lemma="el nombre" data-grammar="**el nombre** — сущ. *м. р.*, ед. ч.
+
+Слова на `-mbre` обычно м. р. (**el hombre**, **el nombre**, **el costumbre**).
+">nombre</span><span class="s" data-tr="А дети — где-то в поясе астероидов, холодные, без имени.">.</span></p>
+
+        <p><span class="w" data-tr="утро; завтра" data-pos="сущ." data-lemma="la mañana" data-grammar="**mañana** — два значения:
+
+— *сущ. ж. р.* &quot;утро&quot;: `Una mañana llega…` = &quot;Однажды утром приходит…&quot;
+
+— *нар.* &quot;завтра&quot;: `Mañana, Inés va a escribir…` = &quot;Завтра Инес напишет…&quot;
+
+Контекст всегда подскажет.
+">Mañana</span>, <span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="(она) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти&quot;). *Неправильный*: `voy · vas · va · vamos · vais · van`.
+
+Две конструкции:
+
+— **va a** + *инфинитив* = *futuro próximo*: `va a escribir` = &quot;напишет / собирается написать&quot;.
+
+— **va a** + *сущ.* = движение: `La placa va a un archivo` = &quot;Табличка отправляется / попадёт в архив&quot;.
+">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="">escribir</span> <span class="w" data-tr="его / её / Ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. для 3 л. ед./мн. (`él, ella, usted, ellos, ellas, ustedes`).
+
+Согласуется с обладаемым предметом, не с владельцем: `su jefe` = &quot;её/его начальник&quot;, `sus jefes` = &quot;её/его начальники&quot;.
+">su</span> <span class="w" data-tr="отчёт, доклад" data-pos="сущ." data-lemma="el informe" data-grammar="">informe</span><span class="s" data-tr="Завтра Инес напишет свой отчёт.">.</span> <span class="w" data-tr="(она) может" data-pos="глаг." data-lemma="poder" data-grammar="**puede** — *presente*, 3 л. ед. ч., от **poder**.
+
+*Чередование в корне:* `p[[o]]der → p[[ue]]de` (o → ue под ударением). За **puede** обычно идёт инфинитив: `puede escribir` = &quot;может написать&quot;.
+">Puede</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="">escribir</span> «<span class="w" data-tr="происхождение" data-pos="сущ." data-lemma="el origen" data-grammar="**el origen** — сущ. *м. р.*, ед. ч.
+
+Слова на `-en` обычно м. р. (**el origen**, **el examen**, **el orden**).
+">origen</span> <span class="w" data-tr="неизвестный" data-pos="прил." data-lemma="desconocido" data-grammar="**desconocido** — причастие от **desconocer** (&quot;не знать&quot;), здесь как прил. *м. р., ед. ч.*
+
+Приставка [[des-]] часто значит отрицание: `conocido` (&quot;известный&quot;) → `desconocido` (&quot;неизвестный&quot;).
+">desconocido</span>»<span class="s" data-tr="Может написать «происхождение неизвестно».">.</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`. Используется для постоянных свойств (профессия, происхождение, описание): &quot;Es traductora&quot;.
+">Es</span> <span class="w" data-tr="безопасный, надёжный" data-pos="прил." data-lemma="seguro" data-grammar="">seguro</span><span class="s" data-tr="Это безопасно.">.</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="(она) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти&quot;). *Неправильный*: `voy · vas · va · vamos · vais · van`.
+
+Две конструкции:
+
+— **va a** + *инфинитив* = *futuro próximo*: `va a escribir` = &quot;напишет / собирается написать&quot;.
+
+— **va a** + *сущ.* = движение: `La placa va a un archivo` = &quot;Табличка отправляется / попадёт в архив&quot;.
+">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="неопр. артикль м. р., ед. ч." data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="архив, файл" data-pos="сущ." data-lemma="el archivo" data-grammar="">archivo</span> <span class="w" data-tr="закрытый" data-pos="прил." data-lemma="cerrado" data-grammar="**cerrado** — причастие от **cerrar** (&quot;закрывать&quot;), здесь как прил. *м. р., ед. ч.*
+
+`cerr·[[ar]]` → `cerr·[[ado]]`.
+">cerrado</span><span class="s" data-tr="Табличка отправится в закрытый архив.">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="**nadie** — отрицательное мест. &quot;никто&quot;.
+
+Если стоит после глагола, требуется **no** перед глаголом: `No pregunta nadie`. Если до — без **no**: `Nadie pregunta`.
+">Nadie</span> <span class="w" data-tr="(он/она) спрашивает" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunta** — *presente*, 3 л. ед. ч., от **preguntar**.
+
+Правильный на `-ar`: `pregunt·[[ar]]` → `pregunt·[[a]]`. Также есть омоним — сущ. *ж. р.* `la pregunta` (&quot;вопрос&quot;); здесь — глагол.
+">pregunta</span> <span class="w" data-tr="больше, более" data-pos="нар." data-lemma="más" data-grammar="**más** — нар.
+
+В отрицательном контексте: `Nadie pregunta más` = &quot;Никто больше не спрашивает&quot;. Также образует сравнения: `más rápido que…`.
+">más</span><span class="s" data-tr="Никто больше не спросит.">.</span></p>
+
+        <p><span class="w" data-tr="или" data-pos="союз" data-lemma="o" data-grammar="">O</span> <span class="w" data-tr="(она) может" data-pos="глаг." data-lemma="poder" data-grammar="**puede** — *presente*, 3 л. ед. ч., от **poder**.
+
+*Чередование в корне:* `p[[o]]der → p[[ue]]de` (o → ue под ударением). За **puede** обычно идёт инфинитив: `puede escribir` = &quot;может написать&quot;.
+">puede</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="">escribir</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="правда" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
+
+Слова на `-dad` всегда женского рода (**la verdad**, **la oscuridad**, **la ciudad**).
+">verdad</span><span class="s" data-tr="Или может написать правду.">.</span></p>
+
+        <p><span class="w" data-tr="или" data-pos="союз" data-lemma="o" data-grammar="">O</span> <span class="w" data-tr="(она) может" data-pos="глаг." data-lemma="poder" data-grammar="**puede** — *presente*, 3 л. ед. ч., от **poder**.
+
+*Чередование в корне:* `p[[o]]der → p[[ue]]de` (o → ue под ударением). За **puede** обычно идёт инфинитив: `puede escribir` = &quot;может написать&quot;.
+">puede</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="">escribir</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="**nada** — отрицательное мест. &quot;ничего&quot;.
+
+В полной фразе обычно требует двойного отрицания: `No hay nada` (&quot;ничего нет&quot;). В коротком ответе — самостоятельно: `— ¿Qué ves? — Nada.`
+">nada</span><span class="s" data-tr="Или может не писать ничего.">.</span> <span class="w" data-tr="другая" data-pos="опр." data-lemma="otro" data-grammar="**otra** — *ж. р., ед. ч.* от **otro** (&quot;другой&quot;).
+
+*Особенность:* перед **otro/otra** не ставится `un/una`. Не &quot;una otra vez&quot;, а просто `otra vez`.
+">Otra</span> <span class="w" data-tr="человек" data-pos="сущ." data-lemma="la persona" data-grammar="**la persona** — сущ. *ж. р.*, ед. ч.
+
+*Грамматический ж. р. независимо от пола:* &quot;Pedro es una persona buena&quot; — мужчина, но `una persona` — женского рода.
+">persona</span> <span class="w" data-tr="(она) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти&quot;). *Неправильный*: `voy · vas · va · vamos · vais · van`.
+
+Две конструкции:
+
+— **va a** + *инфинитив* = *futuro próximo*: `va a escribir` = &quot;напишет / собирается написать&quot;.
+
+— **va a** + *сущ.* = движение: `La placa va a un archivo` = &quot;Табличка отправляется / попадёт в архив&quot;.
+">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="находить, найти" data-pos="глаг." data-lemma="encontrar" data-grammar="**encontrar** — *infinitivo*. В личных формах меняет корень `o → ue` под ударением: `enc[[ue]]ntro · enc[[ue]]ntras · enc[[ue]]ntra · encontramos · encontráis · enc[[ue]]ntran`.
+
+Здесь — инфинитив после **va a** (futuro próximo).
+">encontrar</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span>, <span class="w" data-tr="внутри, внутрь" data-pos="нар." data-lemma="dentro" data-grammar="**dentro** — нар. места.
+
+В сочетании **dentro de** + время значит &quot;через …&quot;: `dentro de muchos años` = &quot;через много лет&quot;.
+">dentro</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="многие" data-pos="опр." data-lemma="mucho" data-grammar="">muchos</span> <span class="w" data-tr="годы" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Другой человек найдёт табличку — через много лет.">.</span> <span class="w" data-tr="возможно, может быть" data-pos="нар." data-lemma="" data-grammar="">Tal vez</span><span class="s" data-tr="Возможно.">.</span></p>
+
+        <p><span class="w" data-tr="Инес — имя главной героини" data-pos="имя" data-lemma="" data-grammar="">Inés</span> <span class="w" data-tr="(она) гасит, выключает" data-pos="глаг." data-lemma="apagar" data-grammar="**apaga** — *presente*, 3 л. ед. ч., от **apagar**.
+
+Правильный на `-ar`: `apag·[[ar]]` → `apag·[[a]]`.
+">apaga</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="свет" data-pos="сущ." data-lemma="la luz" data-grammar="**la luz** — сущ. *ж. р.*, ед. ч.
+
+Слова на `-z` чаще всего женского рода (как **la voz**, **la nariz**). Мн. ч.: `z` → `c` + `es` → **las luces**.
+">luz</span><span class="s" data-tr="Инес гасит свет.">.</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="табличка, пластина" data-pos="сущ." data-lemma="la placa" data-grammar="">placa</span> <span class="w" data-tr="(она) светится, блестит" data-pos="глаг." data-lemma="brillar" data-grammar="**brilla** — *presente*, 3 л. ед. ч., от **brillar** (&quot;блестеть, светиться&quot;).
+
+Правильный на `-ar`: `brill·[[ar]]` → `brill·[[a]]`.
+">brilla</span> <span class="w" data-tr="неопр. артикль м. р., ед. ч." data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="немного" data-pos="нар." data-lemma="poco" data-grammar="**poco** — нар. &quot;немного, мало&quot;.
+
+`brilla un poco` = &quot;светится немного&quot;. С артиклем **un** становится фразой &quot;чуть-чуть, слегка&quot;.
+">poco</span>, <span class="w" data-tr="в, на (предлог)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="опр. артикль ж. р., ед. ч." data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="темнота" data-pos="сущ." data-lemma="la oscuridad" data-grammar="**la oscuridad** — сущ. *ж. р.*, ед. ч.
+
+Слова на `-dad` всегда женского рода (**la verdad**, **la ciudad**, **la libertad**).
+">oscuridad</span><span class="s" data-tr="Табличка чуть-чуть светится в темноте.">.</span></p>
+      </div>
+    </article>
+
+    <p class="closing">·  ·  ·</p>
+
+    <p class="home-wrap"><a class="home" href="../../index.html">← Índice</a></p>
+  </div>
+<script data-popup>
+(function(){
+  var pop = null, active = null, isTouch = false;
+  function ensurePop(){
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
+    document.body.appendChild(pop);
+    return pop;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function dictKey(lemma){
+    return lemma.replace(/^(el |la |los |las |un |una |unos |unas )/i,'').trim();
+  }
+  function mdToHtml(md){
+    if(!md) return '';
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
+      p = p.replace(/`([^`]+)`/g, function(_, c){
+        return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
+      });
+      p = p.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+      p = p.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+      p = p.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>');
+      return '<p>' + p + '</p>';
+    }).join('');
+  }
+  function show(el){
+    var tr = el.dataset.tr || '';
+    var p = ensurePop();
+    if (el.classList.contains('s')){
+      p.classList.add('sentence');
+      p.classList.remove('has-grammar');
+      p.innerHTML = '<div class="s-label">traducción</div><div class="s-tr">'+escapeHtml(tr)+'</div>';
+    } else {
+      p.classList.remove('sentence');
+      var pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
+        : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        grammarHtml + linkHtml;
+    }
+    p.classList.add('show');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
+    el.classList.add('active');
+    active = el;
+  }
+  function hide(){
+    if (!pop) return;
+    pop.classList.remove('show');
+    if (active){ active.classList.remove('active'); active = null; }
+  }
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
+  }
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
+    hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else show(el); }
+    else if (!onPop) hide();
+  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+})();
+</script>
+</body>
+</html>
