@@ -224,34 +224,69 @@ The back-link on each rendered story page must use `../../index.html` (two level
 <a class="back" href="../../index.html">← Índice</a>
 ```
 
+## Helper script — design-first, then apply
+
+A Python helper at `.ai/skills/render/render.py` separates **design** (your job) from **mechanical wiring** (its job). You write `index.html` freely — any palette, typography, layout, illustration. The script then walks the element marked `data-story-body`, wraps each word and sentence-terminator with the popup spans from `enrichment.toml`, and auto-injects the popup behavior CSS/JS.
+
+There are **no locked sections inside your CSS or markup**. Style anything you want, anywhere. The only contract is the `data-story-body` attribute on the element wrapping your `<p>` tags.
+
+```bash
+# from project root
+py .ai/skills/render/render.py                                    # auto-pick newest story; apply enrichment to existing index.html
+py .ai/skills/render/render.py stories/05-pasajero-unico
+py .ai/skills/render/render.py --bootstrap stories/06-foo         # write a minimal design scaffold to start from
+py .ai/skills/render/render.py --bootstrap stories/05 --force     # overwrite an existing index.html with a scaffold (destructive!)
+py .ai/skills/render/render.py --index-only                       # only refresh the project-wide index.html
+```
+
+Requires Python 3.11+ (`tomllib`). Reports sentences paired and any words missing from `[words.*]` so you can extend `enrich` and re-run.
+
+### What the script writes (auto-managed; do not hand-edit)
+
+- **Inside `[data-story-body]`** — every text node is tokenized:
+  - Each Spanish word becomes `<span class="w" data-tr=… data-pos=… data-lemma=… data-grammar=…>word</span>`
+  - Each sentence-terminator (`.?!`) becomes `<span class="s" data-tr=…>.</span>`
+  - HTML inside `<p>` is preserved (you can use `<em>`, `<small>`, etc. — only text between tags is tokenized)
+- **`<style data-popup-invariants>…</style>`** at the end of `<head>` — the behavior-critical bits popups break without (`pointer-events`, `.pop::after` hit-area bridge, default `.w` / `.s` cursor + dotted underline). Replaced (not appended to) on each run.
+- **`<script data-popup>…</script>`** before `</body>` — the popup show/hide/position logic and the markdown-ish grammar parser (`mdToHtml`). Replaced on each run.
+
+### Re-runnability
+
+Each run **strips prior `.w` / `.s` spans first**, then re-tokenizes. Edit the Spanish text inside `<p>` tags freely between runs — the script picks up your edits. (Keep the body in sync with `story.md` so `enrich` re-runs aren't surprised.)
+
 ## Workflow
 
-1. Read `stories/NN-slug/story.md` (frontmatter + body)
-2. Read `stories/NN-slug/enrichment.toml` (vocabulary + sentences)
-3. Read `profile.md` for tone calibration
-4. List all `stories/NN-slug/` subfolders and read each `story.md` frontmatter — needed for the project-wide index refresh in step 9
-5. **Invoke `frontend-design` skill** to plan the visual approach for this story's tone/setting; record the chosen palette, fonts, illustration concept, and layout
-6. Tokenize the body, look each word up in `[words.*]`, walk the sentence-terminators in lockstep with `[[sentences]]`
-7. Compose the full HTML in one shot:
-   - `<!doctype html>` + `<html lang="es">` + `<meta charset="utf-8">` + `<meta name="viewport">`
-   - `<title>` from story title
-   - Google Fonts `<link>` (preconnect + stylesheet)
-   - Inline `<style>` with all design CSS (include the `.pop`, `.pop.show`, `.pop::after`, `.g-block` rules per the contract above)
-   - `<body>` containing: `<a class="back" href="../../index.html">← Índice</a>` near the top, then `<main>` with the story
-   - Inline `<svg>` illustration(s)
-   - Inline `<script>` with the popup behavior (gate the SpanishDict link on presence of `data-lemma`; render `data-grammar` via `mdToHtml`)
-8. Write to `stories/NN-slug/index.html` (the `stories/NN-slug/` folder already exists from steps 1–2 — `story.md` and `enrichment.toml` live there)
-9. **Refresh the project-wide index** at `index.html` (project root):
-   - Enumerate every `stories/NN-slug/` subfolder, read each `story.md` frontmatter (`title`, `protagonist`, `setting`, `length_words`, `date_generated`)
-   - Regenerate the `<div class="entries">…</div>` block; update the entry counter (`.toc-head .stat`)
-   - Preserve everything else in the index file (masthead, intro, colophon, CSS)
-   - If `index.html` does not exist, create it from scratch (typewriter aesthetic per above)
-10. Report to user:
-    - Story HTML path
-    - Index updated (path + new entry count)
-    - Any words from the body that were missing from the `.toml` (so the user can extend `enrich` and re-render)
-    - Thematic summary of the page in one short paragraph (palette, font pair, illustration motif)
-    - Optional command to open in browser: `start "" "stories/NN-slug/index.html"` and `start "" "index.html"`
+1. Read `stories/NN-slug/story.md` and `stories/NN-slug/enrichment.toml` (for word coverage, tone cues)
+2. Read `profile.md` for tone calibration
+3. **Invoke the `frontend-design` skill** to plan the visual approach for this story's tone/setting. Record the chosen palette, font pairing, illustration concept, and layout intuition.
+4. **Design the page from scratch** at `stories/NN-slug/index.html`:
+   - If starting clean, run `py .ai/skills/render/render.py --bootstrap stories/NN-slug` for a minimal scaffold (plain text in `<p>` tags inside `<article data-story-body>`).
+   - Style anything: `body`, `main`, `h1`, `.meta`, `article p`, drop caps, special-paragraph art-direction, inline `<svg>` illustration, custom popup look (`.pop`, `.lemma`, `.pos`, `.tr`, `.g-block`, `.s-label`, `.s-tr`, `.link`).
+   - Keep the `data-story-body` attribute on the element wrapping the `<p>` tags. The Spanish text inside should match `story.md` (the script tokenizes whatever's there).
+5. **Apply enrichment**: `py .ai/skills/render/render.py stories/NN-slug` — wraps words, pairs sentences, injects popup behavior, refreshes project-wide index. If it reports missed words, extend `enrichment.toml` and re-run.
+6. Report to user:
+   - Story HTML path
+   - Index updated (entry count from the helper's output)
+   - Any words flagged as missing from `[words.*]`
+   - Thematic summary of the page in one short paragraph (palette, font pair, illustration motif)
+   - Optional command to open in browser: `start "" "stories/NN-slug/index.html"` and `start "" "index.html"`
+
+### Popup styling conventions
+
+The `data-popup-invariants` block sets only behavior. To style the popup visually, target these classes in your own `<style>` (declared above the auto-managed block in source order — they win because of the cascade):
+
+- `.pop` — the floating tooltip container (background, color, padding, border-radius, font, max-width)
+- `.pop.has-grammar` — wider variant when a grammar block is present
+- `.pop.sentence` — variant for sentence-terminator hover
+- `.pop .lemma` — dictionary form line (italic by convention)
+- `.pop .pos` — part-of-speech label (small caps + tracking by convention)
+- `.pop .tr` — Russian translation
+- `.pop .g-block` — grammar explanation block
+- `.pop .g-block b` / `i` / `code` / `u` — markdown-ish markup tokens (Spanish form / grammar term / monospace inline / suffix highlight)
+- `.pop .link` — SpanishDict link
+- `.pop.sentence .s-label` / `.s-tr` — sentence popup parts
+
+To re-color word/sentence underlines on hover, use higher specificity than `.w` / `.s` (e.g. `article .w:hover`) since the auto-managed block's defaults use `currentColor`.
 
 ## Quality bar
 
