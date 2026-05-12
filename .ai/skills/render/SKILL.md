@@ -41,6 +41,54 @@ Each render must invent, from scratch, design choices driven by the story's fron
 
 Distinctive ≠ chaotic. Each page should feel like a curated print artifact, not a random theme dump. If two consecutive renders feel similar, push harder on differentiation. Motion is decorative — every animation must remain readable, slow, and quiet.
 
+## Found-document framing
+
+Every render is treated as **a specific in-universe artifact**, not "a story page about X". The page IS the document the protagonist would produce, receive, or be cataloged into — a found object the reader has stumbled on. This is the primary discipline that forces real variety; without it, even careful palette/font work drifts toward "yet another centered serif column on a dark bg".
+
+Each story has at least one natural artifact to pick from. Examples:
+
+| Protagonist | Natural artifact |
+|-------------|-----------------|
+| AI / station observatory | terminal log, telemetry readout, system console output |
+| Anthropologist | field journal, ethnographic notes, expedition diary |
+| Navigator / captain | ship's bridge log, course-correction sheet, bridge HUD |
+| Biologist | lab notebook, specimen plate, sample-jar label sheet |
+| Linguist / translator | translation worksheet, gloss table, parallel-column manuscript |
+| Old colonist | handwritten letter, memorial placard, parish chronicle entry |
+| Maintenance engineer | maintenance log, parts diagram, ship's wiring schematic |
+| Astronomer | observation log, signal trace plot, deep-survey night sheet |
+| Cargo captain | bill of lading, customs declaration, dock-side manifest |
+| Programmer | source file with comments, ticket queue, on-call runbook |
+
+The framing shapes **every** decision: title becomes a document header (e.g. *"OBSERVATION LOG · ESTACIÓN CASIOPEA · TURNO 02:00"*), metadata becomes the document's metadata (file number, paper stock, redactions, stamps), the prose lives where it would live on that artifact (numbered log entries, journal pages, form fields, gridded notebook), and decorations are the artifact's natural marks (timestamps, signatures, perforations, ink bleeds, registration crosses, censor bars). The Spanish body text still reads as continuous prose to the reader, but is *housed* inside the artifact's structure.
+
+Anti-pattern: the protagonist's profession leaks into a few decorative SVGs but the underlying page is still "centered serif column". That fails this discipline.
+
+## Format archetypes — variety rule
+
+Pick the artifact's format from the named-archetype list below. The list is illustrative, not exhaustive — invent new archetypes when the story warrants. **Anti-repeat rule**: no archetype reused within 3 consecutive stories. After three stories away, an archetype may return, but the second take must be a visibly fresh interpretation (different palette, different layout primitive, different motion family) — never a re-skin of the first.
+
+Named archetypes (mix freely with new ones):
+
+- **Terminal / system log** — monospace amber-on-black or green-on-black, timestamped lines, blinking cursor, ANSI box-drawing chrome
+- **Manuscript folio** — parchment, two-column with marginalia, illuminated drop cap, calligraphic display, rubricated initials
+- **Observation log / lab notebook** — gridded or ruled paper, handwriting body, monospace headers, plotted traces, marginal scribbles
+- **Customs form / port manifest** — bureaucratic grid, stamped fields, typewriter monospace, carbon-copy ink, official seal corner
+- **Telegram tape** — narrow column, perforation strip, ALL CAPS, STOP between sentences, ribbon-typewriter ink
+- **Magazine / newsprint spread** — multi-column halftone, era-specific display face, byline strip, pull-quote
+- **Museum placard / wall text** — gallery serif, paired columns, generous whitespace, brass-plaque header, plain background
+- **Bridge HUD / instrument readout** — vector lines, faux-radar, scanlines, sci-fi sans, telemetry numerals
+- **Handwritten letter** — paper texture, handwriting body, return-address block, postmark, signature flourish
+- **Field journal** — leather-board frame, pressed-plant illustrations, dated entries, ink-bleed, weathered paper
+- **Index card / library catalog card** — 3×5 ruled card, monospace, hand-stamped accession number
+- **Postcard** — illustration top, prose-on-the-back layout, stamp + postmark
+- **Parish chronicle / annal** — heavy display caps for the year, single-column with rubricated marks, ecclesiastical serif
+- **Engineering schematic** — line-art, callouts, parts list along the margin, drafting-style sans
+
+The archetype determines: page chrome and "edges" (paper, console frame, card border), typography family, palette discipline (paper inks vs. console phosphors vs. plate-printed CMYK), layout primitive (single column / two-column / framed / gridded / freeform marginalia), motion sensibility (paper rustle vs. scanline drift vs. ink bleed vs. dial sway), and **what the metadata strip becomes** (file number, accession, dispatch number, frequency band, postal stamp).
+
+Keep a running mental note of the prior three stories' archetypes when planning a new render. If unsure, scan recent `stories/*/index.html` for their archetype before committing to one.
+
 ## Functional contract — same across all stories
 
 ### Tokenizing the body using the .toml
@@ -267,17 +315,20 @@ Each run **strips prior `.w` / `.s` spans first**, then re-tokenizes. Edit the S
 
 1. Read `stories/NN-slug/story.md` and `stories/NN-slug/enrichment.toml` (for word coverage, tone cues)
 2. Read `profile.md` for tone calibration
-3. **Invoke the `frontend-design` skill** to plan the visual approach for this story's tone/setting. Record the chosen palette, font pairing, illustration concept, and layout intuition.
-4. **Design the page from scratch** at `stories/NN-slug/index.html`:
+3. **Pick the found-document framing first.** Identify what in-universe artifact this story should *be* (see the Found-document framing section): the protagonist's log, a letter, a customs form, an observation sheet, a manuscript page, a system console dump, etc. Lock the artifact before any visual decisions.
+4. **Pick the format archetype** from the named list (or invent a fresh one). Check the prior 3 `stories/*/index.html` for their archetype — do not reuse any of them. Record the archetype choice.
+5. **Invoke the `frontend-design` skill** to plan the visual approach *within the chosen archetype's idiom* — palette, font pairing, page chrome, marginalia, motion family. The skill's output should serve the artifact, not generic "story page" aesthetics.
+6. **Design the page from scratch** at `stories/NN-slug/index.html`:
    - If starting clean, run `py .ai/skills/render/render.py --bootstrap stories/NN-slug` for a minimal scaffold (plain text in `<p>` tags inside `<article data-story-body>`).
    - Style anything: `body`, `main`, `h1`, `.meta`, `article p`, drop caps, special-paragraph art-direction, inline `<svg>` illustration, custom popup look (`.pop`, `.lemma`, `.pos`, `.tr`, `.g-block`, `.s-label`, `.s-tr`, `.link`).
    - Keep the `data-story-body` attribute on the element wrapping the `<p>` tags. The Spanish text inside should match `story.md` (the script tokenizes whatever's there).
-5. **Apply enrichment**: `py .ai/skills/render/render.py stories/NN-slug` — wraps words, pairs sentences, injects popup behavior, refreshes project-wide index. If it reports missed words, extend `enrichment.toml` and re-run.
-6. Report to user:
+7. **Apply enrichment**: `py .ai/skills/render/render.py stories/NN-slug` — wraps words, pairs sentences, injects popup behavior, refreshes project-wide index. If it reports missed words, extend `enrichment.toml` and re-run.
+8. Report to user:
    - Story HTML path
    - Index updated (entry count from the helper's output)
    - Any words flagged as missing from `[words.*]`
-   - Thematic summary of the page in one short paragraph (palette, font pair, illustration motif)
+   - **Artifact framing** chosen (e.g. "Mariela's observation log") and **archetype** picked (e.g. "Observation log / lab notebook")
+   - Thematic summary of the page in one short paragraph (palette, font pair, illustration motif, motion family)
    - Optional command to open in browser: `start "" "stories/NN-slug/index.html"` and `start "" "index.html"`
 
 ### Popup styling conventions
@@ -299,7 +350,8 @@ To re-color word/sentence underlines on hover, use higher specificity than `.w` 
 
 ## Quality bar
 
-- The page should look like the cover/interior of a book imagined for this exact story, not a generic "language learning" template
+- The page should look like the specific in-universe artifact chosen for this story (a found log, letter, form, manuscript page, terminal dump — see "Found-document framing"), not a generic "language learning" template and not a generic "story page" template
+- Two random samples from `stories/*/index.html` opened side-by-side should feel like *different documents from different worlds*, not "two variations on a centered-column page". If you can't tell them apart at a glance with text blurred out, the framing has failed
 - Hover popups must work on first load with no console errors
 - Mouse must travel from any word to its popup (and to the SpanishDict link) without the popup closing
 - Grammar block (when present) renders with proper bold/italic/code/highlight styling consistent with the page's design language
@@ -309,6 +361,9 @@ To re-color word/sentence underlines on hover, use higher specificity than `.w` 
 ## Anti-checklist
 
 - No reused design from a prior render in `stories/*/index.html`
+- No reused format archetype within the prior 3 stories (see "Format archetypes — variety rule"); after the gap, a returning archetype must be a visibly fresh interpretation, never a re-skin
+- No "generic story page" output — every render must commit to a specific in-universe artifact (see "Found-document framing"). If the design could be lifted onto any other story by swapping color and font, it has failed this rule
+- No protagonist-profession-as-decorative-veneer (e.g. a few thematic SVGs glued onto an otherwise-generic centered serif column). The artifact framing must shape page chrome, metadata, layout, and motion — not just illustration
 - No external JS libraries (no jQuery, no Tailwind CDN, no Bootstrap, no markdown library)
 - No tracking scripts, no analytics, no Google Tag Manager
 - No emoji used as primary illustration (Unicode dingbats sparingly OK as accents)
