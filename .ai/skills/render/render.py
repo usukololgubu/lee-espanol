@@ -272,7 +272,30 @@ POPUP_CSS_INV = """\
   left: -12px; right: -12px;
   height: 12px; bottom: -12px;
 }
-.pop.below::after { bottom: auto; top: -12px; }\
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}\
 """
 
 POPUP_JS = r"""(function(){
@@ -371,6 +394,20 @@ POPUP_JS = r"""(function(){
   document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
   window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
   window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
 })();"""
 
 
@@ -386,6 +423,7 @@ BOOTSTRAP_TEMPLATE = """<!doctype html>
 <!-- TODO: design freely from here. The script only edits text inside [data-story-body]
      and the auto-managed <style data-popup-invariants> / <script data-popup> blocks. -->
 <style>
+:root {{ --accent: #8a6a2b; }}
 body {{
   font-family: Georgia, 'Times New Roman', serif;
   max-width: 660px;

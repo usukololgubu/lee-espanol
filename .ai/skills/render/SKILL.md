@@ -36,8 +36,10 @@ Each render must invent, from scratch, design choices driven by the story's fron
 - **CSS background texture / decoration**: subtle gradients, blur, noise (via SVG filter), conic patterns, scanlines, vignettes — whatever fits the mood. Layered, atmospheric, not loud.
 - **Layout / composition**: vary across stories. Some single-column centered, some asymmetric, some with side margins of metadata, some with a faux interface (e.g. AI log entries inside a bordered "console" frame).
 - **Reading width**: ~640–720px max for body text; never less than 18px font-size; line-height 1.7–1.9 for A1 readers.
+- **Ambient background motion** (optional, encouraged): a subtle, slow CSS-only or SMIL-driven layer behind the text that reinforces the story's mood — drifting starfield for cold sci-fi, slow conic-gradient drift for manuscript-warm, faint flicker / scanlines for hard sci-fi, ink-bleed wash for contemplative. Keep it at low opacity, slow (multi-second cycles), and behind text. Never animate the body text itself, and never use motion that competes with reading. Always pure CSS keyframes or inline animated SVG — **no raster GIFs**, no external image URLs.
+- **Refined popup entrance** (optional): override the default `.pop` / `.pop.show` transition in the page's own design language — e.g. add `filter: blur(6px) → 0`, a small `translateY`, or a soft `scale(0.96) → 1` to give the popup a story-themed reveal. The behavior invariants (`opacity`, `pointer-events`, the `::after` bridge) must stay intact — only enrich, don't replace. Similarly, the `.w:hover` underline can animate (e.g. a `linear-gradient` background-size growing from 0 to 100% on hover) instead of the static dotted line.
 
-Distinctive ≠ chaotic. Each page should feel like a curated print artifact, not a random theme dump. If two consecutive renders feel similar, push harder on differentiation.
+Distinctive ≠ chaotic. Each page should feel like a curated print artifact, not a random theme dump. If two consecutive renders feel similar, push harder on differentiation. Motion is decorative — every animation must remain readable, slow, and quiet.
 
 ## Functional contract — same across all stories
 
@@ -165,6 +167,13 @@ A taller bridge (e.g. 18 px) overlaps the line of words below the popup and crea
 
 In the JS, the `mouseout` close check must test `relatedTarget.closest('.pop')` so that moving onto the bridge counts as staying in the popup.
 
+### Motion contract — auto-injected
+
+Two motion bits are auto-managed by `render.py` (alongside the popup invariants). Designers don't write them; they style or hide them.
+
+- **Reading-progress hairline** — a `<div class="reading-progress">` is appended to `<body>` by the popup script. Its width tracks `scrollTop / (scrollHeight − clientHeight)`. CSS lives in `<style data-popup-invariants>`. The bar's color reads from the CSS variable `--accent` on `:root` or `body` (fallback `currentColor`). Each story should declare `:root { --accent: <story-color>; }` so the bar matches the palette. If the bar doesn't fit the design at all, hide it per-page with `.reading-progress { display: none; }` — but prefer themed over hidden.
+- **`prefers-reduced-motion` guard** — a media query in `<style data-popup-invariants>` short-circuits all animations and transitions, and hides the reading bar entirely, when the user has opted out. Designer-authored motion (ambient backgrounds, popup entrance, hover-underline draws, SVG keyframes) must rely on the same global guard — that means doing your motion via standard `animation:` / `transition:` declarations rather than JS-driven `requestAnimationFrame` loops, so the global override takes effect. If you must use JS for motion, gate it on `window.matchMedia('(prefers-reduced-motion: reduce)').matches`.
+
 ### Story content rendering
 
 - Title from frontmatter, set in the display font
@@ -247,8 +256,8 @@ Requires Python 3.11+ (`tomllib`). Reports sentences paired and any words missin
   - Each Spanish word becomes `<span class="w" data-tr=… data-pos=… data-lemma=… data-grammar=…>word</span>`
   - Each sentence-terminator (`.?!`) becomes `<span class="s" data-tr=…>.</span>`
   - HTML inside `<p>` is preserved (you can use `<em>`, `<small>`, etc. — only text between tags is tokenized)
-- **`<style data-popup-invariants>…</style>`** at the end of `<head>` — the behavior-critical bits popups break without (`pointer-events`, `.pop::after` hit-area bridge, default `.w` / `.s` cursor + dotted underline). Replaced (not appended to) on each run.
-- **`<script data-popup>…</script>`** before `</body>` — the popup show/hide/position logic and the markdown-ish grammar parser (`mdToHtml`). Replaced on each run.
+- **`<style data-popup-invariants>…</style>`** at the end of `<head>` — the behavior-critical bits popups break without (`pointer-events`, `.pop::after` hit-area bridge, default `.w` / `.s` cursor + dotted underline), plus the reading-progress hairline styling and the `prefers-reduced-motion` guard. Replaced (not appended to) on each run.
+- **`<script data-popup>…</script>`** before `</body>` — the popup show/hide/position logic, the markdown-ish grammar parser (`mdToHtml`), and the reading-progress scroll listener (which appends a `<div class="reading-progress">` to body on load). Replaced on each run.
 
 ### Re-runnability
 
@@ -304,6 +313,9 @@ To re-color word/sentence underlines on hover, use higher specificity than `.w` 
 - No tracking scripts, no analytics, no Google Tag Manager
 - No emoji used as primary illustration (Unicode dingbats sparingly OK as accents)
 - No raster images or external image URLs (illustrations = inline SVG; CSS textures = data URIs or pure CSS)
+- No raster GIFs anywhere (inline data URIs included) — motion must come from inline animated SVG (CSS keyframes or SMIL) or pure CSS animations
+- No fast, loud, or attention-grabbing motion — ambient layers must be slow (multi-second cycles), low-opacity, and behind text; the body text itself never moves once loaded
+- No JS-driven motion that ignores `prefers-reduced-motion` — gate it on `matchMedia` or use CSS `animation` / `transition` so the auto-injected guard applies
 - No grammar lessons, keyword lists, or full-sentence translations visible on the page
 - No English in popups — Russian only (lemma stays Spanish)
 - No SpanishDict link on proper-noun popups
