@@ -1,0 +1,1309 @@
+# Story 09 — "La señal" — enrichment for renderer popups
+# Each [words.<form>] entry feeds a hover popup.
+# Each [[sentences]] entry maps to a sentence-terminator in document order.
+
+# ──────── Proper nouns (no lemma → no SpanishDict link) ────────
+
+[words.mariela]
+tr = "Мариэла — имя радиоастронома"
+pos = "имя"
+
+[words.casiopea]
+tr = "Касиопея — имя станции (от созвездия Кассиопея)"
+pos = "имя"
+
+[words."plutón"]
+tr = "Плутон — карликовая планета"
+pos = "имя"
+
+[words.tierra]
+tr = "Земля (планета)"
+pos = "имя"
+
+# ──────── Articles / determiners / pronouns / basic glue ────────
+
+[words.la]
+tr = "(арт. ж. р., ед. ч.)"
+pos = "арт."
+lemma = "la"
+
+[words.las]
+tr = "(арт. ж. р., мн. ч.)"
+pos = "арт."
+lemma = "las"
+
+[words.el]
+tr = "(арт. м. р., ед. ч.)"
+pos = "арт."
+lemma = "el"
+
+[words.los]
+tr = "(арт. м. р., мн. ч.)"
+pos = "арт."
+lemma = "los"
+
+[words.un]
+tr = "один; (неопр. арт. м. р.)"
+pos = "арт."
+lemma = "un"
+
+[words.una]
+tr = "одна; (неопр. арт. ж. р.)"
+pos = "арт."
+lemma = "una"
+
+[words.ella]
+tr = "она"
+pos = "мест."
+lemma = "ella"
+
+[words.su]
+tr = "его / её / их"
+pos = "мест."
+lemma = "su"
+
+[words.esta]
+tr = "эта"
+pos = "мест."
+lemma = "este"
+grammar = """
+**esta** — указательное местоимение ж. р. ед. ч. от **este**.
+
+Формы: **este / esta / estos / estas** ("этот / эта / эти").
+"""
+
+[words.otra]
+tr = "другая"
+pos = "прил."
+lemma = "otro"
+grammar = """
+**otra** — ж. р. ед. ч. от **otro** ("другой").
+"""
+
+[words.otro]
+tr = "другой"
+pos = "прил."
+lemma = "otro"
+
+[words.misma]
+tr = "та же; самая"
+pos = "прил."
+lemma = "mismo"
+grammar = """
+**misma** — ж. р. ед. ч. от **mismo** ("тот же самый").
+
+С артиклем: **la misma forma** = "та же форма".
+"""
+
+[words.todos]
+tr = "все"
+pos = "мест."
+lemma = "todo"
+
+[words.nada]
+tr = "ничто; ничего"
+pos = "мест."
+lemma = "nada"
+grammar = """
+**nada** — в отрицании *двойное отрицание* обязательно: `no hay [[nada]]` ("нет ничего", букв. "не есть ничего").
+"""
+
+[words.nadie]
+tr = "никто"
+pos = "мест."
+lemma = "nadie"
+grammar = """
+**nadie** — то же двойное отрицание: `y de [[nadie]]` после `no` в предыдущей части смысла.
+"""
+
+# ──────── Prepositions / conjunctions / common particles ────────
+
+[words.a]
+tr = "в; к; на"
+pos = "предл."
+lemma = "a"
+grammar = """
+**a** — многозначный предлог.
+
+Здесь: указание времени (`a las dos`), направления (`a la Tierra`), и составная часть *futuro próximo*: **ir a + инфинитив** (**va a ser**, **va a volver**).
+"""
+
+[words.de]
+tr = "из; от; о; (родительный)"
+pos = "предл."
+lemma = "de"
+
+[words.del]
+tr = "из / от + (м. р. ед. ч.)"
+pos = "предл."
+lemma = "del"
+grammar = """
+**del** — слияние `de + el`.
+
+`de + [[el]]` → `[[del]]`. Артикль **el** не пишется отдельно.
+"""
+
+[words.en]
+tr = "в; на"
+pos = "предл."
+lemma = "en"
+
+[words.con]
+tr = "с"
+pos = "предл."
+lemma = "con"
+
+[words.por]
+tr = "через; для; кем"
+pos = "предл."
+lemma = "por"
+grammar = """
+**por** — здесь вводит действующее лицо/субъект знания: `conocido [[por]] la humanidad` ("известное человечеству").
+"""
+
+[words.sobre]
+tr = "на; над; о"
+pos = "предл."
+lemma = "sobre"
+
+[words.bajo]
+tr = "под"
+pos = "предл."
+lemma = "bajo"
+
+[words.sin]
+tr = "без"
+pos = "предл."
+lemma = "sin"
+grammar = """
+**sin** + инфинитив = "не делая…": `sin [[enviarlo]]` ("не отправив его").
+"""
+
+[words."más"]
+tr = "больше; ещё"
+pos = "нар."
+lemma = "más"
+grammar = """
+**más allá** — устойчивое: "за пределами", "дальше".
+
+**una vez más** — "ещё один раз".
+"""
+
+[words."allá"]
+tr = "там; дальше"
+pos = "нар."
+lemma = "allá"
+
+[words.y]
+tr = "и"
+pos = "союз"
+lemma = "y"
+
+[words.pero]
+tr = "но"
+pos = "союз"
+lemma = "pero"
+
+[words.si]
+tr = "если"
+pos = "союз"
+lemma = "si"
+grammar = """
+**si** — "если" (без ударения). Не путать с **sí** "да".
+
+С *presente* в условии: `si ella [[reporta]]` ("если она сообщит") — A1-конструкция.
+"""
+
+[words.no]
+tr = "нет; не"
+pos = "нар."
+lemma = "no"
+
+[words.casi]
+tr = "почти"
+pos = "нар."
+lemma = "casi"
+
+[words.siempre]
+tr = "всегда"
+pos = "нар."
+lemma = "siempre"
+
+[words.muy]
+tr = "очень"
+pos = "нар."
+lemma = "muy"
+
+[words.solo]
+tr = "только"
+pos = "нар."
+lemma = "solo"
+grammar = """
+**solo** (без ударения) — наречие "только".
+
+Не путать с прил. **solo / sola** ("один / одна") — см. **sola** ниже.
+"""
+
+[words.sola]
+tr = "одна"
+pos = "прил."
+lemma = "solo"
+grammar = """
+**sola** — прил. ж. р. ед. ч. от **solo** ("одинокая, одна").
+
+Согласуется с **Mariela**.
+"""
+
+[words.afuera]
+tr = "снаружи"
+pos = "нар."
+lemma = "afuera"
+
+[words.ahora]
+tr = "сейчас"
+pos = "нар."
+lemma = "ahora"
+
+[words."después"]
+tr = "после; потом"
+pos = "нар."
+lemma = "después"
+grammar = """
+**después de** + сущ./инф. — "после (чего-л.)".
+
+`[[después de]] cincuenta y ocho minutos` = "через пятьдесят восемь минут".
+"""
+
+[words.pronto]
+tr = "скоро"
+pos = "нар."
+lemma = "pronto"
+
+[words.ya]
+tr = "уже"
+pos = "нар."
+lemma = "ya"
+
+[words.tal]
+tr = "такой"
+pos = "прил."
+lemma = "tal"
+grammar = """
+**tal vez** — устойчивое: "может быть, возможно".
+"""
+
+[words.despacio]
+tr = "медленно"
+pos = "нар."
+lemma = "despacio"
+
+[words.lento]
+tr = "медленный; медленно"
+pos = "прил."
+lemma = "lento"
+
+[words.lejano]
+tr = "далёкий"
+pos = "прил."
+lemma = "lejano"
+
+[words.mucho]
+tr = "много; долго"
+pos = "нар."
+lemma = "mucho"
+grammar = """
+**mucho tiempo** = "долго; много времени".
+"""
+
+[words.tres]
+tr = "три"
+pos = "числ."
+lemma = "tres"
+
+[words.dos]
+tr = "два"
+pos = "числ."
+lemma = "dos"
+
+[words.cincuenta]
+tr = "пятьдесят"
+pos = "числ."
+lemma = "cincuenta"
+
+[words.ocho]
+tr = "восемь"
+pos = "числ."
+lemma = "ocho"
+
+[words.millones]
+tr = "миллионы"
+pos = "сущ."
+lemma = "el millón"
+grammar = """
+**millones** — мн. ч. от **el millón**. Род — мужской.
+
+С существительным через `de`: `[[millones de]] años`.
+"""
+
+# ──────── Verbs (conjugated forms) ────────
+
+[words.trabaja]
+tr = "(она) работает"
+pos = "глаг."
+lemma = "trabajar"
+grammar = """
+**trabaja** — *presente*, 3 л. ед. ч., от **trabajar** ("работать").
+
+Правильный глагол на `-ar`: `trabaj·[[ar]]` → `trabaj·[[a]]`.
+"""
+
+[words.es]
+tr = "(он/она) есть"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**es** — *presente*, 3 л. ед. ч., от **ser** ("быть").
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: **ser** для постоянных/сущностных свойств (`la estación [[es]] pequeña`).
+"""
+
+[words."está"]
+tr = "(он/она) находится"
+pos = "глаг."
+lemma = "estar"
+grammar = """
+**está** — *presente*, 3 л. ед. ч., от **estar** ("быть, находиться в состоянии").
+
+*Неправильный* + графическое ударение. Спряж.: `estoy · estás · está · estamos · estáis · están`.
+
+**estar** для временных состояний: `el cielo [[está]] vacío` ("небо пустое в данный момент").
+"""
+
+[words.hay]
+tr = "есть; имеется"
+pos = "глаг."
+lemma = "haber"
+grammar = """
+**hay** — безличная форма от **haber**: "есть (в наличии)", "имеется".
+
+Не меняется по числу: `[[hay]] una sala` / `[[hay]] tres sillones`.
+
+В тексте: `no [[hay]] nada` ("ничего нет").
+"""
+
+[words.empieza]
+tr = "(она) начинается"
+pos = "глаг."
+lemma = "empezar"
+grammar = """
+**empieza** — *presente*, 3 л. ед. ч., от **empezar** ("начинать(ся)").
+
+*Чередование в корне:* `emp[[e]]zar → emp[[ie]]za` (e → ie под ударением).
+"""
+
+[words.escucha]
+tr = "(она/оно) слушает"
+pos = "глаг."
+lemma = "escuchar"
+grammar = """
+**escucha** — *presente*, 3 л. ед. ч., от **escuchar** ("слушать").
+
+Правильный на `-ar`: `escuch·[[ar]]` → `escuch·[[a]]`.
+"""
+
+[words.toma]
+tr = "(она) пьёт / берёт"
+pos = "глаг."
+lemma = "tomar"
+grammar = """
+**toma** — *presente*, 3 л. ед. ч., от **tomar** ("брать; пить").
+
+`tomar café` = "пить кофе".
+"""
+
+[words.lee]
+tr = "(она) читает"
+pos = "глаг."
+lemma = "leer"
+grammar = """
+**lee** — *presente*, 3 л. ед. ч., от **leer** ("читать").
+
+Глагол на `-er`: `le·[[er]]` → `le·[[e]]`.
+"""
+
+[words.muestra]
+tr = "(он/она) показывает"
+pos = "глаг."
+lemma = "mostrar"
+grammar = """
+**muestra** — *presente*, 3 л. ед. ч., от **mostrar** ("показывать").
+
+*Чередование:* `m[[o]]strar → m[[ue]]stra` (o → ue под ударением).
+"""
+
+[words.sube]
+tr = "(она/оно) поднимается"
+pos = "глаг."
+lemma = "subir"
+grammar = """
+**sube** — *presente*, 3 л. ед. ч., от **subir** ("подниматься").
+
+Глагол на `-ir`: `sub·[[ir]]` → `sub·[[e]]`.
+"""
+
+[words.baja]
+tr = "(она/оно) опускается"
+pos = "глаг."
+lemma = "bajar"
+grammar = """
+**baja** — *presente*, 3 л. ед. ч., от **bajar** ("опускаться").
+
+Правильный на `-ar`.
+"""
+
+[words.vuelve]
+tr = "(он/она) возвращается"
+pos = "глаг."
+lemma = "volver"
+grammar = """
+**vuelve** — *presente*, 3 л. ед. ч., от **volver** ("возвращаться").
+
+*Чередование:* `v[[o]]lver → v[[ue]]lve` (o → ue).
+"""
+
+[words.revisa]
+tr = "(она) проверяет"
+pos = "глаг."
+lemma = "revisar"
+grammar = """
+**revisa** — *presente*, 3 л. ед. ч., от **revisar** ("проверять").
+"""
+
+[words.busca]
+tr = "(она) ищет"
+pos = "глаг."
+lemma = "buscar"
+grammar = """
+**busca** — *presente*, 3 л. ед. ч., от **buscar** ("искать").
+
+В отличие от русского, **buscar** не требует предлога: `[[busca]] en el catálogo`.
+"""
+
+[words.coincide]
+tr = "(он/она) совпадает"
+pos = "глаг."
+lemma = "coincidir"
+grammar = """
+**coincide** — *presente*, 3 л. ед. ч., от **coincidir** ("совпадать").
+
+Глагол на `-ir`, правильный.
+"""
+
+[words.reporta]
+tr = "(она) сообщает"
+pos = "глаг."
+lemma = "reportar"
+grammar = """
+**reporta** — *presente*, 3 л. ед. ч., от **reportar** ("докладывать, сообщать").
+
+В условии с **si**: `si ella [[reporta]] ahora` = "если она сообщит сейчас" (рус. буд., исп. наст.).
+"""
+
+[words.van]
+tr = "(они) идут; собираются"
+pos = "глаг."
+lemma = "ir"
+grammar = """
+**van** — *presente*, 3 л. мн. ч., от **ir** ("идти").
+
+В тексте — часть *futuro próximo*: **van a llegar** ("придут / собираются прийти").
+
+Структура: `[[ir]]` (в наст. вр.) + `a` + инфинитив.
+"""
+
+[words.llegar]
+tr = "прибывать"
+pos = "глаг."
+lemma = "llegar"
+grammar = """
+**llegar** — инфинитив, "прибывать, приходить".
+
+В составе *futuro próximo*: **van a llegar**.
+"""
+
+[words.va]
+tr = "(он/она) идёт; собирается"
+pos = "глаг."
+lemma = "ir"
+grammar = """
+**va** — *presente*, 3 л. ед. ч., от **ir**.
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+
+В тексте — часть *futuro próximo* три раза: **va a ser**, **va a volver**, **va a hablar** ("будет / собирается …").
+"""
+
+[words.ser]
+tr = "быть"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**ser** — инфинитив "быть".
+
+В тексте — в *futuro próximo*: **va a ser** ("будет").
+"""
+
+[words.volver]
+tr = "возвращаться"
+pos = "глаг."
+lemma = "volver"
+grammar = """
+**volver** — инфинитив "возвращаться".
+
+В тексте — в *futuro próximo*: **va a volver** ("вернётся").
+"""
+
+[words.hablar]
+tr = "говорить"
+pos = "глаг."
+lemma = "hablar"
+grammar = """
+**hablar** — инфинитив "говорить".
+
+В тексте — в *futuro próximo*: **va a hablar** ("заговорит, расскажет").
+"""
+
+[words.mira]
+tr = "(она) смотрит"
+pos = "глаг."
+lemma = "mirar"
+grammar = """
+**mira** — *presente*, 3 л. ед. ч., от **mirar** ("смотреть").
+
+Правильный на `-ar`. **mirar** ≠ **ver**: **mirar** — намеренно смотреть.
+"""
+
+[words.pulsa]
+tr = "(он/она) пульсирует"
+pos = "глаг."
+lemma = "pulsar"
+grammar = """
+**pulsa** — *presente*, 3 л. ед. ч., от **pulsar** ("пульсировать; нажимать").
+
+Не путать с сущ. **púlsar** ("пульсар", астроном.) — см. **púlsar**.
+"""
+
+[words.lleva]
+tr = "(он/она) несёт; проводит (время)"
+pos = "глаг."
+lemma = "llevar"
+grammar = """
+**lleva** — *presente*, 3 л. ед. ч., от **llevar**.
+
+Идиома `[[llevar]] + время + герундий` — "делает что-л. уже …": `[[lleva]] mucho tiempo viajando` = "путешествует уже долго".
+"""
+
+[words.tiene]
+tr = "(он/она) имеет"
+pos = "глаг."
+lemma = "tener"
+grammar = """
+**tiene** — *presente*, 3 л. ед. ч., от **tener** ("иметь").
+
+*Неправильный + чередование:* `t[[e]]ner → t[[ie]]ne`. Спряж.: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+
+Идиома `tener prisa` = "торопиться" (букв. "иметь спешку").
+"""
+
+[words.escribe]
+tr = "(она) пишет"
+pos = "глаг."
+lemma = "escribir"
+grammar = """
+**escribe** — *presente*, 3 л. ед. ч., от **escribir** ("писать").
+
+Глагол на `-ir`, правильный в этой форме.
+"""
+
+[words.cierra]
+tr = "(она) закрывает"
+pos = "глаг."
+lemma = "cerrar"
+grammar = """
+**cierra** — *presente*, 3 л. ед. ч., от **cerrar** ("закрывать").
+
+*Чередование:* `c[[e]]rrar → c[[ie]]rra` (e → ie).
+"""
+
+[words.enviarlo]
+tr = "отправить его"
+pos = "глаг."
+lemma = "enviar"
+grammar = """
+**enviarlo** — инфинитив **enviar** ("отправлять") + местоимение-объект **lo** ("его"), приклеенное к концу.
+
+`enviar` + `[[lo]]` → `enviar[[lo]]`. Безударный объект всегда сливается с инфинитивом.
+"""
+
+[words.prepara]
+tr = "(она) готовит"
+pos = "глаг."
+lemma = "preparar"
+grammar = """
+**prepara** — *presente*, 3 л. ед. ч., от **preparar** ("готовить").
+"""
+
+[words.sienta]
+tr = "(она) садится"
+pos = "глаг."
+lemma = "sentarse"
+grammar = """
+**se sienta** — *presente* возвратного глагола **sentarse** ("садиться"), 3 л. ед. ч.
+
+*Чередование:* `s[[e]]ntarse → se s[[ie]]nta` (e → ie).
+
+Частица **se** показывает, что субъект действует "на себя" ("садится сам").
+"""
+
+[words.se]
+tr = "себя; (возвр. частица)"
+pos = "мест."
+lemma = "se"
+grammar = """
+**se** — возвратное местоимение 3 л.
+
+В тексте: **se sienta** ("садится") — частица показывает возвратность.
+"""
+
+[words.sigue]
+tr = "(он/она) продолжает"
+pos = "глаг."
+lemma = "seguir"
+grammar = """
+**sigue** — *presente*, 3 л. ед. ч., от **seguir** ("следовать; продолжать").
+
+*Чередование:* `s[[e]]guir → s[[i]]gue` (e → i).
+
+Конструкция `[[seguir]] + герундий` = "продолжать (делать)": `sigue [[cantando]]` ("продолжает петь").
+"""
+
+[words.cantando]
+tr = "поя (герундий)"
+pos = "глаг."
+lemma = "cantar"
+grammar = """
+**cantando** — *герундий* от **cantar** ("петь").
+
+`cant·[[ar]]` → `cant·[[ando]]`. У глаголов на `-ar` герундий заканчивается на `-ando`, у `-er/-ir` — на `-iendo`.
+"""
+
+[words.viajando]
+tr = "путешествуя (герундий)"
+pos = "глаг."
+lemma = "viajar"
+grammar = """
+**viajando** — *герундий* от **viajar** ("путешествовать"): `viaj·[[ar]]` → `viaj·[[ando]]`.
+
+Часть конструкции `lleva mucho tiempo [[viajando]]` ("путешествует уже долго").
+"""
+
+[words.quiere]
+tr = "(она) хочет"
+pos = "глаг."
+lemma = "querer"
+grammar = """
+**quiere** — *presente*, 3 л. ед. ч., от **querer** ("хотеть").
+
+*Чередование:* `qu[[e]]rer → qu[[ie]]re` (e → ie).
+"""
+
+[words.escucharla]
+tr = "слушать его / её"
+pos = "глаг."
+lemma = "escuchar"
+grammar = """
+**escucharla** — инфинитив **escuchar** + местоимение **la** ("её", указывает на **la señal**).
+
+`escuchar` + `[[la]]` → `escuchar[[la]]`. Безударное местоимение сливается с инфинитивом.
+"""
+
+# ──────── Nouns ────────
+
+[words."estación"]
+tr = "станция"
+pos = "сущ."
+lemma = "la estación"
+
+[words.superficie]
+tr = "поверхность"
+pos = "сущ."
+lemma = "la superficie"
+
+[words.helada]
+tr = "ледяная"
+pos = "прил."
+lemma = "helado"
+grammar = """
+**helada** — ж. р. ед. ч. от **helado** ("ледяной"). Согласуется с **la superficie**.
+"""
+
+[words."pequeña"]
+tr = "маленькая"
+pos = "прил."
+lemma = "pequeño"
+grammar = """
+**pequeña** — ж. р. ед. ч. от **pequeño** ("маленький"). Согласуется с **la estación**.
+"""
+
+[words.sala]
+tr = "комната, зал"
+pos = "сущ."
+lemma = "la sala"
+
+[words.pantallas]
+tr = "экраны"
+pos = "сущ."
+lemma = "la pantalla"
+grammar = """
+**pantallas** — мн. ч. от **la pantalla** ("экран"). Род женский: `[[la]] pantalla` / `[[las]] pantallas`.
+"""
+
+[words.pantalla]
+tr = "экран"
+pos = "сущ."
+lemma = "la pantalla"
+
+[words."sillón"]
+tr = "кресло"
+pos = "сущ."
+lemma = "el sillón"
+grammar = """
+**el sillón** — "кресло". Мужской род; графическое ударение на `-ón`.
+"""
+
+[words.viejo]
+tr = "старый"
+pos = "прил."
+lemma = "viejo"
+
+[words.viejos]
+tr = "старые"
+pos = "прил."
+lemma = "viejo"
+grammar = """
+**viejos** — м. р. мн. ч. от **viejo** ("старый").
+"""
+
+[words.ventana]
+tr = "окно"
+pos = "сущ."
+lemma = "la ventana"
+grammar = """
+**la ventana** — "окно". Род женский (исключение для рус. ассоциации со средним родом).
+"""
+
+[words.negra]
+tr = "чёрная"
+pos = "прил."
+lemma = "negro"
+grammar = """
+**negra** — ж. р. ед. ч. от **negro** ("чёрный").
+"""
+
+[words.polvo]
+tr = "пыль"
+pos = "сущ."
+lemma = "el polvo"
+grammar = """
+**el polvo** — "пыль". Род мужской.
+"""
+
+[words.hielo]
+tr = "лёд"
+pos = "сущ."
+lemma = "el hielo"
+
+[words.silencio]
+tr = "тишина; молчание"
+pos = "сущ."
+lemma = "el silencio"
+
+[words.turno]
+tr = "смена; очередь"
+pos = "сущ."
+lemma = "el turno"
+
+[words."mañana"]
+tr = "утро; ночь (после полуночи)"
+pos = "сущ."
+lemma = "la mañana"
+grammar = """
+**la mañana** — "утро". В тексте `a las dos de la mañana` = "в два часа ночи" (по испанской логике — раннее утро).
+
+Также **mañana** (нар.) — "завтра"; в тексте есть оба значения, разные предложения.
+"""
+
+[words.radio]
+tr = "радио"
+pos = "сущ."
+lemma = "la radio"
+grammar = """
+**la radio** — "радио / радиоприёмник". *Исключение:* оканчивается на `-o`, но женского рода (как **la mano**, **la foto**).
+"""
+
+[words.cielo]
+tr = "небо"
+pos = "сущ."
+lemma = "el cielo"
+
+[words.sistema]
+tr = "система"
+pos = "сущ."
+lemma = "el sistema"
+grammar = """
+**el sistema** — "система". *Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**).
+"""
+
+[words.solar]
+tr = "солнечный"
+pos = "прил."
+lemma = "solar"
+
+[words."vacío"]
+tr = "пустой"
+pos = "прил."
+lemma = "vacío"
+
+[words."café"]
+tr = "кофе"
+pos = "сущ."
+lemma = "el café"
+grammar = """
+**el café** — "кофе; кафе". Род мужской.
+"""
+
+[words."artículos"]
+tr = "статьи"
+pos = "сущ."
+lemma = "el artículo"
+grammar = """
+**artículos** — мн. ч. от **el artículo** ("статья").
+"""
+
+[words.noche]
+tr = "ночь"
+pos = "сущ."
+lemma = "la noche"
+grammar = """
+**la noche** — "ночь". Род женский.
+"""
+
+[words."línea"]
+tr = "линия"
+pos = "сущ."
+lemma = "la línea"
+
+[words."extraña"]
+tr = "странная"
+pos = "прил."
+lemma = "extraño"
+grammar = """
+**extraña** — ж. р. ед. ч. от **extraño** ("странный").
+"""
+
+[words."señal"]
+tr = "сигнал"
+pos = "сущ."
+lemma = "la señal"
+grammar = """
+**la señal** — "сигнал; знак". *Исключение:* оканчивается на согласный, но женского рода. Запоминается отдельно: `[[la]] señal`.
+"""
+
+[words."señales"]
+tr = "сигналы"
+pos = "сущ."
+lemma = "la señal"
+grammar = """
+**señales** — мн. ч. от **la señal** ("сигнал"). Все формы женского рода.
+"""
+
+[words."débil"]
+tr = "слабый"
+pos = "прил."
+lemma = "débil"
+
+[words.minutos]
+tr = "минуты"
+pos = "сущ."
+lemma = "el minuto"
+
+[words.forma]
+tr = "форма"
+pos = "сущ."
+lemma = "la forma"
+
+[words."duración"]
+tr = "длительность"
+pos = "сущ."
+lemma = "la duración"
+grammar = """
+**la duración** — "длительность". Существительные на `-ción` всегда женского рода.
+"""
+
+[words.veces]
+tr = "раз (мн. ч.)"
+pos = "сущ."
+lemma = "la vez"
+grammar = """
+**veces** — мн. ч. от **la vez** ("раз"). Перед `e` чередование: `vec → vec[[es]]` (как `lápiz → lápices`).
+"""
+
+[words.vez]
+tr = "раз (ед. ч.)"
+pos = "сущ."
+lemma = "la vez"
+grammar = """
+**la vez** — "раз". Род женский.
+
+Устойчивые: **una vez más** ("ещё раз"), **otra vez** ("снова"), **tal vez** ("может быть").
+"""
+
+[words.filtros]
+tr = "фильтры"
+pos = "сущ."
+lemma = "el filtro"
+
+[words.error]
+tr = "ошибка"
+pos = "сущ."
+lemma = "el error"
+grammar = """
+**el error** — "ошибка". Род мужской (в отличие от рус. ж. р.).
+"""
+
+[words.receptor]
+tr = "приёмник"
+pos = "сущ."
+lemma = "el receptor"
+
+[words."catálogo"]
+tr = "каталог"
+pos = "сущ."
+lemma = "el catálogo"
+
+[words."púlsar"]
+tr = "пульсар (астроном.)"
+pos = "сущ."
+lemma = "el púlsar"
+grammar = """
+**el púlsar** — "пульсар", вращающаяся нейтронная звезда.
+
+Не путать с глаг. **pulsar** ("пульсировать"): ударение на разных слогах.
+"""
+
+[words.conocido]
+tr = "известный"
+pos = "прил."
+lemma = "conocido"
+grammar = """
+**conocido** — *причастие/прил.* от **conocer** ("знать"). Согласуется в роде/числе с определяемым словом.
+"""
+
+[words."satélite"]
+tr = "спутник"
+pos = "сущ."
+lemma = "el satélite"
+
+[words.humanidad]
+tr = "человечество"
+pos = "сущ."
+lemma = "la humanidad"
+grammar = """
+**la humanidad** — "человечество". Существительные на `-dad` всегда женского рода (как `la ciudad`, `la verdad`).
+"""
+
+[words.protocolo]
+tr = "протокол"
+pos = "сущ."
+lemma = "el protocolo"
+
+[words.claro]
+tr = "ясный"
+pos = "прил."
+lemma = "claro"
+
+[words.identificadas]
+tr = "идентифицированные"
+pos = "прил."
+lemma = "identificado"
+grammar = """
+**identificadas** — *причастие* от **identificar**, ж. р. мн. ч. Согласуется с **señales**.
+
+`señales no [[identificadas]]` = "не идентифицированные сигналы".
+"""
+
+[words.reporte]
+tr = "отчёт; доклад"
+pos = "сущ."
+lemma = "el reporte"
+
+[words.inmediato]
+tr = "немедленный"
+pos = "прил."
+lemma = "inmediato"
+
+[words.preguntas]
+tr = "вопросы"
+pos = "сущ."
+lemma = "la pregunta"
+
+[words.equipos]
+tr = "команды; оборудование"
+pos = "сущ."
+lemma = "el equipo"
+grammar = """
+**equipos** — мн. ч. от **el equipo**. В контексте: "(научные) команды".
+"""
+
+[words.nombres]
+tr = "имена"
+pos = "сущ."
+lemma = "el nombre"
+
+[words.famosos]
+tr = "знаменитые"
+pos = "прил."
+lemma = "famoso"
+
+[words.institutos]
+tr = "институты"
+pos = "сущ."
+lemma = "el instituto"
+
+[words.periodistas]
+tr = "журналисты"
+pos = "сущ."
+lemma = "el periodista"
+grammar = """
+**el/la periodista** — "журналист(ка)". Род зависит от лица; форма на `-a` одна для м. и ж.
+"""
+
+[words.tranquila]
+tr = "спокойная"
+pos = "прил."
+lemma = "tranquilo"
+grammar = """
+**tranquila** — ж. р. ед. ч. от **tranquilo** ("спокойный"). Согласуется с **la señal**.
+"""
+
+[words.paciente]
+tr = "терпеливый/-ая"
+pos = "прил."
+lemma = "paciente"
+grammar = """
+**paciente** — прил. с одной формой на `-e` для обоих родов.
+"""
+
+[words.tiempo]
+tr = "время"
+pos = "сущ."
+lemma = "el tiempo"
+
+[words."años"]
+tr = "годы; лет"
+pos = "сущ."
+lemma = "el año"
+
+[words.prisa]
+tr = "спешка"
+pos = "сущ."
+lemma = "la prisa"
+grammar = """
+**la prisa** — "спешка". Идиома `tener prisa` = "торопиться".
+"""
+
+[words.registro]
+tr = "журнал; запись"
+pos = "сущ."
+lemma = "el registro"
+
+[words."anomalía"]
+tr = "аномалия"
+pos = "сущ."
+lemma = "la anomalía"
+
+[words.clasificada]
+tr = "классифицированная"
+pos = "прил."
+lemma = "clasificado"
+grammar = """
+**clasificada** — *причастие* от **clasificar**, ж. р. ед. ч. Согласуется с **anomalía**.
+
+`anomalía no [[clasificada]]` = "неклассифицированная аномалия".
+"""
+
+[words.estudio]
+tr = "изучение; кабинет"
+pos = "сущ."
+lemma = "el estudio"
+grammar = """
+**en estudio** — устойчивое: "изучается, на изучении".
+"""
+
+[words.formulario]
+tr = "форма; бланк"
+pos = "сущ."
+lemma = "el formulario"
+
+[words."estática"]
+tr = "статика; помехи (радио)"
+pos = "сущ."
+lemma = "la estática"
+
+# ──────── Sentences (in document order — 36 total) ────────
+
+[[sentences]]
+text = "Mariela trabaja sola en la Estación Casiopea, sobre la superficie helada de Plutón."
+tr = "Мариэла работает одна на станции Касиопея, на ледяной поверхности Плутона."
+
+[[sentences]]
+text = "La estación es pequeña: una sala con tres pantallas, un sillón viejo y una ventana negra."
+tr = "Станция маленькая: комната с тремя экранами, старое кресло и чёрное окно."
+
+[[sentences]]
+text = "Afuera no hay nada — solo polvo, hielo y silencio."
+tr = "Снаружи ничего нет — только пыль, лёд и тишина."
+
+[[sentences]]
+text = "Su turno empieza a las dos de la mañana."
+tr = "Её смена начинается в два часа ночи."
+
+[[sentences]]
+text = "La radio escucha el cielo lejano, más allá del sistema solar."
+tr = "Радио слушает далёкое небо, за пределами Солнечной системы."
+
+[[sentences]]
+text = "Casi siempre el cielo está vacío."
+tr = "Почти всегда небо пустое."
+
+[[sentences]]
+text = "Casi siempre Mariela toma café y lee viejos artículos."
+tr = "Почти всегда Мариэла пьёт кофе и читает старые статьи."
+
+[[sentences]]
+text = "Pero esta noche la pantalla muestra una línea extraña."
+tr = "Но этой ночью экран показывает странную линию."
+
+[[sentences]]
+text = "Una señal muy débil."
+tr = "Очень слабый сигнал."
+
+[[sentences]]
+text = "Sube despacio, baja despacio."
+tr = "Медленно поднимается, медленно опускается."
+
+[[sentences]]
+text = "Después de cincuenta y ocho minutos, vuelve."
+tr = "Через пятьдесят восемь минут возвращается."
+
+[[sentences]]
+text = "La misma forma, la misma duración."
+tr = "Та же форма, та же длительность."
+
+[[sentences]]
+text = "Tres veces ya."
+tr = "Уже три раза."
+
+[[sentences]]
+text = "Mariela revisa los filtros."
+tr = "Мариэла проверяет фильтры."
+
+[[sentences]]
+text = "No es un error del receptor."
+tr = "Это не ошибка приёмника."
+
+[[sentences]]
+text = "Busca en el catálogo."
+tr = "Ищет в каталоге."
+
+[[sentences]]
+text = "No es un púlsar conocido."
+tr = "Это не известный пульсар."
+
+[[sentences]]
+text = "No es un satélite."
+tr = "Это не спутник."
+
+[[sentences]]
+text = "No coincide con nada conocido por la humanidad."
+tr = "Не совпадает ни с чем, известным человечеству."
+
+[[sentences]]
+text = "El protocolo es claro: «señales no identificadas, reporte inmediato a la Tierra»."
+tr = "Протокол ясен: «неидентифицированные сигналы — немедленный отчёт на Землю»."
+
+[[sentences]]
+text = "Si ella reporta ahora, mañana van a llegar las preguntas."
+tr = "Если она сообщит сейчас, завтра придут вопросы."
+
+[[sentences]]
+text = "Después los equipos."
+tr = "Потом команды."
+
+[[sentences]]
+text = "Después los nombres famosos, los institutos, los periodistas."
+tr = "Потом — известные имена, институты, журналисты."
+
+[[sentences]]
+text = "La señal va a ser de todos, y de nadie."
+tr = "Сигнал будет принадлежать всем — и никому."
+
+[[sentences]]
+text = "Mariela mira la pantalla otra vez."
+tr = "Мариэла снова смотрит на экран."
+
+[[sentences]]
+text = "La señal pulsa, tranquila, paciente."
+tr = "Сигнал пульсирует — спокойный, терпеливый."
+
+[[sentences]]
+text = "Lleva mucho tiempo viajando — millones de años, tal vez."
+tr = "Он путешествует уже долго — может быть, миллионы лет."
+
+[[sentences]]
+text = "No tiene prisa."
+tr = "Он не торопится."
+
+[[sentences]]
+text = "Ella escribe en el registro: «anomalía no clasificada, en estudio»."
+tr = "Она пишет в журнале: «неклассифицированная аномалия, изучается»."
+
+[[sentences]]
+text = "Cierra el formulario sin enviarlo."
+tr = "Закрывает форму, не отправляя её."
+
+[[sentences]]
+text = "Después prepara otro café."
+tr = "Потом готовит ещё один кофе."
+
+[[sentences]]
+text = "Se sienta."
+tr = "Садится."
+
+[[sentences]]
+text = "El cielo sigue cantando bajo la estática, lento, lejano."
+tr = "Небо продолжает петь под помехами — медленно, далеко."
+
+[[sentences]]
+text = "Pronto la señal va a volver."
+tr = "Скоро сигнал вернётся."
+
+[[sentences]]
+text = "Mariela quiere escucharla una vez más, sola."
+tr = "Мариэла хочет услышать его ещё раз, в одиночестве."
+
+[[sentences]]
+text = "Después, va a hablar."
+tr = "Потом расскажет."
