@@ -73,8 +73,42 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
 
 
 def load_enrichment(path: Path) -> tuple[dict, list, list]:
-    data = tomllib.loads(path.read_text(encoding="utf-8"))
+    text = path.read_text(encoding="utf-8")
+    try:
+        data = tomllib.loads(text)
+    except tomllib.TOMLDecodeError as exc:
+        hint = _toml_error_hint(text, exc)
+        sys.exit(f"error: {path} — TOML parse failed: {exc}\n{hint}" if hint else f"error: {path} — TOML parse failed: {exc}")
     return data.get("words", {}), data.get("phrases", []) or [], data.get("sentences", []) or []
+
+
+def _toml_error_hint(text: str, exc: tomllib.TOMLDecodeError) -> str:
+    """Detect the common 'unquoted non-ASCII bare key' failure and suggest the fix."""
+    msg = str(exc)
+    m = re.search(r"at line (\d+), column (\d+)", msg)
+    if not m:
+        return ""
+    lineno = int(m.group(1))
+    lines = text.splitlines()
+    if not (1 <= lineno <= len(lines)):
+        return ""
+    line = lines[lineno - 1]
+    th = re.match(r"\s*\[\s*([^\]]*)\s*\]?", line)
+    if not th:
+        return ""
+    header = th.group(1)
+    if not header.startswith("words."):
+        return ""
+    bare_key = header[len("words."):].strip()
+    if bare_key.startswith('"'):
+        return ""
+    if re.search(r"[^A-Za-z0-9_-]", bare_key):
+        return (
+            f"  hint: line {lineno} table key contains non-ASCII characters. "
+            f"TOML bare keys must be [A-Za-z0-9_-]; quote the form instead.\n"
+            f"        change  [words.{bare_key}]  →  [words.\"{bare_key}\"]"
+        )
+    return ""
 
 
 def split_paragraphs(body: str) -> list[str]:

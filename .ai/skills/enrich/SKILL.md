@@ -28,6 +28,24 @@ Two top-level sections: `[words.*]` (one entry per surface form) and `[[sentence
 
 Keyed by **lowercased surface form** (the word as it appears in the text). The renderer matches case-insensitively, so `[words.elena]` covers `Elena` at the start of a sentence.
 
+**TOML key quoting — mandatory for non-ASCII forms.** TOML bare keys allow only `A-Z a-z 0-9 _ -`. Any Spanish surface form containing `á é í ó ú ñ ü` (or any other non-ASCII character) **must** be wrapped in double quotes in the table header, or `tomllib` will refuse to parse the file with `Expected ']' at the end of a table declaration`.
+
+```toml
+# ✗ wrong — will fail at parse time
+[words.señal]
+[words.plutón]
+[words.según]
+
+# ✓ correct — quoted keys
+[words."señal"]
+[words."plutón"]
+[words."según"]
+```
+
+ASCII-only forms (`mariela`, `radio`, `viven`) take the bare form. The quoted vs. unquoted forms are equivalent to the parser — the key value is the same string either way — so the renderer's lookup (`words.get(w.lower())`) works for both. The quoting is purely a TOML-syntax requirement.
+
+Quick mental check while writing entries: every accented vowel, every `ñ`, every `ü` in a `[words.X]` header means quotes go around `X`.
+
 Required fields:
 
 ```toml
