@@ -1,0 +1,1547 @@
+# Spanish-reader enrichment for stories/08-el-ultimo-que-recuerda/story.md
+# Pipeline step 2 of 3 (story → enrich → render)
+
+[meta]
+story = "08-el-ultimo-que-recuerda/story.md"
+title = "El último que recuerda"
+universe = "Space Expansion"
+level = "A1"
+words = 278
+date_enriched = "2026-05-12"
+
+# ============================================================
+# Multi-word phrases — tokenized as a single popup span
+# ============================================================
+
+[[phrases]]
+form = "para siempre"
+tr = "навсегда"
+pos = "нар."
+
+[[phrases]]
+form = "hace años"
+tr = "много лет (тому назад / уже)"
+pos = "нар."
+
+# ============================================================
+# Single-word vocabulary
+# ============================================================
+
+[words."a"]
+tr = "в, к, на (предлог направления)"
+pos = "предл."
+lemma = "a"
+
+[words."abuelo"]
+tr = "дедушка"
+pos = "сущ."
+lemma = "el abuelo"
+
+[words."ahora"]
+tr = "сейчас, теперь"
+pos = "нар."
+lemma = "ahora"
+
+[words."al"]
+tr = "к + the (m.) — слитная форма"
+pos = "предл."
+lemma = "a"
+grammar = """
+**al** = **a** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+
+`a + [[el]] Patrón` → `[[al]] Patrón`. (С другими артиклями не сливается: **a la**, **a los**, **a las**.)
+"""
+
+[words."algo"]
+tr = "что-то, нечто"
+pos = "мест."
+lemma = "algo"
+
+[words."alto"]
+tr = "высокий"
+pos = "прил."
+lemma = "alto"
+
+[words."andalucía"]
+tr = "Андалусия — здесь: «Nueva Andalucía», колония из рассказа 02"
+pos = "имя"
+
+[words."anillo"]
+tr = "кольцо"
+pos = "сущ."
+lemma = "el anillo"
+
+[words."años"]
+tr = "годы; лет"
+pos = "сущ."
+lemma = "el año"
+
+[words."apagó"]
+tr = "(она) погасла, замолчала"
+pos = "глаг."
+lemma = "apagarse"
+grammar = """
+**se apagó** — *pretérito indefinido*, 3 л. ед. ч., от **apagarse** ("погаснуть, выключиться").
+
+*Возвратный.* Частица **se** показывает, что субъект сам "гасит себя": `la radio [[se]] apagó` = "радио замолчало".
+
+Правильный на `-ar`, прет.: `apag·[[ar]]` → `apag·[[ó]]`.
+"""
+
+[words."aquí"]
+tr = "здесь, сюда"
+pos = "нар."
+lemma = "aquí"
+
+[words."barrio"]
+tr = "район, квартал"
+pos = "сущ."
+lemma = "el barrio"
+
+[words."blanco"]
+tr = "белый"
+pos = "прил."
+lemma = "blanco"
+
+[words."bonitas"]
+tr = "красивые"
+pos = "прил."
+lemma = "bonito"
+grammar = """
+**bonitas** — *ж. р., мн. ч.* от **bonito** ("красивый").
+
+Согласуется с **canciones** (ж. р., мн. ч.): `las canciones son [[bonitas]]`.
+"""
+
+[words."brillantes"]
+tr = "блестящие, яркие"
+pos = "прил."
+lemma = "brillante"
+grammar = """
+**brillantes** — *мн. ч.* от **brillante** ("блестящий").
+
+Одна форма для *м. и ж. р.*; во мн. ч. добавляется `-s`: `brillante → brillante[[s]]`.
+"""
+
+[words."cada"]
+tr = "каждый"
+pos = "опр."
+lemma = "cada"
+grammar = """
+**cada** — одна форма для *м. и ж. р.*, ед. ч.: `[[cada]] mes`, `[[cada]] noche`.
+
+Не имеет мн. ч. (вместо этого: `todos los meses`).
+"""
+
+[words."cajas"]
+tr = "коробки, ящики"
+pos = "сущ."
+lemma = "la caja"
+
+[words."cama"]
+tr = "кровать"
+pos = "сущ."
+lemma = "la cama"
+
+[words."cantan"]
+tr = "(они) поют"
+pos = "глаг."
+lemma = "cantar"
+grammar = """
+**cantan** — *presente*, 3 л. мн. ч., от **cantar**.
+
+Правильный на `-ar`: `cant·[[ar]]` → `cant·[[an]]`.
+"""
+
+[words."canciones"]
+tr = "песни"
+pos = "сущ."
+lemma = "la canción"
+grammar = """
+**la canción** → **las canciones**. Сущ. на `-ción` всегда *ж. р.*
+
+Во мн. ч. ударение уходит, `-ón` → `-ones`: `canc[[ión]]` → `canc[[iones]]`.
+"""
+
+[words."casa"]
+tr = "дом"
+pos = "сущ."
+lemma = "la casa"
+
+[words."cerca"]
+tr = "близко, рядом"
+pos = "нар."
+lemma = "cerca"
+
+[words."cielo"]
+tr = "небо"
+pos = "сущ."
+lemma = "el cielo"
+
+[words."cierra"]
+tr = "(он) закрывает"
+pos = "глаг."
+lemma = "cerrar"
+grammar = """
+**cierra** — *presente*, 3 л. ед. ч., от **cerrar** ("закрывать").
+
+*Чередование в корне:* `c[[e]]rrar → c[[ie]]rra` (e → ie под ударением).
+"""
+
+[words."ciudad"]
+tr = "город"
+pos = "сущ."
+lemma = "la ciudad"
+grammar = """
+**la ciudad** — сущ. *ж. р.*, ед. ч.
+
+Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
+"""
+
+[words."cocinaba"]
+tr = "(она) готовила"
+pos = "глаг."
+lemma = "cocinar"
+grammar = """
+**cocinaba** — *pretérito imperfecto*, 3 л. ед. ч., от **cocinar** ("готовить еду").
+
+*Имперфект* описывает регулярное/привычное действие в прошлом: "готовила (каждый день)".
+
+Правильный на `-ar`: `cocin·[[ar]]` → `cocin·[[aba]]`.
+"""
+
+[words."con"]
+tr = "с (предлог)"
+pos = "предл."
+lemma = "con"
+
+[words."contar"]
+tr = "рассказывать; считать"
+pos = "глаг."
+lemma = "contar"
+grammar = """
+**contar** — *инфинитив* ("рассказывать; считать").
+
+В личных формах — чередование `o → ue`: `c[[ue]]nto · c[[ue]]ntas · c[[ue]]nta · contamos · contáis · c[[ue]]ntan`.
+"""
+
+[words."contarte"]
+tr = "рассказать тебе"
+pos = "глаг."
+lemma = "contar"
+grammar = """
+**contarte** = **contar** + **te** — инфинитив с приклеенным местоим.
+
+Безударные местоимения (`me, te, le, se, lo, la, nos, os, les, los, las`) приклеиваются к концу инфинитива: `contar + [[te]]` = "рассказать [[тебе]]".
+
+Целиком: `voy a [[contarte]] algo` = "я расскажу [[тебе]] кое-что".
+"""
+
+[words."cuando"]
+tr = "когда"
+pos = "союз"
+lemma = "cuando"
+
+[words."cuenta"]
+tr = "(он) рассказывает"
+pos = "глаг."
+lemma = "contar"
+grammar = """
+**cuenta** — *presente*, 3 л. ед. ч., от **contar** ("рассказывать").
+
+*Чередование в корне:* `c[[o]]ntar → c[[ue]]nta` (o → ue под ударением).
+"""
+
+[words."de"]
+tr = "из, от, о (предлог)"
+pos = "предл."
+lemma = "de"
+
+[words."del"]
+tr = "из/о + the (m.) — слитная форма"
+pos = "предл."
+lemma = "de"
+grammar = """
+**del** = **de** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+
+`de + [[el]] Patrón` → `[[del]] Patrón`. (С другими артиклями не сливается: **de la**, **de los**, **de las**.)
+"""
+
+[words."describía"]
+tr = "(она) описывала"
+pos = "глаг."
+lemma = "describir"
+grammar = """
+**describía** — *pretérito imperfecto*, 3 л. ед. ч., от **describir** ("описывать").
+
+*Имперфект* для регулярного действия в прошлом: "описывала (каждую ночь)".
+
+Правильный на `-ir`: `describ·[[ir]]` → `describ·[[ía]]`.
+
+В предложении: `su madre [[se la]] describía` — двойное местоим. (см. **se**, **la**).
+"""
+
+[words."después"]
+tr = "потом, после"
+pos = "нар."
+lemma = "después"
+
+[words."despacio"]
+tr = "медленно"
+pos = "нар."
+lemma = "despacio"
+
+[words."dice"]
+tr = "(он) говорит"
+pos = "глаг."
+lemma = "decir"
+grammar = """
+**dice** — *presente*, 3 л. ед. ч., от **decir** ("говорить").
+
+*Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`.
+"""
+
+[words."dicen"]
+tr = "(они) говорят"
+pos = "глаг."
+lemma = "decir"
+grammar = """
+**dicen** — *presente*, 3 л. мн. ч., от **decir**.
+
+*Неправильный.* В этой же серии: `digo · dices · dice · decimos · decís · [[dicen]]`.
+
+Часто значит "говорят (вообще)" — обобщённое "люди говорят".
+"""
+
+[words."doce"]
+tr = "двенадцать"
+pos = "числ."
+lemma = "doce"
+
+[words."don"]
+tr = "дон (уважительное обращение перед именем)"
+pos = "сущ."
+lemma = "don"
+grammar = """
+**don** — традиционное вежливое обращение к мужчине, ставится перед именем: `[[don]] Joaquín`.
+
+Для женщины — **doña**. Не переводится буквально; обычно сохраняется как «дон».
+"""
+
+[words."donde"]
+tr = "где"
+pos = "нар."
+lemma = "donde"
+grammar = """
+**donde** — относительное наречие "где" (без ударения).
+
+*Не путать* с **dónde** (с ударением — вопросительное "где?"): `¿[[dónde]] vives?` vs `la ciudad [[donde]] nació`.
+"""
+
+[words."duele"]
+tr = "(оно) болит"
+pos = "глаг."
+lemma = "doler"
+grammar = """
+**duele** — *presente*, 3 л. ед. ч., от **doler** ("болеть, причинять боль").
+
+*Чередование в корне:* `d[[o]]ler → d[[ue]]le` (o → ue под ударением).
+
+Конструкция как у **gustar**: `[[le]] duele [[el]] pecho` = "ему болит грудь" = "у него болит грудь".
+"""
+
+[words."días"]
+tr = "дни"
+pos = "сущ."
+lemma = "el día"
+grammar = """
+**el día** — сущ. *м. р.*, ед. ч. Мн. ч. — **los días**.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el mapa**, **el planeta**).
+"""
+
+[words."día"]
+tr = "день"
+pos = "сущ."
+lemma = "el día"
+grammar = """
+**el día** — сущ. *м. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-a`, но мужского рода.
+"""
+
+[words."edificio"]
+tr = "здание"
+pos = "сущ."
+lemma = "el edificio"
+
+[words."el"]
+tr = "определённый артикль (м. р., ед. ч.)"
+pos = "арт."
+lemma = "el"
+
+[words."él"]
+tr = "он"
+pos = "мест."
+lemma = "él"
+grammar = """
+**él** (с ударением) — личн. местоим. 3 л. ед. ч. *м. р.*
+
+*Не путать* с **el** (без ударения — арт. *м. р.*): `[[el]] niño` ("мальчик") vs `con [[él]]` ("с ним").
+"""
+
+[words."en"]
+tr = "в, на (предлог места)"
+pos = "предл."
+lemma = "en"
+
+[words."enojar"]
+tr = "сердить, злить (рассердиться — enojarse)"
+pos = "глаг."
+lemma = "enojar"
+grammar = """
+**enojar** — *инфинитив*. С возвр. частицей **se** ("рассердиться").
+
+В тексте: `la gente [[se]] va a [[enojar]]` = "люди рассердятся" — *futuro próximo* + возвратность.
+"""
+
+[words."era"]
+tr = "(он) был"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**era** — *pretérito imperfecto*, 3 л. ед. ч., от **ser** ("быть").
+
+*Имперфект ser* (неправильный): `era · eras · era · éramos · erais · eran`.
+
+Используется для постоянных свойств в прошлом: `[[era]] niño` = "был ребёнком (тогда)".
+"""
+
+[words."eran"]
+tr = "(они) были"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**eran** — *pretérito imperfecto*, 3 л. мн. ч., от **ser**.
+
+Та же серия: `era · eras · era · éramos · erais · [[eran]]`.
+"""
+
+[words."es"]
+tr = "(он/оно) есть, является"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**es** — *presente*, 3 л. ед. ч., от **ser** ("быть").
+
+*Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
+
+*Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
+"""
+
+[words."esperó"]
+tr = "(она) ждала, подождала"
+pos = "глаг."
+lemma = "esperar"
+grammar = """
+**esperó** — *pretérito indefinido*, 3 л. ед. ч., от **esperar** ("ждать").
+
+Правильный на `-ar`, прет.: `esper·[[ar]]` → `esper·[[ó]]` (ударение на последнем слоге).
+
+*Преtérito indefinido* — законченное действие в прошлом.
+"""
+
+[words."está"]
+tr = "(он) находится"
+pos = "глаг."
+lemma = "estar"
+grammar = """
+**está** — *presente*, 3 л. ед. ч., от **estar** ("быть, находиться").
+
+*Неправильный.* Спряж.: `estoy · estás · está · estamos · estáis · están`.
+
+*Нюанс:* для местоположения и состояния — **estar**, не **ser**.
+"""
+
+[words."estar"]
+tr = "быть, находиться"
+pos = "глаг."
+lemma = "estar"
+grammar = """
+**estar** — *инфинитив*.
+
+В тексте: `va a [[estar]] solo` — *futuro próximo* "будет один". Состояние/местоположение → **estar**, не **ser**.
+"""
+
+[words."esto"]
+tr = "это (нейтральное)"
+pos = "мест."
+lemma = "esto"
+grammar = """
+**esto** — указ. местоим. *нейтрального* рода ("это, эта штука").
+
+Используется, когда пол предмета неизвестен или речь о ситуации: `¿qué es [[esto]]?` = "что это?". *Не путать* с **este** (*м. р.*) / **esta** (*ж. р.*).
+"""
+
+[words."flores"]
+tr = "цветы"
+pos = "сущ."
+lemma = "la flor"
+
+[words."foto"]
+tr = "фотография"
+pos = "сущ."
+lemma = "la foto"
+grammar = """
+**la foto** — сущ. *ж. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la fotografía**).
+"""
+
+[words."frutas"]
+tr = "фрукты"
+pos = "сущ."
+lemma = "la fruta"
+
+[words."gente"]
+tr = "люди, народ"
+pos = "сущ."
+lemma = "la gente"
+grammar = """
+**la gente** — сущ. *ж. р.*, ед. ч. (собирательное).
+
+Хотя по-русски "люди" — мн. ч., по-испански **gente** идёт с глаг. в *ед. ч.*: `la gente [[reza]]` ("люди молятся").
+"""
+
+[words."grande"]
+tr = "большой/-ая"
+pos = "прил."
+lemma = "grande"
+grammar = """
+**grande** — прил., одна форма для *м. и ж. р.* в ед. ч.
+
+Перед сущ. ед. ч. часто сокращается до **gran** (`un gran día`). После сущ. — полная форма: `una casa muy [[grande]]`.
+"""
+
+[words."gris"]
+tr = "серый"
+pos = "прил."
+lemma = "gris"
+
+[words."ha"]
+tr = "(он) (вспомогательный глагол для perfecto)"
+pos = "глаг."
+lemma = "haber"
+grammar = """
+**ha** — *presente*, 3 л. ед. ч., от **haber** (вспомог.).
+
+Вместе с причастием образует *pretérito perfecto compuesto*: `[[ha]] visto` = "видел (к настоящему моменту)".
+
+Спряж. в перфекте: `he · has · ha · hemos · habéis · han` + причастие.
+
+*Нюанс:* перфект описывает прошлое, связанное с настоящим: `nunca [[ha]] visto Madrid` = "никогда не видел Мадрид (за всю жизнь)".
+"""
+
+[words."hace"]
+tr = "(оно) делает; назад (в идиоме)"
+pos = "глаг."
+lemma = "hacer"
+grammar = """
+**hace** — *presente*, 3 л. ед. ч., от **hacer** ("делать").
+
+*Идиома* `hace + время` = "… назад / уже…": `[[hace]] años que no dice nada` = "много лет уже молчит".
+
+Дословно: "делает годы, что не говорит" → "годы прошли, и он не говорит".
+"""
+
+[words."hasta"]
+tr = "до (предел)"
+pos = "предл."
+lemma = "hasta"
+
+[words."hijos"]
+tr = "дети, сыновья"
+pos = "сущ."
+lemma = "el hijo"
+grammar = """
+**hijos** — мн. ч. от **hijo** ("сын"). В мн. ч. — также общее "дети" (мальчики и девочки): `los [[hijos]] del barrio` = "дети района".
+"""
+
+[words."hoy"]
+tr = "сегодня"
+pos = "нар."
+lemma = "hoy"
+
+[words."joaquín"]
+tr = "Хоакин — старик, последний житель колонии, помнящий Землю"
+pos = "имя"
+
+[words."joven"]
+tr = "молодой"
+pos = "прил."
+lemma = "joven"
+grammar = """
+**joven** — прил., одна форма для *м. и ж. р.* в ед. ч.
+
+Мн. ч.: **jóvenes** (ударение возникает на корне).
+"""
+
+[words."jugaba"]
+tr = "(он) играл"
+pos = "глаг."
+lemma = "jugar"
+grammar = """
+**jugaba** — *pretérito imperfecto*, 3 л. ед. ч., от **jugar** ("играть").
+
+*Имперфект* для регулярного/привычного действия в прошлом: "играл (часто, в детстве)".
+
+Правильный на `-ar`: `jug·[[ar]]` → `jug·[[aba]]`. (В презенсе у **jugar** чередование `u → ue`, но в имперфекте корень не меняется.)
+"""
+
+[words."juegan"]
+tr = "(они) играют"
+pos = "глаг."
+lemma = "jugar"
+grammar = """
+**juegan** — *presente*, 3 л. мн. ч., от **jugar** ("играть").
+
+*Редкое чередование:* `j[[u]]gar → j[[ue]]gan` (u → ue под ударением). **jugar** — единственный частый глагол с таким чередованием.
+"""
+
+[words."la"]
+tr = "определённый артикль (ж. р., ед. ч.); её (мест.)"
+pos = "арт."
+lemma = "la"
+grammar = """
+**la** — два значения:
+
+— *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
+
+— *местоим. прям. доп., ж. р. ед. ч.* "её, это": `su madre se [[la]] describía` = "его мать [[её]] описывала" (фотографию / город — относится к Мадриду).
+"""
+
+[words."las"]
+tr = "определённый артикль (ж. р., мн. ч.)"
+pos = "арт."
+lemma = "las"
+
+[words."le"]
+tr = "ему, ей (косв. дополнение)"
+pos = "мест."
+lemma = "le"
+grammar = """
+**le** — местоим. косв. доп., 3 л. ед. ч.
+
+Здесь: `[[le]] duele el pecho` = "[[ему]] болит грудь" = "у него болит грудь".
+"""
+
+[words."lejos"]
+tr = "далеко"
+pos = "нар."
+lemma = "lejos"
+
+[words."libros"]
+tr = "книги"
+pos = "сущ."
+lemma = "el libro"
+
+[words."llegaban"]
+tr = "(они) прибывали, приходили"
+pos = "глаг."
+lemma = "llegar"
+grammar = """
+**llegaban** — *pretérito imperfecto*, 3 л. мн. ч., от **llegar** ("прибывать").
+
+*Имперфект* для регулярного действия в прошлом: "приходили (каждый месяц)".
+
+Правильный на `-ar`: `lleg·[[ar]]` → `lleg·[[aban]]`.
+"""
+
+[words."los"]
+tr = "определённый артикль (м. р., мн. ч.)"
+pos = "арт."
+lemma = "los"
+
+[words."lugar"]
+tr = "место"
+pos = "сущ."
+lemma = "el lugar"
+
+[words."madre"]
+tr = "мать"
+pos = "сущ."
+lemma = "la madre"
+
+[words."madrid"]
+tr = "Мадрид — столица Испании, родной город матери Хоакина"
+pos = "имя"
+
+[words."mañana"]
+tr = "утро (сущ.) / завтра (нар.)"
+pos = "сущ."
+lemma = "la mañana"
+grammar = """
+**mañana** — два значения:
+
+— **la mañana** (*сущ., ж. р.*) "утро": `esta mañana` = "сегодня утром".
+
+— **mañana** (*нар.*) "завтра": `[[mañana]], quizás` = "завтра, может быть".
+
+В этом тексте — нар. "завтра".
+"""
+
+[words."médico"]
+tr = "врач"
+pos = "сущ."
+lemma = "el médico"
+
+[words."menos"]
+tr = "меньше"
+pos = "нар."
+lemma = "menos"
+
+[words."mes"]
+tr = "месяц"
+pos = "сущ."
+lemma = "el mes"
+
+[words."mira"]
+tr = "(он) смотрит"
+pos = "глаг."
+lemma = "mirar"
+grammar = """
+**mira** — *presente*, 3 л. ед. ч., от **mirar** ("смотреть").
+
+Правильный на `-ar`: `mir·[[ar]]` → `mir·[[a]]`.
+"""
+
+[words."muere"]
+tr = "(она) умирает"
+pos = "глаг."
+lemma = "morir"
+grammar = """
+**muere** — *presente*, 3 л. ед. ч., от **morir** ("умирать").
+
+*Чередование в корне:* `m[[o]]rir → m[[ue]]re` (o → ue под ударением).
+"""
+
+[words."muestra"]
+tr = "(она) показывает"
+pos = "глаг."
+lemma = "mostrar"
+grammar = """
+**muestra** — *presente*, 3 л. ед. ч., от **mostrar** ("показывать").
+
+*Чередование в корне:* `m[[o]]strar → m[[ue]]stra` (o → ue под ударением).
+"""
+
+[words."muy"]
+tr = "очень"
+pos = "нар."
+lemma = "muy"
+
+[words."nada"]
+tr = "ничего"
+pos = "мест."
+lemma = "nada"
+
+[words."nació"]
+tr = "(она) родилась"
+pos = "глаг."
+lemma = "nacer"
+grammar = """
+**nació** — *pretérito indefinido*, 3 л. ед. ч., от **nacer** ("родиться").
+
+Правильный на `-er` в претерите: `nac·[[er]]` → `nac·[[ió]]` (ударение на последнем слоге).
+"""
+
+[words."naves"]
+tr = "корабли (космические)"
+pos = "сущ."
+lemma = "la nave"
+
+[words."nieto"]
+tr = "внук"
+pos = "сущ."
+lemma = "el nieto"
+
+[words."niño"]
+tr = "мальчик, ребёнок"
+pos = "сущ."
+lemma = "el niño"
+
+[words."no"]
+tr = "не, нет"
+pos = "нар."
+lemma = "no"
+
+[words."noche"]
+tr = "ночь"
+pos = "сущ."
+lemma = "la noche"
+
+[words."noventa"]
+tr = "девяносто"
+pos = "числ."
+lemma = "noventa"
+
+[words."nueva"]
+tr = "новая"
+pos = "прил."
+lemma = "nuevo"
+grammar = """
+**nueva** — *ж. р., ед. ч.* от **nuevo** ("новый").
+
+В тексте: `ropa [[nueva]]` ("новая одежда") — согласование с **ropa** (ж. р.). Также входит в имя собственное **Nueva Andalucía**.
+"""
+
+[words."nunca"]
+tr = "никогда"
+pos = "нар."
+lemma = "nunca"
+
+[words."ojos"]
+tr = "глаза"
+pos = "сущ."
+lemma = "el ojo"
+
+[words."olvidó"]
+tr = "(она) забыла"
+pos = "глаг."
+lemma = "olvidar"
+grammar = """
+**olvidó** — *pretérito indefinido*, 3 л. ед. ч., от **olvidar** ("забыть").
+
+Правильный на `-ar`, прет.: `olvid·[[ar]]` → `olvid·[[ó]]`.
+
+*Преtérito indefinido* — законченное действие: "забыла (и точка)".
+"""
+
+[words."oro"]
+tr = "золото"
+pos = "сущ."
+lemma = "el oro"
+
+[words."pablo"]
+tr = "Пабло — двенадцатилетний внук Хоакина"
+pos = "имя"
+
+[words."pan"]
+tr = "хлеб"
+pos = "сущ."
+lemma = "el pan"
+
+[words."para"]
+tr = "для, чтобы (предлог)"
+pos = "предл."
+lemma = "para"
+
+[words."patrón"]
+tr = "Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía"
+pos = "имя"
+
+[words."pecho"]
+tr = "грудь, грудная клетка"
+pos = "сущ."
+lemma = "el pecho"
+
+[words."pero"]
+tr = "но"
+pos = "союз"
+lemma = "pero"
+
+[words."persona"]
+tr = "человек, личность"
+pos = "сущ."
+lemma = "la persona"
+grammar = """
+**la persona** — сущ. *ж. р.*, ед. ч.
+
+Род фиксирован: даже про мужчину говорят `[[la]] persona`, не *el persona*.
+"""
+
+[words."planeta"]
+tr = "планета"
+pos = "сущ."
+lemma = "el planeta"
+grammar = """
+**el planeta** — сущ. *м. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el día**, **el mapa**, **el problema**).
+"""
+
+[words."plaza"]
+tr = "площадь"
+pos = "сущ."
+lemma = "la plaza"
+
+[words."por"]
+tr = "через, по, из-за"
+pos = "предл."
+lemma = "por"
+grammar = """
+**por** — многозначный предлог.
+
+Здесь: `mira [[por]] la ventana` = "смотрит [[через]] окно".
+"""
+
+[words."pregunta"]
+tr = "(он) спрашивает"
+pos = "глаг."
+lemma = "preguntar"
+grammar = """
+**pregunta** — *presente*, 3 л. ед. ч., от **preguntar** ("спрашивать").
+
+`pregunt·[[ar]]` → `pregunt·[[a]]`.
+"""
+
+[words."puerto"]
+tr = "порт"
+pos = "сущ."
+lemma = "el puerto"
+
+[words."qué"]
+tr = "что, какой"
+pos = "мест."
+lemma = "qué"
+grammar = """
+**qué** (с ударением) — вопросит./восклицат.
+
+Здесь: `¿[[qué]] es esto?` = "[[что]] это?". Без ударения **que** — союз "что/который".
+"""
+
+[words."que"]
+tr = "что, который (союз)"
+pos = "союз"
+lemma = "que"
+grammar = """
+**que** (без ударения) — союз/относит. местоим. "что; который".
+
+Здесь: `la persona [[que]] recuerda` = "человек, [[который]] помнит"; `dicen [[que]]…` = "говорят, [[что]]…".
+
+*Не путать* с **qué** (с ударением — вопросит.).
+"""
+
+[words."quizás"]
+tr = "может быть, возможно"
+pos = "нар."
+lemma = "quizás"
+
+[words."radio"]
+tr = "радио (приёмник, связь)"
+pos = "сущ."
+lemma = "la radio"
+grammar = """
+**la radio** — сущ. *ж. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la radiodifusión**). Как **la mano**, **la foto**.
+"""
+
+[words."recuerda"]
+tr = "(она) помнит"
+pos = "глаг."
+lemma = "recordar"
+grammar = """
+**recuerda** — *presente*, 3 л. ед. ч., от **recordar** ("помнить, вспоминать").
+
+*Чередование в корне:* `rec[[o]]rdar → rec[[ue]]rda` (o → ue под ударением).
+"""
+
+[words."responde"]
+tr = "(он) отвечает"
+pos = "глаг."
+lemma = "responder"
+grammar = """
+**responde** — *presente*, 3 л. ед. ч., от **responder** ("отвечать").
+
+Правильный на `-er`: `respond·[[er]]` → `respond·[[e]]`.
+"""
+
+[words."reza"]
+tr = "(он) молится"
+pos = "глаг."
+lemma = "rezar"
+grammar = """
+**reza** — *presente*, 3 л. ед. ч., от **rezar** ("молиться").
+
+Правильный на `-ar`: `rez·[[ar]]` → `rez·[[a]]`.
+"""
+
+[words."rezan"]
+tr = "(они) молятся"
+pos = "глаг."
+lemma = "rezar"
+grammar = """
+**rezan** — *presente*, 3 л. мн. ч., от **rezar**.
+
+`rez·[[ar]]` → `rez·[[an]]`.
+"""
+
+[words."ropa"]
+tr = "одежда"
+pos = "сущ."
+lemma = "la ropa"
+grammar = """
+**la ropa** — сущ. *ж. р.*, ед. ч.
+
+Несмотря на русское "одежда" в ед. ч., испанское **ropa** — собирательное, идёт с глаг. в ед. ч. Мн. ч. **las ropas** редко и значит "одежды/одеяния (разные)".
+"""
+
+[words."ruidosos"]
+tr = "шумные"
+pos = "прил."
+lemma = "ruidoso"
+grammar = """
+**ruidosos** — *м. р., мн. ч.* от **ruidoso** ("шумный").
+
+Согласуется с **días** (м. р., мн. ч.): `los días eran [[ruidosos]]`.
+"""
+
+[words."sabe"]
+tr = "(он) знает"
+pos = "глаг."
+lemma = "saber"
+grammar = """
+**sabe** — *presente*, 3 л. ед. ч., от **saber** ("знать факт").
+
+*Неправильный* в 1 л. ед. (**sé**), но в 3 л. — как обычный `-er`: `sab·[[e]]`.
+
+*Нюанс:* **saber** — знать факт; **conocer** — быть знакомым.
+"""
+
+[words."saturno"]
+tr = "Сатурн — шестая планета; в Nueva Andalucía — божество «Patrón»"
+pos = "имя"
+
+[words."se"]
+tr = "себя, -ся (возвратная частица); ей/ему (перед la/lo)"
+pos = "мест."
+lemma = "se"
+grammar = """
+**se** — двойная роль:
+
+— *возвратная частица* 3 л.: `la radio [[se]] apagó` = "радио замолчало (само)".
+
+— *вариант **le***: когда **le** стоит перед **la/lo/las/los**, оно превращается в **se**: `le la describía` → `[[se]] la describía` = "ей это описывала".
+
+Во второй роли — здесь: `su madre [[se]] [[la]] describía` ("его матери [[ему]] [[её]] описывала" → "его мать [[ему]] [[её]] описывала").
+"""
+
+[words."serio"]
+tr = "серьёзный"
+pos = "прил."
+lemma = "serio"
+
+[words."si"]
+tr = "если"
+pos = "союз"
+lemma = "si"
+grammar = """
+**si** — союз "если" (без ударения).
+
+*Не путать* с **sí** (с ударением — "да").
+"""
+
+[words."siempre"]
+tr = "всегда"
+pos = "нар."
+lemma = "siempre"
+
+[words."siéntate"]
+tr = "сядь (повелит.)"
+pos = "глаг."
+lemma = "sentarse"
+grammar = """
+**siéntate** = **siéntate** (повелит.) + **te** (местоим.) — повеление от **sentarse** ("садиться"), 2 л. ед. ч.
+
+Стандартный *imperativo* `tú`: `sienta` + возвратная частица **te** приклеивается к концу: `sienta + [[te]]` → `siéntate` (ставится ударение, чтобы сохранить место).
+
+*Чередование в корне:* `s[[e]]ntar → s[[ie]]nta`.
+"""
+
+[words."solo"]
+tr = "только; одинокий"
+pos = "нар."
+lemma = "solo"
+grammar = """
+**solo** — два значения:
+
+— *нар.* "только": `es [[solo]] un planeta` = "это [[только]] планета".
+
+— *прил.* "одинокий": `Pablo va a estar [[solo]]` = "Пабло будет [[один]]".
+
+Контекст различает.
+"""
+
+[words."son"]
+tr = "(они) есть, являются"
+pos = "глаг."
+lemma = "ser"
+grammar = """
+**son** — *presente*, 3 л. мн. ч., от **ser** ("быть").
+
+Спряж.: `soy · eres · es · somos · sois · [[son]]`.
+"""
+
+[words."su"]
+tr = "его, её, их, ваш"
+pos = "опр."
+lemma = "su"
+grammar = """
+**su** — притяж. опр., 3 л. (ед. и мн.): "его / её / их / ваш".
+
+Согласуется с *обладаемым*, не с владельцем: `[[su]] madre` (его мать), `[[su]] nieto` (его внук).
+"""
+
+[words."también"]
+tr = "тоже, также"
+pos = "нар."
+lemma = "también"
+
+[words."tierra"]
+tr = "Земля (планета)"
+pos = "имя"
+
+[words."tiene"]
+tr = "(он) имеет, у него (есть)"
+pos = "глаг."
+lemma = "tener"
+grammar = """
+**tiene** — *presente*, 3 л. ед. ч., от **tener** ("иметь").
+
+*Неправильный + чередование:* 1 л. ед. **tengo**, дальше — `e → ie` под ударением: `t[[ie]]nes · t[[ie]]ne · tenemos · tenéis · t[[ie]]nen`.
+
+*Возраст по-испански:* `[[tiene]] noventa años` = "ему девяносто лет" (досл. "имеет девяносто лет").
+"""
+
+[words."todos"]
+tr = "все"
+pos = "мест."
+lemma = "todo"
+grammar = """
+**todos** — *м. р., мн. ч.* от **todo** ("весь; все").
+
+Здесь как местоим.: `[[todos]] rezan` = "все молятся".
+"""
+
+[words."tose"]
+tr = "(он) кашляет"
+pos = "глаг."
+lemma = "toser"
+grammar = """
+**tose** — *presente*, 3 л. ед. ч., от **toser** ("кашлять").
+
+Правильный на `-er`: `tos·[[er]]` → `tos·[[e]]`.
+"""
+
+[words."trae"]
+tr = "(он) приносит"
+pos = "глаг."
+lemma = "traer"
+grammar = """
+**trae** — *presente*, 3 л. ед. ч., от **traer** ("приносить").
+
+*Неправильный* в 1 л. ед. (**traigo**), но в 3 л. — как обычный `-er`: `tra·[[e]]`.
+"""
+
+[words."un"]
+tr = "один; неопр. артикль (м. р.)"
+pos = "арт."
+lemma = "un"
+
+[words."una"]
+tr = "одна; неопр. артикль (ж. р.)"
+pos = "арт."
+lemma = "una"
+
+[words."última"]
+tr = "последняя"
+pos = "прил."
+lemma = "último"
+grammar = """
+**última** — *ж. р., ед. ч.* от **último** ("последний").
+
+Согласуется с **persona** (ж. р.): `la [[última]] persona`. Обычно ставится перед сущ.
+"""
+
+[words."va"]
+tr = "(он) идёт; собирается"
+pos = "глаг."
+lemma = "ir"
+grammar = """
+**va** — *presente*, 3 л. ед. ч., от **ir** ("идти, ехать").
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+
+*Periphrastic future* (`va a + инф.`) = "собирается / будет …":
+
+— `[[va]] a volver` = "вернётся" (Сатурн).
+
+— `[[va]] a contar` = "расскажет" (Пабло).
+
+— `[[va]] a enojar` (с **se**) = "рассердится" (народ).
+
+— `[[va]] a estar solo` = "будет один" (Пабло).
+
+Структура: **ir** (в наст.) + **a** + инфинитив.
+"""
+
+[words."ventana"]
+tr = "окно"
+pos = "сущ."
+lemma = "la ventana"
+
+[words."ventanas"]
+tr = "окна"
+pos = "сущ."
+lemma = "la ventana"
+
+[words."verdad"]
+tr = "правда, истина"
+pos = "сущ."
+lemma = "la verdad"
+grammar = """
+**la verdad** — сущ. *ж. р.*, ед. ч.
+
+Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
+"""
+
+[words."verdes"]
+tr = "зелёные"
+pos = "прил."
+lemma = "verde"
+grammar = """
+**verdes** — *мн. ч.* от **verde** ("зелёный"). Одна форма для *м. и ж. р.* в ед. ч.
+
+Согласуется с **frutas** (ж. р., мн. ч.): `frutas [[verdes]]`.
+"""
+
+[words."veía"]
+tr = "(он) видел"
+pos = "глаг."
+lemma = "ver"
+grammar = """
+**veía** — *pretérito imperfecto*, 3 л. ед. ч., от **ver** ("видеть").
+
+*Имперфект ver* (немного особый): `veía · veías · veía · veíamos · veíais · veían` (сохраняет `e` от корня **ver-**, как в имперфекте на `-ía`).
+
+Для регулярного действия в прошлом: "видел (часто)".
+"""
+
+[words."vieja"]
+tr = "старая (давняя или по возрасту)"
+pos = "прил."
+lemma = "viejo"
+grammar = """
+**vieja** — *ж. р., ед. ч.* от **viejo**.
+
+*Нюанс позиции:* перед сущ. часто значит "давний"; после сущ. — "старый по возрасту/состоянию". Здесь: `una foto [[vieja]]` (после сущ.) = "старая (потрёпанная, давняя) фотография".
+"""
+
+[words."viene"]
+tr = "(он) приходит, приезжает"
+pos = "глаг."
+lemma = "venir"
+grammar = """
+**viene** — *presente*, 3 л. ед. ч., от **venir** ("приходить").
+
+*Неправильный + чередование:* 1 л. ед. **vengo**, дальше — `e → ie` под ударением: `v[[ie]]nes · v[[ie]]ne · venimos · venís · v[[ie]]nen`.
+"""
+
+[words."vinieron"]
+tr = "(они) пришли, прибыли"
+pos = "глаг."
+lemma = "venir"
+grammar = """
+**vinieron** — *pretérito indefinido*, 3 л. мн. ч., от **venir**.
+
+*Неправильный.* В претерите корень меняется на **vin-**: `vine · viniste · vino · vinimos · vinisteis · [[vinieron]]`.
+"""
+
+[words."visitarlo"]
+tr = "навестить его"
+pos = "глаг."
+lemma = "visitar"
+grammar = """
+**visitarlo** = **visitar** + **lo** — инфинитив с приклеенным местоим.
+
+`visitar` ("навестить") + `[[lo]]` ("его") → "[[навестить его]]". Безударные местоимения цепляются к концу инфинитива.
+
+В тексте: `Pablo viene a [[visitarlo]]` = "Пабло приходит навестить [[его]]".
+"""
+
+[words."visto"]
+tr = "увидел, видел (причастие)"
+pos = "глаг."
+lemma = "ver"
+grammar = """
+**visto** — *причастие прошедшего времени* от **ver** ("видеть").
+
+*Неправильное причастие:* не *veído*, а **visto**.
+
+С **haber** даёт перфект: `ha [[visto]]` = "видел (за всю жизнь)". В тексте: `no [[ha]] [[visto]] Madrid nunca` = "никогда не видел Мадрид".
+"""
+
+[words."vive"]
+tr = "(он) живёт"
+pos = "глаг."
+lemma = "vivir"
+grammar = """
+**vive** — *presente*, 3 л. ед. ч., от **vivir** ("жить").
+
+Правильный на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
+"""
+
+[words."volver"]
+tr = "вернуться"
+pos = "глаг."
+lemma = "volver"
+grammar = """
+**volver** — *инфинитив* ("вернуться; повернуть").
+
+В личных формах — чередование `o → ue`: `v[[ue]]lvo · v[[ue]]lves · v[[ue]]lve · volvemos · volvéis · v[[ue]]lven`.
+
+В тексте — в *futuro próximo*: `va a [[volver]]` = "вернётся".
+"""
+
+[words."voy"]
+tr = "(я) иду; собираюсь"
+pos = "глаг."
+lemma = "ir"
+grammar = """
+**voy** — *presente*, 1 л. ед. ч., от **ir** ("идти").
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+
+*Periphrastic future* (`voy a + инф.`): `[[voy]] a contarte algo` = "я [[расскажу]] тебе кое-что". Структура: **ir** (в наст.) + **a** + инфинитив.
+"""
+
+[words."y"]
+tr = "и"
+pos = "союз"
+lemma = "y"
+
+# ============================================================
+# Sentence translations — one entry per sentence-terminator
+# (in document order: .?!  →  next [[sentences]].tr)
+# ============================================================
+
+[[sentences]]
+text = "Don Joaquín tiene noventa años."
+tr = "Дону Хоакину девяносто лет."
+
+[[sentences]]
+text = "Vive en Nueva Andalucía."
+tr = "Он живёт в Новой Андалусии."
+
+[[sentences]]
+text = "Es la última persona que recuerda la Tierra."
+tr = "Он — последний человек, который помнит Землю."
+
+[[sentences]]
+text = "Cuando era niño, las naves llegaban cada mes."
+tr = "Когда он был ребёнком, корабли прилетали каждый месяц."
+
+[[sentences]]
+text = "Joaquín jugaba en el puerto."
+tr = "Хоакин играл в порту."
+
+[[sentences]]
+text = "Veía cajas con frutas verdes, libros, ropa nueva."
+tr = "Он видел ящики с зелёными фруктами, книги, новую одежду."
+
+[[sentences]]
+text = "Su madre cocinaba pan blanco."
+tr = "Его мать готовила белый хлеб."
+
+[[sentences]]
+text = "Los días eran ruidosos."
+tr = "Дни были шумными."
+
+[[sentences]]
+text = "Después, las naves no vinieron."
+tr = "Потом корабли перестали прилетать."
+
+[[sentences]]
+text = "La radio se apagó."
+tr = "Радио замолчало."
+
+[[sentences]]
+text = "La gente esperó."
+tr = "Люди ждали."
+
+[[sentences]]
+text = "Después esperó menos."
+tr = "Потом ждали меньше."
+
+[[sentences]]
+text = "Después olvidó."
+tr = "Потом забыли."
+
+[[sentences]]
+text = "Ahora todos rezan a Saturno."
+tr = "Теперь все молятся Сатурну."
+
+[[sentences]]
+text = "Dicen que el Patrón vive en el anillo de oro."
+tr = "Говорят, что Покровитель живёт в золотом кольце."
+
+[[sentences]]
+text = "Dicen que un día va a volver."
+tr = "Говорят, что однажды он вернётся."
+
+[[sentences]]
+text = "Joaquín sabe que Saturno es solo un planeta."
+tr = "Хоакин знает, что Сатурн — это всего лишь планета."
+
+[[sentences]]
+text = "Pero no dice nada."
+tr = "Но он ничего не говорит."
+
+[[sentences]]
+text = "Hace años que no dice nada."
+tr = "Уже много лет он молчит."
+
+[[sentences]]
+text = "Hoy Joaquín está en cama."
+tr = "Сегодня Хоакин в постели."
+
+[[sentences]]
+text = "Le duele el pecho."
+tr = "У него болит грудь."
+
+[[sentences]]
+text = "El médico es joven y serio."
+tr = "Врач молодой и серьёзный."
+
+[[sentences]]
+text = "El médico también reza al Patrón."
+tr = "Врач тоже молится Покровителю."
+
+[[sentences]]
+text = "Su nieto Pablo viene a visitarlo."
+tr = "Его внук Пабло приходит навестить его."
+
+[[sentences]]
+text = "Pablo tiene doce años."
+tr = "Пабло двенадцать лет."
+
+[[sentences]]
+text = "Pablo trae flores y una foto vieja."
+tr = "Пабло приносит цветы и старую фотографию."
+
+[[sentences]]
+text = "—Abuelo, ¿qué es esto?"
+tr = "— Дедушка, что это?"
+
+[[sentences]]
+text = "—pregunta Pablo."
+tr = "— спрашивает Пабло."
+
+[[sentences]]
+text = "La foto muestra un edificio alto, gris, con ventanas brillantes."
+tr = "На фотографии — высокое серое здание с блестящими окнами."
+
+[[sentences]]
+text = "Joaquín mira la foto."
+tr = "Хоакин смотрит на фотографию."
+
+[[sentences]]
+text = "Es Madrid."
+tr = "Это Мадрид."
+
+[[sentences]]
+text = "La ciudad donde nació su madre."
+tr = "Город, где родилась его мать."
+
+[[sentences]]
+text = "Joaquín no ha visto Madrid nunca, pero su madre se la describía cada noche."
+tr = "Хоакин никогда не видел Мадрид, но его мать описывала ему его каждую ночь."
+
+[[sentences]]
+text = "—Es una casa muy grande —dice Joaquín—."
+tr = "— Это очень большой дом, — говорит Хоакин."
+
+[[sentences]]
+text = "En un lugar muy lejos."
+tr = "В очень далёком месте."
+
+[[sentences]]
+text = "—¿En el cielo?"
+tr = "— На небе?"
+
+[[sentences]]
+text = "—pregunta Pablo—."
+tr = "— спрашивает Пабло."
+
+[[sentences]]
+text = "¿Cerca del Patrón?"
+tr = "— Рядом с Покровителем?"
+
+[[sentences]]
+text = "Joaquín no responde."
+tr = "Хоакин не отвечает."
+
+[[sentences]]
+text = "Mira por la ventana."
+tr = "Он смотрит в окно."
+
+[[sentences]]
+text = "Los hijos del barrio juegan en la plaza."
+tr = "Дети района играют на площади."
+
+[[sentences]]
+text = "Cantan canciones al Patrón."
+tr = "Они поют песни Покровителю."
+
+[[sentences]]
+text = "Las canciones son bonitas."
+tr = "Песни красивые."
+
+[[sentences]]
+text = "Si Joaquín cuenta la verdad, Pablo va a contar la verdad."
+tr = "Если Хоакин расскажет правду, Пабло расскажет её тоже."
+
+[[sentences]]
+text = "La gente se va a enojar."
+tr = "Люди рассердятся."
+
+[[sentences]]
+text = "Pablo va a estar solo."
+tr = "Пабло останется один."
+
+[[sentences]]
+text = "Si Joaquín no cuenta nada, la verdad muere con él."
+tr = "Если Хоакин не расскажет ничего, правда умрёт вместе с ним."
+
+[[sentences]]
+text = "Para siempre."
+tr = "Навсегда."
+
+[[sentences]]
+text = "—Pablo —dice Joaquín, despacio—."
+tr = "— Пабло, — говорит Хоакин медленно."
+
+[[sentences]]
+text = "Siéntate aquí."
+tr = "— Сядь здесь."
+
+[[sentences]]
+text = "Voy a contarte algo."
+tr = "— Я расскажу тебе кое-что."
+
+[[sentences]]
+text = "Pero después tose."
+tr = "Но потом он кашляет."
+
+[[sentences]]
+text = "Y cierra los ojos."
+tr = "И закрывает глаза."
+
+[[sentences]]
+text = "Mañana, quizás."
+tr = "Завтра, может быть."
+
+[[sentences]]
+text = "Si vive hasta mañana."
+tr = "Если доживёт до завтра."
