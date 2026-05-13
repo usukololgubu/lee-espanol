@@ -48,7 +48,9 @@ ROOT = Path(__file__).resolve().parents[3]
 STORIES_DIR = ROOT / "stories"
 INDEX_HTML = ROOT / "index.html"
 INDEX_CACHE = ROOT / ".ai" / "stories-index.json"
+ARCHETYPES_JSONL = ROOT / ".ai" / "archetypes.jsonl"
 INDEX_FIELDS = ("title", "protagonist", "setting", "date_generated", "length_words")
+DEFAULT_PALETTE = {"bg": "#f5f3ec", "ink": "#1f1d18", "accent": "#8a877e"}
 
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
 WORD_RE = re.compile(rf"[{SP_LETTERS}]+")
@@ -582,13 +584,40 @@ def fmt_date(d: str) -> str:
     return f"{m.group(1)[2:]}·{m.group(2)}·{m.group(3)}" if m else (d or "")
 
 
-def render_entry(slug: str, fm: dict) -> str:
+def load_palettes() -> dict[str, dict]:
+    """Read .ai/archetypes.jsonl and return {slug: {bg, ink, accent}}.
+    Missing slugs fall back to DEFAULT_PALETTE; missing colors keys are filled from the default."""
+    out: dict[str, dict] = {}
+    if not ARCHETYPES_JSONL.exists():
+        return out
+    for line in ARCHETYPES_JSONL.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        slug = obj.get("slug")
+        colors = obj.get("colors") or {}
+        if slug:
+            out[slug] = {**DEFAULT_PALETTE, **{k: v for k, v in colors.items() if k in DEFAULT_PALETTE}}
+    return out
+
+
+def render_entry(slug: str, fm: dict, palette: dict | None = None) -> str:
     num = slug[:2]
     title = fm.get("title", slug)
     meta_parts = [fm.get("protagonist", ""), fm.get("setting", "")]
     meta = " · ".join(p for p in meta_parts if p)
+    p = palette or DEFAULT_PALETTE
+    style = (
+        f'--card-bg:{p["bg"]};'
+        f'--card-ink:{p["ink"]};'
+        f'--card-accent:{p["accent"]}'
+    )
     return (
-        f'    <a class="entry" href="stories/{slug}/index.html">\n'
+        f'    <a class="entry" href="stories/{slug}/index.html" style="{html.escape(style, quote=True)}">\n'
         '      <div class="row1">\n'
         f'        <span class="num">{html.escape(num)}</span>\n'
         f'        <span class="date">{html.escape(fmt_date(fm.get("date_generated", "")))}</span>\n'
@@ -600,15 +629,33 @@ def render_entry(slug: str, fm: dict) -> str:
     )
 
 
+def ordered_slugs(slugs: list[str]) -> list[str]:
+    """Newest-first overall, but within each 2-slot row place the older slug on the
+    left and the newer on the right. So the visual grid reads (per row, top→bottom):
+       11 | 12
+       09 | 10
+       …
+       01 | 02
+    For odd counts the lone oldest slug ends up in the final row's left cell.
+    """
+    desc = sorted(slugs, reverse=True)
+    out: list[str] = []
+    for i in range(0, len(desc), 2):
+        pair = desc[i:i + 2]
+        out.extend(reversed(pair))
+    return out
+
+
 def write_index_html(cache: dict) -> int:
-    """Render the entries block from cache, newest-first (slug desc). Returns entry count."""
+    """Render the entries block from cache. Returns entry count."""
     if not INDEX_HTML.exists():
         sys.exit(f"error: {INDEX_HTML} missing — bootstrap by hand once, then this script keeps it in sync")
     text = INDEX_HTML.read_text(encoding="utf-8")
     if "<!-- STORIES:START -->" not in text or "<!-- STORIES:END -->" not in text:
         sys.exit("error: index.html lacks <!-- STORIES:START --> / <!-- STORIES:END --> markers")
-    slugs = sorted(cache.keys(), reverse=True)
-    entries = "\n\n".join(render_entry(slug, cache[slug]) for slug in slugs)
+    slugs = ordered_slugs(list(cache.keys()))
+    palettes = load_palettes()
+    entries = "\n\n".join(render_entry(slug, cache[slug], palettes.get(slug)) for slug in slugs)
     new_block = f"<!-- STORIES:START -->\n\n{entries}\n\n<!-- STORIES:END -->"
     text = re.sub(r"<!-- STORIES:START -->.*?<!-- STORIES:END -->", lambda _: new_block, text, flags=re.DOTALL)
     text = re.sub(r'<span class="stat">[^<]*</span>', f'<span class="stat">{len(slugs):02d} entradas</span>', text, count=1)

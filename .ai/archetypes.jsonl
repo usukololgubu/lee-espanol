@@ -1,12 +1,12 @@
-{"seq":"01","slug":"saturn-ai","archetype":"AI log / observatory console","palette":"navy void + warm amber","font_pair":"Inter (sans)"}
-{"seq":"02","slug":"nueva-andalucia","archetype":"field-notebook / manuscript page","palette":"warm paper + ink + ochre","font_pair":"EB Garamond"}
-{"seq":"03","slug":"zumbido-deriva","archetype":"navigation HUD / cold console","palette":"deep void + ice blue","font_pair":"Space Grotesk"}
-{"seq":"04","slug":"algo-verde","archetype":"research log / lab dossier","palette":"abyss dark + frost green","font_pair":"IBM Plex Sans"}
-{"seq":"05","slug":"pasajero-unico","archetype":"shipboard ledger / printed page on dark","palette":"void + cream","font_pair":"Spectral"}
-{"seq":"06","slug":"la-traductora","archetype":"library catalog / institute press sheet","palette":"paper + cool ink","font_pair":"Newsreader"}
-{"seq":"07","slug":"el-desvio","archetype":"customs form / waybill","palette":"ochre paper + dark ink","font_pair":"Spectral"}
-{"seq":"08","slug":"el-ultimo-que-recuerda","archetype":"sepia memoir / photo album","palette":"cream + sepia","font_pair":"Crimson Pro"}
-{"seq":"09","slug":"la-senal","archetype":"observation dossier / star chart","palette":"deep navy + cyan + warm gold","font_pair":"Cormorant Garamond"}
-{"seq":"10","slug":"el-reloj","archetype":"IDE / code editor panel","palette":"warm dark + amber accent","font_pair":"IBM Plex Mono"}
-{"seq":"11","slug":"la-dosis","archetype":"medical chart / clinic form","palette":"paper + crimson accent","font_pair":"Lora"}
-{"seq":"12","slug":"el-faro-apagado","archetype":"beacon dispatch / lighthouse log","palette":"void + bone + faint glow","font_pair":"Spectral"}
+{"slug":"01-saturn-ai","archetype":"AI log / observatory console","palette":"navy void + warm amber","font_pair":"Inter (sans)","colors":{"bg":"#060912","ink":"#e5ebf3","accent":"#f0a13a"}}
+{"slug":"02-nueva-andalucia","archetype":"field-notebook / manuscript page","palette":"warm paper + ink + ochre","font_pair":"EB Garamond","colors":{"bg":"#efe4cc","ink":"#1d1612","accent":"#b48340"}}
+{"slug":"03-zumbido-deriva","archetype":"navigation HUD / cold console","palette":"deep void + ice blue","font_pair":"Space Grotesk","colors":{"bg":"#050810","ink":"#d0d6dc","accent":"#5cdce2"}}
+{"slug":"04-algo-verde","archetype":"research log / lab dossier","palette":"abyss dark + frost green","font_pair":"IBM Plex Sans","colors":{"bg":"#04101a","ink":"#e7eef0","accent":"#7ee8b8"}}
+{"slug":"05-pasajero-unico","archetype":"shipboard ledger / printed page on dark","palette":"void + cream + ember","font_pair":"Spectral","colors":{"bg":"#1a1210","ink":"#d8c8a4","accent":"#f4a85e"}}
+{"slug":"06-la-traductora","archetype":"library catalog / institute press sheet","palette":"paper + ink + mars","font_pair":"Newsreader","colors":{"bg":"#ece8df","ink":"#15140f","accent":"#b94327"}}
+{"slug":"07-el-desvio","archetype":"customs form / waybill","palette":"ochre paper + brass","font_pair":"Spectral","colors":{"bg":"#e6dec6","ink":"#2c2a22","accent":"#b8802d"}}
+{"slug":"08-el-ultimo-que-recuerda","archetype":"sepia memoir / photo album","palette":"cream + sepia + gilt","font_pair":"Crimson Pro","colors":{"bg":"#ebddc6","ink":"#3a2818","accent":"#b88b3b"}}
+{"slug":"09-la-senal","archetype":"observation dossier / star chart","palette":"deep navy + cyan + warm gold","font_pair":"Cormorant Garamond","colors":{"bg":"#06061a","ink":"#e6e2d4","accent":"#6ad1e3"}}
+{"slug":"10-el-reloj","archetype":"IDE / code editor panel","palette":"warm dark + amber","font_pair":"IBM Plex Mono","colors":{"bg":"#1a1814","ink":"#d4cdb8","accent":"#e08060"}}
+{"slug":"11-la-dosis","archetype":"medical chart / clinic form","palette":"paper + oxblood","font_pair":"Lora","colors":{"bg":"#f4ecdc","ink":"#1a1814","accent":"#8a1f1f"}}
+{"slug":"12-el-faro-apagado","archetype":"beacon dispatch / lighthouse log","palette":"void + bone + faint glow","font_pair":"Spectral","colors":{"bg":"#0c1220","ink":"#e8e0d1","accent":"#8db6b0"}}

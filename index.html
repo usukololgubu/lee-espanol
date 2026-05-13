@@ -79,6 +79,7 @@ body{
   padding:0;
 }
 .entry{
+  position:relative;
   display:flex;
   flex-direction:column;
   gap:0.35rem;
@@ -88,13 +89,36 @@ body{
   color:inherit;
   background:var(--bg);
   min-height:6.4rem;
-  transition:background 0.18s, transform 0.18s;
+  overflow:hidden;
+  /* per-card palette is supplied inline via --card-bg/--card-ink/--card-accent */
+  transition:
+    background 0.32s ease,
+    color 0.32s ease,
+    border-color 0.32s ease,
+    transform 0.18s ease,
+    box-shadow 0.28s ease;
+}
+.entry::before{
+  /* accent stripe across the top, hidden until hover */
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  background:var(--card-accent, transparent);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform 0.34s ease;
 }
 .entry:hover{
-  background:var(--bg-soft);
-  transform:translateY(-1px);
+  background:var(--card-bg, var(--bg-soft));
+  color:var(--card-ink, var(--ink));
+  border-color:var(--card-ink, var(--ink));
+  transform:translateY(-2px);
+  box-shadow:0 4px 14px -8px rgba(0,0,0,0.35);
 }
-.entry:hover .e-title{color:var(--ink)}
+.entry:hover::before{
+  transform:scaleX(1);
+}
 .row1{
   display:flex;
   justify-content:space-between;
@@ -102,13 +126,25 @@ body{
   font-size:0.78rem;
   letter-spacing:0.08em;
   color:var(--ink-soft);
+  transition:color 0.32s ease;
+}
+.entry:hover .row1{
+  color:var(--card-accent, var(--ink-soft));
 }
 .row1 .num{
   font-weight:700;
   color:var(--ink);
+  transition:color 0.32s ease;
+}
+.entry:hover .row1 .num{
+  color:var(--card-accent, var(--ink));
 }
 .row1 .date{
   color:var(--muted);
+  transition:color 0.32s ease;
+}
+.entry:hover .row1 .date{
+  color:color-mix(in srgb, var(--card-ink, var(--muted)) 65%, transparent);
 }
 .entry .e-title{
   font-weight:700;
@@ -118,8 +154,9 @@ body{
   line-height:1.22;
   margin-top:0.1rem;
   color:var(--ink);
-  transition:color 0.2s;
+  transition:color 0.32s ease;
 }
+.entry:hover .e-title{color:var(--card-ink, var(--ink))}
 .entry .meta{
   font-style:italic;
   font-size:0.84rem;
@@ -131,11 +168,25 @@ body{
   -webkit-box-orient:vertical;
   overflow:hidden;
   text-overflow:ellipsis;
+  transition:color 0.32s ease;
+}
+.entry:hover .meta{
+  color:color-mix(in srgb, var(--card-ink, var(--ink-soft)) 70%, transparent);
 }
 .entry .words{
   font-size:0.78rem;
   letter-spacing:0.06em;
   color:var(--muted);
+  transition:color 0.32s ease;
+}
+.entry:hover .words{
+  color:color-mix(in srgb, var(--card-ink, var(--muted)) 55%, transparent);
+}
+@media (prefers-reduced-motion: reduce){
+  .entry, .entry::before, .row1, .row1 .num, .row1 .date, .entry .e-title, .entry .meta, .entry .words{
+    transition:none;
+  }
+  .entry:hover{transform:none}
 }
 footer.colophon{
   margin-top:2.2rem;
@@ -196,17 +247,7 @@ footer.colophon a:hover{
   <div class="entries">
 <!-- STORIES:START -->
 
-    <a class="entry" href="stories/12-el-faro-apagado/index.html">
-      <div class="row1">
-        <span class="num">12</span>
-        <span class="date">26·05·13</span>
-      </div>
-      <div class="e-title">El faro apagado</div>
-      <div class="meta">lighthouse keeper (Renata) · Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter</div>
-      <div class="words">244 palabras</div>
-    </a>
-
-    <a class="entry" href="stories/11-la-dosis/index.html">
+    <a class="entry" href="stories/11-la-dosis/index.html" style="--card-bg:#f4ecdc;--card-ink:#1a1814;--card-accent:#8a1f1f">
       <div class="row1">
         <span class="num">11</span>
         <span class="date">26·05·13</span>
@@ -216,17 +257,17 @@ footer.colophon a:hover{
       <div class="words">288 palabras</div>
     </a>
 
-    <a class="entry" href="stories/10-el-reloj/index.html">
+    <a class="entry" href="stories/12-el-faro-apagado/index.html" style="--card-bg:#0c1220;--card-ink:#e8e0d1;--card-accent:#8db6b0">
       <div class="row1">
-        <span class="num">10</span>
-        <span class="date">26·05·12</span>
+        <span class="num">12</span>
+        <span class="date">26·05·13</span>
       </div>
-      <div class="e-title">El reloj</div>
-      <div class="meta">software maintainer (Sofía) · Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid</div>
-      <div class="words">249 palabras</div>
+      <div class="e-title">El faro apagado</div>
+      <div class="meta">lighthouse keeper (Renata) · Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter</div>
+      <div class="words">244 palabras</div>
     </a>
 
-    <a class="entry" href="stories/09-la-senal/index.html">
+    <a class="entry" href="stories/09-la-senal/index.html" style="--card-bg:#06061a;--card-ink:#e6e2d4;--card-accent:#6ad1e3">
       <div class="row1">
         <span class="num">09</span>
         <span class="date">26·05·12</span>
@@ -236,17 +277,17 @@ footer.colophon a:hover{
       <div class="words">253 palabras</div>
     </a>
 
-    <a class="entry" href="stories/08-el-ultimo-que-recuerda/index.html">
+    <a class="entry" href="stories/10-el-reloj/index.html" style="--card-bg:#1a1814;--card-ink:#d4cdb8;--card-accent:#e08060">
       <div class="row1">
-        <span class="num">08</span>
+        <span class="num">10</span>
         <span class="date">26·05·12</span>
       </div>
-      <div class="e-title">El último que recuerda</div>
-      <div class="meta">old colonist (Don Joaquín) · Nueva Andalucía, 85 years after losing contact with Earth</div>
-      <div class="words">278 palabras</div>
+      <div class="e-title">El reloj</div>
+      <div class="meta">software maintainer (Sofía) · Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid</div>
+      <div class="words">249 palabras</div>
     </a>
 
-    <a class="entry" href="stories/07-el-desvio/index.html">
+    <a class="entry" href="stories/07-el-desvio/index.html" style="--card-bg:#e6dec6;--card-ink:#2c2a22;--card-accent:#b8802d">
       <div class="row1">
         <span class="num">07</span>
         <span class="date">26·05·12</span>
@@ -256,17 +297,17 @@ footer.colophon a:hover{
       <div class="words">272 palabras</div>
     </a>
 
-    <a class="entry" href="stories/06-la-traductora/index.html">
+    <a class="entry" href="stories/08-el-ultimo-que-recuerda/index.html" style="--card-bg:#ebddc6;--card-ink:#3a2818;--card-accent:#b88b3b">
       <div class="row1">
-        <span class="num">06</span>
-        <span class="date">26·05·11</span>
+        <span class="num">08</span>
+        <span class="date">26·05·12</span>
       </div>
-      <div class="e-title">La traductora</div>
-      <div class="meta">junior linguist (Inés) · Instituto de Lenguas, on Mars — a small translation lab</div>
-      <div class="words">268 palabras</div>
+      <div class="e-title">El último que recuerda</div>
+      <div class="meta">old colonist (Don Joaquín) · Nueva Andalucía, 85 years after losing contact with Earth</div>
+      <div class="words">278 palabras</div>
     </a>
 
-    <a class="entry" href="stories/05-pasajero-unico/index.html">
+    <a class="entry" href="stories/05-pasajero-unico/index.html" style="--card-bg:#1a1210;--card-ink:#d8c8a4;--card-accent:#f4a85e">
       <div class="row1">
         <span class="num">05</span>
         <span class="date">26·05·11</span>
@@ -276,17 +317,17 @@ footer.colophon a:hover{
       <div class="words">264 palabras</div>
     </a>
 
-    <a class="entry" href="stories/04-algo-verde/index.html">
+    <a class="entry" href="stories/06-la-traductora/index.html" style="--card-bg:#ece8df;--card-ink:#15140f;--card-accent:#b94327">
       <div class="row1">
-        <span class="num">04</span>
+        <span class="num">06</span>
         <span class="date">26·05·11</span>
       </div>
-      <div class="e-title">Algo verde</div>
-      <div class="meta">biologist (Lucía) · Europa-3 station, atop the ice of Europa, Jupiter system</div>
-      <div class="words">255 palabras</div>
+      <div class="e-title">La traductora</div>
+      <div class="meta">junior linguist (Inés) · Instituto de Lenguas, on Mars — a small translation lab</div>
+      <div class="words">268 palabras</div>
     </a>
 
-    <a class="entry" href="stories/03-zumbido-deriva/index.html">
+    <a class="entry" href="stories/03-zumbido-deriva/index.html" style="--card-bg:#050810;--card-ink:#d0d6dc;--card-accent:#5cdce2">
       <div class="row1">
         <span class="num">03</span>
         <span class="date">26·05·11</span>
@@ -296,17 +337,17 @@ footer.colophon a:hover{
       <div class="words">215 palabras</div>
     </a>
 
-    <a class="entry" href="stories/02-nueva-andalucia/index.html">
+    <a class="entry" href="stories/04-algo-verde/index.html" style="--card-bg:#04101a;--card-ink:#e7eef0;--card-accent:#7ee8b8">
       <div class="row1">
-        <span class="num">02</span>
-        <span class="date">26·05·10</span>
+        <span class="num">04</span>
+        <span class="date">26·05·11</span>
       </div>
-      <div class="e-title">Plaza del Patrón</div>
-      <div class="meta">anthropologist (Elena) · Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron</div>
-      <div class="words">273 palabras</div>
+      <div class="e-title">Algo verde</div>
+      <div class="meta">biologist (Lucía) · Europa-3 station, atop the ice of Europa, Jupiter system</div>
+      <div class="words">255 palabras</div>
     </a>
 
-    <a class="entry" href="stories/01-saturn-ai/index.html">
+    <a class="entry" href="stories/01-saturn-ai/index.html" style="--card-bg:#060912;--card-ink:#e5ebf3;--card-accent:#f0a13a">
       <div class="row1">
         <span class="num">01</span>
         <span class="date">26·05·10</span>
@@ -314,6 +355,16 @@ footer.colophon a:hover{
       <div class="e-title">Día 412</div>
       <div class="meta">AI (ARES, station observatory) · Saturn orbit</div>
       <div class="words">270 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/02-nueva-andalucia/index.html" style="--card-bg:#efe4cc;--card-ink:#1d1612;--card-accent:#b48340">
+      <div class="row1">
+        <span class="num">02</span>
+        <span class="date">26·05·10</span>
+      </div>
+      <div class="e-title">Plaza del Patrón</div>
+      <div class="meta">anthropologist (Elena) · Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron</div>
+      <div class="words">273 palabras</div>
     </a>
 
 <!-- STORIES:END -->
