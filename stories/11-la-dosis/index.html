@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La dosis · Estación Argyre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc;
+  --paper-deep:#ebdfc4;
+  --paper-deeper:#e0d0aa;
+  --ink:#1a1814;
+  --ink-muted:#5c5347;
+  --teal:#3b5b56;
+  --teal-soft:#6a8782;
+  --oxblood:#8a1f1f;
+  --oxblood-soft:rgba(138,31,31,0.12);
+  --amber:#c79a3f;
+  --amber-soft:rgba(199,154,63,0.32);
+  --rule:#c8b890;
+  --console-bg:#1a1814;
+  --console-ink:#d4c8a8;
+  --console-rule:#3b5b56;
+  --accent:#8a1f1f;
+}
+
+*{box-sizing:border-box;}
+html{background:var(--paper);}
+body{
+  margin:0;
+  font-family:'Lora','Source Serif Pro',Georgia,serif;
+  font-size:18.5px;
+  line-height:1.75;
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse at 12% 8%, rgba(199,154,63,0.07), transparent 38%),
+    radial-gradient(ellipse at 92% 92%, rgba(59,91,86,0.07), transparent 42%),
+    radial-gradient(ellipse at 50% 50%, rgba(138,31,31,0.025), transparent 60%),
+    var(--paper);
+  background-attachment:fixed;
+  padding:60px 40px 90px;
+  position:relative;
+  min-height:100vh;
+}
+
+/* faint safety-grid overlay — radiation-chart feel */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(59,91,86,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,91,86,0.045) 1px, transparent 1px);
+  background-size:34px 34px;
+  pointer-events:none;
+  z-index:0;
+  mask-image:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.85), rgba(0,0,0,0.35) 80%);
+}
+/* faint paper noise */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.045 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  pointer-events:none;
+  z-index:0;
+  opacity:0.55;
+}
+body > *{position:relative;z-index:1;}
+
+/* Back link */
+.back{
+  position:fixed;
+  top:22px;
+  left:28px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--ink-muted);
+  text-decoration:none;
+  border-bottom:1px dotted var(--rule);
+  padding-bottom:2px;
+  z-index:20;
+}
+.back:hover{color:var(--oxblood);border-bottom-color:var(--oxblood);}
+
+/* Masthead — clinical report header */
+.masthead{
+  max-width:1180px;
+  margin:0 auto 48px;
+  padding:0 8px;
+}
+.masthead-rule-thick{
+  height:5px;
+  background:var(--ink);
+  margin-bottom:3px;
+}
+.masthead-rule-thin{
+  height:1px;
+  background:var(--ink);
+}
+.masthead-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.22em;
+  color:var(--ink-muted);
+  text-transform:uppercase;
+  padding:10px 2px 6px;
+}
+.masthead-meta .lhs{display:flex;gap:32px;flex-wrap:wrap;}
+.masthead-meta .rhs{color:var(--oxblood);}
+.story-title{
+  font-family:'Special Elite','Courier Prime',monospace;
+  font-weight:400;
+  font-size:clamp(48px, 9.5vw, 108px);
+  line-height:0.94;
+  margin:22px 0 14px;
+  letter-spacing:-0.005em;
+  color:var(--ink);
+}
+.masthead-sub{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:18px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  letter-spacing:0.1em;
+  color:var(--teal);
+  padding-bottom:14px;
+}
+.masthead-sub .place{color:var(--teal);font-weight:500;}
+.masthead-sub .author{color:var(--ink-muted);font-style:italic;letter-spacing:0.04em;}
+
+/* Layout grid — asymmetric, 7:3 with intentional gutter */
+.layout{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 8px;
+  display:grid;
+  grid-template-columns:minmax(0,7fr) minmax(0,3fr);
+  gap:64px;
+  align-items:start;
+}
+
+article[data-story-body]{
+  max-width:660px;
+  font-feature-settings:"liga","kern";
+}
+
+article p{
+  margin:0 0 1.45em;
+  text-align:justify;
+  hyphens:auto;
+  -webkit-hyphens:auto;
+}
+
+article p:first-of-type::first-letter{
+  font-family:'Special Elite',monospace;
+  font-size:4em;
+  line-height:0.88;
+  float:left;
+  padding:9px 12px 0 0;
+  color:var(--oxblood);
+}
+
+/* Sol stamp / separator */
+.sol-stamp{
+  text-align:center;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin:2.4em 0 1.6em;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.sol-stamp::before,
+.sol-stamp::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--rule);
+}
+
+/* Data block — clinical readout panel */
+.data-block{
+  background:var(--paper-deep);
+  border:1px solid var(--rule);
+  border-left:4px solid var(--teal);
+  padding:18px 24px 20px;
+  margin:0 0 2.1em;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  letter-spacing:0.005em;
+  line-height:1.95;
+  color:var(--ink);
+  position:relative;
+}
+.data-block::before{
+  content:'TBL · DOSIS-ACUM · v4';
+  position:absolute;
+  top:-10px;
+  left:18px;
+  background:var(--paper);
+  padding:0 8px;
+  font-size:9.5px;
+  letter-spacing:0.24em;
+  color:var(--teal);
+}
+.data-row{
+  display:block;
+  padding:1px 0;
+}
+.data-row .warn{
+  background:var(--oxblood-soft);
+  color:var(--oxblood);
+  font-weight:600;
+  padding:1px 7px;
+  letter-spacing:0.02em;
+}
+
+/* Litany — short repeated sentences (Nadie… Nadie… Nadie…) */
+.litany{
+  font-style:italic;
+  color:var(--ink-muted);
+  border-left:2px solid var(--oxblood);
+  padding:6px 0 6px 22px;
+  margin:0 0 1.45em;
+  font-size:17.5px;
+  line-height:1.85;
+}
+
+/* Dream-litany — short hopeful sentences (Confía. Bebe café…) */
+.dream-litany{
+  margin:0.4em 0 1.6em;
+  text-align:center;
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-size:18px;
+  color:var(--teal);
+  letter-spacing:0.01em;
+  line-height:2;
+}
+
+/* Draft block — message console */
+.draft-block{
+  background:var(--console-bg);
+  color:var(--console-ink);
+  border:1px solid var(--console-rule);
+  padding:22px 26px 24px;
+  margin:2em -6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14px;
+  line-height:1.75;
+  position:relative;
+}
+.draft-block::before{
+  content:'> COMPONER · DESTINO: TIERRA · ESTADO: BORRADOR';
+  display:block;
+  font-size:9.5px;
+  letter-spacing:0.22em;
+  color:var(--teal-soft);
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px dashed var(--console-rule);
+}
+.draft-block p{
+  margin:0;
+  text-align:left;
+  hyphens:none;
+  -webkit-hyphens:none;
+}
+
+/* Coda paragraph — closing image */
+.coda{
+  font-style:italic;
+  color:var(--ink-muted);
+  text-align:center;
+  margin:2.4em 0 0 !important;
+  font-size:18px;
+  line-height:1.85;
+}
+
+/* Sidebar — file metadata + reference card */
+.sidebar{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  line-height:1.65;
+  color:var(--ink-muted);
+  position:sticky;
+  top:36px;
+  align-self:start;
+  padding-top:4px;
+}
+.sidebar h4{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin:0 0 12px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--rule);
+}
+.file-meta,
+.ref-card{
+  background:var(--paper-deep);
+  border:1px solid var(--rule);
+  padding:18px 20px 20px;
+  margin-bottom:22px;
+}
+.file-meta dl{
+  margin:0;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:7px 16px;
+}
+.file-meta dt{
+  font-size:9px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--teal);
+  align-self:center;
+  white-space:nowrap;
+}
+.file-meta dd{
+  margin:0;
+  color:var(--ink);
+  font-size:12px;
+}
+.ref-card{
+  border-left:3px solid var(--amber);
+}
+.ref-meta{
+  margin:0 0 10px;
+  color:var(--amber);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+}
+.ref-note{
+  margin:0;
+  color:var(--ink-muted);
+  font-style:italic;
+  line-height:1.55;
+  font-size:11.5px;
+  font-family:'Lora',serif;
+}
+
+.sigil{
+  display:flex;
+  justify-content:center;
+  padding:18px 0 0;
+  opacity:0.55;
+}
+
+/* Colophon */
+.colophon{
+  max-width:1180px;
+  margin:80px auto 0;
+  padding:22px 8px 0;
+  border-top:1px solid var(--ink);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--ink-muted);
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:18px;
+}
+.colophon .right{color:var(--teal);}
+
+/* Mobile: collapse grid */
+@media (max-width:880px){
+  body{padding:54px 22px 70px;}
+  .back{top:18px;left:20px;}
+  .layout{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+  article[data-story-body]{max-width:100%;}
+  article p:first-of-type::first-letter{font-size:3.3em;padding:5px 9px 0 0;}
+  .sidebar{
+    position:static;
+    border-top:1px solid var(--rule);
+    padding-top:24px;
+  }
+  .draft-block{margin:2em 0;padding:18px 20px 20px;font-size:13px;}
+  .data-block{padding:16px 18px;font-size:12px;line-height:1.8;}
+  .data-row{white-space:normal;}
+  .story-title{font-size:clamp(40px,11vw,72px);}
+  .masthead-meta{flex-direction:column;gap:6px;align-items:flex-start;}
+  .colophon{font-size:9px;}
+}
+
+/* Popup styling (overriding the auto-injected defaults — declared above source-order so cascade wins) */
+.pop{
+  background:var(--paper);
+  color:var(--ink);
+  border:1px solid var(--ink);
+  border-left:3px solid var(--oxblood);
+  padding:14px 18px 14px;
+  max-width:320px;
+  font-family:'Lora',serif;
+  font-size:14px;
+  line-height:1.55;
+  box-shadow:0 14px 36px rgba(26,24,20,0.22), 0 2px 6px rgba(26,24,20,0.08);
+  z-index:50;
+}
+.pop.has-grammar{max-width:380px;}
+.pop .lemma{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:16.5px;
+  color:var(--oxblood);
+  margin:0 0 2px;
+  line-height:1.3;
+}
+.pop .pos{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:0.26em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin:0 0 8px;
+  font-weight:500;
+}
+.pop .tr{
+  margin:0;
+  color:var(--ink);
+  font-size:14px;
+}
+.pop .g-block{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--rule);
+  font-size:13px;
+  color:var(--ink);
+}
+.pop .g-block p{margin:0 0 8px;}
+.pop .g-block p:last-child{margin-bottom:0;}
+.pop .g-block b{
+  font-style:italic;
+  font-weight:600;
+  color:var(--oxblood);
+}
+.pop .g-block i{
+  font-style:normal;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--teal);
+  font-weight:500;
+}
+.pop .g-block code{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  background:var(--paper-deep);
+  padding:1px 5px;
+  border:1px solid var(--rule);
+  color:var(--ink);
+}
+.pop .g-block u{
+  text-decoration:none;
+  background:var(--amber-soft);
+  padding:0 3px;
+  font-weight:600;
+  color:var(--ink);
+}
+.pop .link{
+  display:inline-block;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--rule);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--teal);
+  text-decoration:none;
+  font-weight:500;
+}
+.pop .link:hover{color:var(--oxblood);}
+
+.pop.sentence{
+  border-left-color:var(--teal);
+  max-width:360px;
+}
+.pop.sentence .s-label{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:0.26em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:6px;
+}
+.pop.sentence .s-tr{
+  margin:0;
+  font-style:italic;
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+/* Word / sentence hover refinements (higher specificity than .w / .s defaults) */
+article .w{cursor:help;}
+article .w:hover{color:var(--oxblood);}
+article .s{color:var(--teal-soft);cursor:help;}
+article .s:hover{color:var(--oxblood);}
+
+/* Word colour inside the draft-block — dark theme adjustment */
+.draft-block .w:hover{color:var(--amber);}
+.draft-block .s{color:var(--teal-soft);}
+.draft-block .s:hover{color:var(--amber);}
+
+/* Reading progress bar — themed */
+.reading-progress{background:var(--oxblood);height:2px;}
+</style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="back" href="../../index.html">← Índice</a>
+
+<header class="masthead">
+  <div class="masthead-rule-thick"></div>
+  <div class="masthead-rule-thin"></div>
+  <div class="masthead-meta">
+    <div class="lhs">
+      <span>Expediente · 011 / 4321</span>
+      <span>Clasificación · Médico · Reservado</span>
+    </div>
+    <div class="rhs">No enviado</div>
+  </div>
+  <h1 class="story-title">La dosis</h1>
+  <div class="masthead-sub">
+    <span class="place">Estación Argyre · Hemisferio Sur · Marte</span>
+    <span class="author">A. Soto · médica titular</span>
+  </div>
+  <div class="masthead-rule-thin"></div>
+</header>
+
+<main class="layout">
+
+  <article data-story-body>
+
+    <p><span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="врач (ж.)" data-pos="сущ." data-lemma="la doctora" data-grammar="**la doctora** — врач женского пола; муж. форма — **el doctor**.
+
+В Латинской Америке к врачу часто обращаются `doctor / doctora`, без сокращения `Dr.` / `Dra.`.
+">doctora</span> <span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="Сото — фамилия Аны" data-pos="имя" data-lemma="" data-grammar="">Soto</span> <span class="w" data-tr="(он/она) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot; — постоянные свойства).
+
+`Ana [[es]] la única médica` (&quot;Ана — единственный врач&quot;).
+">es</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="единственная" data-pos="прил." data-lemma="único" data-grammar="**única** — ж. р. ед. ч. от **único** (&quot;единственный&quot;).
+
+`la [[única]] médica` (&quot;единственный врач (ж.)&quot;).
+">única</span> <span class="w" data-tr="врач (ж.); медицинская" data-pos="сущ. / прил." data-lemma="la médica" data-grammar="**médica** — здесь сущ. ж. р., &quot;врач (женщина)&quot;. Муж. форма — **el médico**.
+
+Как прил. (&quot;медицинская&quot;) согласуется с сущ.: `el archivo [[médico]]` (м.), `la consulta [[médica]]` (ж.).
+">médica</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="станция" data-pos="сущ." data-lemma="la estación" data-grammar="**la estación** — &quot;станция&quot;. Род женский, ед. число.
+
+В мн. ч.: `estaciones` (без ударения, ударение естественное).
+">Estación</span> <span class="w" data-tr="Аргиры — название станции; от Argyre Planitia (равнина в южном полушарии Марса)" data-pos="имя" data-lemma="" data-grammar="">Argyre</span>, <span class="w" data-tr="один; (неопр. арт. м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="маленький" data-pos="прил." data-lemma="pequeño" data-grammar="">pequeño</span> <span class="w" data-tr="пост; пункт" data-pos="сущ." data-lemma="el puesto" data-grammar="**el puesto** — &quot;пост, пункт (наблюдения, торговый и т. п.)&quot;. Род мужской.
+
+`un pequeño [[puesto]] de terraformación` = &quot;маленький терраформирующий пост&quot;.
+">puesto</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="терраформирование" data-pos="сущ." data-lemma="la terraformación" data-grammar="**la terraformación** — &quot;терраформирование&quot;: изменение планеты под земные условия. Род женский (как все на `-ción`).
+">terraformación</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="юг" data-pos="сущ." data-lemma="el sur" data-grammar="**el sur** — &quot;юг&quot;. Род мужской.
+
+`en el [[sur]] de Marte` = &quot;на юге Марса&quot;.
+">sur</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="Марс — планета" data-pos="имя" data-lemma="" data-grammar="">Marte</span><span class="s" data-tr="Доктор Ана Сото — единственный врач Станции Аргиры, маленького терраформирующего поста на юге Марса.">.</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="">Aquí</span> <span class="w" data-tr="(они) работают" data-pos="глаг." data-lemma="trabajar" data-grammar="**trabajan** — *presente*, 3 л. мн. ч., от **trabajar** (&quot;работать&quot;). Правильный на `-ar`.
+
+`trabaj·[[ar]]` → `trabaj·[[an]]`.
+">trabajan</span> <span class="w" data-tr="сорок" data-pos="числ." data-lemma="cuarenta" data-grammar="">cuarenta</span> <span class="w" data-tr="люди; человек (мн. ч.)" data-pos="сущ." data-lemma="la persona" data-grammar="**personas** — мн. ч. от **la persona** (&quot;человек; лицо&quot;). Род всегда женский, даже о мужчинах.
+">personas</span><span class="s" data-tr="Здесь работают сорок человек.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="станция" data-pos="сущ." data-lemma="la estación" data-grammar="**la estación** — &quot;станция&quot;. Род женский, ед. число.
+
+В мн. ч.: `estaciones` (без ударения, ударение естественное).
+">estación</span> <span class="w" data-tr="(она) несёт; (есть) уже …" data-pos="глаг." data-lemma="llevar" data-grammar="**lleva** — *presente*, 3 л. ед. ч., от **llevar**.
+
+Идиома `llevar + время + прич./прил.` = &quot;уже … (столько-то времени)&quot;:
+
+`la estación [[lleva]] doce años abierta` = &quot;станция открыта уже двенадцать лет&quot;.
+">lleva</span> <span class="w" data-tr="двенадцать" data-pos="числ." data-lemma="doce" data-grammar="">doce</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span> <span class="w" data-tr="открытая" data-pos="прил." data-lemma="abierto" data-grammar="**abierta** — *причастие/прилагательное* ж. р. ед. ч. от **abierto** (&quot;открытый&quot;). Согласуется с **estación** (ж.).
+
+Неправильное причастие от **abrir**: `abrir → abierto`.
+">abierta</span><span class="s" data-tr="Станция открыта уже двенадцать лет.">.</span></p>
+
+    <p><span class="w" data-tr="каждый" data-pos="прил." data-lemma="cada" data-grammar="**cada** — не меняется по роду: `[[cada]] mes`, `[[cada]] año`, `[[cada]] mañana`.
+">Cada</span> <span class="w" data-tr="месяц" data-pos="сущ." data-lemma="el mes" data-grammar="">mes</span>, <span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(тому) назад; делает" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время = идиома &quot;… назад&quot;.
+
+`[[hace]] veinte años` = &quot;двадцать лет назад&quot;.
+
+`desde [[hace]] tiempo` = &quot;уже давно&quot; (постоянное действие, начавшееся в прошлом).
+
+*Дословно:* &quot;(оно) делает 20 лет&quot;.
+">hace</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">los</span> <span class="w" data-tr="осмотры; экзамены" data-pos="сущ." data-lemma="el examen" data-grammar="**exámenes** — мн. ч. от **el examen** (&quot;осмотр; экзамен&quot;).
+
+В мн. ч. ставится графическое ударение, чтобы сохранить ударный слог: `examen → ex[[á]]menes`.
+
+Здесь — медицинские осмотры.
+">exámenes</span><span class="s" data-tr="Каждый месяц Ана проводит осмотры.">.</span> <span class="w" data-tr="каждый" data-pos="прил." data-lemma="cada" data-grammar="**cada** — не меняется по роду: `[[cada]] mes`, `[[cada]] año`, `[[cada]] mañana`.
+">Cada</span> <span class="w" data-tr="год" data-pos="сущ." data-lemma="el año" data-grammar="">año</span>, <span class="w" data-tr="(она) проверяет" data-pos="глаг." data-lemma="revisar" data-grammar="**revisa** — *presente*, 3 л. ед. ч., от **revisar** (&quot;проверять&quot;). Правильный на `-ar`.
+">revisa</span> <span class="w" data-tr="(арт. ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="">las</span> <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="радиация" data-pos="сущ." data-lemma="la radiación" data-grammar="**la radiación** — &quot;радиация&quot;. Род женский (как все на `-ción`).
+">radiación</span><span class="s" data-tr="Каждый год проверяет дозы радиации.">.</span> <span class="w" data-tr="каждый" data-pos="прил." data-lemma="cada" data-grammar="**cada** — не меняется по роду: `[[cada]] mes`, `[[cada]] año`, `[[cada]] mañana`.
+">Cada</span> <span class="w" data-tr="утро; завтра" data-pos="сущ. / нар." data-lemma="la mañana" data-grammar="**la mañana** (сущ.) — &quot;утро&quot;: `cada [[mañana]]` (&quot;каждое утро&quot;).
+
+**mañana** (нар.) — &quot;завтра&quot;: `[[mañana]] llega la orden` (&quot;завтра приходит приказ&quot;).
+
+В тексте оба значения.
+">mañana</span>, <span class="w" data-tr="(она) готовит" data-pos="глаг." data-lemma="preparar" data-grammar="**prepara** — *presente*, 3 л. ед. ч., от **preparar** (&quot;готовить&quot;). Правильный на `-ar`.
+">prepara</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="профилактика; профилактическое средство" data-pos="сущ." data-lemma="la profilaxis" data-grammar="**la profilaxis** — &quot;профилактика&quot;. Род женский, ед. и мн. ч. одинаковы (как **dosis**).
+
+Здесь — профилактическая таблетка против радиации.
+">profilaxis</span> <span class="w" data-tr="стандартный/-ая" data-pos="прил." data-lemma="estándar" data-grammar="**estándar** — одна форма для м./ж. и для ед./мн. ч.: `la profilaxis [[estándar]]`, `los protocolos [[estándar]]`.
+">estándar</span>: <span class="w" data-tr="одна; (неопр. арт. ж. р.)" data-pos="арт." data-lemma="un" data-grammar="">una</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la píldora" data-grammar="**la píldora** — &quot;таблетка&quot;. Род женский.
+">píldora</span> <span class="w" data-tr="синий/-яя" data-pos="прил." data-lemma="azul" data-grammar="**azul** — одна форма для м. и ж. рода (как все прил. на согласный): `el cielo [[azul]]`, `la píldora [[azul]]`.
+
+Мн. ч.: `azules`.
+">azul</span>, <span class="w" data-tr="лёгкий/-ая" data-pos="прил." data-lemma="fácil" data-grammar="**fácil** — одна форма для м. и ж. (как все прил. на `-l`).
+">fácil</span>, <span class="w" data-tr="старинная; давняя" data-pos="прил." data-lemma="antiguo" data-grammar="**antigua** — ж. р. ед. ч. от **antiguo** (&quot;старинный, давний&quot;). Согласуется с **píldora** (ж.).
+">antigua</span><span class="s" data-tr="Каждое утро готовит стандартную профилактику — синюю таблетку: простую, давнюю.">.</span></p>
+
+    <p><span class="w" data-tr="эта" data-pos="мест." data-lemma="este" data-grammar="**esta** — указательное местоимение ж. р. ед. ч. от **este**.
+
+`[[esta]] semana` (&quot;на этой неделе&quot;), `[[esta]] radiación` (&quot;эта радиация&quot;).
+">Esta</span> <span class="w" data-tr="неделя" data-pos="сущ." data-lemma="la semana" data-grammar="">semana</span>, <span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(она) открывает" data-pos="глаг." data-lemma="abrir" data-grammar="**abre** — *presente*, 3 л. ед. ч., от **abrir** (&quot;открывать&quot;).
+
+`abr·[[ir]]` → `abr·[[e]]` (правильный на `-ir`).
+">abre</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">los</span> <span class="w" data-tr="файлы; архивы" data-pos="сущ." data-lemma="el archivo" data-grammar="">archivos</span> <span class="w" data-tr="старые" data-pos="прил." data-lemma="viejo" data-grammar="**viejos** — м. р. мн. ч. от **viejo** (&quot;старый&quot;).
+">viejos</span><span class="s" data-tr="На этой неделе Ана открывает старые архивы.">.</span> <span class="w" data-tr="одна; (неопр. арт. ж. р.)" data-pos="арт." data-lemma="un" data-grammar="">Una</span> <span class="w" data-tr="мысль; идея" data-pos="сущ." data-lemma="la idea" data-grammar="">idea</span> <span class="w" data-tr="маленькая" data-pos="прил." data-lemma="pequeño" data-grammar="**pequeña** — ж. р. ед. ч. от **pequeño**.
+">pequeña</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="(он/она) тревожит" data-pos="глаг." data-lemma="inquietar" data-grammar="**inquieta** — *presente*, 3 л. ед. ч., от **inquietar** (&quot;тревожить, беспокоить&quot;). Правильный на `-ar`.
+
+`Una idea ... [[la]] [[inquieta]]` = &quot;Мысль её тревожит&quot;.
+">inquieta</span><span class="s" data-tr="Маленькая мысль её тревожит.">.</span> <span class="w" data-tr="(она) хочет" data-pos="глаг." data-lemma="querer" data-grammar="**quiere** — *presente*, 3 л. ед. ч., от **querer** (&quot;хотеть&quot;).
+
+*Чередование:* `qu[[e]]rer → qu[[ie]]re` (e → ie).
+
+Спряж.: `quiero · quieres · quiere · queremos · queréis · quieren`.
+">Quiere</span> <span class="w" data-tr="сравнивать" data-pos="глаг." data-lemma="comparar" data-grammar="**comparar** — инфинитив &quot;сравнивать&quot;.
+
+После **quiere** инфинитив без предлога: `[[quiere]] [[comparar]]` (&quot;хочет сравнить&quot;).
+">comparar</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="полученная" data-pos="прил." data-lemma="recibido" data-grammar="**recibida** — *причастие/прилагательное* ж. р. ед. ч. от **recibido** (&quot;полученный&quot;, от **recibir**). Согласуется с **dosis** (ж.).
+">recibida</span> <span class="w" data-tr="с" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="эффективная" data-pos="прил." data-lemma="efectivo" data-grammar="**efectiva** — ж. р. ед. ч. от **efectivo** (&quot;действенный, эффективный&quot;). Согласуется с **dosis**.
+">efectiva</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="тело; организм" data-pos="сущ." data-lemma="el cuerpo" data-grammar="">cuerpo</span><span class="s" data-tr="Она хочет сравнить полученную дозу с эффективной дозой в организме.">.</span> <span class="w" data-tr="сорок" data-pos="числ." data-lemma="cuarenta" data-grammar="">Cuarenta</span> <span class="w" data-tr="люди; человек (мн. ч.)" data-pos="сущ." data-lemma="la persona" data-grammar="**personas** — мн. ч. от **la persona** (&quot;человек; лицо&quot;). Род всегда женский, даже о мужчинах.
+">personas</span>, <span class="w" data-tr="двенадцать" data-pos="числ." data-lemma="doce" data-grammar="">doce</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Сорок человек, двенадцать лет.">.</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">Los</span> <span class="w" data-tr="числа; цифры" data-pos="сущ." data-lemma="el número" data-grammar="**números** — мн. ч. от **el número** (&quot;число&quot;). Графическое ударение на `ú` сохраняет ударный слог.
+">números</span> <span class="w" data-tr="(они) появляются" data-pos="глаг." data-lemma="aparecer" data-grammar="**aparecen** — *presente*, 3 л. мн. ч., от **aparecer** (&quot;появляться&quot;).
+
+Правильный на `-er`: `aparec·[[er]]` → `aparec·[[en]]`.
+">aparecen</span> <span class="w" data-tr="медленные" data-pos="прил." data-lemma="lento" data-grammar="**lentos** — м. р. мн. ч. от **lento** (&quot;медленный&quot;).
+
+Согласуется с **números** (м. р. мн. ч.).
+">lentos</span><span class="s" data-tr="Числа появляются медленно.">.</span></p>
+
+    <div class="sol-stamp"><span class="w" data-tr="файл; архив" data-pos="сущ." data-lemma="el archivo" data-grammar="">archivo</span> <span class="w" data-tr="медицинский" data-pos="прил." data-lemma="médico" data-grammar="**médico** (прил.) — &quot;медицинский&quot;. Здесь согласован с **archivo** (м. р.): `archivo [[médico]]` (&quot;медицинский архив&quot;).
+
+Как сущ. **el médico** — &quot;врач (м.)&quot; / **la médica** — &quot;врач (ж.)&quot;.
+">médico</span> · <span class="w" data-tr="солнце; (марс.) сол" data-pos="сущ." data-lemma="el sol" data-grammar="**el sol** — &quot;солнце&quot;. В марсианских колониях **sol** также означает марсианские сутки (~24 ч. 40 мин.). Здесь — нумерация дней: `[[sol]] 4321`.
+
+Род мужской.
+">sol</span> 4321</div>
+
+    <div class="data-block">
+      <div class="data-row"><span class="w" data-tr="колонист" data-pos="сущ." data-lemma="el colonista" data-grammar="**el / la colonista** — &quot;колонист, поселенец&quot;. Одна форма для м. и ж. рода (как все на `-ista`).
+">Colonista</span> 03 · <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="накопленная" data-pos="прил." data-lemma="acumulado" data-grammar="**acumulada** — *причастие* ж. р. ед. ч. от **acumulado** (&quot;накопленный&quot;, от **acumular**). Согласуется с **dosis**.
+">acumulada</span> · <span class="warn">142 %</span> <span class="w" data-tr="из / от + (м. р. ед. ч.)" data-pos="предл." data-lemma="del" data-grammar="**del** — слияние `de + el`.
+
+`de + [[el]]` → `[[del]]`. Артикль **el** не пишется отдельно.
+
+В тексте: `[[del]] límite seguro` (&quot;безопасного предела&quot;).
+">del</span> <span class="w" data-tr="предел" data-pos="сущ." data-lemma="el límite" data-grammar="**el límite** — &quot;предел&quot;. Род мужской, несмотря на окончание `-e`.
+">límite</span> <span class="w" data-tr="безопасный" data-pos="прил." data-lemma="seguro" data-grammar="">seguro</span> · <span class="w" data-tr="симптомы" data-pos="сущ." data-lemma="el síntoma" data-grammar="**síntomas** — мн. ч. от **el síntoma** (&quot;симптом&quot;).
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el día**).
+">síntomas</span>: <span class="w" data-tr="никакой; ни одного" data-pos="мест." data-lemma="ninguno" data-grammar="**ninguno** — &quot;ни один; никакой&quot;. Здесь как краткая запись &quot;симптомов нет&quot;:
+
+`síntomas: [[ninguno]]` (&quot;симптомы: никаких&quot;).
+">ninguno</span></div>
+      <div class="data-row"><span class="w" data-tr="колонист" data-pos="сущ." data-lemma="el colonista" data-grammar="**el / la colonista** — &quot;колонист, поселенец&quot;. Одна форма для м. и ж. рода (как все на `-ista`).
+">Colonista</span> 17 · <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="накопленная" data-pos="прил." data-lemma="acumulado" data-grammar="**acumulada** — *причастие* ж. р. ед. ч. от **acumulado** (&quot;накопленный&quot;, от **acumular**). Согласуется с **dosis**.
+">acumulada</span> · <span class="warn">156 %</span> <span class="w" data-tr="из / от + (м. р. ед. ч.)" data-pos="предл." data-lemma="del" data-grammar="**del** — слияние `de + el`.
+
+`de + [[el]]` → `[[del]]`. Артикль **el** не пишется отдельно.
+
+В тексте: `[[del]] límite seguro` (&quot;безопасного предела&quot;).
+">del</span> <span class="w" data-tr="предел" data-pos="сущ." data-lemma="el límite" data-grammar="**el límite** — &quot;предел&quot;. Род мужской, несмотря на окончание `-e`.
+">límite</span> <span class="w" data-tr="безопасный" data-pos="прил." data-lemma="seguro" data-grammar="">seguro</span> · <span class="w" data-tr="симптомы" data-pos="сущ." data-lemma="el síntoma" data-grammar="**síntomas** — мн. ч. от **el síntoma** (&quot;симптом&quot;).
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el día**).
+">síntomas</span>: <span class="w" data-tr="никакой; ни одного" data-pos="мест." data-lemma="ninguno" data-grammar="**ninguno** — &quot;ни один; никакой&quot;. Здесь как краткая запись &quot;симптомов нет&quot;:
+
+`síntomas: [[ninguno]]` (&quot;симптомы: никаких&quot;).
+">ninguno</span></div>
+      <div class="data-row"><span class="w" data-tr="колонист" data-pos="сущ." data-lemma="el colonista" data-grammar="**el / la colonista** — &quot;колонист, поселенец&quot;. Одна форма для м. и ж. рода (как все на `-ista`).
+">Colonista</span> 28 · <span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+">dosis</span> <span class="w" data-tr="накопленная" data-pos="прил." data-lemma="acumulado" data-grammar="**acumulada** — *причастие* ж. р. ед. ч. от **acumulado** (&quot;накопленный&quot;, от **acumular**). Согласуется с **dosis**.
+">acumulada</span> · <span class="warn">161 %</span> <span class="w" data-tr="из / от + (м. р. ед. ч.)" data-pos="предл." data-lemma="del" data-grammar="**del** — слияние `de + el`.
+
+`de + [[el]]` → `[[del]]`. Артикль **el** не пишется отдельно.
+
+В тексте: `[[del]] límite seguro` (&quot;безопасного предела&quot;).
+">del</span> <span class="w" data-tr="предел" data-pos="сущ." data-lemma="el límite" data-grammar="**el límite** — &quot;предел&quot;. Род мужской, несмотря на окончание `-e`.
+">límite</span> <span class="w" data-tr="безопасный" data-pos="прил." data-lemma="seguro" data-grammar="">seguro</span> · <span class="w" data-tr="симптомы" data-pos="сущ." data-lemma="el síntoma" data-grammar="**síntomas** — мн. ч. от **el síntoma** (&quot;симптом&quot;).
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el día**).
+">síntomas</span>: <span class="w" data-tr="никакой; ни одного" data-pos="мест." data-lemma="ninguno" data-grammar="**ninguno** — &quot;ни один; никакой&quot;. Здесь как краткая запись &quot;симптомов нет&quot;:
+
+`síntomas: [[ninguno]]` (&quot;симптомы: никаких&quot;).
+">ninguno</span></div>
+    </div>
+
+    <p><span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(она) проверяет" data-pos="глаг." data-lemma="revisar" data-grammar="**revisa** — *presente*, 3 л. ед. ч., от **revisar** (&quot;проверять&quot;). Правильный на `-ar`.
+">revisa</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="формула" data-pos="сущ." data-lemma="la fórmula" data-grammar="**la fórmula** — &quot;формула; рецепт (химический, фармацевтический)&quot;. Род женский.
+">fórmula</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la píldora" data-grammar="**la píldora** — &quot;таблетка&quot;. Род женский.
+">píldora</span> <span class="w" data-tr="синий/-яя" data-pos="прил." data-lemma="azul" data-grammar="**azul** — одна форма для м. и ж. рода (как все прил. на согласный): `el cielo [[azul]]`, `la píldora [[azul]]`.
+
+Мн. ч.: `azules`.
+">azul</span><span class="s" data-tr="Ана пересматривает формулу синей таблетки.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="(они) изготовили" data-pos="глаг." data-lemma="fabricar" data-grammar="**fabricaron** — *pretérito indefinido*, 3 л. мн. ч., от **fabricar** (&quot;изготавливать&quot;).
+
+`fabric·[[ar]]` → `fabric·[[aron]]`.
+
+Безличное &quot;они&quot; (по смыслу — на Земле): `[[La]] [[fabricaron]] en la Tierra` = &quot;Её изготовили на Земле&quot;.
+">fabricaron</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="Земля — планета (в тексте всегда с большой буквы и арт. **la**)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span> <span class="w" data-tr="(тому) назад; делает" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время = идиома &quot;… назад&quot;.
+
+`[[hace]] veinte años` = &quot;двадцать лет назад&quot;.
+
+`desde [[hace]] tiempo` = &quot;уже давно&quot; (постоянное действие, начавшееся в прошлом).
+
+*Дословно:* &quot;(оно) делает 20 лет&quot;.
+">hace</span> <span class="w" data-tr="двадцать" data-pos="числ." data-lemma="veinte" data-grammar="">veinte</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Её изготовили на Земле двадцать лет назад.">.</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">En</span> <span class="w" data-tr="Марс — планета" data-pos="имя" data-lemma="" data-grammar="">Marte</span>, <span class="w" data-tr="с" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="эта" data-pos="мест." data-lemma="este" data-grammar="**esta** — указательное местоимение ж. р. ед. ч. от **este**.
+
+`[[esta]] semana` (&quot;на этой неделе&quot;), `[[esta]] radiación` (&quot;эта радиация&quot;).
+">esta</span> <span class="w" data-tr="радиация" data-pos="сущ." data-lemma="la radiación" data-grammar="**la radiación** — &quot;радиация&quot;. Род женский (как все на `-ción`).
+">radiación</span>, <span class="w" data-tr="не; нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он/она) работает (о технике)" data-pos="глаг." data-lemma="funcionar" data-grammar="**funciona** — *presente*, 3 л. ед. ч., от **funcionar** (&quot;функционировать, работать (о механизмах, лекарствах)&quot;). Правильный на `-ar`.
+
+Не путать с **trabajar** (работать о человеке).
+">funciona</span> <span class="w" data-tr="хорошо" data-pos="нар." data-lemma="bien" data-grammar="**bien** — наречие &quot;хорошо&quot;. `no funciona [[bien]]` = &quot;работает плохо&quot; (букв. &quot;не работает хорошо&quot;).
+">bien</span><span class="s" data-tr="На Марсе, при такой радиации, она работает плохо.">.</span> <span class="w" data-tr="не; нет" data-pos="нар." data-lemma="no" data-grammar="">No</span> <span class="w" data-tr="(он/она) работает (о технике)" data-pos="глаг." data-lemma="funcionar" data-grammar="**funciona** — *presente*, 3 л. ед. ч., от **funcionar** (&quot;функционировать, работать (о механизмах, лекарствах)&quot;). Правильный на `-ar`.
+
+Не путать с **trabajar** (работать о человеке).
+">funciona</span> <span class="w" data-tr="с; начиная с" data-pos="предл." data-lemma="desde" data-grammar="**desde** + время = &quot;(начиная) с&quot;.
+
+`[[desde]] hace tiempo` = &quot;уже давно&quot; (буквально: &quot;с тех пор, как делает (некоторое) время&quot;).
+">desde</span> <span class="w" data-tr="(тому) назад; делает" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время = идиома &quot;… назад&quot;.
+
+`[[hace]] veinte años` = &quot;двадцать лет назад&quot;.
+
+`desde [[hace]] tiempo` = &quot;уже давно&quot; (постоянное действие, начавшееся в прошлом).
+
+*Дословно:* &quot;(оно) делает 20 лет&quot;.
+">hace</span> <span class="w" data-tr="время" data-pos="сущ." data-lemma="el tiempo" data-grammar="**el tiempo** — &quot;время; погода&quot;. В тексте — &quot;время&quot;: `desde hace [[tiempo]]` (&quot;уже давно&quot;).
+">tiempo</span><span class="s" data-tr="Уже давно работает плохо.">.</span></p>
+
+    <p><span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** (&quot;смотреть&quot;).
+">mira</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="экран" data-pos="сущ." data-lemma="la pantalla" data-grammar="**la pantalla** — &quot;экран&quot;. Род женский (в отличие от рус. м. р.).
+">pantalla</span><span class="s" data-tr="Ана смотрит на экран.">.</span></p>
+
+    <p class="litany"><span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="**nadie** — &quot;никто&quot;. Часто с двойным отрицанием, но здесь стоит первым, поэтому **no** не нужен: `[[Nadie]] está enfermo`.
+">Nadie</span> <span class="w" data-tr="(он/она) находится" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** (&quot;быть, находиться (в состоянии)&quot;).
+
+`Nadie [[está]] enfermo` = &quot;Никто не болен&quot; — *estar* для временных состояний.
+">está</span> <span class="w" data-tr="больной" data-pos="прил." data-lemma="enfermo" data-grammar="**enfermo** — м. р. ед. ч. от **enfermo** (&quot;больной&quot;).
+
+С **estar**: `está [[enfermo]]` = &quot;болен (временно)&quot;. Со **ser**: `es enfermizo` — это уже другое слово (&quot;болезненный&quot;).
+">enfermo</span><span class="s" data-tr="Никто не болен.">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="**nadie** — &quot;никто&quot;. Часто с двойным отрицанием, но здесь стоит первым, поэтому **no** не нужен: `[[Nadie]] está enfermo`.
+">Nadie</span> <span class="w" data-tr="(он/она) кашляет" data-pos="глаг." data-lemma="toser" data-grammar="**tose** — *presente*, 3 л. ед. ч., от **toser** (&quot;кашлять&quot;). Правильный на `-er`.
+">tose</span><span class="s" data-tr="Никто не кашляет.">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="**nadie** — &quot;никто&quot;. Часто с двойным отрицанием, но здесь стоит первым, поэтому **no** не нужен: `[[Nadie]] está enfermo`.
+">Nadie</span> <span class="w" data-tr="себя; (возвр. частица)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение 3 л.
+
+В тексте: `[[se]] queja` — обязательная частица возвратного глагола **quejarse** (&quot;жаловаться&quot;).
+">se</span> <span class="w" data-tr="(он/она) жалуется" data-pos="глаг." data-lemma="quejarse" data-grammar="**se queja** — *presente* возвратного **quejarse** (&quot;жаловаться&quot;), 3 л. ед. ч.
+
+Частица **se** обязательна.
+">queja</span><span class="s" data-tr="Никто не жалуется.">.</span></p>
+
+    <p><span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">Los</span> <span class="w" data-tr="осмотры; экзамены" data-pos="сущ." data-lemma="el examen" data-grammar="**exámenes** — мн. ч. от **el examen** (&quot;осмотр; экзамен&quot;).
+
+В мн. ч. ставится графическое ударение, чтобы сохранить ударный слог: `examen → ex[[á]]menes`.
+
+Здесь — медицинские осмотры.
+">exámenes</span> <span class="w" data-tr="ежемесячные" data-pos="прил." data-lemma="mensual" data-grammar="**mensuales** — мн. ч. от **mensual** (&quot;ежемесячный&quot;). Одна форма для м. и ж. рода.
+
+`los exámenes [[mensuales]]` = &quot;ежемесячные осмотры&quot;.
+">mensuales</span> <span class="w" data-tr="(они) есть" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser**.
+
+Спряж.: `soy · eres · es · somos · sois · son`.
+">son</span> <span class="w" data-tr="нормальные" data-pos="прил." data-lemma="normal" data-grammar="**normales** — мн. ч. от **normal**. Одна форма для м. и ж.
+">normales</span><span class="s" data-tr="Ежемесячные осмотры в норме.">.</span> <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">Pero</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">los</span> <span class="w" data-tr="файлы; архивы" data-pos="сущ." data-lemma="el archivo" data-grammar="">archivos</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir** (&quot;говорить&quot;).
+
+Неправильный. Спряж.: `digo · dices · dice · decimos · decís · dicen`.
+
+`los archivos [[dicen]]` (&quot;файлы говорят&quot; — переносное &quot;говорят&quot;).
+">dicen</span> <span class="w" data-tr="что; который" data-pos="союз" data-lemma="que" data-grammar="**que** — вводит подчинённое предложение после **dicen**:
+
+`los archivos dicen [[que]] la mitad de la estación va a tener problemas`.
+">que</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="половина" data-pos="сущ." data-lemma="la mitad" data-grammar="**la mitad** — &quot;половина&quot;. Род женский.
+
+`la [[mitad]] de la estación` = &quot;половина станции&quot;.
+">mitad</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="станция" data-pos="сущ." data-lemma="la estación" data-grammar="**la estación** — &quot;станция&quot;. Род женский, ед. число.
+
+В мн. ч.: `estaciones` (без ударения, ударение естественное).
+">estación</span> <span class="w" data-tr="(он/она) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти&quot;).
+
+Здесь — часть *futuro próximo*: **va a tener** (&quot;будет иметь&quot;).
+
+Структура: `[[ir]]` + `a` + инфинитив.
+">va</span> <span class="w" data-tr="к; в; (a personal)" data-pos="предл." data-lemma="a" data-grammar="**a** — здесь часто часть *futuro próximo* (**va a tener** &quot;будет иметь&quot;) и как *a personal* перед одушевлёнными объектами:
+
+`informa [[a]] la Tierra` = &quot;сообщает Земле&quot;.
+">a</span> <span class="w" data-tr="иметь" data-pos="глаг." data-lemma="tener" data-grammar="**tener** — инфинитив &quot;иметь&quot;. Часть *futuro próximo* **va a tener** (&quot;будут проблемы&quot;).
+">tener</span> <span class="w" data-tr="проблемы" data-pos="сущ." data-lemma="el problema" data-grammar="**problemas** — мн. ч. от **el problema**.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el día**, **el síntoma**).
+">problemas</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="десять" data-pos="числ." data-lemma="diez" data-grammar="">diez</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Но архивы говорят, что у половины станции через десять лет начнутся проблемы.">.</span> <span class="w" data-tr="может быть" data-pos="нар." data-lemma="quizás" data-grammar="**quizás** — &quot;возможно, может быть&quot;. На уровне A1 — с *presente* (без *subjuntivo*).
+">Quizás</span> <span class="w" data-tr="пять" data-pos="числ." data-lemma="cinco" data-grammar="">cinco</span><span class="s" data-tr="Может быть, через пять.">.</span> <span class="w" data-tr="может быть" data-pos="нар." data-lemma="quizás" data-grammar="**quizás** — &quot;возможно, может быть&quot;. На уровне A1 — с *presente* (без *subjuntivo*).
+">Quizás</span> <span class="w" data-tr="двадцать" data-pos="числ." data-lemma="veinte" data-grammar="">veinte</span><span class="s" data-tr="Может быть, через двадцать.">.</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">Los</span> <span class="w" data-tr="числа; цифры" data-pos="сущ." data-lemma="el número" data-grammar="**números** — мн. ч. от **el número** (&quot;число&quot;). Графическое ударение на `ú` сохраняет ударный слог.
+">números</span> <span class="w" data-tr="не; нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(они) есть" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser**.
+
+Спряж.: `soy · eres · es · somos · sois · son`.
+">son</span> <span class="w" data-tr="безопасные; надёжные" data-pos="прил." data-lemma="seguro" data-grammar="**seguros** — м. р. мн. ч. от **seguro**.
+
+`los números no son [[seguros]]` = &quot;числа ненадёжны&quot;.
+">seguros</span><span class="s" data-tr="Числа ненадёжны.">.</span></p>
+
+    <p><span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — &quot;если&quot;. С *presente* в условии: `[[si]] Ana informa` (&quot;если Ана сообщит&quot;) — A1.
+">Si</span> <span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(он/она) сообщает" data-pos="глаг." data-lemma="informar" data-grammar="**informa** — *presente*, 3 л. ед. ч., от **informar** (&quot;сообщать, информировать&quot;). Правильный на `-ar`.
+
+`informar [[a]] alguien` = &quot;сообщать кому-л.&quot;.
+">informa</span> <span class="w" data-tr="к; в; (a personal)" data-pos="предл." data-lemma="a" data-grammar="**a** — здесь часто часть *futuro próximo* (**va a tener** &quot;будет иметь&quot;) и как *a personal* перед одушевлёнными объектами:
+
+`informa [[a]] la Tierra` = &quot;сообщает Земле&quot;.
+">a</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="Земля — планета (в тексте всегда с большой буквы и арт. **la**)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span>, <span class="w" data-tr="утро; завтра" data-pos="сущ. / нар." data-lemma="la mañana" data-grammar="**la mañana** (сущ.) — &quot;утро&quot;: `cada [[mañana]]` (&quot;каждое утро&quot;).
+
+**mañana** (нар.) — &quot;завтра&quot;: `[[mañana]] llega la orden` (&quot;завтра приходит приказ&quot;).
+
+В тексте оба значения.
+">mañana</span> <span class="w" data-tr="(он/она) приходит" data-pos="глаг." data-lemma="llegar" data-grammar="**llega** — *presente*, 3 л. ед. ч., от **llegar** (&quot;прибывать, приходить&quot;). Правильный на `-ar`.
+">llega</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="приказ" data-pos="сущ." data-lemma="la orden" data-grammar="**la orden** (ж.) — &quot;приказ, распоряжение&quot;.
+
+Не путать с **el orden** (м.) — &quot;порядок&quot;. Здесь — ж. р., так как речь о приказе с Земли.
+">orden</span>: <span class="w" data-tr="эвакуация" data-pos="сущ." data-lemma="la evacuación" data-grammar="**la evacuación** — род женский (как все на `-ción`).
+">evacuación</span> <span class="w" data-tr="немедленная" data-pos="прил." data-lemma="inmediato" data-grammar="**inmediata** — ж. р. ед. ч. от **inmediato**.
+">inmediata</span><span class="s" data-tr="Если Ана сообщит Земле, завтра придёт приказ: немедленная эвакуация.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="станция" data-pos="сущ." data-lemma="la estación" data-grammar="**la estación** — &quot;станция&quot;. Род женский, ед. число.
+
+В мн. ч.: `estaciones` (без ударения, ударение естественное).
+">estación</span> <span class="w" data-tr="(она) закрывается" data-pos="глаг." data-lemma="cerrar" data-grammar="**cierra** — *presente*, 3 л. ед. ч., от **cerrar** (&quot;закрывать(ся)&quot;).
+
+*Чередование:* `c[[e]]rrar → c[[ie]]rra` (e → ie).
+">cierra</span><span class="s" data-tr="Станция закрывается.">.</span> <span class="w" data-tr="двенадцать" data-pos="числ." data-lemma="doce" data-grammar="">Doce</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span> <span class="w" data-tr="из; от; о" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="работа" data-pos="сущ." data-lemma="el trabajo" data-grammar="">trabajo</span><span class="s" data-tr="Двенадцать лет работы.">.</span> <span class="w" data-tr="три" data-pos="числ." data-lemma="tres" data-grammar="">Tres</span> <span class="w" data-tr="дети" data-pos="сущ." data-lemma="el niño" data-grammar="**niños** — мн. ч. от **el niño** (&quot;ребёнок&quot;). Форма м. р. мн. ч. может включать оба пола.
+">niños</span> <span class="w" data-tr="родившиеся" data-pos="прил." data-lemma="nacido" data-grammar="**nacidos** — *причастие* м. р. мн. ч. от **nacido** (от **nacer** &quot;родиться&quot;).
+
+`tres niños [[nacidos]] aquí` = &quot;трое детей, родившихся здесь&quot;.
+">nacidos</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="">aquí</span><span class="s" data-tr="Трое детей, родившихся здесь.">.</span> <span class="w" data-tr="два" data-pos="числ." data-lemma="dos" data-grammar="">Dos</span> <span class="w" data-tr="могилы" data-pos="сущ." data-lemma="la tumba" data-grammar="">tumbas</span><span class="s" data-tr="Две могилы.">.</span> <span class="w" data-tr="всё" data-pos="мест." data-lemma="todo" data-grammar="**todo** — м. р. ед. ч. от **todo** (&quot;весь; всё&quot;).
+
+`[[Todo]] termina` = &quot;Всё заканчивается&quot;.
+">Todo</span> <span class="w" data-tr="(он/она) заканчивается" data-pos="глаг." data-lemma="terminar" data-grammar="**termina** — *presente*, 3 л. ед. ч., от **terminar** (&quot;заканчиваться&quot;). Правильный на `-ar`.
+">termina</span><span class="s" data-tr="Всё заканчивается.">.</span></p>
+
+    <p><span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — &quot;если&quot;. С *presente* в условии: `[[si]] Ana informa` (&quot;если Ана сообщит&quot;) — A1.
+">Si</span> <span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="не; нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он/она) сообщает" data-pos="глаг." data-lemma="informar" data-grammar="**informa** — *presente*, 3 л. ед. ч., от **informar** (&quot;сообщать, информировать&quot;). Правильный на `-ar`.
+
+`informar [[a]] alguien` = &quot;сообщать кому-л.&quot;.
+">informa</span>, <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="люди; народ" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — &quot;люди&quot; (собирательное). Род женский, ед. число, но переводится мн. числом:
+
+`la [[gente]] sigue tomando` = &quot;люди продолжают принимать&quot;.
+">gente</span> <span class="w" data-tr="(он/она) продолжает" data-pos="глаг." data-lemma="seguir" data-grammar="**sigue** — *presente*, 3 л. ед. ч., от **seguir** (&quot;продолжать&quot;).
+
+*Чередование:* `s[[e]]guir → s[[i]]gue` (e → i).
+
+Идиома `seguir + герундий` = &quot;продолжать (делать что-л.)&quot;: `[[sigue]] [[tomando]]` (&quot;продолжает принимать&quot;).
+">sigue</span> <span class="w" data-tr="принимая; принимающий" data-pos="глаг." data-lemma="tomar" data-grammar="**tomando** — *герундий* от **tomar** (&quot;брать; принимать (лекарство)&quot;): `tom·[[ar]]` → `tom·[[ando]]`.
+
+Используется в обороте `seguir + герундий` = &quot;продолжать делать&quot;: `sigue [[tomando]]`.
+">tomando</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la píldora" data-grammar="**la píldora** — &quot;таблетка&quot;. Род женский.
+">píldora</span> <span class="w" data-tr="синий/-яя" data-pos="прил." data-lemma="azul" data-grammar="**azul** — одна форма для м. и ж. рода (как все прил. на согласный): `el cielo [[azul]]`, `la píldora [[azul]]`.
+
+Мн. ч.: `azules`.
+">azul</span><span class="s" data-tr="Если Ана не сообщит, люди продолжают принимать синюю таблетку.">.</span></p>
+
+    <p class="dream-litany"><span class="w" data-tr="(он/она) доверяет" data-pos="глаг." data-lemma="confiar" data-grammar="**confía** — *presente*, 3 л. ед. ч., от **confiar** (&quot;доверять&quot;).
+
+Графическое ударение на `í` сохраняет слог: `conf·í·a`.
+
+Подразумевается субъект: `(la gente) [[confía]]` = &quot;(люди) доверяют&quot;.
+">Confía</span><span class="s" data-tr="Доверяет.">.</span> <span class="w" data-tr="(он/она) пьёт" data-pos="глаг." data-lemma="beber" data-grammar="**bebe** — *presente*, 3 л. ед. ч., от **beber** (&quot;пить&quot;). Правильный на `-er`.
+">Bebe</span> <span class="w" data-tr="кофе" data-pos="сущ." data-lemma="el café" data-grammar="**el café** — &quot;кофе&quot;. Род мужской. Также — &quot;кафе&quot;.
+">café</span><span class="s" data-tr="Пьёт кофе.">.</span> <span class="w" data-tr="(он/она) ухаживает" data-pos="глаг." data-lemma="cuidar" data-grammar="**cuida** — *presente*, 3 л. ед. ч., от **cuidar** (&quot;заботиться, ухаживать&quot;). Правильный на `-ar`.
+
+`cuidar [[los]] invernaderos` = &quot;ухаживать за теплицами&quot;.
+">Cuida</span> <span class="w" data-tr="(арт. м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">los</span> <span class="w" data-tr="теплицы" data-pos="сущ." data-lemma="el invernadero" data-grammar="**invernaderos** — мн. ч. от **el invernadero** (&quot;теплица; оранжерея&quot;). Род мужской.
+">invernaderos</span><span class="s" data-tr="Ухаживает за теплицами.">.</span> <span class="w" data-tr="(он/она) мечтает; видит сны" data-pos="глаг." data-lemma="soñar" data-grammar="**sueña** — *presente*, 3 л. ед. ч., от **soñar** (&quot;мечтать; видеть сны&quot;).
+
+*Чередование:* `s[[o]]ñar → s[[ue]]ña` (o → ue).
+
+`soñar [[con]]` + сущ. = &quot;мечтать о (чём-л.)&quot;.
+">Sueña</span> <span class="w" data-tr="с" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="деревья" data-pos="сущ." data-lemma="el árbol" data-grammar="**árboles** — мн. ч. от **el árbol** (&quot;дерево&quot;).
+
+Ударение остаётся на `á` в обеих формах.
+">árboles</span><span class="s" data-tr="Мечтает о деревьях.">.</span></p>
+
+    <div class="draft-block">
+      <p><span class="w" data-tr="Ана — имя главной героини, врача станции" data-pos="имя" data-lemma="" data-grammar="">Ana</span> <span class="w" data-tr="(она) открывает" data-pos="глаг." data-lemma="abrir" data-grammar="**abre** — *presente*, 3 л. ед. ч., от **abrir** (&quot;открывать&quot;).
+
+`abr·[[ir]]` → `abr·[[e]]` (правильный на `-ir`).
+">abre</span> <span class="w" data-tr="один; (неопр. арт. м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="сообщение" data-pos="сущ." data-lemma="el mensaje" data-grammar="**el mensaje** — &quot;сообщение&quot;. Род мужской, несмотря на окончание `-e`.
+">mensaje</span> <span class="w" data-tr="новый" data-pos="прил." data-lemma="nuevo" data-grammar="">nuevo</span><span class="s" data-tr="Ана открывает новое сообщение.">.</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;). Правильный на `-ir`.
+">Escribe</span>: «<span class="w" data-tr="Земля — планета (в тексте всегда с большой буквы и арт. **la**)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span>, <span class="w" data-tr="доклад; отчёт" data-pos="сущ." data-lemma="el informe" data-grammar="**el informe** — &quot;доклад, отчёт, рапорт&quot;. Род мужской.
+
+Не путать с глаг. **informe** — здесь только сущ. в составе чернового заголовка.
+">informe</span> <span class="w" data-tr="срочный/-ая" data-pos="прил." data-lemma="urgente" data-grammar="**urgente** — одна форма для м. и ж. (как все прил. на `-e`).
+">urgente</span> —»<span class="s" data-tr="Пишет: «Земля, срочный доклад —».">.</span> <span class="w" data-tr="его; это (объектное)" data-pos="мест." data-lemma="lo" data-grammar="**lo** — безударное объектное местоимение м. р. ед. ч. (&quot;его / это&quot;).
+
+`[[Lo]] borra` = &quot;Стирает его (= сообщение)&quot;. `[[Lo]] guarda` = &quot;Сохраняет его&quot;.
+">Lo</span> <span class="w" data-tr="(она) стирает" data-pos="глаг." data-lemma="borrar" data-grammar="**borra** — *presente*, 3 л. ед. ч., от **borrar** (&quot;стирать, удалять (файл, текст)&quot;). Правильный на `-ar`.
+">borra</span><span class="s" data-tr="Стирает.">.</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;). Правильный на `-ir`.
+">Escribe</span>: «<span class="w" data-tr="Земля — планета (в тексте всегда с большой буквы и арт. **la**)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span>, <span class="w" data-tr="консультация; запрос" data-pos="сущ." data-lemma="la consulta" data-grammar="**la consulta** — &quot;консультация, запрос&quot;. Род женский.
+
+`consulta [[técnica]]` = &quot;технический запрос&quot;.
+">consulta</span> <span class="w" data-tr="техническая" data-pos="прил." data-lemma="técnico" data-grammar="**técnica** — ж. р. ед. ч. от **técnico** (&quot;технический&quot;). Согласуется с **consulta** (ж.).
+">técnica</span> —»<span class="s" data-tr="Пишет: «Земля, технический запрос —».">.</span> <span class="w" data-tr="его; это (объектное)" data-pos="мест." data-lemma="lo" data-grammar="**lo** — безударное объектное местоимение м. р. ед. ч. (&quot;его / это&quot;).
+
+`[[Lo]] borra` = &quot;Стирает его (= сообщение)&quot;. `[[Lo]] guarda` = &quot;Сохраняет его&quot;.
+">Lo</span> <span class="w" data-tr="(она) стирает" data-pos="глаг." data-lemma="borrar" data-grammar="**borra** — *presente*, 3 л. ед. ч., от **borrar** (&quot;стирать, удалять (файл, текст)&quot;). Правильный на `-ar`.
+">borra</span><span class="s" data-tr="Стирает.">.</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;). Правильный на `-ir`.
+">Escribe</span>: «<span class="w" data-tr="Земля — планета (в тексте всегда с большой буквы и арт. **la**)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span>, —»<span class="s" data-tr="Пишет: «Земля, —».">.</span></p>
+    </div>
+
+    <p><span class="w" data-tr="его; это (объектное)" data-pos="мест." data-lemma="lo" data-grammar="**lo** — безударное объектное местоимение м. р. ед. ч. (&quot;его / это&quot;).
+
+`[[Lo]] borra` = &quot;Стирает его (= сообщение)&quot;. `[[Lo]] guarda` = &quot;Сохраняет его&quot;.
+">Lo</span> <span class="w" data-tr="(она) сохраняет" data-pos="глаг." data-lemma="guardar" data-grammar="**guarda** — *presente*, 3 л. ед. ч., от **guardar** (&quot;хранить; сохранять (файл)&quot;).
+">guarda</span> <span class="w" data-tr="в; на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="черновики" data-pos="сущ." data-lemma="el borrador" data-grammar="**borradores** — мн. ч. от **el borrador** (&quot;черновик&quot;). Род мужской.
+
+`guarda en [[borradores]]` = &quot;сохраняет в черновиках&quot;.
+">borradores</span><span class="s" data-tr="Сохраняет в черновиках.">.</span></p>
+
+    <p class="coda"><span class="w" data-tr="снаружи" data-pos="нар." data-lemma="afuera" data-grammar="">Afuera</span>, <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="солнце; (марс.) сол" data-pos="сущ." data-lemma="el sol" data-grammar="**el sol** — &quot;солнце&quot;. В марсианских колониях **sol** также означает марсианские сутки (~24 ч. 40 мин.). Здесь — нумерация дней: `[[sol]] 4321`.
+
+Род мужской.
+">sol</span> <span class="w" data-tr="марсианский" data-pos="прил." data-lemma="marciano" data-grammar="**marciano** — м. р. ед. ч. (&quot;марсианский&quot;). Также как сущ. **el marciano** (&quot;марсианин&quot;).
+
+`el sol [[marciano]]` = &quot;марсианское солнце&quot;.
+">marciano</span> <span class="w" data-tr="(он/она) поднимается" data-pos="глаг." data-lemma="subir" data-grammar="**sube** — *presente*, 3 л. ед. ч., от **subir** (&quot;подниматься&quot;). Правильный на `-ir`.
+">sube</span> <span class="w" data-tr="медленно" data-pos="нар." data-lemma="despacio" data-grammar="">despacio</span><span class="s" data-tr="Снаружи марсианское солнце поднимается медленно.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="свет" data-pos="сущ." data-lemma="la luz" data-grammar="**la luz** — &quot;свет&quot;. Род женский.
+
+Мн. ч.: `luces` (после `z` перед `e` пишется `c`).
+">luz</span> <span class="w" data-tr="красная" data-pos="прил." data-lemma="rojo" data-grammar="**roja** — ж. р. ед. ч. от **rojo**. Согласуется с **luz** (ж.).
+">roja</span> <span class="w" data-tr="(он/она) входит" data-pos="глаг." data-lemma="entrar" data-grammar="**entra** — *presente*, 3 л. ед. ч., от **entrar** (&quot;входить&quot;). Правильный на `-ar`.
+
+`entrar [[por]]` = &quot;входить через&quot;.
+">entra</span> <span class="w" data-tr="по; через" data-pos="предл." data-lemma="por" data-grammar="**por** — здесь &quot;через&quot;: `entra [[por]] la ventana` = &quot;входит через окно&quot;.
+">por</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="окно" data-pos="сущ." data-lemma="la ventana" data-grammar="**la ventana** — &quot;окно&quot;. Род женский (в отличие от рус. ср. р.).
+">ventana</span><span class="s" data-tr="Красный свет входит через окно.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">La</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la píldora" data-grammar="**la píldora** — &quot;таблетка&quot;. Род женский.
+">píldora</span> <span class="w" data-tr="синий/-яя" data-pos="прил." data-lemma="azul" data-grammar="**azul** — одна форма для м. и ж. рода (как все прил. на согласный): `el cielo [[azul]]`, `la píldora [[azul]]`.
+
+Мн. ч.: `azules`.
+">azul</span> <span class="w" data-tr="(он/она) блестит" data-pos="глаг." data-lemma="brillar" data-grammar="**brilla** — *presente*, 3 л. ед. ч., от **brillar** (&quot;блестеть, сиять&quot;). Правильный на `-ar`.
+">brilla</span> <span class="w" data-tr="один; (неопр. арт. м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="немного; чуть-чуть" data-pos="нар." data-lemma="poco" data-grammar="**poco** — здесь наречие, &quot;чуть-чуть&quot;: `brilla un [[poco]]` = &quot;немного блестит&quot;.
+">poco</span>, <span class="w" data-tr="на; над" data-pos="предл." data-lemma="sobre" data-grammar="">sobre</span> <span class="w" data-tr="(арт. ж. р., ед. ч.); её (объектное)" data-pos="арт." data-lemma="la" data-grammar="**la** — в большинстве случаев *определённый артикль* ж. р. ед. ч.: `[[la]] estación`.
+
+Но дважды в тексте — *безударное объектное местоимение* (&quot;её&quot;):
+
+`Una idea pequeña [[la]] inquieta` = &quot;Маленькая мысль её тревожит&quot;.
+
+`[[La]] fabricaron en la Tierra` = &quot;Её (= таблетку) изготовили на Земле&quot;.
+">la</span> <span class="w" data-tr="стол" data-pos="сущ." data-lemma="la mesa" data-grammar="**la mesa** — &quot;стол&quot;. Род женский (в отличие от рус. м. р.).
+">mesa</span><span class="s" data-tr="Синяя таблетка чуть-чуть блестит на столе.">.</span></p>
+
+  </article>
+
+  <aside class="sidebar" aria-label="metadatos del expediente">
+
+    <div class="file-meta">
+      <h4>Expediente</h4>
+      <dl>
+        <dt>Estación</dt><dd>Argyre · 38° S</dd>
+        <dt>Sol</dt><dd>4321 · turno 03 : 14</dd>
+        <dt>Población</dt><dd>40 (3 niños · 2 tumbas)</dd>
+        <dt>Antigüedad</dt><dd>12 años activa</dd>
+        <dt>Autor</dt><dd>Soto, A.</dd>
+        <dt>Estado</dt><dd>No transmitido</dd>
+      </dl>
+    </div>
+
+    <div class="ref-card">
+      <h4>Profilaxis Rad-7</h4>
+      <p class="ref-meta">Tierra · 2086 · azul · oral</p>
+      <p class="ref-note">Fórmula original calibrada para dosis terrestres. Eficacia en condiciones marcianas no reverificada en doce años.</p>
+    </div>
+
+    <div class="sigil" aria-hidden="true">
+      <svg width="92" height="92" viewBox="0 0 92 92" fill="none" stroke="#3b5b56" stroke-width="1.1">
+        <circle cx="46" cy="46" r="42"/>
+        <circle cx="46" cy="46" r="30" stroke="#c8b890"/>
+        <circle cx="46" cy="46" r="6" fill="#8a1f1f" stroke="none"/>
+        <!-- three trefoil-like notches (radiation-warning echo, abstracted) -->
+        <path d="M46 8 L40 24 L52 24 Z" fill="#3b5b56" stroke="none"/>
+        <path d="M46 84 L40 68 L52 68 Z" fill="#3b5b56" stroke="none" transform="rotate(0 46 46)"/>
+        <path d="M8 46 L24 40 L24 52 Z" fill="#3b5b56" stroke="none"/>
+        <path d="M84 46 L68 40 L68 52 Z" fill="#3b5b56" stroke="none"/>
+        <text x="46" y="50" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" letter-spacing="0.2em" fill="#3b5b56">RAD-7</text>
+      </svg>
+    </div>
+
+  </aside>
+
+</main>
+
+<footer class="colophon">
+  <span class="left">Estación Argyre · médica titular · sol 4321</span>
+  <span class="right">borradores · 1 / 1 · no enviado</span>
+</footer>
+
+<script data-popup>
+(function(){
+  var pop = null, active = null, isTouch = false;
+  function ensurePop(){
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
+    document.body.appendChild(pop);
+    return pop;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function dictKey(lemma){
+    return lemma.replace(/^(el |la |los |las |un |una |unos |unas )/i,'').trim();
+  }
+  function mdToHtml(md){
+    if(!md) return '';
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
+      p = p.replace(/`([^`]+)`/g, function(_, c){
+        return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
+      });
+      p = p.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+      p = p.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+      p = p.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>');
+      return '<p>' + p + '</p>';
+    }).join('');
+  }
+  function show(el){
+    var tr = el.dataset.tr || '';
+    var p = ensurePop();
+    if (el.classList.contains('s')){
+      p.classList.add('sentence');
+      p.classList.remove('has-grammar');
+      p.innerHTML = '<div class="s-label">traducción</div><div class="s-tr">'+escapeHtml(tr)+'</div>';
+    } else {
+      p.classList.remove('sentence');
+      var pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
+        : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        grammarHtml + linkHtml;
+    }
+    p.classList.add('show');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
+    el.classList.add('active');
+    active = el;
+  }
+  function hide(){
+    if (!pop) return;
+    pop.classList.remove('show');
+    if (active){ active.classList.remove('active'); active = null; }
+  }
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
+  }
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
+    hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else show(el); }
+    else if (!onPop) hide();
+  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+})();
+</script>
+</body>
+</html>
