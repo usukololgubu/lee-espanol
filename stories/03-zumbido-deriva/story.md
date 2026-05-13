@@ -1,5 +1,5 @@
 ---
-pilot: 3
+seq: 3
 title: "Un zumbido en la deriva"
 universe: Space Expansion
 protagonist: navigator (Marco)

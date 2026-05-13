@@ -1,0 +1,86 @@
+{
+  "01-saturn-ai": {
+    "title": "Día 412",
+    "protagonist": "AI (ARES, station observatory)",
+    "setting": "Saturn orbit",
+    "date_generated": "2026-05-10",
+    "length_words": "270"
+  },
+  "02-nueva-andalucia": {
+    "title": "Plaza del Patrón",
+    "protagonist": "anthropologist (Elena)",
+    "setting": "Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron",
+    "date_generated": "2026-05-10",
+    "length_words": "273"
+  },
+  "03-zumbido-deriva": {
+    "title": "Un zumbido en la deriva",
+    "protagonist": "navigator (Marco)",
+    "setting": "ice tug Tortuga, mid-route to Ceres, outer drift",
+    "date_generated": "2026-05-11",
+    "length_words": "215"
+  },
+  "04-algo-verde": {
+    "title": "Algo verde",
+    "protagonist": "biologist (Lucía)",
+    "setting": "Europa-3 station, atop the ice of Europa, Jupiter system",
+    "date_generated": "2026-05-11",
+    "length_words": "255"
+  },
+  "05-pasajero-unico": {
+    "title": "Pasajero único",
+    "protagonist": "maintenance engineer (Tomás)",
+    "setting": "generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri",
+    "date_generated": "2026-05-11",
+    "length_words": "264"
+  },
+  "06-la-traductora": {
+    "title": "La traductora",
+    "protagonist": "junior linguist (Inés)",
+    "setting": "Instituto de Lenguas, on Mars — a small translation lab",
+    "date_generated": "2026-05-11",
+    "length_words": "268"
+  },
+  "07-el-desvio": {
+    "title": "El desvío",
+    "protagonist": "cargo captain (Mateo)",
+    "setting": "freighter La Mula, asteroid belt, between Mars and Ceres",
+    "date_generated": "2026-05-12",
+    "length_words": "272"
+  },
+  "08-el-ultimo-que-recuerda": {
+    "title": "El último que recuerda",
+    "protagonist": "old colonist (Don Joaquín)",
+    "setting": "Nueva Andalucía, 85 years after losing contact with Earth",
+    "date_generated": "2026-05-12",
+    "length_words": "278"
+  },
+  "09-la-senal": {
+    "title": "La señal",
+    "protagonist": "radioastrónoma (Mariela)",
+    "setting": "Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets",
+    "date_generated": "2026-05-12",
+    "length_words": "253"
+  },
+  "10-el-reloj": {
+    "title": "El reloj",
+    "protagonist": "software maintainer (Sofía)",
+    "setting": "Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid",
+    "date_generated": "2026-05-12",
+    "length_words": "249"
+  },
+  "11-la-dosis": {
+    "title": "La dosis",
+    "protagonist": "doctor (Dra. Ana Soto)",
+    "setting": "Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists",
+    "date_generated": "2026-05-13",
+    "length_words": "288"
+  },
+  "12-el-faro-apagado": {
+    "title": "El faro apagado",
+    "protagonist": "lighthouse keeper (Renata)",
+    "setting": "Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter",
+    "date_generated": "2026-05-13",
+    "length_words": "244"
+  }
+}

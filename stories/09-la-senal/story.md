@@ -1,5 +1,5 @@
 ---
-pilot: 9
+seq: 9
 title: "La señal"
 universe: Space Expansion
 protagonist: radioastrónoma (Mariela)

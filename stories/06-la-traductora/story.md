@@ -1,5 +1,5 @@
 ---
-pilot: 6
+seq: 6
 title: "La traductora"
 universe: Space Expansion
 protagonist: junior linguist (Inés)

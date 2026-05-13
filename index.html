@@ -31,7 +31,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 .page{
-  max-width:720px;
+  max-width:880px;
   margin:0 auto;
   padding:3rem 2rem 3.5rem;
   position:relative;
@@ -71,69 +71,70 @@ body{
   letter-spacing:0.16em;
   color:var(--muted);
 }
-.entries{margin:0;padding:0}
-.entry{
-  display:block;
-  padding:0.85rem 0.5rem;
+.entries{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:0.9rem;
   margin:0;
-  border-bottom:1px dotted var(--hair);
+  padding:0;
+}
+.entry{
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+  padding:0.95rem 1rem 0.9rem;
+  border:1px solid var(--ink);
   text-decoration:none;
   color:inherit;
-  transition:background 0.2s,padding-left 0.2s;
+  background:var(--bg);
+  min-height:6.4rem;
+  transition:background 0.18s, transform 0.18s;
 }
 .entry:hover{
   background:var(--bg-soft);
-  padding-left:0.9rem;
+  transform:translateY(-1px);
 }
 .entry:hover .e-title{color:var(--ink)}
 .row1{
   display:flex;
+  justify-content:space-between;
   align-items:baseline;
-  gap:0.7rem;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  color:var(--ink-soft);
 }
 .row1 .num{
-  width:2.4em;
-  flex-shrink:0;
-  color:var(--muted);
   font-weight:700;
+  color:var(--ink);
 }
-.row1 .e-title{
-  flex:0 0 auto;
+.row1 .date{
+  color:var(--muted);
+}
+.entry .e-title{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.05em;
+  font-size:0.98rem;
+  line-height:1.22;
+  margin-top:0.1rem;
   color:var(--ink);
   transition:color 0.2s;
 }
-.row1 .leader{
-  flex:1 1 0;
-  border-bottom:1px dotted var(--hair);
-  transform:translateY(-0.34em);
-  margin:0 0.5rem;
-  min-width:0.6rem;
-}
-.row1 .date{
-  flex-shrink:0;
-  color:var(--muted);
-  font-size:0.84rem;
-}
-.row2{
-  display:flex;
-  justify-content:space-between;
-  margin-top:0.18rem;
-  padding-left:3.1em;
-  font-size:0.86rem;
-  color:var(--ink-soft);
-  gap:1rem;
-  flex-wrap:wrap;
-}
-.row2 .meta{
-  flex:1 1 auto;
-  min-width:0;
+.entry .meta{
   font-style:italic;
+  font-size:0.84rem;
+  line-height:1.45;
+  color:var(--ink-soft);
+  margin-top:auto;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.row2 .words{
-  flex-shrink:0;
+.entry .words{
+  font-size:0.78rem;
+  letter-spacing:0.06em;
   color:var(--muted);
 }
 footer.colophon{
@@ -163,14 +164,11 @@ footer.colophon a:hover{
   color:var(--ink);
   border-bottom-color:var(--ink);
 }
-@media(max-width:600px){
-  .page{padding:2.2rem 1.1rem 2.8rem}
+@media(max-width:640px){
+  .page{padding:2.2rem 1.1rem 2.8rem;max-width:none}
   body{font-size:14px}
-  .row1{flex-wrap:wrap;gap:0.5rem}
-  .row1 .leader{display:none}
-  .row1 .date{margin-left:auto}
-  .row2{padding-left:0;margin-top:0.5rem;flex-direction:column;gap:0.2rem}
-  .row2 .words{align-self:flex-start}
+  .entries{grid-template-columns:1fr;gap:0.7rem}
+  .entry{min-height:auto}
   footer.colophon{flex-direction:column;gap:0.4rem}
   .head{font-size:0.68rem;letter-spacing:0.14em}
 }
@@ -198,160 +196,124 @@ footer.colophon a:hover{
   <div class="entries">
 <!-- STORIES:START -->
 
-    <a class="entry" href="stories/01-saturn-ai/index.html">
+    <a class="entry" href="stories/12-el-faro-apagado/index.html">
       <div class="row1">
-        <span class="num">01</span>
-        <span class="e-title">Día 412</span>
-        <span class="leader"></span>
-        <span class="date">26·05·10</span>
+        <span class="num">12</span>
+        <span class="date">26·05·13</span>
       </div>
-      <div class="row2">
-        <span class="meta">AI (ARES, station observatory) · Saturn orbit</span>
-        <span class="words">270 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/02-nueva-andalucia/index.html">
-      <div class="row1">
-        <span class="num">02</span>
-        <span class="e-title">Plaza del Patrón</span>
-        <span class="leader"></span>
-        <span class="date">26·05·10</span>
-      </div>
-      <div class="row2">
-        <span class="meta">anthropologist (Elena) · Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron</span>
-        <span class="words">273 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/03-zumbido-deriva/index.html">
-      <div class="row1">
-        <span class="num">03</span>
-        <span class="e-title">Un zumbido en la deriva</span>
-        <span class="leader"></span>
-        <span class="date">26·05·11</span>
-      </div>
-      <div class="row2">
-        <span class="meta">navigator (Marco) · ice tug Tortuga, mid-route to Ceres, outer drift</span>
-        <span class="words">215 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/04-algo-verde/index.html">
-      <div class="row1">
-        <span class="num">04</span>
-        <span class="e-title">Algo verde</span>
-        <span class="leader"></span>
-        <span class="date">26·05·11</span>
-      </div>
-      <div class="row2">
-        <span class="meta">biologist (Lucía) · Europa-3 station, atop the ice of Europa, Jupiter system</span>
-        <span class="words">255 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/05-pasajero-unico/index.html">
-      <div class="row1">
-        <span class="num">05</span>
-        <span class="e-title">Pasajero único</span>
-        <span class="leader"></span>
-        <span class="date">26·05·11</span>
-      </div>
-      <div class="row2">
-        <span class="meta">maintenance engineer (Tomás) · generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri</span>
-        <span class="words">264 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/06-la-traductora/index.html">
-      <div class="row1">
-        <span class="num">06</span>
-        <span class="e-title">La traductora</span>
-        <span class="leader"></span>
-        <span class="date">26·05·11</span>
-      </div>
-      <div class="row2">
-        <span class="meta">junior linguist (Inés) · Instituto de Lenguas, on Mars — a small translation lab</span>
-        <span class="words">268 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/07-el-desvio/index.html">
-      <div class="row1">
-        <span class="num">07</span>
-        <span class="e-title">El desvío</span>
-        <span class="leader"></span>
-        <span class="date">26·05·12</span>
-      </div>
-      <div class="row2">
-        <span class="meta">cargo captain (Mateo) · freighter La Mula, asteroid belt, between Mars and Ceres</span>
-        <span class="words">272 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/08-el-ultimo-que-recuerda/index.html">
-      <div class="row1">
-        <span class="num">08</span>
-        <span class="e-title">El último que recuerda</span>
-        <span class="leader"></span>
-        <span class="date">26·05·12</span>
-      </div>
-      <div class="row2">
-        <span class="meta">old colonist (Don Joaquín) · Nueva Andalucía, 85 years after losing contact with Earth</span>
-        <span class="words">278 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/09-la-senal/index.html">
-      <div class="row1">
-        <span class="num">09</span>
-        <span class="e-title">La señal</span>
-        <span class="leader"></span>
-        <span class="date">26·05·12</span>
-      </div>
-      <div class="row2">
-        <span class="meta">radioastrónoma (Mariela) · Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets</span>
-        <span class="words">253 palabras</span>
-      </div>
-    </a>
-
-    <a class="entry" href="stories/10-el-reloj/index.html">
-      <div class="row1">
-        <span class="num">10</span>
-        <span class="e-title">El reloj</span>
-        <span class="leader"></span>
-        <span class="date">26·05·12</span>
-      </div>
-      <div class="row2">
-        <span class="meta">software maintainer (Sofía) · Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid</span>
-        <span class="words">249 palabras</span>
-      </div>
+      <div class="e-title">El faro apagado</div>
+      <div class="meta">lighthouse keeper (Renata) · Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter</div>
+      <div class="words">244 palabras</div>
     </a>
 
     <a class="entry" href="stories/11-la-dosis/index.html">
       <div class="row1">
         <span class="num">11</span>
-        <span class="e-title">La dosis</span>
-        <span class="leader"></span>
         <span class="date">26·05·13</span>
       </div>
-      <div class="row2">
-        <span class="meta">doctor (Dra. Ana Soto) · Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists</span>
-        <span class="words">288 palabras</span>
-      </div>
+      <div class="e-title">La dosis</div>
+      <div class="meta">doctor (Dra. Ana Soto) · Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists</div>
+      <div class="words">288 palabras</div>
     </a>
 
-    <a class="entry" href="stories/12-el-faro-apagado/index.html">
+    <a class="entry" href="stories/10-el-reloj/index.html">
       <div class="row1">
-        <span class="num">12</span>
-        <span class="e-title">El faro apagado</span>
-        <span class="leader"></span>
-        <span class="date">26·05·13</span>
+        <span class="num">10</span>
+        <span class="date">26·05·12</span>
       </div>
-      <div class="row2">
-        <span class="meta">lighthouse keeper (Renata) · Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter</span>
-        <span class="words">244 palabras</span>
+      <div class="e-title">El reloj</div>
+      <div class="meta">software maintainer (Sofía) · Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid</div>
+      <div class="words">249 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/09-la-senal/index.html">
+      <div class="row1">
+        <span class="num">09</span>
+        <span class="date">26·05·12</span>
       </div>
+      <div class="e-title">La señal</div>
+      <div class="meta">radioastrónoma (Mariela) · Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets</div>
+      <div class="words">253 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/08-el-ultimo-que-recuerda/index.html">
+      <div class="row1">
+        <span class="num">08</span>
+        <span class="date">26·05·12</span>
+      </div>
+      <div class="e-title">El último que recuerda</div>
+      <div class="meta">old colonist (Don Joaquín) · Nueva Andalucía, 85 years after losing contact with Earth</div>
+      <div class="words">278 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/07-el-desvio/index.html">
+      <div class="row1">
+        <span class="num">07</span>
+        <span class="date">26·05·12</span>
+      </div>
+      <div class="e-title">El desvío</div>
+      <div class="meta">cargo captain (Mateo) · freighter La Mula, asteroid belt, between Mars and Ceres</div>
+      <div class="words">272 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/06-la-traductora/index.html">
+      <div class="row1">
+        <span class="num">06</span>
+        <span class="date">26·05·11</span>
+      </div>
+      <div class="e-title">La traductora</div>
+      <div class="meta">junior linguist (Inés) · Instituto de Lenguas, on Mars — a small translation lab</div>
+      <div class="words">268 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/05-pasajero-unico/index.html">
+      <div class="row1">
+        <span class="num">05</span>
+        <span class="date">26·05·11</span>
+      </div>
+      <div class="e-title">Pasajero único</div>
+      <div class="meta">maintenance engineer (Tomás) · generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri</div>
+      <div class="words">264 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/04-algo-verde/index.html">
+      <div class="row1">
+        <span class="num">04</span>
+        <span class="date">26·05·11</span>
+      </div>
+      <div class="e-title">Algo verde</div>
+      <div class="meta">biologist (Lucía) · Europa-3 station, atop the ice of Europa, Jupiter system</div>
+      <div class="words">255 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/03-zumbido-deriva/index.html">
+      <div class="row1">
+        <span class="num">03</span>
+        <span class="date">26·05·11</span>
+      </div>
+      <div class="e-title">Un zumbido en la deriva</div>
+      <div class="meta">navigator (Marco) · ice tug Tortuga, mid-route to Ceres, outer drift</div>
+      <div class="words">215 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/02-nueva-andalucia/index.html">
+      <div class="row1">
+        <span class="num">02</span>
+        <span class="date">26·05·10</span>
+      </div>
+      <div class="e-title">Plaza del Patrón</div>
+      <div class="meta">anthropologist (Elena) · Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron</div>
+      <div class="words">273 palabras</div>
+    </a>
+
+    <a class="entry" href="stories/01-saturn-ai/index.html">
+      <div class="row1">
+        <span class="num">01</span>
+        <span class="date">26·05·10</span>
+      </div>
+      <div class="e-title">Día 412</div>
+      <div class="meta">AI (ARES, station observatory) · Saturn orbit</div>
+      <div class="words">270 palabras</div>
     </a>
 
 <!-- STORIES:END -->

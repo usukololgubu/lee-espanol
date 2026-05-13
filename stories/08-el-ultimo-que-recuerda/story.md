@@ -1,5 +1,5 @@
 ---
-pilot: 8
+seq: 8
 title: "El último que recuerda"
 universe: Space Expansion
 protagonist: old colonist (Don Joaquín)

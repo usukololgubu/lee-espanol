@@ -1,5 +1,5 @@
 ---
-pilot: 4
+seq: 4
 title: "Algo verde"
 universe: Space Expansion
 protagonist: biologist (Lucía)

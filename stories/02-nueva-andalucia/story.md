@@ -1,5 +1,5 @@
 ---
-pilot: 2
+seq: 2
 title: "Plaza del Patrón"
 universe: Space Expansion
 protagonist: anthropologist (Elena)

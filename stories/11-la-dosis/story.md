@@ -1,5 +1,5 @@
 ---
-pilot: 11
+seq: 11
 title: "La dosis"
 universe: Space Expansion
 protagonist: doctor (Dra. Ana Soto)

@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import sys
 import tomllib
@@ -46,6 +47,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 STORIES_DIR = ROOT / "stories"
 INDEX_HTML = ROOT / "index.html"
+INDEX_CACHE = ROOT / ".ai" / "stories-index.json"
+INDEX_FIELDS = ("title", "protagonist", "setting", "date_generated", "length_words")
 
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
 WORD_RE = re.compile(rf"[{SP_LETTERS}]+")
@@ -533,20 +536,45 @@ def render_bootstrap(fm: dict, paragraphs: list[str]) -> str:
 
 # ─── project-wide index refresh ─────────────────────────────────────────────
 
-def list_stories() -> list[dict]:
-    out: list[dict] = []
+def disk_slugs() -> list[str]:
     if not STORIES_DIR.is_dir():
-        return out
-    for sub in sorted(STORIES_DIR.iterdir()):
-        if not sub.is_dir() or not re.match(r"\d{2}-", sub.name):
-            continue
-        story_md = sub / "story.md"
-        if not story_md.exists():
-            continue
-        fm, _ = parse_frontmatter(story_md.read_text(encoding="utf-8"))
-        fm["__slug"] = sub.name
-        out.append(fm)
-    return out
+        return []
+    return [
+        sub.name for sub in sorted(STORIES_DIR.iterdir())
+        if sub.is_dir() and re.match(r"\d{2}-", sub.name) and (sub / "story.md").exists()
+    ]
+
+
+def slug_fm(slug: str) -> dict:
+    fm, _ = parse_frontmatter((STORIES_DIR / slug / "story.md").read_text(encoding="utf-8"))
+    return {k: fm.get(k, "") for k in INDEX_FIELDS}
+
+
+def load_index_cache() -> dict | None:
+    if not INDEX_CACHE.exists():
+        return None
+    try:
+        return json.loads(INDEX_CACHE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+
+
+def save_index_cache(cache: dict) -> None:
+    INDEX_CACHE.parent.mkdir(parents=True, exist_ok=True)
+    INDEX_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def build_cache_from_disk() -> dict:
+    return {slug: slug_fm(slug) for slug in disk_slugs()}
+
+
+def get_or_rebuild_cache() -> dict:
+    """Return a cache that matches the on-disk slug set. Rebuild if missing or stale."""
+    cache = load_index_cache()
+    if cache is None or set(cache.keys()) != set(disk_slugs()):
+        cache = build_cache_from_disk()
+        save_index_cache(cache)
+    return cache
 
 
 def fmt_date(d: str) -> str:
@@ -554,8 +582,7 @@ def fmt_date(d: str) -> str:
     return f"{m.group(1)[2:]}·{m.group(2)}·{m.group(3)}" if m else (d or "")
 
 
-def render_entry(fm: dict) -> str:
-    slug = fm["__slug"]
+def render_entry(slug: str, fm: dict) -> str:
     num = slug[:2]
     title = fm.get("title", slug)
     meta_parts = [fm.get("protagonist", ""), fm.get("setting", "")]
@@ -564,29 +591,48 @@ def render_entry(fm: dict) -> str:
         f'    <a class="entry" href="stories/{slug}/index.html">\n'
         '      <div class="row1">\n'
         f'        <span class="num">{html.escape(num)}</span>\n'
-        f'        <span class="e-title">{html.escape(title)}</span>\n'
-        '        <span class="leader"></span>\n'
         f'        <span class="date">{html.escape(fmt_date(fm.get("date_generated", "")))}</span>\n'
         '      </div>\n'
-        '      <div class="row2">\n'
-        f'        <span class="meta">{html.escape(meta)}</span>\n'
-        f'        <span class="words">{html.escape(str(fm.get("length_words", "")))} palabras</span>\n'
-        '      </div>\n'
+        f'      <div class="e-title">{html.escape(title)}</div>\n'
+        f'      <div class="meta">{html.escape(meta)}</div>\n'
+        f'      <div class="words">{html.escape(str(fm.get("length_words", "")))} palabras</div>\n'
         '    </a>'
     )
 
 
-def refresh_index(stories: list[dict]) -> None:
+def write_index_html(cache: dict) -> int:
+    """Render the entries block from cache, newest-first (slug desc). Returns entry count."""
     if not INDEX_HTML.exists():
         sys.exit(f"error: {INDEX_HTML} missing — bootstrap by hand once, then this script keeps it in sync")
     text = INDEX_HTML.read_text(encoding="utf-8")
     if "<!-- STORIES:START -->" not in text or "<!-- STORIES:END -->" not in text:
         sys.exit("error: index.html lacks <!-- STORIES:START --> / <!-- STORIES:END --> markers")
-    entries = "\n\n".join(render_entry(fm) for fm in stories)
+    slugs = sorted(cache.keys(), reverse=True)
+    entries = "\n\n".join(render_entry(slug, cache[slug]) for slug in slugs)
     new_block = f"<!-- STORIES:START -->\n\n{entries}\n\n<!-- STORIES:END -->"
     text = re.sub(r"<!-- STORIES:START -->.*?<!-- STORIES:END -->", lambda _: new_block, text, flags=re.DOTALL)
-    text = re.sub(r'<span class="stat">[^<]*</span>', f'<span class="stat">{len(stories):02d} entradas</span>', text, count=1)
+    text = re.sub(r'<span class="stat">[^<]*</span>', f'<span class="stat">{len(slugs):02d} entradas</span>', text, count=1)
     INDEX_HTML.write_text(text, encoding="utf-8")
+    return len(slugs)
+
+
+def refresh_index_incremental(slug: str) -> int:
+    """Update only `slug`'s entry in the cache, then rewrite the index HTML. Falls back to full rebuild on slug-set mismatch."""
+    cache = load_index_cache()
+    on_disk = set(disk_slugs())
+    if cache is None or set(cache.keys()) | {slug} != on_disk:
+        cache = build_cache_from_disk()
+    else:
+        cache[slug] = slug_fm(slug)
+    save_index_cache(cache)
+    return write_index_html(cache)
+
+
+def refresh_index_full() -> int:
+    """Force a full rebuild from disk; used by --index-only."""
+    cache = build_cache_from_disk()
+    save_index_cache(cache)
+    return write_index_html(cache)
 
 
 # ─── orchestration ──────────────────────────────────────────────────────────
@@ -677,8 +723,8 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.index_only:
-        refresh_index(list_stories())
-        print(f"index.html refreshed — {len(list_stories())} entries")
+        count = refresh_index_full()
+        print(f"index.html refreshed (full rebuild) — {count} entries")
         return
 
     story_dir = resolve_story_path(args.story)
@@ -688,9 +734,8 @@ def main() -> None:
     else:
         apply_enrichment(story_dir)
 
-    stories = list_stories()
-    refresh_index(stories)
-    print(f"index.html refreshed — {len(stories)} entries")
+    count = refresh_index_incremental(story_dir.name)
+    print(f"index.html refreshed (incremental: {story_dir.name}) — {count} entries")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 ---
-pilot: 1
+seq: 1
 title: "Día 412"
 universe: Space Expansion
 protagonist: AI (ARES, station observatory)

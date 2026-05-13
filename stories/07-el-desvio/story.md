@@ -1,5 +1,5 @@
 ---
-pilot: 7
+seq: 7
 title: "El desvío"
 universe: Space Expansion
 protagonist: cargo captain (Mateo)

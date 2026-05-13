@@ -1,5 +1,5 @@
 ---
-pilot: 12
+seq: 12
 title: "El faro apagado"
 universe: Space Expansion
 protagonist: lighthouse keeper (Renata)

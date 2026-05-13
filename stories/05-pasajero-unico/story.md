@@ -1,5 +1,5 @@
 ---
-pilot: 5
+seq: 5
 title: "Pasajero único"
 universe: Space Expansion
 protagonist: maintenance engineer (Tomás)

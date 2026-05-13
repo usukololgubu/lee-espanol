@@ -1,5 +1,5 @@
 ---
-pilot: 10
+seq: 10
 title: "El reloj"
 universe: Space Expansion
 protagonist: software maintainer (Sofía)

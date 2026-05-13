@@ -116,7 +116,7 @@ Named archetypes (mix freely with new ones):
 
 The archetype determines: page chrome and "edges" (paper, console frame, card border), typography family, palette discipline (paper inks vs. console phosphors vs. plate-printed CMYK), layout primitive (single column / two-column / framed / gridded / freeform marginalia), motion sensibility (paper rustle vs. scanline drift vs. ink bleed vs. dial sway), and **what the metadata strip becomes** (file number, accession, dispatch number, frequency band, postal stamp).
 
-Keep a running mental note of the prior three stories' archetypes when planning a new render. If unsure, scan recent `stories/*/index.html` for their archetype before committing to one.
+**Archetype log**: read the last 3 lines of `.ai/archetypes.jsonl` (one JSON object per line: `{"seq", "slug", "archetype", "palette", "font_pair"}`). Do not reuse any of those three archetypes (or their dominant palette / font pair) for the new render. After picking, append a one-line JSON entry for this story to the end of the file. This replaces the older "scan all prior `stories/*/index.html`" rule — that scan is no longer needed.
 
 ## Functional contract — same across all stories
 
@@ -271,21 +271,20 @@ Every story page must include a discrete back-link to the project-wide table of 
 - Hover state brightens to the page's main accent color
 - Mobile: shrinks and tucks closer to the corner
 
-### Index page (project-wide table of contents)
+### Index page (project-wide landing)
 
-A single project-wide index lives at `index.html` (project root). It lists every story as a clickable row.
+A single project-wide index lives at `index.html` (project root). It is a 2-column card grid, newest-first, so the most recent story sits at the top-left and is visible without scrolling.
 
-**Aesthetic**: compact "printed-document" / typewriter — explicitly **distinct** from any individual story's design (no parchment, no manuscript ornament, no sci-fi gold-on-navy, no SVG illustrations). The index is a quiet, tight TOC that frames the stories without competing visually.
+**Aesthetic**: compact typewriter — explicitly **distinct** from any individual story's design (no parchment, no manuscript ornament, no sci-fi gold-on-navy, no SVG illustrations). Quiet, tight, hairline-bordered cards that frame the stories without competing visually.
 
 - Background: warm off-white / paper (`#f5f3ec`)
 - Text: typewriter-ink dark (`#1f1d18`) + greys; **no color accent** beyond grayscale
 - Font: a single typewriter monospace family — *Courier Prime* (regular + bold + italic)
-- Layout: compact single column ~720 px, double-rule masthead at top, brief intro paragraph, TOC heading row with entry count, two-line entries (row 1: number, title in tracked uppercase, leader dots, date; row 2: italic meta + word count), thin colophon at bottom
-- No ornaments, no SVG illustrations, no big display numerals, no hero block, no stats strip with huge digits — only typography, dotted leaders, and hairline rules
+- Layout: double-rule masthead, brief intro paragraph, `Índice · N entradas` heading row, then a 2-column grid of hairline-bordered cards; thin colophon. Each card shows: top row `NN · YY·MM·DD`, the Spanish title in tracked uppercase, italic `protagonist · setting`, and `N palabras` at the bottom.
+- No rounded corners, no shadows, no SVG illustrations, no big display numerals. Hairline rules only.
+- Mobile: single column.
 
-**Refresh policy**: rebuild the index every time a story is rendered. Enumerate every `stories/NN-slug/` subfolder, read its `story.md` frontmatter, sort by folder name, and regenerate the `<div class="entries">…</div>` block plus the entry-count value in `.toc-head .stat` (e.g. `02 entradas` → `03 entradas`). Each entry's `href` points to `stories/NN-slug/index.html`. Preserve everything else in the file (masthead, intro paragraph, TOC heading label, colophon, CSS). Only the entries list and the entry-count number change.
-
-If `index.html` is missing entirely, create it from scratch following the compact typewriter aesthetic above. Do **not** invent a third aesthetic; the typewriter index template established for this project should remain stable across renders.
+**Refresh policy**: rebuild the entries block every time a story is rendered. The helper script (`render.py`) maintains `.ai/stories-index.json` as a per-slug cache; rendering one story updates only that slug's entry and rewrites the entries block from the cache (incremental). `--index-only` and a missing/stale cache force a full disk rescan. Stories are sorted by folder name **descending** so seq 12 appears first.
 
 Per-entry markup template (the `href` is relative to the project-root `index.html`):
 
@@ -293,14 +292,11 @@ Per-entry markup template (the `href` is relative to the project-root `index.htm
 <a class="entry" href="stories/NN-slug/index.html">
   <div class="row1">
     <span class="num">{NN, two-digit}</span>
-    <span class="e-title">{Spanish title}</span>
-    <span class="leader"></span>
     <span class="date">{YY·MM·DD}</span>
   </div>
-  <div class="row2">
-    <span class="meta">{protagonist} · {setting}</span>
-    <span class="words">{length_words} palabras</span>
-  </div>
+  <div class="e-title">{Spanish title}</div>
+  <div class="meta">{protagonist} · {setting}</div>
+  <div class="words">{length_words} palabras</div>
 </a>
 ```
 
@@ -342,16 +338,18 @@ Each run **strips prior `.w` / `.s` spans first**, then re-tokenizes. Edit the S
 
 ## Workflow
 
-1. Read `stories/NN-slug/story.md` and `stories/NN-slug/enrichment.toml` (for word coverage, tone cues)
-2. Read `profile.md` for tone calibration
+The workflow has a **design** phase (steps 1–6, produces an enrichment-free HTML) and an **apply** phase (step 7, runs `render.py`). The pipeline orchestrator (`/lee-story-pipeline`) runs `enrich` in parallel with the design phase, and only step 7 needs both upstream outputs — so do not call `render.py` before `enrichment.toml` exists. When invoked standalone (no orchestrator), just run the steps top to bottom.
+
+1. Read `stories/NN-slug/story.md` (frontmatter + body). If `stories/NN-slug/enrichment.toml` already exists, skim its `[sentences]` / `[words.*]` for tone cues; otherwise carry on — apply-enrichment (step 7) is what actually needs it.
+2. Read `profile.md` for tone calibration.
 3. **Pick the found-document framing first.** Identify what in-universe artifact this story should *be* (see the Found-document framing section): the protagonist's log, a letter, a customs form, an observation sheet, a manuscript page, a system console dump, etc. Lock the artifact before any visual decisions.
-4. **Pick the format archetype** from the named list (or invent a fresh one). Check the prior 3 `stories/*/index.html` for their archetype — do not reuse any of them. Record the archetype choice.
+4. **Pick the format archetype** from the named list (or invent a fresh one). Read the last 3 lines of `.ai/archetypes.jsonl` and do not reuse any of those archetypes (or their dominant palette / font pair). After deciding, append a one-line JSON entry `{"seq":"NN","slug":"slug","archetype":"…","palette":"…","font_pair":"…"}` to `.ai/archetypes.jsonl`.
 5. **Invoke the `frontend-design` skill** to plan the visual approach *within the chosen archetype's idiom* — palette, font pairing, page chrome, marginalia, motion family. The skill's output should serve the artifact, not generic "story page" aesthetics.
 6. **Design the page from scratch** at `stories/NN-slug/index.html`:
    - If starting clean, run `py .ai/skills/render/render.py --bootstrap stories/NN-slug` for a minimal scaffold (plain text in `<p>` tags inside `<article data-story-body>`).
    - Style anything: `body`, `main`, `h1`, `.meta`, `article p`, drop caps, special-paragraph art-direction, inline `<svg>` illustration, custom popup look (`.pop`, `.lemma`, `.pos`, `.tr`, `.g-block`, `.s-label`, `.s-tr`, `.link`).
    - Keep the `data-story-body` attribute on the element wrapping the `<p>` tags. The Spanish text inside should match `story.md` (the script tokenizes whatever's there).
-7. **Apply enrichment**: `py .ai/skills/render/render.py stories/NN-slug` — wraps words, pairs sentences, injects popup behavior, refreshes project-wide index. If it reports missed words, extend `enrichment.toml` and re-run.
+7. **Apply enrichment**: `py .ai/skills/render/render.py stories/NN-slug` — wraps words, pairs sentences, injects popup behavior, refreshes project-wide index (incremental — the script maintains `.ai/stories-index.json` and only updates this story's entry). If it reports missed words, extend `enrichment.toml` and re-run.
 8. Report to user:
    - Story HTML path
    - Index updated (entry count from the helper's output)

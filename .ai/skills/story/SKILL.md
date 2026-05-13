@@ -1,6 +1,6 @@
 ---
 name: story
-description: Step 1 of the lee-espanol pipeline. Generate the next pure-Spanish A1 short story for the "Space Expansion" universe. Reads profile.md and prior stories, writes pure Spanish (no inline translations, no keywords, no grammar sidebars) to stories/NN-slug/story.md. The downstream skills `enrich` and `render` consume this file. Use when the user asks for a new story, the next pilot, or invokes /story.
+description: Step 1 of the lee-espanol pipeline. Generate the next pure-Spanish A1 short story for the "Space Expansion" universe. Reads profile.md and lore.md, writes pure Spanish (no inline translations, no keywords, no grammar sidebars) to stories/NN-slug/story.md. The downstream skills `enrich` and `render` consume this file. Use when the user asks for a new story or invokes /story.
 ---
 
 # story
@@ -18,27 +18,28 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
 ## Project paths (relative to project root)
 
 - **Profile** (load first, every run): `profile.md`
+- **Lore reference** (load every run): `lore.md` — compact continuity record (characters, locations, ships, terms, timeline, per-story deltas)
 - **Story output**: `stories/NN-slug/story.md` (create the folder if absent)
-- **Prior stories** (for lore continuity): `stories/<NN-slug>/story.md` — one per story folder under `stories/`
 
 ## Workflow
 
 1. **Read `profile.md`** — load reader spec (level, vocab control, tone, anti-vibe, format).
-2. **List `stories/`** — find existing `NN-slug/` subfolders (those starting with two digits and a hyphen). Determine the next sequential `NN`. Skim each `stories/<NN-slug>/story.md` for lore continuity (recurring universe terms, factions, places, dates).
-3. **Pick the concept**:
-   - If the user named a specific pilot or concept, use it.
-   - Otherwise, propose a next concept consistent with established lore and tone, and confirm before writing.
-4. **Write the Spanish text** to spec:
-   - 150–300 words (target ~270 for pilots)
+2. **Read `lore.md`** — load established universe state. Only open a specific prior `stories/<NN-slug>/story.md` if the new concept directly extends one of its threads; do **not** skim all prior stories.
+3. **List `stories/`** — find existing `NN-slug/` subfolders (those starting with two digits and a hyphen). Determine the next sequential `NN`.
+4. **Pick the concept**:
+   - If the user named a specific concept, use it.
+   - Otherwise, propose a next concept consistent with `lore.md` and tone, and confirm before writing.
+5. **Write the Spanish text** to spec:
+   - 150–300 words (target ~270)
    - A1 grammar: present indicative, `ir + a + infinitivo`, basic *pretérito perfecto* / *indefinido*. Avoid *subjuntivo*.
    - ~80% top-1500 frequency vocab, ~20% new/thematic words
    - Neutral Latin American Spanish — no *vosotros*, no strong regionalisms
    - Self-contained: closed mini-story, **no cliffhangers**
    - Tone follows profile (Strugatsky × Matt Haig — observer in alien-to-them setting, single unresolved moral dilemma, slow contemplative pace, occasional dry irony)
-5. **Save the file** as `stories/NN-slug/story.md` (create the `stories/NN-slug/` folder first if it does not exist) with this structure:
+6. **Save the file** as `stories/NN-slug/story.md` (create the `stories/NN-slug/` folder first if it does not exist) with this structure:
    ```
    ---
-   pilot: <number or null>
+   seq: <number>
    title: "<Spanish title>"
    universe: Space Expansion
    protagonist: <role + name>
@@ -54,8 +55,18 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
 
    <story body>
    ```
-6. **Report to user**: file path + a one-line hook (e.g. "AI logs first sensor failure on day 412 — wakes the commander or stays silent?"). Do not paste the full story into chat.
-7. **Suggest next step**: remind the user that `enrich` is the next step before rendering, e.g. "Next: run /enrich to generate translation data, then /render for the HTML page."
+7. **Update `lore.md`** — append a per-story delta block at the bottom of `lore.md`:
+   ```markdown
+   ### #NN — <slug>
+   - Characters: <new names introduced by this story, with role>
+   - Locations: <new places>
+   - Ships: <new ships>
+   - Terms: <new terms / tech / cult words>
+   - Timeline: <new anchors, e.g. "Año 198 / 800 Caracol">
+   ```
+   Include only categories with new entries; omit empty ones. Do **not** restate elements already in earlier deltas or top-level lists. The top-level lists are touched up by hand from these deltas — leave them alone in the automated step.
+8. **Report to user**: file path + a one-line hook (e.g. "AI logs first sensor failure on day 412 — wakes the commander or stays silent?"). Do not paste the full story into chat. Mention that the `lore.md` delta has been appended.
+9. **Suggest next step**: remind the user that `enrich` is the next step before rendering, e.g. "Next: run /enrich to generate translation data, then /render for the HTML page."
 
 ## Structural variety — give the renderer compositional material
 
@@ -98,4 +109,4 @@ Still pure Spanish. Still A1 grammar and vocab control. Still no inline glossary
 
 - The story should work as fiction first, learning material second. If a fluent reader would find it inert, it fails.
 - Strugatsky × Matt Haig is the reference: outsider observing humans / civilization, moral dilemma without a clean answer, occasional dry irony.
-- Lore consistency across stories matters: reuse names of factions, ships, places, technologies established in earlier files in `stories/`.
+- Lore consistency across stories matters: reuse names of factions, ships, places, technologies listed in `lore.md`. Any new element introduced must be recorded in the per-story delta appended to `lore.md` (workflow step 7).

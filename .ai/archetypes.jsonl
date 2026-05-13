@@ -1,0 +1,12 @@
+{"seq":"01","slug":"saturn-ai","archetype":"AI log / observatory console","palette":"navy void + warm amber","font_pair":"Inter (sans)"}
+{"seq":"02","slug":"nueva-andalucia","archetype":"field-notebook / manuscript page","palette":"warm paper + ink + ochre","font_pair":"EB Garamond"}
+{"seq":"03","slug":"zumbido-deriva","archetype":"navigation HUD / cold console","palette":"deep void + ice blue","font_pair":"Space Grotesk"}
+{"seq":"04","slug":"algo-verde","archetype":"research log / lab dossier","palette":"abyss dark + frost green","font_pair":"IBM Plex Sans"}
+{"seq":"05","slug":"pasajero-unico","archetype":"shipboard ledger / printed page on dark","palette":"void + cream","font_pair":"Spectral"}
+{"seq":"06","slug":"la-traductora","archetype":"library catalog / institute press sheet","palette":"paper + cool ink","font_pair":"Newsreader"}
+{"seq":"07","slug":"el-desvio","archetype":"customs form / waybill","palette":"ochre paper + dark ink","font_pair":"Spectral"}
+{"seq":"08","slug":"el-ultimo-que-recuerda","archetype":"sepia memoir / photo album","palette":"cream + sepia","font_pair":"Crimson Pro"}
+{"seq":"09","slug":"la-senal","archetype":"observation dossier / star chart","palette":"deep navy + cyan + warm gold","font_pair":"Cormorant Garamond"}
+{"seq":"10","slug":"el-reloj","archetype":"IDE / code editor panel","palette":"warm dark + amber accent","font_pair":"IBM Plex Mono"}
+{"seq":"11","slug":"la-dosis","archetype":"medical chart / clinic form","palette":"paper + crimson accent","font_pair":"Lora"}
+{"seq":"12","slug":"el-faro-apagado","archetype":"beacon dispatch / lighthouse log","palette":"void + bone + faint glow","font_pair":"Spectral"}
