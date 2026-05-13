@@ -120,3 +120,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 ### #12 — el-faro-apagado
 - Characters: Renata (lighthouse keeper)
 - Locations: Faro Vesta-7 (relay beacon, abandoned Ceres–Júpiter corridor)
+
+### #13 — reloj-mercurio
+- Characters: Paola (ingeniera de escudo / shield engineer)
+- Locations: Plataforma Para-sol (L1 Sun–Mercurio, sun-shield platform protecting Mercury's polar-shadow colony)
+- Terms: la sombra polar (Mercury's polar shadow as habitable zone), deriva muerta (drifting derelict), pulso de desvío (deflection pulse), prospector (small mining ship — first appearance)

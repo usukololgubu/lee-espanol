@@ -82,5 +82,12 @@
     "setting": "Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter",
     "date_generated": "2026-05-13",
     "length_words": "244"
+  },
+  "13-reloj-mercurio": {
+    "title": "El reloj de Mercurio",
+    "protagonist": "ingeniera de escudo (Paola)",
+    "setting": "Plataforma Para-sol, L1 entre el sol y Mercurio, sobre la sombra polar de la colonia",
+    "date_generated": "2026-05-13",
+    "length_words": "271"
   }
 }

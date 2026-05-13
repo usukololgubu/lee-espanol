@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>El reloj de Mercurio — Para-sol L1 · Registro 14:02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ede0bd;
+  --paper-hot:#f1e6c1;
+  --paper-edge:#cbbb88;
+  --grid:rgba(26,22,18,0.07);
+  --grid-bold:rgba(26,22,18,0.14);
+  --ink:#1a1612;
+  --ink-soft:#3e3528;
+  --ink-faint:#6f6452;
+  --amber:#d4671f;
+  --amber-soft:#e6924a;
+  --crimson:#8a1f1f;
+  --crimson-soft:#b13838;
+}
+
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{
+  margin:0;
+  font-family:'Roboto Slab','Source Serif Pro',Georgia,serif;
+  font-weight:400;
+  color:var(--ink);
+  line-height:1.65;
+  font-size:17px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--grid) 23px 24px),
+    repeating-linear-gradient(0deg, transparent 0 119px, var(--grid-bold) 119px 120px),
+    radial-gradient(ellipse at 110% -20%, var(--paper-hot) 0%, var(--paper) 55%, var(--paper-edge) 130%);
+  background-attachment:fixed;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+.strip{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 2.6rem 4rem;
+  position:relative;
+}
+.strip::before, .strip::after{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;
+  width:1px;
+  background:linear-gradient(180deg, transparent, var(--paper-edge) 8%, var(--paper-edge) 92%, transparent);
+}
+.strip::before{left:1.4rem}
+.strip::after{right:1.4rem}
+
+.strip > .perf{
+  position:absolute; top:0; bottom:0; width:0.35rem;
+  background-image: radial-gradient(circle, var(--paper-edge) 0 1.5px, transparent 1.6px);
+  background-size: 100% 22px;
+  background-repeat: repeat-y;
+  opacity:0.6;
+}
+.strip > .perf.left{left:1.1rem}
+.strip > .perf.right{right:1.1rem}
+
+header.head{
+  margin-top:2.8rem;
+  padding:0.9rem 0 0.7rem;
+  border-top:2px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:1.1rem;
+  flex-wrap:wrap;
+  font-family:'Roboto Mono','Courier New',monospace;
+  font-size:0.74rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+header.head .reg{color:var(--ink)}
+header.head .station{color:var(--amber); font-weight:700}
+header.head .stamp{
+  font-family:'Roboto Mono',monospace;
+  letter-spacing:0.14em;
+  font-size:0.7rem;
+  color:var(--ink-faint);
+}
+
+.title-block{
+  margin-top:2.2rem;
+  padding-bottom:1.4rem;
+  border-bottom:1px dashed var(--ink-faint);
+}
+h1{
+  font-family:'Roboto Slab',serif;
+  font-weight:700;
+  font-size:2.45rem;
+  line-height:1.08;
+  margin:0 0 0.6rem;
+  color:var(--ink);
+  letter-spacing:-0.005em;
+}
+h1 .of{
+  display:block;
+  font-weight:400;
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--ink-soft);
+  letter-spacing:0.02em;
+  margin-top:0.45rem;
+}
+.meta{
+  font-family:'Roboto Mono',monospace;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+}
+.meta .dot{color:var(--amber); margin:0 0.4em; font-weight:700}
+.meta .alert{color:var(--crimson); font-weight:700; margin-left:0.3em}
+
+article.body{
+  margin-top:2rem;
+  position:relative;
+}
+article.body p{
+  margin:0 0 1.05rem;
+  hyphens:auto;
+}
+article.body p:first-of-type::first-letter{
+  font-family:'Roboto Slab',serif;
+  font-weight:700;
+  font-size:3.1rem;
+  line-height:0.9;
+  float:left;
+  margin:0.18rem 0.55rem -0.1rem 0;
+  color:var(--amber);
+}
+
+article.body p.beat{
+  font-family:'Roboto Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:0.16em;
+  font-size:0.92rem;
+  font-weight:500;
+  color:var(--amber);
+  text-align:center;
+  margin:1.6rem 0 1.6rem;
+  padding:0.6rem 0;
+  border-top:1px dashed var(--ink-faint);
+  border-bottom:1px dashed var(--ink-faint);
+}
+
+article.body blockquote{
+  margin:1.5rem 0;
+  padding:0.85rem 1.05rem 0.95rem;
+  border:1px solid var(--ink);
+  background:rgba(255,255,255,0.32);
+  position:relative;
+  font-family:'Roboto Mono','Courier New',monospace;
+  font-size:0.84rem;
+  line-height:1.55;
+  color:var(--ink);
+  letter-spacing:0.02em;
+  box-shadow:0 1px 0 var(--paper-edge);
+}
+article.body blockquote::before{
+  content:"";
+  position:absolute;
+  left:-1px; right:-1px; top:-1px;
+  height:3px;
+  background:var(--amber);
+}
+article.body blockquote.warn::before{
+  background:var(--crimson);
+}
+article.body blockquote p{
+  margin:0;
+}
+article.body blockquote p + p{
+  margin-top:0.25rem;
+  padding-top:0.25rem;
+  border-top:1px dotted var(--paper-edge);
+}
+article.body blockquote p::first-letter{
+  font-family:inherit;
+  font-size:inherit;
+  float:none;
+  margin:0;
+  color:inherit;
+}
+article.body blockquote .lbl{
+  display:inline-block;
+  font-weight:700;
+  letter-spacing:0.16em;
+  color:var(--amber);
+  text-transform:uppercase;
+  margin-right:0.5em;
+}
+article.body blockquote.warn .lbl{color:var(--crimson)}
+article.body blockquote .ts{
+  float:right;
+  color:var(--ink-faint);
+  font-size:0.78rem;
+  letter-spacing:0.06em;
+}
+
+article.body p.dialog{
+  font-style:italic;
+  color:var(--ink-soft);
+}
+
+.sun-stamp{
+  position:absolute;
+  top:-1.2rem;
+  right:0;
+  width:74px;
+  height:74px;
+  opacity:0.78;
+  pointer-events:none;
+}
+
+.back{
+  position:absolute;
+  top:1.1rem;
+  left:2.7rem;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.74rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  text-decoration:none;
+  border-bottom:1px dotted var(--ink-faint);
+  padding-bottom:1px;
+  transition:color 0.18s, border-color 0.18s;
+}
+.back:hover{
+  color:var(--amber);
+  border-bottom-color:var(--amber);
+}
+
+footer.colophon{
+  margin-top:3rem;
+  padding-top:1rem;
+  border-top:1px solid var(--ink);
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:0.7rem;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.7rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+}
+
+/* Popups — solar paper aesthetic */
+.pop{
+  background:#1f1a14;
+  color:#f0e2c0;
+  font-family:'Roboto Slab',serif;
+  font-size:0.92rem;
+  padding:0.7rem 0.85rem;
+  max-width:300px;
+  border:1px solid var(--amber);
+  border-radius:0;
+  box-shadow:0 3px 12px -4px rgba(0,0,0,0.45);
+  line-height:1.45;
+}
+.pop.has-grammar{max-width:340px}
+.pop.sentence{max-width:380px}
+.pop .lemma{
+  font-style:italic;
+  color:var(--amber-soft);
+  font-size:0.88rem;
+  margin-bottom:0.18rem;
+}
+.pop .pos{
+  display:block;
+  font-family:'Roboto Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  font-size:0.66rem;
+  color:#a89870;
+  margin-bottom:0.42rem;
+}
+.pop .tr{
+  display:block;
+  font-size:0.92rem;
+  color:#f0e2c0;
+}
+.pop .g-block{
+  margin-top:0.55rem;
+  padding-top:0.55rem;
+  border-top:1px dashed rgba(212,103,31,0.45);
+  font-size:0.84rem;
+  line-height:1.52;
+  color:#e6d8b8;
+}
+.pop .g-block p{margin:0 0 0.32rem}
+.pop .g-block p:last-child{margin-bottom:0}
+.pop .g-block b{color:var(--amber); font-weight:700}
+.pop .g-block i{
+  font-style:italic;
+  color:#e6c388;
+  font-family:'Roboto Slab',serif;
+}
+.pop .g-block code{
+  font-family:'Roboto Mono',monospace;
+  background:rgba(212,103,31,0.10);
+  border:1px solid rgba(212,103,31,0.22);
+  padding:0.04em 0.32em;
+  border-radius:0;
+  font-size:0.84em;
+  color:#f0d99c;
+}
+.pop .g-block u{
+  text-decoration:none;
+  color:var(--amber);
+  background:rgba(212,103,31,0.12);
+  padding:0 0.15em;
+}
+.pop .link{
+  display:inline-block;
+  margin-top:0.45rem;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.72rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--amber);
+  text-decoration:none;
+  border-bottom:1px dotted var(--amber);
+}
+.pop .link:hover{color:#f1a967; border-bottom-color:#f1a967}
+.pop.sentence .s-label{
+  display:block;
+  font-family:'Roboto Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:0.16em;
+  font-size:0.66rem;
+  color:#a89870;
+  margin-bottom:0.3rem;
+}
+.pop.sentence .s-tr{
+  display:block;
+  color:#f0e2c0;
+}
+
+article.body .w{
+  border-bottom:1px dotted rgba(26,22,18,0.32);
+  cursor:help;
+}
+article.body .w:hover{
+  border-bottom-color:var(--amber);
+  color:var(--amber);
+}
+article.body .s{
+  cursor:help;
+  color:var(--amber);
+}
+article.body .s:hover{color:var(--crimson)}
+
+.reading-progress{
+  background:var(--amber) !important;
+}
+
+@media(max-width:640px){
+  body{font-size:15.5px}
+  .strip{padding:0 1.4rem 3rem; max-width:none}
+  .strip::before, .strip::after, .strip > .perf{display:none}
+  .back{left:1.4rem}
+  h1{font-size:1.85rem}
+  header.head{font-size:0.66rem; letter-spacing:0.12em; gap:0.7rem}
+  article.body p:first-of-type::first-letter{font-size:2.4rem}
+  .sun-stamp{width:54px; height:54px; top:-0.4rem}
+}
+</style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <span class="perf left"></span>
+  <span class="perf right"></span>
+
+  <a class="back" href="../../index.html">← Índice</a>
+
+  <header class="head">
+    <span class="reg">Registro · Bitácora de turno</span>
+    <span class="station">Para-sol L1</span>
+    <span class="stamp">26·05·13 · 14:02 LST</span>
+  </header>
+
+  <svg class="sun-stamp" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="s" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#f4a85e"/>
+        <stop offset="60%" stop-color="#d4671f"/>
+        <stop offset="100%" stop-color="#8a3308"/>
+      </radialGradient>
+    </defs>
+    <circle cx="40" cy="40" r="36" fill="none" stroke="#1a1612" stroke-width="0.8" stroke-dasharray="2 2"/>
+    <circle cx="40" cy="40" r="29" fill="none" stroke="#1a1612" stroke-width="0.5"/>
+    <circle cx="40" cy="40" r="18" fill="url(#s)"/>
+    <g stroke="#d4671f" stroke-width="1.1" stroke-linecap="round">
+      <line x1="40" y1="6"  x2="40" y2="12"/>
+      <line x1="40" y1="68" x2="40" y2="74"/>
+      <line x1="6"  y1="40" x2="12" y2="40"/>
+      <line x1="68" y1="40" x2="74" y2="40"/>
+      <line x1="16" y1="16" x2="20" y2="20"/>
+      <line x1="60" y1="60" x2="64" y2="64"/>
+      <line x1="16" y1="64" x2="20" y2="60"/>
+      <line x1="60" y1="20" x2="64" y2="16"/>
+    </g>
+  </svg>
+
+  <section class="title-block">
+    <h1>
+      El reloj de Mercurio
+      <span class="of">Turno solo · Plataforma Para-sol · L1</span>
+    </h1>
+    <p class="meta">
+      Paola · ingeniera de escudo
+      <span class="dot">·</span> A1
+      <span class="dot">·</span> 271 palabras
+      <span class="alert">· tiempo crítico</span>
+    </p>
+  </section>
+
+  <article class="body" data-story-body>
+    <p><span class="w" data-tr="Паола — имя ингенера-героини" data-pos="имя" data-lemma="" data-grammar="">Paola</span> <span class="w" data-tr="(она) находится" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente indicativo*, 3 л. ед. ч., от **estar** («быть/находиться»).
+
+Неправильный. Спряж.: `estoy · estás · está · estamos · estáis · están`.
+
+`est·[[á]]` — ударение на последний слог фиксируется на письме.
+">está</span> <span class="w" data-tr="одна (одинокая)" data-pos="прил." data-lemma="solo" data-grammar="**sola** — прил. *ж. р., ед. ч.* от **solo** («один, одинокий»).
+
+`sol·[[a]]` — женский род образуется заменой `-o` на `-a`.
+">sola</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="комната, зал" data-pos="сущ." data-lemma="la sala" data-grammar="">sala</span> <span class="w" data-tr="из, от; (предл. родит. падежа)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="управление, контроль" data-pos="сущ." data-lemma="el control" data-grammar="">control</span><span class="s" data-tr="Паола одна в комнате управления.">.</span> <span class="w" data-tr="сзади, за" data-pos="нар." data-lemma="detrás" data-grammar="">Detrás</span> <span class="w" data-tr="от (этого), из (этого)" data-pos="предл." data-lemma="de + el" data-grammar="**del** = **de** + **el** — слитная форма (контракция).
+
+*Обязательное слияние* предлога `de` с артиклем `el`: `de el sol → del sol`.
+">del</span> <span class="w" data-tr="стекло" data-pos="сущ." data-lemma="el vidrio" data-grammar="">vidrio</span> <span class="w" data-tr="чёрный" data-pos="прил." data-lemma="negro" data-grammar="">negro</span>, <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="(оно) наполняет" data-pos="глаг." data-lemma="llenar" data-grammar="**llena** — *presente*, 3 л. ед. ч., от **llenar** («наполнять»).
+
+Правильный глагол на `-ar`: `llen·[[ar]]` → `llen·[[a]]`.
+">llena</span> <span class="w" data-tr="весь, всё" data-pos="опр." data-lemma="todo" data-grammar="">todo</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="пространство, космос" data-pos="сущ." data-lemma="el espacio" data-grammar="">espacio</span><span class="s" data-tr="За чёрным стеклом солнце заполняет всё пространство.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="платформа" data-pos="сущ." data-lemma="la plataforma" data-grammar="">plataforma</span> <span class="w" data-tr="«Пара-соль» — название платформы-щита" data-pos="имя" data-lemma="" data-grammar="">Para-sol</span> <span class="w" data-tr="(она) обращается по орбите" data-pos="глаг." data-lemma="orbitar" data-grammar="**orbita** — *presente*, 3 л. ед. ч., от **orbitar** («двигаться по орбите»).
+
+`orbit·[[ar]]` → `orbit·[[a]]`.
+">orbita</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="точка" data-pos="сущ." data-lemma="el punto" data-grammar="">punto</span> <span class="w" data-tr="L1 — точка Лагранжа между двумя телами" data-pos="имя" data-lemma="" data-grammar="">L1</span>, <span class="w" data-tr="между" data-pos="предл." data-lemma="entre" data-grammar="">entre</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="Меркурий (планета)" data-pos="имя" data-lemma="" data-grammar="">Mercurio</span><span class="s" data-tr="Платформа «Пара-соль» обращается по орбите в точке L1, между солнцем и Меркурием.">.</span> <span class="w" data-tr="из, с, от (времени или места)" data-pos="предл." data-lemma="desde" data-grammar="">Desde</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="">aquí</span>, <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="щит" data-pos="сущ." data-lemma="el escudo" data-grammar="">escudo</span> <span class="w" data-tr="(он/она) защищает" data-pos="глаг." data-lemma="proteger" data-grammar="**protege** — *presente*, 3 л. ед. ч., от **proteger** («защищать»).
+
+Глагол на `-er`: `prot·[[eg·er]]` → `prot·[[eg·e]]`.
+">protege</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="маленькая" data-pos="прил." data-lemma="pequeño" data-grammar="**pequeña** — прил. *ж. р., ед. ч.* от **pequeño** («маленький»).
+
+`pequeñ·[[a]]` — окончание женского рода.
+">pequeña</span> <span class="w" data-tr="колония" data-pos="сущ." data-lemma="la colonia" data-grammar="">colonia</span> <span class="w" data-tr="под" data-pos="предл." data-lemma="bajo" data-grammar="">bajo</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="тень" data-pos="сущ." data-lemma="la sombra" data-grammar="">sombra</span> <span class="w" data-tr="полярный" data-pos="прил." data-lemma="polar" data-grammar="">polar</span><span class="s" data-tr="Отсюда щит защищает маленькую колонию под полярной тенью.">.</span></p>
+
+    <p class="beat"><span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy" data-grammar="">Hoy</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="часы" data-pos="сущ." data-lemma="el reloj" data-grammar="">reloj</span> <span class="w" data-tr="(он/она) бежит, идёт (о часах)" data-pos="глаг." data-lemma="correr" data-grammar="**corre** — *presente*, 3 л. ед. ч., от **correr** («бежать»). Здесь идиоматически: *часы идут / время бежит*.
+
+`corr·[[er]]` → `corr·[[e]]`.
+">corre</span><span class="s" data-tr="Сегодня часы идут (время бежит).">.</span></p>
+
+    <blockquote class="warn">
+      <p><span class="lbl"><span class="w" data-tr="тревога" data-pos="сущ." data-lemma="la alerta" data-grammar="">Alerta</span> — <span class="w" data-tr="контакт" data-pos="сущ." data-lemma="el contacto" data-grammar="">contacto</span></span><span class="ts">14:02:17</span></p>
+      <p><span class="w" data-tr="объект" data-pos="сущ." data-lemma="el objeto" data-grammar="">Objeto</span>: <span class="w" data-tr="дрейф" data-pos="сущ." data-lemma="la deriva" data-grammar="**la deriva muerta** — досл. «мёртвый дрейф»: неуправляемое судно, плывущее по инерции. Термин этой вселенной (см. лор).
+">deriva</span> <span class="w" data-tr="мёртвая" data-pos="прил." data-lemma="muerto" data-grammar="**muerta** — прил. *ж. р., ед. ч.* от **muerto** («мёртвый»).
+
+Здесь сочетается с **la deriva** (ж. р.).
+">muerta</span></p>
+      <p><span class="w" data-tr="траектория" data-pos="сущ." data-lemma="la trayectoria" data-grammar="">Trayectoria</span>: 318 <span class="w" data-tr="секунды" data-pos="сущ." data-lemma="el segundo" data-grammar="">segundos</span> <span class="w" data-tr="к (этому)" data-pos="предл." data-lemma="a + el" data-grammar="**al** = **a** + **el** — слитная форма.
+
+`a el impacto → al impacto`. Обязательная контракция, как `del`.
+">al</span> <span class="w" data-tr="удар, столкновение" data-pos="сущ." data-lemma="el impacto" data-grammar="">impacto</span></p>
+    </blockquote>
+
+    <p><span class="w" data-tr="Паола — имя ингенера-героини" data-pos="имя" data-lemma="" data-grammar="">Paola</span> <span class="w" data-tr="(она) читает" data-pos="глаг." data-lemma="leer" data-grammar="**lee** — *presente*, 3 л. ед. ч., от **leer** («читать»).
+
+`le·[[er]]` → `le·[[e]]`.
+">lee</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="сообщение" data-pos="сущ." data-lemma="el mensaje" data-grammar="">mensaje</span> <span class="w" data-tr="два" data-pos="числ." data-lemma="dos" data-grammar="">dos</span> <span class="w" data-tr="раз (мн. ч.)" data-pos="сущ." data-lemma="la vez" data-grammar="**veces** — мн. ч. от **la vez** («раз»).
+
+*Чередование z → c* перед `-es`: `ve[[z]] → ve[[c]]es`. То же: `lápiz → lápices`, `luz → luces`.
+">veces</span><span class="s" data-tr="Паола читает сообщение дважды.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="консоль, пульт" data-pos="сущ." data-lemma="la consola" data-grammar="">consola</span> <span class="w" data-tr="(она) рисует, чертит" data-pos="глаг." data-lemma="dibujar" data-grammar="**dibuja** — *presente*, 3 л. ед. ч., от **dibujar** («рисовать»).
+
+`dibuj·[[ar]]` → `dibuj·[[a]]`.
+">dibuja</span> <span class="w" data-tr="(неопр. арт. ж. р., ед. ч.); одна" data-pos="арт." data-lemma="uno" data-grammar="">una</span> <span class="w" data-tr="линия" data-pos="сущ." data-lemma="la línea" data-grammar="">línea</span> <span class="w" data-tr="тонкая" data-pos="прил." data-lemma="fino" data-grammar="">fina</span> <span class="w" data-tr="к, в направлении" data-pos="предл." data-lemma="hacia" data-grammar="">hacia</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="щит" data-pos="сущ." data-lemma="el escudo" data-grammar="">escudo</span><span class="s" data-tr="Консоль чертит тонкую линию к щиту.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="объект" data-pos="сущ." data-lemma="el objeto" data-grammar="">objeto</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+Неправильный. Спряж.: `soy · eres · es · somos · sois · son`.
+
+Разница с **estar**: **ser** — постоянное свойство, **estar** — состояние/местонахождение.
+">es</span> <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">un</span> <span class="w" data-tr="корпус (корабля); каска" data-pos="сущ." data-lemma="el casco" data-grammar="">casco</span> <span class="w" data-tr="старый" data-pos="прил." data-lemma="viejo" data-grammar="">viejo</span>, <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">un</span> <span class="w" data-tr="разведывательный корабль (англицизм); старатель" data-pos="сущ." data-lemma="el prospector" data-grammar="">prospector</span> <span class="w" data-tr="потерянный" data-pos="прил." data-lemma="perdido" data-grammar="**perdido** — *participio* от **perder** («терять»). Используется как прил. в значении «потерянный».
+">perdido</span> <span class="w" data-tr="(букв. «делает»; здесь: тому назад)" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время — идиома: «… тому назад».
+
+«*hace meses*» = «месяцы тому назад». Спряж. от **hacer**: `hago · haces · hace · hacemos · hacéis · hacen` (3 л. ед. ч.).
+">hace</span> <span class="w" data-tr="месяцы" data-pos="сущ." data-lemma="el mes" data-grammar="">meses</span><span class="s" data-tr="Объект — старый корпус, разведывательный корабль, потерянный несколько месяцев назад.">.</span> <span class="w" data-tr="(он/она) идёт; (собирается)" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти»). Неправильный.
+
+Спряж.: `voy · vas · va · vamos · vais · van`.
+
+Часть конструкции *futuro próximo*: **va a** + инфинитив = «собирается …».
+">Va</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="столкнуться, ударить" data-pos="глаг." data-lemma="chocar" data-grammar="**va a chocar** — *futuro próximo* («собирается столкнуться»).
+
+Структура: **ir** в наст. вр. + **a** + инфинитив. Здесь `va` (3 л. ед. ч. от **ir**) + `a` + `chocar`.
+">chocar</span> <span class="w" data-tr="с" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="щит" data-pos="сущ." data-lemma="el escudo" data-grammar="">escudo</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="">si</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="">nadie</span> <span class="w" data-tr="(букв. «делает»; здесь: тому назад)" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время — идиома: «… тому назад».
+
+«*hace meses*» = «месяцы тому назад». Спряж. от **hacer**: `hago · haces · hace · hacemos · hacéis · hacen` (3 л. ед. ч.).
+">hace</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span><span class="s" data-tr="Он столкнётся со щитом, если никто ничего не сделает.">.</span></p>
+
+    <p><span class="w" data-tr="она" data-pos="мест." data-lemma="ella" data-grammar="">Ella</span> <span class="w" data-tr="(она) может" data-pos="глаг." data-lemma="poder" data-grammar="**puede** — *presente*, 3 л. ед. ч., от **poder** («мочь»). Глагол с чередованием в корне *o → ue*.
+
+`p[[o]]der → p[[ue]]de` (под ударением).
+
+Спряж.: `puedo · puedes · puede · podemos · podéis · pueden`.
+
+Часто с инфинитивом: **puede disparar** = «может выстрелить».
+">puede</span> <span class="w" data-tr="стрелять, запустить" data-pos="глаг." data-lemma="disparar" data-grammar="">disparar</span> <span class="w" data-tr="импульсы" data-pos="сущ." data-lemma="el pulso" data-grammar="">pulsos</span> <span class="w" data-tr="из, от; (предл. родит. падежа)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="отклонение, объезд" data-pos="сущ." data-lemma="el desvío" data-grammar="**el pulso de desvío** — досл. «импульс отклонения»: технический термин этой вселенной для разгоняющего/тормозящего импульса (см. лор).
+">desvío</span><span class="s" data-tr="Она может выстрелить импульсами отклонения.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="щит" data-pos="сущ." data-lemma="el escudo" data-grammar="">escudo</span> <span class="w" data-tr="(он/она) идёт; (собирается)" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти»). Неправильный.
+
+Спряж.: `voy · vas · va · vamos · vais · van`.
+
+Часть конструкции *futuro próximo*: **va a** + инфинитив = «собирается …».
+">va</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="дрожать" data-pos="глаг." data-lemma="temblar" data-grammar="**va a temblar** — *futuro próximo*: «будет дрожать».
+
+`va` + `a` + `temblar` — конструкция «собирается + инф.», часто используется как ближайшее будущее.
+">temblar</span>; <span class="w" data-tr="три" data-pos="числ." data-lemma="tres" data-grammar="">tres</span> <span class="w" data-tr="или" data-pos="союз" data-lemma="o" data-grammar="">o</span> <span class="w" data-tr="четыре" data-pos="числ." data-lemma="cuatro" data-grammar="">cuatro</span> <span class="w" data-tr="панели" data-pos="сущ." data-lemma="el panel" data-grammar="">paneles</span> <span class="w" data-tr="(они) идут; (собираются)" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente*, 3 л. мн. ч., от **ir**. Здесь часть *futuro próximo*: **van a** + инфинитив.
+
+`van a quemarse` = «они сгорят / собираются сгореть».
+">van</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="сгореть (о себе)" data-pos="глаг." data-lemma="quemarse" data-grammar="**quemarse** — возвратный глагол от **quemar** («жечь»).
+
+Частица **-se** показывает, что действие направлено на сам субъект: «сжигаться, сгорать». В конструкции *futuro próximo* остаётся в инфинитиве: `van a quemarse`.
+">quemarse</span><span class="s" data-tr="Щит будет дрожать; три или четыре панели сгорят.">.</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="колония" data-pos="сущ." data-lemma="la colonia" data-grammar="">colonia</span> <span class="w" data-tr="(он/она) идёт; (собирается)" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти»). Неправильный.
+
+Спряж.: `voy · vas · va · vamos · vais · van`.
+
+Часть конструкции *futuro próximo*: **va a** + инфинитив = «собирается …».
+">va</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="потерять" data-pos="глаг." data-lemma="perder" data-grammar="**va a perder** — *futuro próximo*: «потеряет».
+
+`perder` — глагол с чередованием *e → ie* (`pierdo · pierdes · pierde …`), но в инфинитиве форма обычная.
+">perder</span> <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">un</span> <span class="w" data-tr="тридцать" data-pos="числ." data-lemma="treinta" data-grammar="">treinta</span> <span class="w" data-tr="за, через, по" data-pos="предл." data-lemma="por" data-grammar="**por ciento** — устойчивое сочетание: «процент».
+
+`treinta por ciento` = «тридцать процентов».
+">por</span> <span class="w" data-tr="сто" data-pos="числ." data-lemma="ciento" data-grammar="">ciento</span> <span class="w" data-tr="из, от; (предл. родит. падежа)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="тень" data-pos="сущ." data-lemma="la sombra" data-grammar="">sombra</span> <span class="w" data-tr="в течение, во время" data-pos="предл." data-lemma="durante" data-grammar="">durante</span> <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">un</span> <span class="w" data-tr="месяц" data-pos="сущ." data-lemma="el mes" data-grammar="">mes</span><span class="s" data-tr="Колония потеряет тридцать процентов тени в течение месяца.">.</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+Неправильный. Спряж.: `soy · eres · es · somos · sois · son`.
+
+Разница с **estar**: **ser** — постоянное свойство, **estar** — состояние/местонахождение.
+">Es</span> <span class="w" data-tr="много" data-pos="нар." data-lemma="mucho" data-grammar="">mucho</span><span class="s" data-tr="Это много.">.</span> <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">Pero</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+Неправильный. Спряж.: `soy · eres · es · somos · sois · son`.
+
+Разница с **estar**: **ser** — постоянное свойство, **estar** — состояние/местонахождение.
+">es</span> <span class="w" data-tr="ремонтопригодный, поправимый" data-pos="прил." data-lemma="reparable" data-grammar="">reparable</span><span class="s" data-tr="Но это поправимо.">.</span></p>
+
+    <p><span class="w" data-tr="или" data-pos="союз" data-lemma="o" data-grammar="">O</span> <span class="w" data-tr="(она) может" data-pos="глаг." data-lemma="poder" data-grammar="**puede** — *presente*, 3 л. ед. ч., от **poder** («мочь»). Глагол с чередованием в корне *o → ue*.
+
+`p[[o]]der → p[[ue]]de` (под ударением).
+
+Спряж.: `puedo · puedes · puede · podemos · podéis · pueden`.
+
+Часто с инфинитивом: **puede disparar** = «может выстрелить».
+">puede</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="делать" data-pos="глаг." data-lemma="hacer" data-grammar="">hacer</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span><span class="s" data-tr="Или она может ничего не делать.">.</span></p>
+
+    <blockquote>
+      <p><span class="lbl"><span class="w" data-tr="зондирование, опрос" data-pos="сущ." data-lemma="el sondeo" data-grammar="">Sondeo</span> <span class="w" data-tr="внутренний" data-pos="прил." data-lemma="interno" data-grammar="">interno</span></span></p>
+      <p><span class="w" data-tr="(неопр. арт. ж. р., ед. ч.); одна" data-pos="арт." data-lemma="uno" data-grammar="">Una</span> <span class="w" data-tr="сигнал" data-pos="сущ." data-lemma="la señal" data-grammar="**la señal** — сущ. *ж. р.* (несмотря на согласный финал).
+
+Многие сущ. на `-al` женского рода: **la señal**, **la sal**, **la catedral**.
+">señal</span> <span class="w" data-tr="из, от; (предл. родит. падежа)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="жизнь" data-pos="сущ." data-lemma="la vida" data-grammar="">vida</span><span class="s" data-tr="Сигнал жизни.">.</span> <span class="w" data-tr="тепло, жар" data-pos="сущ." data-lemma="el calor" data-grammar="">Calor</span> <span class="w" data-tr="слабый" data-pos="прил." data-lemma="débil" data-grammar="">débil</span><span class="s" data-tr="Слабое тепло.">.</span></p>
+    </blockquote>
+
+    <p><span class="w" data-tr="Паола — имя ингенера-героини" data-pos="имя" data-lemma="" data-grammar="">Paola</span> <span class="w" data-tr="(она) чувствует" data-pos="глаг." data-lemma="sentir" data-grammar="**siente** — *presente*, 3 л. ед. ч., от **sentir** («чувствовать»).
+
+*Чередование в корне* `e → ie`: `s[[e]]ntir → s[[ie]]nte`.
+
+Спряж.: `siento · sientes · siente · sentimos · sentís · sienten`.
+">siente</span> <span class="w" data-tr="что-то" data-pos="мест." data-lemma="algo" data-grammar="">algo</span> <span class="w" data-tr="что, который" data-pos="мест." data-lemma="que" data-grammar="">que</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(она) знает; (умеет)" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** («знать»).
+
+Неправильный в 1 л. ед.: `sé · sabes · sabe · sabemos · sabéis · saben`.
+
+С инфинитивом — «уметь»: `no sabe nombrar` = «не умеет назвать».
+">sabe</span> <span class="w" data-tr="называть, давать имя" data-pos="глаг." data-lemma="nombrar" data-grammar="">nombrar</span><span class="s" data-tr="Паола чувствует что-то, чему не может дать имя.">.</span> <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">Un</span> <span class="w" data-tr="тело" data-pos="сущ." data-lemma="el cuerpo" data-grammar="">cuerpo</span>, <span class="w" data-tr="внутри" data-pos="нар." data-lemma="dentro" data-grammar="">dentro</span> <span class="w" data-tr="из, от; (предл. родит. падежа)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="дрейф" data-pos="сущ." data-lemma="la deriva" data-grammar="**la deriva muerta** — досл. «мёртвый дрейф»: неуправляемое судно, плывущее по инерции. Термин этой вселенной (см. лор).
+">deriva</span> <span class="w" data-tr="мёртвая" data-pos="прил." data-lemma="muerto" data-grammar="**muerta** — прил. *ж. р., ед. ч.* от **muerto** («мёртвый»).
+
+Здесь сочетается с **la deriva** (ж. р.).
+">muerta</span><span class="s" data-tr="Тело — внутри мёртвого дрейфа.">.</span> <span class="w" data-tr="(он/она) спит" data-pos="глаг." data-lemma="dormir" data-grammar="**duerme** — *presente*, 3 л. ед. ч., от **dormir** («спать»).
+
+*Чередование в корне* `o → ue`: `d[[o]]rmir → d[[ue]]rme`.
+
+Спряж.: `duermo · duermes · duerme · dormimos · dormís · duermen`.
+">Duerme</span> <span class="w" data-tr="из, с, от (времени или места)" data-pos="предл." data-lemma="desde" data-grammar="">desde</span> <span class="w" data-tr="(букв. «делает»; здесь: тому назад)" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + время — идиома: «… тому назад».
+
+«*hace meses*» = «месяцы тому назад». Спряж. от **hacer**: `hago · haces · hace · hacemos · hacéis · hacen` (3 л. ед. ч.).
+">hace</span> <span class="w" data-tr="недели" data-pos="сущ." data-lemma="la semana" data-grammar="**desde hace** + время — идиома: «(уже) … как / в течение».
+
+«*duerme desde hace semanas*» = «спит (уже) недели». Состояние длится до настоящего момента.
+">semanas</span><span class="s" data-tr="Оно спит уже несколько недель.">.</span> <span class="w" data-tr="вероятно" data-pos="нар." data-lemma="probablemente" data-grammar="">Probablemente</span> <span class="w" data-tr="уже" data-pos="нар." data-lemma="ya" data-grammar="">ya</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он/она) слушает, слышит" data-pos="глаг." data-lemma="escuchar" data-grammar="**escucha** — *presente*, 3 л. ед. ч., от **escuchar** («слушать»).
+
+`escuch·[[ar]]` → `escuch·[[a]]`. С `no … ya`: «больше не слышит».
+">escucha</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span><span class="s" data-tr="Вероятно, оно уже ничего не слышит.">.</span> <span class="w" data-tr="вероятно" data-pos="нар." data-lemma="probablemente" data-grammar="">Probablemente</span><span class="s" data-tr="Вероятно.">.</span></p>
+
+    <blockquote>
+      <p><span class="lbl"><span class="w" data-tr="часы" data-pos="сущ." data-lemma="el reloj" data-grammar="">Reloj</span></span><span class="ts">184 <span class="w" data-tr="сокр. от «segundos» — секунды" data-pos="имя" data-lemma="" data-grammar="">s</span></span></p>
+    </blockquote>
+
+    <p class="dialog">— <span class="w" data-tr="привет" data-pos="сущ." data-lemma="hola" data-grammar="">Hola</span> — <span class="w" data-tr="(она) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** («говорить»). Неправильный.
+
+Спряж.: `digo · dices · dice · decimos · decís · dicen`.
+
+*Чередование* `e → i` в корне: `d[[e]]cir → d[[i]]ce`.
+">dice</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="ella" data-grammar="">ella</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="голос" data-pos="сущ." data-lemma="la voz" data-grammar="**la voz** — сущ. *ж. р.*
+
+Мн. ч. с заменой `z → c`: `vo[[z]] → vo[[c]]es`.
+">voz</span> <span class="w" data-tr="низкая, тихая" data-pos="прил." data-lemma="bajo" data-grammar="">baja</span> <span class="w" data-tr="к (этому)" data-pos="предл." data-lemma="a + el" data-grammar="**al** = **a** + **el** — слитная форма.
+
+`a el impacto → al impacto`. Обязательная контракция, как `del`.
+">al</span> <span class="w" data-tr="панель, пульт" data-pos="сущ." data-lemma="el panel" data-grammar="">panel</span><span class="s" data-tr="— Привет, — тихо говорит она пульту.">.</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">No</span> <span class="w" data-tr="(она) знает; (умеет)" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** («знать»).
+
+Неправильный в 1 л. ед.: `sé · sabes · sabe · sabemos · sabéis · saben`.
+
+С инфинитивом — «уметь»: `no sabe nombrar` = «не умеет назвать».
+">sabe</span> <span class="w" data-tr="за, через, по" data-pos="предл." data-lemma="por" data-grammar="**por ciento** — устойчивое сочетание: «процент».
+
+`treinta por ciento` = «тридцать процентов».
+">por</span> <span class="w" data-tr="что, почему (с вопросом)" data-pos="мест." data-lemma="qué" data-grammar="**por qué** — «почему».
+
+В отличие от **porque** («потому что»): пишется раздельно и со знаком ударения над `é`.
+">qué</span> <span class="w" data-tr="(она) говорит" data-pos="глаг." data-lemma="hablar" data-grammar="**habla** — *presente*, 3 л. ед. ч., от **hablar** («говорить»).
+
+`habl·[[ar]]` → `habl·[[a]]`.
+">habla</span><span class="s" data-tr="Она не знает, почему говорит.">.</span></p>
+
+    <p><span class="w" data-tr="(она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** («смотреть»).
+
+`mir·[[ar]]` → `mir·[[a]]`.
+">Mira</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span><span class="s" data-tr="Она смотрит на солнце.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он/оно) отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч., от **responder** («отвечать»).
+
+`respond·[[er]]` → `respond·[[e]]`.
+">responde</span><span class="s" data-tr="Солнце не отвечает.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="никогда" data-pos="нар." data-lemma="nunca" data-grammar="">nunca</span> <span class="w" data-tr="(он/оно) отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч., от **responder** («отвечать»).
+
+`respond·[[er]]` → `respond·[[e]]`.
+">responde</span><span class="s" data-tr="Солнце никогда не отвечает.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="только; один" data-pos="нар." data-lemma="solo" data-grammar="">solo</span> <span class="w" data-tr="(он/оно) жжёт" data-pos="глаг." data-lemma="quemar" data-grammar="**quema** — *presente*, 3 л. ед. ч., от **quemar** («жечь»).
+
+`quem·[[ar]]` → `quem·[[a]]`. Сравни с возвратной формой **quemarse** («сгорать»).
+">quema</span><span class="s" data-tr="Солнце только жжёт.">.</span></p>
+
+    <p><span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">La</span> <span class="w" data-tr="колония" data-pos="сущ." data-lemma="la colonia" data-grammar="">colonia</span> <span class="w" data-tr="(он/она) имеет, у (неё/него) есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener** («иметь»). Неправильный.
+
+*Чередование* `e → ie`: `t[[e]]ner → t[[ie]]ne`.
+
+Спряж.: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+
+Часто переводится как «у кого-то есть»: `la colonia tiene niños` = «в колонии есть дети».
+">tiene</span> <span class="w" data-tr="дети" data-pos="сущ." data-lemma="el niño" data-grammar="">niños</span><span class="s" data-tr="В колонии есть дети.">.</span> <span class="w" data-tr="это" data-pos="мест." data-lemma="eso" data-grammar="">Eso</span> <span class="w" data-tr="это (мест. прямого дополнения, ср. р.)" data-pos="мест." data-lemma="lo" data-grammar="**lo** — мест. прямого дополнения ср. р., ед. ч.
+
+«*eso lo sabe*» = «это она знает» — `lo` указывает на абстрактное «это».
+">lo</span> <span class="w" data-tr="(она) знает; (умеет)" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** («знать»).
+
+Неправильный в 1 л. ед.: `sé · sabes · sabe · sabemos · sabéis · saben`.
+
+С инфинитивом — «уметь»: `no sabe nombrar` = «не умеет назвать».
+">sabe</span><span class="s" data-tr="Это она знает.">.</span> <span class="w" data-tr="(арт. м. р., мн. ч.); их" data-pos="арт." data-lemma="el / los" data-grammar="**los** здесь — мест. прямого дополнения м. р., мн. ч. («их»).
+
+«*los conoce*» = «(она) их знает». То же написание имеет арт. мн. ч.: `los niños`.
+">Los</span> <span class="w" data-tr="(она) знает (лично, знакома с)" data-pos="глаг." data-lemma="conocer" data-grammar="**conoce** — *presente*, 3 л. ед. ч., от **conocer** («знать, быть знакомым»). 1 л. неправильное: `conozco`.
+
+Разница с **saber**: **conocer** = знать человека/место (быть знакомым), **saber** = знать факт/уметь.
+">conoce</span> <span class="w" data-tr="к; (личное «a» перед одушевл. дополнением)" data-pos="предл." data-lemma="a" data-grammar="**a** — личное `a` перед прямым дополнением, если оно одушевлённое.
+
+«*protege a la colonia*» = «защищает колонию». Перед неодушевлённым дополнением `a` не ставится.
+">a</span> <span class="w" data-tr="почти" data-pos="нар." data-lemma="casi" data-grammar="">casi</span> <span class="w" data-tr="все" data-pos="опр." data-lemma="todo" data-grammar="">todos</span> <span class="w" data-tr="за, через, по" data-pos="предл." data-lemma="por" data-grammar="**por ciento** — устойчивое сочетание: «процент».
+
+`treinta por ciento` = «тридцать процентов».
+">por</span> <span class="w" data-tr="имя" data-pos="сущ." data-lemma="el nombre" data-grammar="">nombre</span><span class="s" data-tr="Она знает почти всех по имени.">.</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="щит" data-pos="сущ." data-lemma="el escudo" data-grammar="">escudo</span> <span class="w" data-tr="(он/она/оно) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+Неправильный. Спряж.: `soy · eres · es · somos · sois · son`.
+
+Разница с **estar**: **ser** — постоянное свойство, **estar** — состояние/местонахождение.
+">es</span> <span class="w" data-tr="(арт. ж. р., ед. ч.)" data-pos="арт." data-lemma="la" data-grammar="">la</span> <span class="w" data-tr="единственная" data-pos="прил." data-lemma="único" data-grammar="**única** — прил. *ж. р., ед. ч.* от **único** («единственный»).
+
+В позиции перед существительным имеет значение «единственная»: `la única cosa` = «единственная вещь».
+">única</span> <span class="w" data-tr="вещь" data-pos="сущ." data-lemma="la cosa" data-grammar="">cosa</span> <span class="w" data-tr="между" data-pos="предл." data-lemma="entre" data-grammar="">entre</span> <span class="w" data-tr="они (м. р.)" data-pos="мест." data-lemma="ellos" data-grammar="">ellos</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span><span class="s" data-tr="Щит — единственная вещь между ними и солнцем.">.</span></p>
+
+    <blockquote class="warn">
+      <p><span class="lbl"><span class="w" data-tr="часы" data-pos="сущ." data-lemma="el reloj" data-grammar="">Reloj</span></span><span class="ts">95 <span class="w" data-tr="сокр. от «segundos» — секунды" data-pos="имя" data-lemma="" data-grammar="">s</span></span></p>
+    </blockquote>
+
+    <p><span class="w" data-tr="Паола — имя ингенера-героини" data-pos="имя" data-lemma="" data-grammar="">Paola</span> <span class="w" data-tr="(она) кладёт, ставит" data-pos="глаг." data-lemma="poner" data-grammar="**pone** — *presente*, 3 л. ед. ч., от **poner** («класть, ставить»). 1 л. неправильное: `pongo`.
+
+Спряж.: `pongo · pones · pone · ponemos · ponéis · ponen`.
+">pone</span> <span class="w" data-tr="(арт. м. р., мн. ч.); их" data-pos="арт." data-lemma="el / los" data-grammar="**los** здесь — мест. прямого дополнения м. р., мн. ч. («их»).
+
+«*los conoce*» = «(она) их знает». То же написание имеет арт. мн. ч.: `los niños`.
+">los</span> <span class="w" data-tr="пальцы" data-pos="сущ." data-lemma="el dedo" data-grammar="">dedos</span> <span class="w" data-tr="на, над" data-pos="предл." data-lemma="sobre" data-grammar="">sobre</span> <span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="кнопка" data-pos="сущ." data-lemma="el botón" data-grammar="">botón</span><span class="s" data-tr="Паола кладёт пальцы на кнопку.">.</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">No</span> <span class="w" data-tr="это (мест. прямого дополнения, ср. р.)" data-pos="мест." data-lemma="lo" data-grammar="**lo** — мест. прямого дополнения ср. р., ед. ч.
+
+«*eso lo sabe*» = «это она знает» — `lo` указывает на абстрактное «это».
+">lo</span> <span class="w" data-tr="(она) нажимает, сжимает" data-pos="глаг." data-lemma="apretar" data-grammar="**aprieta** — *presente*, 3 л. ед. ч., от **apretar** («сжимать, нажимать»).
+
+*Чередование* `e → ie`: `apr[[e]]tar → apr[[ie]]ta`.
+">aprieta</span> <span class="w" data-tr="ещё" data-pos="нар." data-lemma="todavía" data-grammar="">todavía</span><span class="s" data-tr="Она ещё не нажимает её.">.</span></p>
+
+    <p><span class="w" data-tr="(она) ждёт" data-pos="глаг." data-lemma="esperar" data-grammar="**espera** — *presente*, 3 л. ед. ч., от **esperar** («ждать»).
+
+`esper·[[ar]]` → `esper·[[a]]`.
+">Espera</span> <span class="w" data-tr="(неопр. арт. м. р., ед. ч.); один" data-pos="арт." data-lemma="uno" data-grammar="">un</span> <span class="w" data-tr="секунда; второй" data-pos="сущ." data-lemma="el segundo" data-grammar="">segundo</span><span class="s" data-tr="Ждёт секунду.">.</span> <span class="w" data-tr="потом, затем" data-pos="нар." data-lemma="luego" data-grammar="">Luego</span> <span class="w" data-tr="другой" data-pos="опр." data-lemma="otro" data-grammar="">otro</span><span class="s" data-tr="Потом ещё одну.">.</span></p>
+
+    <p><span class="w" data-tr="(арт. м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="">sol</span> <span class="w" data-tr="(оно) горит" data-pos="глаг." data-lemma="arder" data-grammar="**arde** — *presente*, 3 л. ед. ч., от **arder** («гореть»).
+
+`ard·[[er]]` → `ard·[[e]]`.
+">arde</span> <span class="w" data-tr="без" data-pos="предл." data-lemma="sin" data-grammar="**sin** + инфинитив — устойчивая конструкция: «не делая чего-то / без …».
+
+«*arde sin parar*» = «горит, не останавливаясь / без остановки».
+">sin</span> <span class="w" data-tr="останавливаться" data-pos="глаг." data-lemma="parar" data-grammar="">parar</span><span class="s" data-tr="Солнце горит без остановки.">.</span></p>
+  </article>
+
+  <footer class="colophon">
+    <span>Bitácoras de la Expansión · 2026</span>
+    <span>Registro #13 · cerrado sin resolución</span>
+  </footer>
+</div>
+
+<script data-popup>
+(function(){
+  var pop = null, active = null, isTouch = false;
+  function ensurePop(){
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
+    document.body.appendChild(pop);
+    return pop;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function dictKey(lemma){
+    return lemma.replace(/^(el |la |los |las |un |una |unos |unas )/i,'').trim();
+  }
+  function mdToHtml(md){
+    if(!md) return '';
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
+      p = p.replace(/`([^`]+)`/g, function(_, c){
+        return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
+      });
+      p = p.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+      p = p.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+      p = p.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>');
+      return '<p>' + p + '</p>';
+    }).join('');
+  }
+  function show(el){
+    var tr = el.dataset.tr || '';
+    var p = ensurePop();
+    if (el.classList.contains('s')){
+      p.classList.add('sentence');
+      p.classList.remove('has-grammar');
+      p.innerHTML = '<div class="s-label">traducción</div><div class="s-tr">'+escapeHtml(tr)+'</div>';
+    } else {
+      p.classList.remove('sentence');
+      var pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
+        : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        grammarHtml + linkHtml;
+    }
+    p.classList.add('show');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
+    el.classList.add('active');
+    active = el;
+  }
+  function hide(){
+    if (!pop) return;
+    pop.classList.remove('show');
+    if (active){ active.classList.remove('active'); active = null; }
+  }
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
+  }
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
+    hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else show(el); }
+    else if (!onPop) hide();
+  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+})();
+</script>
+</body>
+</html>
