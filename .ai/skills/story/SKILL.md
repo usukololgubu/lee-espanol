@@ -57,6 +57,32 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
 6. **Report to user**: file path + a one-line hook (e.g. "AI logs first sensor failure on day 412 — wakes the commander or stays silent?"). Do not paste the full story into chat.
 7. **Suggest next step**: remind the user that `enrich` is the next step before rendering, e.g. "Next: run /enrich to generate translation data, then /render for the HTML page."
 
+## Structural variety — give the renderer compositional material
+
+A continuous wall of prose pushes the downstream `render` skill toward a single centered column, because there is nothing else for it to lay out. Where the story's content naturally allows it, **break the body into structurally separable content blocks** so the renderer can distribute them across the page as side panels, pull quotes, split-screen segments, framed inserts, or marginalia.
+
+This is **optional, not mandatory**. A tightly braided contemplative monologue or a single confessional letter should stay continuous — segmentation imposed on the wrong story damages it. But when the structure permits, prefer outputs with naturally segmentable sections. Examples (mix freely; the right two or three per story, not all of them):
+
+- **Transmission logs** — timestamped signal entries, frequency or channel headers, sender/receiver fields, short bursts of dispatcher voice
+- **Journal fragments** — dated diary or notebook entries, each self-contained, written in the protagonist's first-person register
+- **Dialogue snippets** — short exchanges set apart from the surrounding narration (e.g. an interrogation, a radio call, an overheard scrap)
+- **System messages** — terminal output, error codes, machine prompts, automated status lines in a flat machine voice
+- **Flashback inserts** — short past-tense passages set off from the present-tense frame, marking a memory or earlier scene
+- **Parallel scene fragments** — two or more scenes alternating in short blocks (e.g. ship + station, observer + observed, surface + orbit)
+- **Observational side notes** — brief asides from the protagonist that read as marginalia or footnote-style commentary on the main action
+- **Location/time jump separators** — labeled breaks between scenes (e.g. *— Día 412, 03:00, sala de control —*) that signal the renderer to start a fresh visual section
+
+### How to mark segmentation in the .md
+
+Use conventional Markdown structure so the renderer can pick up the cues without bespoke parsing:
+
+- `>` blockquote for transmissions, log entries, system messages, and quoted snippets
+- A short level-2 heading (`## …`) or a labeled separator line (e.g. `*— Día 412, 03:00 —*`) for scene / location / time jumps
+- `***` or `---` horizontal rule for major structural breaks between modular sections
+- Plain paragraphs for the continuous narrative spine
+
+Still pure Spanish. Still A1 grammar and vocab control. Still no inline glossary, no Russian, no English, no learner sidebars — **segmentation is a structural choice, not a learner-aid leak**. Translations for every word and every sentence terminator are produced later by `enrich`; the `.md` stays prose-only.
+
 ## Anti-checklist (forbidden in the .md output)
 
 - Inline keyword tables, vocabulary lists, glossaries

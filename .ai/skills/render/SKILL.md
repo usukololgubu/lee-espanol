@@ -34,12 +34,41 @@ Each render must invent, from scratch, design choices driven by the story's fron
 - **Typography**: pair two Google Fonts — one for display (title, headings) and one for body. Choose to evoke the story's mood (e.g. *Cinzel* + *EB Garamond* for medieval; *Space Grotesk* + *JetBrains Mono* for hard sci-fi; *Cormorant Garamond* + *Inter* for contemplative). Never reuse the same pairing across stories.
 - **Inline SVG illustration**: hand-coded SVG (50–300 lines) thematic to the story — abstract or representational, stylized, never photorealistic. Place as hero, marginalia, or section break. Must be original to this render.
 - **CSS background texture / decoration**: subtle gradients, blur, noise (via SVG filter), conic patterns, scanlines, vignettes — whatever fits the mood. Layered, atmospheric, not loud.
-- **Layout / composition**: vary across stories. Some single-column centered, some asymmetric, some with side margins of metadata, some with a faux interface (e.g. AI log entries inside a bordered "console" frame).
+- **Layout / composition**: vary aggressively across stories. **Avoid defaulting to a single narrow horizontally centered text column** — that is the AI-design comfort zone and reads as generic across stories. Reserve the centered-column choice for stories that explicitly benefit from minimalism (intimate monologue, brief confessional letter, museum-placard quiet). Otherwise, reach for editorial, cinematic, atmospheric, spatially expressive compositions. See "Layout philosophy — editorial, cinematic, spatial" below for the full toolkit and constraints.
 - **Reading width**: ~640–720px max for body text; never less than 18px font-size; line-height 1.7–1.9 for A1 readers.
 - **Ambient background motion** (optional, encouraged): a subtle, slow CSS-only or SMIL-driven layer behind the text that reinforces the story's mood — drifting starfield for cold sci-fi, slow conic-gradient drift for manuscript-warm, faint flicker / scanlines for hard sci-fi, ink-bleed wash for contemplative. Keep it at low opacity, slow (multi-second cycles), and behind text. Never animate the body text itself, and never use motion that competes with reading. Always pure CSS keyframes or inline animated SVG — **no raster GIFs**, no external image URLs.
 - **Refined popup entrance** (optional): override the default `.pop` / `.pop.show` transition in the page's own design language — e.g. add `filter: blur(6px) → 0`, a small `translateY`, or a soft `scale(0.96) → 1` to give the popup a story-themed reveal. The behavior invariants (`opacity`, `pointer-events`, the `::after` bridge) must stay intact — only enrich, don't replace. Similarly, the `.w:hover` underline can animate (e.g. a `linear-gradient` background-size growing from 0 to 100% on hover) instead of the static dotted line.
 
 Distinctive ≠ chaotic. Each page should feel like a curated print artifact, not a random theme dump. If two consecutive renders feel similar, push harder on differentiation. Motion is decorative — every animation must remain readable, slow, and quiet.
+
+## Layout philosophy — editorial, cinematic, spatial
+
+Treat the page as a designed spread, not a text dump piped into a column. The renderer should compose space deliberately — text, illustration, framing chrome, and ambient layers arranged like an editorial print spread or a sci-fi publication, while remaining fully static HTML/CSS. The narrow-centered-column default is the path of least resistance and the easiest tell of generic AI design; only choose it when minimalism is the right answer for *this* story.
+
+### Permitted and encouraged techniques
+
+- **Asymmetrical layouts** — text weighted off-axis, grids that break neatly, alignment shifted left or right rather than centered around the page midline
+- **Offset or floating text regions** — paragraph blocks at varied indents, callout blocks pulled into the margin, hanging headings, prose that wraps around illustration or framing chrome
+- **Side annotations or contextual panels** — protagonist's marginalia, parallel-column footnotes, paratextual stamps and labels along an edge, datasheet metadata in a sidebar
+- **Pull quotes and highlighted fragments** — a single sentence enlarged in a contrasting face, framed by hairlines, color blocks, or generous negative space
+- **Split-screen compositions** — two-pane layouts where one side carries prose and the other carries inline SVG, telemetry, a portrait, or contrasting type
+- **Layered gradients and atmospheric backgrounds** — multiple gradient stops, conic + radial + linear combined, behind faint SVG noise, vignettes, or filter blurs
+- **Modular sections with distinct visual tone** — different blocks of the story styled differently (e.g. a journal section vs. a console section vs. a flashback section on the same page), each with its own micro-treatment
+- **Controlled whitespace and experimental spacing** — generous gutters between blocks, unconventional line-lengths per region, intentional "negative space" passages between scenes
+- **Multi-column excerpts** — newspaper-style or manuscript-style multi-column passages for specific blocks (not necessarily the whole story)
+- **Embedded "terminal", "transmission", or "log" blocks** — monospace box-drawn frames, timestamped lines, signal-trace panels, console output dropped inline among the prose
+- **Visual framing inspired by futuristic interfaces or sci-fi publications** — HUD chrome, dashboard panels, magazine masthead, editorial drop caps, datasheet headers, signal-trace strips
+
+These techniques **compose**. A page can be a split-screen with a side-annotation column on the prose pane and an embedded transmission log on the other; or an asymmetric editorial spread with a pull quote, multi-column lower section, and a layered gradient under everything. Lean into the story's content (see "Structural variety" notes in the `story` skill — if the source `.md` already segments into logs, journal entries, or scene fragments, distribute those across the page rather than concatenating them into one column).
+
+### Constraints — non-negotiable
+
+- **Readability has priority.** Body text never drops below 18 px, line-height 1.7–1.9, contrast ratio ≥ 4.5:1 against its background. Every decorative pass must improve the page; if a flourish hurts reading, cut it.
+- **Layouts must remain responsive.** Use fluid units (`clamp()`, `minmax()`, percentages, `vw/vh`), CSS Grid and Flexbox. Multi-column, split-screen, and floating regions must collapse to a clean single column on narrow viewports — no horizontal scroll, no overlapping text, no truncated panels on mobile.
+- **Semantic HTML stays intact.** Story body still lives inside `<article data-story-body>` with real `<p>`, `<h1>`, `<h2>`, `<blockquote>`, `<aside>`, `<figure>` tags. Don't replace paragraphs with `<div>` salad to hit a visual; don't strip headings for compactness; don't break the structure the popup tokenizer depends on (paragraphs of text inside the `data-story-body` element).
+- **Contrast and typography stay accessible.** Real font sizes, real line-height, real color contrast — including inside framed panels, marginalia, and split panes. Decorative scripts or display faces belong on titles, pull quotes, and metadata strips — never on the body prose.
+- **Decorative effects never overpower the story text.** Ambient gradients, framing chrome, marginalia, and split-pane visuals stay quieter than the prose. If the eye lands on the decoration before the words, dial it back. Pull quotes and highlights are the one allowed exception, and only because they *are* story text.
+- **Motion is avoided unless explicitly requested.** Default to fully static. The "ambient background motion" and "refined popup entrance" options earlier in this contract are opt-in, not default; they apply when the story or the user clearly calls for atmosphere. When motion is used, follow the existing motion rules (slow, low-opacity, behind text, `prefers-reduced-motion` respected, no raster GIFs).
 
 ## Found-document framing
 
@@ -364,6 +393,9 @@ To re-color word/sentence underlines on hover, use higher specificity than `.w` 
 - No reused format archetype within the prior 3 stories (see "Format archetypes — variety rule"); after the gap, a returning archetype must be a visibly fresh interpretation, never a re-skin
 - No "generic story page" output — every render must commit to a specific in-universe artifact (see "Found-document framing"). If the design could be lifted onto any other story by swapping color and font, it has failed this rule
 - No protagonist-profession-as-decorative-veneer (e.g. a few thematic SVGs glued onto an otherwise-generic centered serif column). The artifact framing must shape page chrome, metadata, layout, and motion — not just illustration
+- No defaulting to a narrow horizontally centered single-column body. That layout is allowed only when the story explicitly benefits from minimalism (intimate monologue, brief confessional, museum-placard quiet); otherwise the page must use the editorial / cinematic / spatial toolkit in "Layout philosophy"
+- No decorative pass that pulls the reader's eye before the prose does, and no body text below 18 px or contrast ratio 4.5:1, even inside framed panels, marginalia, or split panes
+- No layout that breaks on narrow viewports — split-screen, multi-column, and floating regions must collapse to a clean single column on mobile with no horizontal scroll and no overlapping text
 - No external JS libraries (no jQuery, no Tailwind CDN, no Bootstrap, no markdown library)
 - No tracking scripts, no analytics, no Google Tag Manager
 - No emoji used as primary illustration (Unicode dingbats sparingly OK as accents)
