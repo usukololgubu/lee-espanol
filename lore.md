@@ -129,3 +129,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 ### #14 — orquideas-vega
 - Characters: Camila (jardinera / botanic technician)
 - Locations: Ciudad-Globo Vega (Venus floating cloud city, ~50 km altitude, módulo 5 invernadero with Earth-origin orchids)
+
+### #15 — el-mismo-lugar
+- Characters: Hugo (cartógrafo de superficie / surface cartographer)
+- Locations: Estación Fobos (small surface-mapping outpost on Phobos, Mars orbit; nobody reads its maps)
+- Terms: el paso del sur (Phobos's weekly alignment over Mars's southern polar highlands), el punto (a recurring unexplained moving dot on the surface), informe semanal (weekly report protocol)
