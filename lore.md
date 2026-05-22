@@ -125,3 +125,7 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Characters: Paola (ingeniera de escudo / shield engineer)
 - Locations: Plataforma Para-sol (L1 Sun–Mercurio, sun-shield platform protecting Mercury's polar-shadow colony)
 - Terms: la sombra polar (Mercury's polar shadow as habitable zone), deriva muerta (drifting derelict), pulso de desvío (deflection pulse), prospector (small mining ship — first appearance)
+
+### #14 — orquideas-vega
+- Characters: Camila (jardinera / botanic technician)
+- Locations: Ciudad-Globo Vega (Venus floating cloud city, ~50 km altitude, módulo 5 invernadero with Earth-origin orchids)

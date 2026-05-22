@@ -11,3 +11,4 @@
 {"slug":"11-la-dosis","archetype":"medical chart / clinic form","palette":"paper + oxblood","font_pair":"Lora","colors":{"bg":"#f4ecdc","ink":"#1a1814","accent":"#8a1f1f"}}
 {"slug":"12-el-faro-apagado","archetype":"beacon dispatch / lighthouse log","palette":"void + bone + faint glow","font_pair":"Spectral","colors":{"bg":"#0c1220","ink":"#e8e0d1","accent":"#8db6b0"}}
 {"slug":"13-reloj-mercurio","archetype":"solar chart-recorder strip / sun-bleached recording paper","palette":"sun-yellowed cream + iron ink + solar amber + crimson warn","font_pair":"Roboto Slab + Roboto Mono","colors":{"bg":"#ede0bd","ink":"#1a1612","accent":"#d4671f"}}
+{"slug":"14-orquideas-vega","archetype":"botanical plate / herbarium specimen sheet","palette":"aged paper + iron-gall ink + storm-violet + dusty fern","font_pair":"EB Garamond + Cormorant SC","colors":{"bg":"#ebe4d2","ink":"#2a2520","accent":"#6b4f7a"}}
