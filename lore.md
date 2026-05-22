@@ -134,3 +134,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Characters: Hugo (cartógrafo de superficie / surface cartographer)
 - Locations: Estación Fobos (small surface-mapping outpost on Phobos, Mars orbit; nobody reads its maps)
 - Terms: el paso del sur (Phobos's weekly alignment over Mars's southern polar highlands), el punto (a recurring unexplained moving dot on the surface), informe semanal (weekly report protocol)
+
+### #16 — la-nube
+- Characters: Daniela (meteoróloga atmosférica / atmospheric meteorologist)
+- Locations: Estación Húygens-4 (small atmospheric monitor on the surface of Titan, beneath orange methane sky); campamento Perforación-Sur (Titan methane drill camp on the southern dunes, ~8 personnel)
+- Terms: las dunas del sur (Titan southern dune field), satélite Argos-2 (Titan-orbit observation satellite), bitácora (station log register), nube anómala (years-long unmodeled cloud system over the south)
