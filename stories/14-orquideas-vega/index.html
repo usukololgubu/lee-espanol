@@ -1053,6 +1053,16 @@ window.__leeSentences = [{"tr": "Камила проверяет теплицу 
     var left = window.scrollX + r.left - 10;
     if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
     if (left < window.scrollX + 8) left = window.scrollX + 8;
+    // top/left are document coordinates. The popup is positioned relative to its
+    // offsetParent (e.g. a position:relative <body> shifted down by a child's
+    // margin), whose origin may differ from the document origin — subtract it so
+    // the popup lands on the correct side of the word instead of over it.
+    var host = p.offsetParent;
+    if (host){
+      var hr = host.getBoundingClientRect(), cs = getComputedStyle(host);
+      top -= hr.top + window.scrollY + (parseFloat(cs.borderTopWidth) || 0);
+      left -= hr.left + window.scrollX + (parseFloat(cs.borderLeftWidth) || 0);
+    }
     p.style.top = top + 'px';
     p.style.left = left + 'px';
     p.classList.toggle('below', below);
