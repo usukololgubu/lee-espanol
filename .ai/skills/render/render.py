@@ -191,10 +191,10 @@ def word_span(form: str, entry: dict, si: int) -> str:
     )
 
 
-def sentence_span(ch: str, entry: dict) -> str:
+def sentence_span(ch: str, entry: dict, si: int) -> str:
     note = entry.get("note", "")
     extra = f' data-note="{esc_attr(note)}"' if note else ""
-    return f'<span class="s" data-tr="{esc_attr(entry.get("tr", ""))}"{extra}>{esc_text(ch)}</span>'
+    return f'<span class="s" data-tr="{esc_attr(entry.get("tr", ""))}" data-si="{si}"{extra}>{esc_text(ch)}</span>'
 
 
 def detokenize(content: str) -> str:
@@ -239,7 +239,8 @@ def tokenize_text_segment(
             continue
         ch = text[i]
         if SENT_RE.match(ch):
-            out.append(sentence_span(ch, take_sent()))
+            si = cur_si()
+            out.append(sentence_span(ch, take_sent(), si))
             i += 1
             continue
         out.append(esc_text(ch))
@@ -331,6 +332,10 @@ POPUP_CSS_INV = """\
 /* Behavior-critical — designer styles override visuals via higher specificity. */
 .w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
 .s { border-bottom-style: dashed; }
+/* Scope highlight: the whole sentence (when a sentence popup is open) or the whole
+   idiom span. Themed via --accent, falling back to the page's ink color. Designers may
+   override with higher specificity. */
+.w.hl, .s.hl { background: color-mix(in srgb, var(--accent, currentColor) 16%, transparent); border-radius: 2px; }
 .pop {
   position: absolute; z-index: 1000;
   opacity: 0; pointer-events: none;
@@ -370,7 +375,7 @@ POPUP_CSS_INV = """\
 """
 
 POPUP_JS = r"""(function(){
-  var pop = null, active = null, hovered = null, isTouch = false;
+  var pop = null, active = null, hovered = null, isTouch = false, hlEls = [];
   var sentences = window.__leeSentences || [];
   function ensurePop(){
     if (pop) return pop;
@@ -404,6 +409,15 @@ POPUP_JS = r"""(function(){
     return '<div class="s-label">traducción</div>' +
       '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
       (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  function clearHl(){
+    for (var i=0;i<hlEls.length;i++) hlEls[i].classList.remove('hl');
+    hlEls = [];
+  }
+  function setHl(els){
+    clearHl();
+    for (var i=0;i<els.length;i++) els[i].classList.add('hl');
+    hlEls = els;
   }
   // forceSentence: true when Shift is held — render any word as its full-sentence popup.
   function show(el, forceSentence){
@@ -453,9 +467,22 @@ POPUP_JS = r"""(function(){
     if (active && active!==el) active.classList.remove('active');
     el.classList.add('active');
     active = el;
+    // Scope highlight: whole sentence (all spans sharing data-si) or whole idiom span.
+    if (asSentence){
+      var si = el.dataset.si;
+      var set = si != null
+        ? Array.prototype.slice.call(document.querySelectorAll('.w[data-si="'+si+'"], .s[data-si="'+si+'"]'))
+        : [];
+      setHl(set.length ? set : [el]);
+    } else if (isIdiom){
+      setHl([el]);
+    } else {
+      clearHl();
+    }
   }
   function hide(){
     hovered = null;
+    clearHl();
     if (!pop) return;
     pop.classList.remove('show');
     if (active){ active.classList.remove('active'); active = null; }
