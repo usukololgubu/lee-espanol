@@ -1336,6 +1336,11 @@ tr = "На Марсе, при такой радиации, она работае
 [[sentences]]
 text = "No funciona desde hace tiempo."
 tr = "Уже давно работает плохо."
+note = """
+`desde hace` + время = «уже (на протяжении)»: `desde hace tiempo` — «уже давно».
+
+Сравни: `hace …` без `desde` = «… (тому) назад».
+"""
 
 [[sentences]]
 text = "Ana mira la pantalla."
@@ -1360,6 +1365,11 @@ tr = "Ежемесячные осмотры в норме."
 [[sentences]]
 text = "Pero los archivos dicen que la mitad de la estación va a tener problemas en diez años."
 tr = "Но архивы говорят, что у половины станции через десять лет начнутся проблемы."
+note = """
+`la mitad de` = «половина (чего-то)»: `la mitad de la estación`.
+
+`en` + время = «через»: `en diez años` — «через десять лет».
+"""
 
 [[sentences]]
 text = "Quizás cinco."
@@ -1400,6 +1410,11 @@ tr = "Всё заканчивается."
 [[sentences]]
 text = "Si Ana no informa, la gente sigue tomando la píldora azul."
 tr = "Если Ана не сообщит, люди продолжают принимать синюю таблетку."
+note = """
+`seguir` + *герундий* = «продолжать (делать)»: `sigue tomando` — «продолжает принимать».
+
+**la gente** — собирательное, глагол в ед. ч.: `la gente sigue`.
+"""
 
 [[sentences]]
 text = "Confía."

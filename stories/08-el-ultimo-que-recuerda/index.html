@@ -387,6 +387,29 @@
   height: 12px; bottom: -12px;
 }
 .pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
 </style>
 </head>
 <body>
@@ -550,180 +573,183 @@
     <p><span class="w" data-tr="дон (уважительное обращение перед именем)" data-pos="сущ." data-lemma="don" data-grammar="**don** — традиционное вежливое обращение к мужчине, ставится перед именем: `[[don]] Joaquín`.
 
 Для женщины — **doña**. Не переводится буквально; обычно сохраняется как «дон».
-">Don</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) имеет, у него (есть)" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener** (&quot;иметь&quot;).
+" data-si="0">Don</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="0">Joaquín</span> <span class="w" data-tr="(он) имеет, у него (есть)" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener** (&quot;иметь&quot;).
 
 *Неправильный + чередование:* 1 л. ед. **tengo**, дальше — `e → ie` под ударением: `t[[ie]]nes · t[[ie]]ne · tenemos · tenéis · t[[ie]]nen`.
 
 *Возраст по-испански:* `[[tiene]] noventa años` = &quot;ему девяносто лет&quot; (досл. &quot;имеет девяносто лет&quot;).
-">tiene</span> <span class="w" data-tr="девяносто" data-pos="числ." data-lemma="noventa" data-grammar="">noventa</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Дону Хоакину девяносто лет.">.</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
+" data-si="0">tiene</span> <span class="w" data-tr="девяносто" data-pos="числ." data-lemma="noventa" data-grammar="" data-si="0">noventa</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="0">años</span><span class="s" data-tr="Дону Хоакину девяносто лет.">.</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
 
 Правильный на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
-">Vive</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="новая" data-pos="прил." data-lemma="nuevo" data-grammar="**nueva** — *ж. р., ед. ч.* от **nuevo** (&quot;новый&quot;).
+" data-si="1">Vive</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="1">en</span> <span class="w" data-tr="новая" data-pos="прил." data-lemma="nuevo" data-grammar="**nueva** — *ж. р., ед. ч.* от **nuevo** (&quot;новый&quot;).
 
 В тексте: `ropa [[nueva]]` (&quot;новая одежда&quot;) — согласование с **ropa** (ж. р.). Также входит в имя собственное **Nueva Andalucía**.
-">Nueva</span> <span class="w" data-tr="Андалусия — здесь: «Nueva Andalucía», колония из рассказа 02" data-pos="имя" data-lemma="" data-grammar="">Andalucía</span><span class="s" data-tr="Он живёт в Новой Андалусии.">.</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+" data-si="1">Nueva</span> <span class="w" data-tr="Андалусия — здесь: «Nueva Andalucía», колония из рассказа 02" data-pos="имя" data-lemma="" data-grammar="" data-si="1">Andalucía</span><span class="s" data-tr="Он живёт в Новой Андалусии.">.</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">Es</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="2">Es</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="последняя" data-pos="прил." data-lemma="último" data-grammar="**última** — *ж. р., ед. ч.* от **último** (&quot;последний&quot;).
+" data-si="2">la</span> <span class="w" data-tr="последняя" data-pos="прил." data-lemma="último" data-grammar="**última** — *ж. р., ед. ч.* от **último** (&quot;последний&quot;).
 
 Согласуется с **persona** (ж. р.): `la [[última]] persona`. Обычно ставится перед сущ.
-">última</span> <span class="w" data-tr="человек, личность" data-pos="сущ." data-lemma="la persona" data-grammar="**la persona** — сущ. *ж. р.*, ед. ч.
+" data-si="2">última</span> <span class="w" data-tr="человек, личность" data-pos="сущ." data-lemma="la persona" data-grammar="**la persona** — сущ. *ж. р.*, ед. ч.
 
 Род фиксирован: даже про мужчину говорят `[[la]] persona`, не *el persona*.
-">persona</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
+" data-si="2">persona</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
 
 Здесь: `la persona [[que]] recuerda` = &quot;человек, [[который]] помнит&quot;; `dicen [[que]]…` = &quot;говорят, [[что]]…&quot;.
 
 *Не путать* с **qué** (с ударением — вопросит.).
-">que</span> <span class="w" data-tr="(она) помнит" data-pos="глаг." data-lemma="recordar" data-grammar="**recuerda** — *presente*, 3 л. ед. ч., от **recordar** (&quot;помнить, вспоминать&quot;).
+" data-si="2">que</span> <span class="w" data-tr="(она) помнит" data-pos="глаг." data-lemma="recordar" data-grammar="**recuerda** — *presente*, 3 л. ед. ч., от **recordar** (&quot;помнить, вспоминать&quot;).
 
 *Чередование в корне:* `rec[[o]]rdar → rec[[ue]]rda` (o → ue под ударением).
-">recuerda</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="2">recuerda</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя" data-lemma="" data-grammar="">Tierra</span><span class="s" data-tr="Он — последний человек, который помнит Землю.">.</span></p>
+" data-si="2">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="2">Tierra</span><span class="s" data-tr="Он — последний человек, который помнит Землю.">.</span></p>
 
-    <p><span class="w" data-tr="когда" data-pos="союз" data-lemma="cuando" data-grammar="">Cuando</span> <span class="w" data-tr="(он) был" data-pos="глаг." data-lemma="ser" data-grammar="**era** — *pretérito imperfecto*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+    <p><span class="w" data-tr="когда" data-pos="союз" data-lemma="cuando" data-grammar="" data-si="3">Cuando</span> <span class="w" data-tr="(он) был" data-pos="глаг." data-lemma="ser" data-grammar="**era** — *pretérito imperfecto*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Имперфект ser* (неправильный): `era · eras · era · éramos · erais · eran`.
 
 Используется для постоянных свойств в прошлом: `[[era]] niño` = &quot;был ребёнком (тогда)&quot;.
-">era</span> <span class="w" data-tr="мальчик, ребёнок" data-pos="сущ." data-lemma="el niño" data-grammar="">niño</span>, <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="">las</span> <span class="w" data-tr="корабли (космические)" data-pos="сущ." data-lemma="la nave" data-grammar="">naves</span> <span class="w" data-tr="(они) прибывали, приходили" data-pos="глаг." data-lemma="llegar" data-grammar="**llegaban** — *pretérito imperfecto*, 3 л. мн. ч., от **llegar** (&quot;прибывать&quot;).
+" data-si="3">era</span> <span class="w" data-tr="мальчик, ребёнок" data-pos="сущ." data-lemma="el niño" data-grammar="" data-si="3">niño</span>, <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="" data-si="3">las</span> <span class="w" data-tr="корабли (космические)" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="3">naves</span> <span class="w" data-tr="(они) прибывали, приходили" data-pos="глаг." data-lemma="llegar" data-grammar="**llegaban** — *pretérito imperfecto*, 3 л. мн. ч., от **llegar** (&quot;прибывать&quot;).
 
 *Имперфект* для регулярного действия в прошлом: &quot;приходили (каждый месяц)&quot;.
 
 Правильный на `-ar`: `lleg·[[ar]]` → `lleg·[[aban]]`.
-">llegaban</span> <span class="w" data-tr="каждый" data-pos="опр." data-lemma="cada" data-grammar="**cada** — одна форма для *м. и ж. р.*, ед. ч.: `[[cada]] mes`, `[[cada]] noche`.
+" data-si="3">llegaban</span> <span class="w" data-tr="каждый" data-pos="опр." data-lemma="cada" data-grammar="**cada** — одна форма для *м. и ж. р.*, ед. ч.: `[[cada]] mes`, `[[cada]] noche`.
 
 Не имеет мн. ч. (вместо этого: `todos los meses`).
-">cada</span> <span class="w" data-tr="месяц" data-pos="сущ." data-lemma="el mes" data-grammar="">mes</span><span class="s" data-tr="Когда он был ребёнком, корабли прилетали каждый месяц.">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) играл" data-pos="глаг." data-lemma="jugar" data-grammar="**jugaba** — *pretérito imperfecto*, 3 л. ед. ч., от **jugar** (&quot;играть&quot;).
+" data-si="3">cada</span> <span class="w" data-tr="месяц" data-pos="сущ." data-lemma="el mes" data-grammar="" data-si="3">mes</span><span class="s" data-tr="Когда он был ребёнком, корабли прилетали каждый месяц." data-note="*Imperfecto* (`era`, `llegaban`) — прошедшее для привычных и длящихся действий: «был», «прилетали (регулярно)».
+
+Отличается от *pretérito* (однократное законченное действие).
+">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="4">Joaquín</span> <span class="w" data-tr="(он) играл" data-pos="глаг." data-lemma="jugar" data-grammar="**jugaba** — *pretérito imperfecto*, 3 л. ед. ч., от **jugar** (&quot;играть&quot;).
 
 *Имперфект* для регулярного/привычного действия в прошлом: &quot;играл (часто, в детстве)&quot;.
 
 Правильный на `-ar`: `jug·[[ar]]` → `jug·[[aba]]`. (В презенсе у **jugar** чередование `u → ue`, но в имперфекте корень не меняется.)
-">jugaba</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="порт" data-pos="сущ." data-lemma="el puerto" data-grammar="">puerto</span><span class="s" data-tr="Хоакин играл в порту.">.</span> <span class="w" data-tr="(он) видел" data-pos="глаг." data-lemma="ver" data-grammar="**veía** — *pretérito imperfecto*, 3 л. ед. ч., от **ver** (&quot;видеть&quot;).
+" data-si="4">jugaba</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="4">en</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="4">el</span> <span class="w" data-tr="порт" data-pos="сущ." data-lemma="el puerto" data-grammar="" data-si="4">puerto</span><span class="s" data-tr="Хоакин играл в порту.">.</span> <span class="w" data-tr="(он) видел" data-pos="глаг." data-lemma="ver" data-grammar="**veía** — *pretérito imperfecto*, 3 л. ед. ч., от **ver** (&quot;видеть&quot;).
 
 *Имперфект ver* (немного особый): `veía · veías · veía · veíamos · veíais · veían` (сохраняет `e` от корня **ver-**, как в имперфекте на `-ía`).
 
 Для регулярного действия в прошлом: &quot;видел (часто)&quot;.
-">Veía</span> <span class="w" data-tr="коробки, ящики" data-pos="сущ." data-lemma="la caja" data-grammar="">cajas</span> <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="фрукты" data-pos="сущ." data-lemma="la fruta" data-grammar="">frutas</span> <span class="w" data-tr="зелёные" data-pos="прил." data-lemma="verde" data-grammar="**verdes** — *мн. ч.* от **verde** (&quot;зелёный&quot;). Одна форма для *м. и ж. р.* в ед. ч.
+" data-si="5">Veía</span> <span class="w" data-tr="коробки, ящики" data-pos="сущ." data-lemma="la caja" data-grammar="" data-si="5">cajas</span> <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="" data-si="5">con</span> <span class="w" data-tr="фрукты" data-pos="сущ." data-lemma="la fruta" data-grammar="" data-si="5">frutas</span> <span class="w" data-tr="зелёные" data-pos="прил." data-lemma="verde" data-grammar="**verdes** — *мн. ч.* от **verde** (&quot;зелёный&quot;). Одна форма для *м. и ж. р.* в ед. ч.
 
 Согласуется с **frutas** (ж. р., мн. ч.): `frutas [[verdes]]`.
-">verdes</span>, <span class="w" data-tr="книги" data-pos="сущ." data-lemma="el libro" data-grammar="">libros</span>, <span class="w" data-tr="одежда" data-pos="сущ." data-lemma="la ropa" data-grammar="**la ropa** — сущ. *ж. р.*, ед. ч.
+" data-si="5">verdes</span>, <span class="w" data-tr="книги" data-pos="сущ." data-lemma="el libro" data-grammar="" data-si="5">libros</span>, <span class="w" data-tr="одежда" data-pos="сущ." data-lemma="la ropa" data-grammar="**la ropa** — сущ. *ж. р.*, ед. ч.
 
 Несмотря на русское &quot;одежда&quot; в ед. ч., испанское **ropa** — собирательное, идёт с глаг. в ед. ч. Мн. ч. **las ropas** редко и значит &quot;одежды/одеяния (разные)&quot;.
-">ropa</span> <span class="w" data-tr="новая" data-pos="прил." data-lemma="nuevo" data-grammar="**nueva** — *ж. р., ед. ч.* от **nuevo** (&quot;новый&quot;).
+" data-si="5">ropa</span> <span class="w" data-tr="новая" data-pos="прил." data-lemma="nuevo" data-grammar="**nueva** — *ж. р., ед. ч.* от **nuevo** (&quot;новый&quot;).
 
 В тексте: `ropa [[nueva]]` (&quot;новая одежда&quot;) — согласование с **ropa** (ж. р.). Также входит в имя собственное **Nueva Andalucía**.
-">nueva</span><span class="s" data-tr="Он видел ящики с зелёными фруктами, книги, новую одежду.">.</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
+" data-si="5">nueva</span><span class="s" data-tr="Он видел ящики с зелёными фруктами, книги, новую одежду.">.</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
 
 Согласуется с *обладаемым*, не с владельцем: `[[su]] madre` (его мать), `[[su]] nieto` (его внук).
-">Su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="">madre</span> <span class="w" data-tr="(она) готовила" data-pos="глаг." data-lemma="cocinar" data-grammar="**cocinaba** — *pretérito imperfecto*, 3 л. ед. ч., от **cocinar** (&quot;готовить еду&quot;).
+" data-si="6">Su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="" data-si="6">madre</span> <span class="w" data-tr="(она) готовила" data-pos="глаг." data-lemma="cocinar" data-grammar="**cocinaba** — *pretérito imperfecto*, 3 л. ед. ч., от **cocinar** (&quot;готовить еду&quot;).
 
 *Имперфект* описывает регулярное/привычное действие в прошлом: &quot;готовила (каждый день)&quot;.
 
 Правильный на `-ar`: `cocin·[[ar]]` → `cocin·[[aba]]`.
-">cocinaba</span> <span class="w" data-tr="хлеб" data-pos="сущ." data-lemma="el pan" data-grammar="">pan</span> <span class="w" data-tr="белый" data-pos="прил." data-lemma="blanco" data-grammar="">blanco</span><span class="s" data-tr="Его мать готовила белый хлеб.">.</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">Los</span> <span class="w" data-tr="дни" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч. Мн. ч. — **los días**.
+" data-si="6">cocinaba</span> <span class="w" data-tr="хлеб" data-pos="сущ." data-lemma="el pan" data-grammar="" data-si="6">pan</span> <span class="w" data-tr="белый" data-pos="прил." data-lemma="blanco" data-grammar="" data-si="6">blanco</span><span class="s" data-tr="Его мать готовила белый хлеб.">.</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="" data-si="7">Los</span> <span class="w" data-tr="дни" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч. Мн. ч. — **los días**.
 
 *Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el mapa**, **el planeta**).
-">días</span> <span class="w" data-tr="(они) были" data-pos="глаг." data-lemma="ser" data-grammar="**eran** — *pretérito imperfecto*, 3 л. мн. ч., от **ser**.
+" data-si="7">días</span> <span class="w" data-tr="(они) были" data-pos="глаг." data-lemma="ser" data-grammar="**eran** — *pretérito imperfecto*, 3 л. мн. ч., от **ser**.
 
 Та же серия: `era · eras · era · éramos · erais · [[eran]]`.
-">eran</span> <span class="w" data-tr="шумные" data-pos="прил." data-lemma="ruidoso" data-grammar="**ruidosos** — *м. р., мн. ч.* от **ruidoso** (&quot;шумный&quot;).
+" data-si="7">eran</span> <span class="w" data-tr="шумные" data-pos="прил." data-lemma="ruidoso" data-grammar="**ruidosos** — *м. р., мн. ч.* от **ruidoso** (&quot;шумный&quot;).
 
 Согласуется с **días** (м. р., мн. ч.): `los días eran [[ruidosos]]`.
-">ruidosos</span><span class="s" data-tr="Дни были шумными.">.</span></p>
+" data-si="7">ruidosos</span><span class="s" data-tr="Дни были шумными.">.</span></p>
 
-    <p><span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="">Después</span>, <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="">las</span> <span class="w" data-tr="корабли (космические)" data-pos="сущ." data-lemma="la nave" data-grammar="">naves</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(они) пришли, прибыли" data-pos="глаг." data-lemma="venir" data-grammar="**vinieron** — *pretérito indefinido*, 3 л. мн. ч., от **venir**.
+    <p><span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="" data-si="8">Después</span>, <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="" data-si="8">las</span> <span class="w" data-tr="корабли (космические)" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="8">naves</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="8">no</span> <span class="w" data-tr="(они) пришли, прибыли" data-pos="глаг." data-lemma="venir" data-grammar="**vinieron** — *pretérito indefinido*, 3 л. мн. ч., от **venir**.
 
 *Неправильный.* В претерите корень меняется на **vin-**: `vine · viniste · vino · vinimos · vinisteis · [[vinieron]]`.
-">vinieron</span><span class="s" data-tr="Потом корабли перестали прилетать.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="8">vinieron</span><span class="s" data-tr="Потом корабли перестали прилетать.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">La</span> <span class="w" data-tr="радио (приёмник, связь)" data-pos="сущ." data-lemma="la radio" data-grammar="**la radio** — сущ. *ж. р.*, ед. ч.
+" data-si="9">La</span> <span class="w" data-tr="радио (приёмник, связь)" data-pos="сущ." data-lemma="la radio" data-grammar="**la radio** — сущ. *ж. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la radiodifusión**). Как **la mano**, **la foto**.
-">radio</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
+" data-si="9">radio</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
 
 — *возвратная частица* 3 л.: `la radio [[se]] apagó` = &quot;радио замолчало (само)&quot;.
 
 — *вариант **le***: когда **le** стоит перед **la/lo/las/los**, оно превращается в **se**: `le la describía` → `[[se]] la describía` = &quot;ей это описывала&quot;.
 
 Во второй роли — здесь: `su madre [[se]] [[la]] describía` (&quot;его матери [[ему]] [[её]] описывала&quot; → &quot;его мать [[ему]] [[её]] описывала&quot;).
-">se</span> <span class="w" data-tr="(она) погасла, замолчала" data-pos="глаг." data-lemma="apagarse" data-grammar="**se apagó** — *pretérito indefinido*, 3 л. ед. ч., от **apagarse** (&quot;погаснуть, выключиться&quot;).
+" data-si="9">se</span> <span class="w" data-tr="(она) погасла, замолчала" data-pos="глаг." data-lemma="apagarse" data-grammar="**se apagó** — *pretérito indefinido*, 3 л. ед. ч., от **apagarse** (&quot;погаснуть, выключиться&quot;).
 
 *Возвратный.* Частица **se** показывает, что субъект сам &quot;гасит себя&quot;: `la radio [[se]] apagó` = &quot;радио замолчало&quot;.
 
 Правильный на `-ar`, прет.: `apag·[[ar]]` → `apag·[[ó]]`.
-">apagó</span><span class="s" data-tr="Радио замолчало.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="9">apagó</span><span class="s" data-tr="Радио замолчало.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">La</span> <span class="w" data-tr="люди, народ" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч. (собирательное).
+" data-si="10">La</span> <span class="w" data-tr="люди, народ" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч. (собирательное).
 
 Хотя по-русски &quot;люди&quot; — мн. ч., по-испански **gente** идёт с глаг. в *ед. ч.*: `la gente [[reza]]` (&quot;люди молятся&quot;).
-">gente</span> <span class="w" data-tr="(она) ждала, подождала" data-pos="глаг." data-lemma="esperar" data-grammar="**esperó** — *pretérito indefinido*, 3 л. ед. ч., от **esperar** (&quot;ждать&quot;).
+" data-si="10">gente</span> <span class="w" data-tr="(она) ждала, подождала" data-pos="глаг." data-lemma="esperar" data-grammar="**esperó** — *pretérito indefinido*, 3 л. ед. ч., от **esperar** (&quot;ждать&quot;).
 
 Правильный на `-ar`, прет.: `esper·[[ar]]` → `esper·[[ó]]` (ударение на последнем слоге).
 
 *Преtérito indefinido* — законченное действие в прошлом.
-">esperó</span><span class="s" data-tr="Люди ждали.">.</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="">Después</span> <span class="w" data-tr="(она) ждала, подождала" data-pos="глаг." data-lemma="esperar" data-grammar="**esperó** — *pretérito indefinido*, 3 л. ед. ч., от **esperar** (&quot;ждать&quot;).
+" data-si="10">esperó</span><span class="s" data-tr="Люди ждали.">.</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="" data-si="11">Después</span> <span class="w" data-tr="(она) ждала, подождала" data-pos="глаг." data-lemma="esperar" data-grammar="**esperó** — *pretérito indefinido*, 3 л. ед. ч., от **esperar** (&quot;ждать&quot;).
 
 Правильный на `-ar`, прет.: `esper·[[ar]]` → `esper·[[ó]]` (ударение на последнем слоге).
 
 *Преtérito indefinido* — законченное действие в прошлом.
-">esperó</span> <span class="w" data-tr="меньше" data-pos="нар." data-lemma="menos" data-grammar="">menos</span><span class="s" data-tr="Потом ждали меньше.">.</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="">Después</span> <span class="w" data-tr="(она) забыла" data-pos="глаг." data-lemma="olvidar" data-grammar="**olvidó** — *pretérito indefinido*, 3 л. ед. ч., от **olvidar** (&quot;забыть&quot;).
+" data-si="11">esperó</span> <span class="w" data-tr="меньше" data-pos="нар." data-lemma="menos" data-grammar="" data-si="11">menos</span><span class="s" data-tr="Потом ждали меньше.">.</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="" data-si="12">Después</span> <span class="w" data-tr="(она) забыла" data-pos="глаг." data-lemma="olvidar" data-grammar="**olvidó** — *pretérito indefinido*, 3 л. ед. ч., от **olvidar** (&quot;забыть&quot;).
 
 Правильный на `-ar`, прет.: `olvid·[[ar]]` → `olvid·[[ó]]`.
 
 *Преtérito indefinido* — законченное действие: &quot;забыла (и точка)&quot;.
-">olvidó</span><span class="s" data-tr="Потом забыли.">.</span></p>
+" data-si="12">olvidó</span><span class="s" data-tr="Потом забыли.">.</span></p>
 
-    <p><span class="w" data-tr="сейчас, теперь" data-pos="нар." data-lemma="ahora" data-grammar="">Ahora</span> <span class="w" data-tr="все" data-pos="мест." data-lemma="todo" data-grammar="**todos** — *м. р., мн. ч.* от **todo** (&quot;весь; все&quot;).
+    <p><span class="w" data-tr="сейчас, теперь" data-pos="нар." data-lemma="ahora" data-grammar="" data-si="13">Ahora</span> <span class="w" data-tr="все" data-pos="мест." data-lemma="todo" data-grammar="**todos** — *м. р., мн. ч.* от **todo** (&quot;весь; все&quot;).
 
 Здесь как местоим.: `[[todos]] rezan` = &quot;все молятся&quot;.
-">todos</span> <span class="w" data-tr="(они) молятся" data-pos="глаг." data-lemma="rezar" data-grammar="**rezan** — *presente*, 3 л. мн. ч., от **rezar**.
+" data-si="13">todos</span> <span class="w" data-tr="(они) молятся" data-pos="глаг." data-lemma="rezar" data-grammar="**rezan** — *presente*, 3 л. мн. ч., от **rezar**.
 
 `rez·[[ar]]` → `rez·[[an]]`.
-">rezan</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="Сатурн — шестая планета; в Nueva Andalucía — божество «Patrón»" data-pos="имя" data-lemma="" data-grammar="">Saturno</span><span class="s" data-tr="Теперь все молятся Сатурну.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir**.
+" data-si="13">rezan</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="13">a</span> <span class="w" data-tr="Сатурн — шестая планета; в Nueva Andalucía — божество «Patrón»" data-pos="имя" data-lemma="" data-grammar="" data-si="13">Saturno</span><span class="s" data-tr="Теперь все молятся Сатурну.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir**.
 
 *Неправильный.* В этой же серии: `digo · dices · dice · decimos · decís · [[dicen]]`.
 
 Часто значит &quot;говорят (вообще)&quot; — обобщённое &quot;люди говорят&quot;.
-">Dicen</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
+" data-si="14">Dicen</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
 
 Здесь: `la persona [[que]] recuerda` = &quot;человек, [[который]] помнит&quot;; `dicen [[que]]…` = &quot;говорят, [[что]]…&quot;.
 
 *Не путать* с **qué** (с ударением — вопросит.).
-">que</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="">Patrón</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
+" data-si="14">que</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="14">el</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="" data-si="14">Patrón</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
 
 Правильный на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
-">vive</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="кольцо" data-pos="сущ." data-lemma="el anillo" data-grammar="">anillo</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro" data-grammar="">oro</span><span class="s" data-tr="Говорят, что Покровитель живёт в золотом кольце.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir**.
+" data-si="14">vive</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="14">en</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="14">el</span> <span class="w" data-tr="кольцо" data-pos="сущ." data-lemma="el anillo" data-grammar="" data-si="14">anillo</span> <span class="w" data-tr="из, от, о (предлог)" data-pos="предл." data-lemma="de" data-grammar="" data-si="14">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro" data-grammar="" data-si="14">oro</span><span class="s" data-tr="Говорят, что Покровитель живёт в золотом кольце.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente*, 3 л. мн. ч., от **decir**.
 
 *Неправильный.* В этой же серии: `digo · dices · dice · decimos · decís · [[dicen]]`.
 
 Часто значит &quot;говорят (вообще)&quot; — обобщённое &quot;люди говорят&quot;.
-">Dicen</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
+" data-si="15">Dicen</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
 
 Здесь: `la persona [[que]] recuerda` = &quot;человек, [[который]] помнит&quot;; `dicen [[que]]…` = &quot;говорят, [[что]]…&quot;.
 
 *Не путать* с **qué** (с ударением — вопросит.).
-">que</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
+" data-si="15">que</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="" data-si="15">un</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-a`, но мужского рода.
-">día</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
+" data-si="15">día</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
 
 *Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
 
@@ -738,289 +764,295 @@
 — `[[va]] a estar solo` = &quot;будет один&quot; (Пабло).
 
 Структура: **ir** (в наст.) + **a** + инфинитив.
-">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="вернуться" data-pos="глаг." data-lemma="volver" data-grammar="**volver** — *инфинитив* (&quot;вернуться; повернуть&quot;).
+" data-si="15">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="15">a</span> <span class="w" data-tr="вернуться" data-pos="глаг." data-lemma="volver" data-grammar="**volver** — *инфинитив* (&quot;вернуться; повернуть&quot;).
 
 В личных формах — чередование `o → ue`: `v[[ue]]lvo · v[[ue]]lves · v[[ue]]lve · volvemos · volvéis · v[[ue]]lven`.
 
 В тексте — в *futuro próximo*: `va a [[volver]]` = &quot;вернётся&quot;.
-">volver</span><span class="s" data-tr="Говорят, что однажды он вернётся.">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** (&quot;знать факт&quot;).
+" data-si="15">volver</span><span class="s" data-tr="Говорят, что однажды он вернётся.">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="16">Joaquín</span> <span class="w" data-tr="(он) знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** (&quot;знать факт&quot;).
 
 *Неправильный* в 1 л. ед. (**sé**), но в 3 л. — как обычный `-er`: `sab·[[e]]`.
 
 *Нюанс:* **saber** — знать факт; **conocer** — быть знакомым.
-">sabe</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
+" data-si="16">sabe</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
 
 Здесь: `la persona [[que]] recuerda` = &quot;человек, [[который]] помнит&quot;; `dicen [[que]]…` = &quot;говорят, [[что]]…&quot;.
 
 *Не путать* с **qué** (с ударением — вопросит.).
-">que</span> <span class="w" data-tr="Сатурн — шестая планета; в Nueva Andalucía — божество «Patrón»" data-pos="имя" data-lemma="" data-grammar="">Saturno</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+" data-si="16">que</span> <span class="w" data-tr="Сатурн — шестая планета; в Nueva Andalucía — божество «Patrón»" data-pos="имя" data-lemma="" data-grammar="" data-si="16">Saturno</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">es</span> <span class="w" data-tr="только; одинокий" data-pos="нар." data-lemma="solo" data-grammar="**solo** — два значения:
+" data-si="16">es</span> <span class="w" data-tr="только; одинокий" data-pos="нар." data-lemma="solo" data-grammar="**solo** — два значения:
 
 — *нар.* &quot;только&quot;: `es [[solo]] un planeta` = &quot;это [[только]] планета&quot;.
 
 — *прил.* &quot;одинокий&quot;: `Pablo va a estar [[solo]]` = &quot;Пабло будет [[один]]&quot;.
 
 Контекст различает.
-">solo</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="планета" data-pos="сущ." data-lemma="el planeta" data-grammar="**el planeta** — сущ. *м. р.*, ед. ч.
+" data-si="16">solo</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="" data-si="16">un</span> <span class="w" data-tr="планета" data-pos="сущ." data-lemma="el planeta" data-grammar="**el planeta** — сущ. *м. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-a`, но мужского рода (как **el día**, **el mapa**, **el problema**).
-">planeta</span><span class="s" data-tr="Хоакин знает, что Сатурн — это всего лишь планета.">.</span> <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">Pero</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
+" data-si="16">planeta</span><span class="s" data-tr="Хоакин знает, что Сатурн — это всего лишь планета.">.</span> <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="17">Pero</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="17">no</span> <span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
 
 *Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`.
-">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span><span class="s" data-tr="Но он ничего не говорит.">.</span> <span class="w" data-tr="много лет (тому назад / уже)" data-pos="нар." data-lemma="" data-grammar="">Hace años</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
+" data-si="17">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="" data-si="17">nada</span><span class="s" data-tr="Но он ничего не говорит.">.</span> <span class="w" data-tr="много лет (тому назад / уже)" data-pos="нар." data-lemma="" data-grammar="" data-si="18">Hace años</span> <span class="w" data-tr="что, который (союз)" data-pos="союз" data-lemma="que" data-grammar="**que** (без ударения) — союз/относит. местоим. &quot;что; который&quot;.
 
 Здесь: `la persona [[que]] recuerda` = &quot;человек, [[который]] помнит&quot;; `dicen [[que]]…` = &quot;говорят, [[что]]…&quot;.
 
 *Не путать* с **qué** (с ударением — вопросит.).
-">que</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
+" data-si="18">que</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="18">no</span> <span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
 
 *Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`.
-">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span><span class="s" data-tr="Уже много лет он молчит.">.</span></p>
+" data-si="18">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="" data-si="18">nada</span><span class="s" data-tr="Уже много лет он молчит." data-note="`hace` + время + `que` + глагол = «уже … как»: `hace años que no dice nada` — «уже много лет (как) молчит».
 
-    <p><span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy" data-grammar="">Hoy</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) находится" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** (&quot;быть, находиться&quot;).
+Двойное отрицание: `no … nada`.
+">.</span></p>
+
+    <p><span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy" data-grammar="" data-si="19">Hoy</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="19">Joaquín</span> <span class="w" data-tr="(он) находится" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** (&quot;быть, находиться&quot;).
 
 *Неправильный.* Спряж.: `estoy · estás · está · estamos · estáis · están`.
 
 *Нюанс:* для местоположения и состояния — **estar**, не **ser**.
-">está</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="кровать" data-pos="сущ." data-lemma="la cama" data-grammar="">cama</span><span class="s" data-tr="Сегодня Хоакин в постели.">.</span> <span class="w" data-tr="ему, ей (косв. дополнение)" data-pos="мест." data-lemma="le" data-grammar="**le** — местоим. косв. доп., 3 л. ед. ч.
+" data-si="19">está</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="19">en</span> <span class="w" data-tr="кровать" data-pos="сущ." data-lemma="la cama" data-grammar="" data-si="19">cama</span><span class="s" data-tr="Сегодня Хоакин в постели.">.</span> <span class="w" data-tr="ему, ей (косв. дополнение)" data-pos="мест." data-lemma="le" data-grammar="**le** — местоим. косв. доп., 3 л. ед. ч.
 
 Здесь: `[[le]] duele el pecho` = &quot;[[ему]] болит грудь&quot; = &quot;у него болит грудь&quot;.
-">Le</span> <span class="w" data-tr="(оно) болит" data-pos="глаг." data-lemma="doler" data-grammar="**duele** — *presente*, 3 л. ед. ч., от **doler** (&quot;болеть, причинять боль&quot;).
+" data-si="20">Le</span> <span class="w" data-tr="(оно) болит" data-pos="глаг." data-lemma="doler" data-grammar="**duele** — *presente*, 3 л. ед. ч., от **doler** (&quot;болеть, причинять боль&quot;).
 
 *Чередование в корне:* `d[[o]]ler → d[[ue]]le` (o → ue под ударением).
 
 Конструкция как у **gustar**: `[[le]] duele [[el]] pecho` = &quot;ему болит грудь&quot; = &quot;у него болит грудь&quot;.
-">duele</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="грудь, грудная клетка" data-pos="сущ." data-lemma="el pecho" data-grammar="">pecho</span><span class="s" data-tr="У него болит грудь.">.</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="врач" data-pos="сущ." data-lemma="el médico" data-grammar="">médico</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+" data-si="20">duele</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="20">el</span> <span class="w" data-tr="грудь, грудная клетка" data-pos="сущ." data-lemma="el pecho" data-grammar="" data-si="20">pecho</span><span class="s" data-tr="У него болит грудь.">.</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="21">El</span> <span class="w" data-tr="врач" data-pos="сущ." data-lemma="el médico" data-grammar="" data-si="21">médico</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">es</span> <span class="w" data-tr="молодой" data-pos="прил." data-lemma="joven" data-grammar="**joven** — прил., одна форма для *м. и ж. р.* в ед. ч.
+" data-si="21">es</span> <span class="w" data-tr="молодой" data-pos="прил." data-lemma="joven" data-grammar="**joven** — прил., одна форма для *м. и ж. р.* в ед. ч.
 
 Мн. ч.: **jóvenes** (ударение возникает на корне).
-">joven</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="серьёзный" data-pos="прил." data-lemma="serio" data-grammar="">serio</span><span class="s" data-tr="Врач молодой и серьёзный.">.</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">El</span> <span class="w" data-tr="врач" data-pos="сущ." data-lemma="el médico" data-grammar="">médico</span> <span class="w" data-tr="тоже, также" data-pos="нар." data-lemma="también" data-grammar="">también</span> <span class="w" data-tr="(он) молится" data-pos="глаг." data-lemma="rezar" data-grammar="**reza** — *presente*, 3 л. ед. ч., от **rezar** (&quot;молиться&quot;).
+" data-si="21">joven</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="21">y</span> <span class="w" data-tr="серьёзный" data-pos="прил." data-lemma="serio" data-grammar="" data-si="21">serio</span><span class="s" data-tr="Врач молодой и серьёзный.">.</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="22">El</span> <span class="w" data-tr="врач" data-pos="сущ." data-lemma="el médico" data-grammar="" data-si="22">médico</span> <span class="w" data-tr="тоже, также" data-pos="нар." data-lemma="también" data-grammar="" data-si="22">también</span> <span class="w" data-tr="(он) молится" data-pos="глаг." data-lemma="rezar" data-grammar="**reza** — *presente*, 3 л. ед. ч., от **rezar** (&quot;молиться&quot;).
 
 Правильный на `-ar`: `rez·[[ar]]` → `rez·[[a]]`.
-">reza</span> <span class="w" data-tr="к + the (m.) — слитная форма" data-pos="предл." data-lemma="a" data-grammar="**al** = **a** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+" data-si="22">reza</span> <span class="w" data-tr="к + the (m.) — слитная форма" data-pos="предл." data-lemma="a" data-grammar="**al** = **a** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
 
 `a + [[el]] Patrón` → `[[al]] Patrón`. (С другими артиклями не сливается: **a la**, **a los**, **a las**.)
-">al</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="">Patrón</span><span class="s" data-tr="Врач тоже молится Покровителю.">.</span></p>
+" data-si="22">al</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="" data-si="22">Patrón</span><span class="s" data-tr="Врач тоже молится Покровителю.">.</span></p>
 
     <p><span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
 
 Согласуется с *обладаемым*, не с владельцем: `[[su]] madre` (его мать), `[[su]] nieto` (его внук).
-">Su</span> <span class="w" data-tr="внук" data-pos="сущ." data-lemma="el nieto" data-grammar="">nieto</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> <span class="w" data-tr="(он) приходит, приезжает" data-pos="глаг." data-lemma="venir" data-grammar="**viene** — *presente*, 3 л. ед. ч., от **venir** (&quot;приходить&quot;).
+" data-si="23">Su</span> <span class="w" data-tr="внук" data-pos="сущ." data-lemma="el nieto" data-grammar="" data-si="23">nieto</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="23">Pablo</span> <span class="w" data-tr="(он) приходит, приезжает" data-pos="глаг." data-lemma="venir" data-grammar="**viene** — *presente*, 3 л. ед. ч., от **venir** (&quot;приходить&quot;).
 
 *Неправильный + чередование:* 1 л. ед. **vengo**, дальше — `e → ie` под ударением: `v[[ie]]nes · v[[ie]]ne · venimos · venís · v[[ie]]nen`.
-">viene</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="навестить его" data-pos="глаг." data-lemma="visitar" data-grammar="**visitarlo** = **visitar** + **lo** — инфинитив с приклеенным местоим.
+" data-si="23">viene</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="23">a</span> <span class="w" data-tr="навестить его" data-pos="глаг." data-lemma="visitar" data-grammar="**visitarlo** = **visitar** + **lo** — инфинитив с приклеенным местоим.
 
 `visitar` (&quot;навестить&quot;) + `[[lo]]` (&quot;его&quot;) → &quot;[[навестить его]]&quot;. Безударные местоимения цепляются к концу инфинитива.
 
 В тексте: `Pablo viene a [[visitarlo]]` = &quot;Пабло приходит навестить [[его]]&quot;.
-">visitarlo</span><span class="s" data-tr="Его внук Пабло приходит навестить его.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> <span class="w" data-tr="(он) имеет, у него (есть)" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener** (&quot;иметь&quot;).
+" data-si="23">visitarlo</span><span class="s" data-tr="Его внук Пабло приходит навестить его.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="24">Pablo</span> <span class="w" data-tr="(он) имеет, у него (есть)" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener** (&quot;иметь&quot;).
 
 *Неправильный + чередование:* 1 л. ед. **tengo**, дальше — `e → ie` под ударением: `t[[ie]]nes · t[[ie]]ne · tenemos · tenéis · t[[ie]]nen`.
 
 *Возраст по-испански:* `[[tiene]] noventa años` = &quot;ему девяносто лет&quot; (досл. &quot;имеет девяносто лет&quot;).
-">tiene</span> <span class="w" data-tr="двенадцать" data-pos="числ." data-lemma="doce" data-grammar="">doce</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="">años</span><span class="s" data-tr="Пабло двенадцать лет.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> <span class="w" data-tr="(он) приносит" data-pos="глаг." data-lemma="traer" data-grammar="**trae** — *presente*, 3 л. ед. ч., от **traer** (&quot;приносить&quot;).
+" data-si="24">tiene</span> <span class="w" data-tr="двенадцать" data-pos="числ." data-lemma="doce" data-grammar="" data-si="24">doce</span> <span class="w" data-tr="годы; лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="24">años</span><span class="s" data-tr="Пабло двенадцать лет.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="25">Pablo</span> <span class="w" data-tr="(он) приносит" data-pos="глаг." data-lemma="traer" data-grammar="**trae** — *presente*, 3 л. ед. ч., от **traer** (&quot;приносить&quot;).
 
 *Неправильный* в 1 л. ед. (**traigo**), но в 3 л. — как обычный `-er`: `tra·[[e]]`.
-">trae</span> <span class="w" data-tr="цветы" data-pos="сущ." data-lemma="la flor" data-grammar="">flores</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">y</span> <span class="w" data-tr="одна; неопр. артикль (ж. р.)" data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
+" data-si="25">trae</span> <span class="w" data-tr="цветы" data-pos="сущ." data-lemma="la flor" data-grammar="" data-si="25">flores</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="25">y</span> <span class="w" data-tr="одна; неопр. артикль (ж. р.)" data-pos="арт." data-lemma="una" data-grammar="" data-si="25">una</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la fotografía**).
-">foto</span> <span class="w" data-tr="старая (давняя или по возрасту)" data-pos="прил." data-lemma="viejo" data-grammar="**vieja** — *ж. р., ед. ч.* от **viejo**.
+" data-si="25">foto</span> <span class="w" data-tr="старая (давняя или по возрасту)" data-pos="прил." data-lemma="viejo" data-grammar="**vieja** — *ж. р., ед. ч.* от **viejo**.
 
 *Нюанс позиции:* перед сущ. часто значит &quot;давний&quot;; после сущ. — &quot;старый по возрасту/состоянию&quot;. Здесь: `una foto [[vieja]]` (после сущ.) = &quot;старая (потрёпанная, давняя) фотография&quot;.
-">vieja</span><span class="s" data-tr="Пабло приносит цветы и старую фотографию.">.</span></p>
+" data-si="25">vieja</span><span class="s" data-tr="Пабло приносит цветы и старую фотографию.">.</span></p>
 
-    <p>—<span class="w" data-tr="дедушка" data-pos="сущ." data-lemma="el abuelo" data-grammar="">Abuelo</span>, ¿<span class="w" data-tr="что, какой" data-pos="мест." data-lemma="qué" data-grammar="**qué** (с ударением) — вопросит./восклицат.
+    <p>—<span class="w" data-tr="дедушка" data-pos="сущ." data-lemma="el abuelo" data-grammar="" data-si="26">Abuelo</span>, ¿<span class="w" data-tr="что, какой" data-pos="мест." data-lemma="qué" data-grammar="**qué** (с ударением) — вопросит./восклицат.
 
 Здесь: `¿[[qué]] es esto?` = &quot;[[что]] это?&quot;. Без ударения **que** — союз &quot;что/который&quot;.
-">qué</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+" data-si="26">qué</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">es</span> <span class="w" data-tr="это (нейтральное)" data-pos="мест." data-lemma="esto" data-grammar="**esto** — указ. местоим. *нейтрального* рода (&quot;это, эта штука&quot;).
+" data-si="26">es</span> <span class="w" data-tr="это (нейтральное)" data-pos="мест." data-lemma="esto" data-grammar="**esto** — указ. местоим. *нейтрального* рода (&quot;это, эта штука&quot;).
 
 Используется, когда пол предмета неизвестен или речь о ситуации: `¿qué es [[esto]]?` = &quot;что это?&quot;. *Не путать* с **este** (*м. р.*) / **esta** (*ж. р.*).
-">esto</span><span class="s" data-tr="— Дедушка, что это?">?</span> —<span class="w" data-tr="(он) спрашивает" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunta** — *presente*, 3 л. ед. ч., от **preguntar** (&quot;спрашивать&quot;).
+" data-si="26">esto</span><span class="s" data-tr="— Дедушка, что это?">?</span> —<span class="w" data-tr="(он) спрашивает" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunta** — *presente*, 3 л. ед. ч., от **preguntar** (&quot;спрашивать&quot;).
 
 `pregunt·[[ar]]` → `pregunt·[[a]]`.
-">pregunta</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span><span class="s" data-tr="— спрашивает Пабло.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="27">pregunta</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="27">Pablo</span><span class="s" data-tr="— спрашивает Пабло.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">La</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
+" data-si="28">La</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la fotografía**).
-">foto</span> <span class="w" data-tr="(она) показывает" data-pos="глаг." data-lemma="mostrar" data-grammar="**muestra** — *presente*, 3 л. ед. ч., от **mostrar** (&quot;показывать&quot;).
+" data-si="28">foto</span> <span class="w" data-tr="(она) показывает" data-pos="глаг." data-lemma="mostrar" data-grammar="**muestra** — *presente*, 3 л. ед. ч., от **mostrar** (&quot;показывать&quot;).
 
 *Чередование в корне:* `m[[o]]strar → m[[ue]]stra` (o → ue под ударением).
-">muestra</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="здание" data-pos="сущ." data-lemma="el edificio" data-grammar="">edificio</span> <span class="w" data-tr="высокий" data-pos="прил." data-lemma="alto" data-grammar="">alto</span>, <span class="w" data-tr="серый" data-pos="прил." data-lemma="gris" data-grammar="">gris</span>, <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="окна" data-pos="сущ." data-lemma="la ventana" data-grammar="">ventanas</span> <span class="w" data-tr="блестящие, яркие" data-pos="прил." data-lemma="brillante" data-grammar="**brillantes** — *мн. ч.* от **brillante** (&quot;блестящий&quot;).
+" data-si="28">muestra</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="" data-si="28">un</span> <span class="w" data-tr="здание" data-pos="сущ." data-lemma="el edificio" data-grammar="" data-si="28">edificio</span> <span class="w" data-tr="высокий" data-pos="прил." data-lemma="alto" data-grammar="" data-si="28">alto</span>, <span class="w" data-tr="серый" data-pos="прил." data-lemma="gris" data-grammar="" data-si="28">gris</span>, <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="" data-si="28">con</span> <span class="w" data-tr="окна" data-pos="сущ." data-lemma="la ventana" data-grammar="" data-si="28">ventanas</span> <span class="w" data-tr="блестящие, яркие" data-pos="прил." data-lemma="brillante" data-grammar="**brillantes** — *мн. ч.* от **brillante** (&quot;блестящий&quot;).
 
 Одна форма для *м. и ж. р.*; во мн. ч. добавляется `-s`: `brillante → brillante[[s]]`.
-">brillantes</span><span class="s" data-tr="На фотографии — высокое серое здание с блестящими окнами.">.</span></p>
+" data-si="28">brillantes</span><span class="s" data-tr="На фотографии — высокое серое здание с блестящими окнами.">.</span></p>
 
-    <p><span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** (&quot;смотреть&quot;).
+    <p><span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="29">Joaquín</span> <span class="w" data-tr="(он) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** (&quot;смотреть&quot;).
 
 Правильный на `-ar`: `mir·[[ar]]` → `mir·[[a]]`.
-">mira</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="29">mira</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
+" data-si="29">la</span> <span class="w" data-tr="фотография" data-pos="сущ." data-lemma="la foto" data-grammar="**la foto** — сущ. *ж. р.*, ед. ч.
 
 *Исключение:* оканчивается на `-o`, но женского рода (сокращение от **la fotografía**).
-">foto</span><span class="s" data-tr="Хоакин смотрит на фотографию.">.</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
+" data-si="29">foto</span><span class="s" data-tr="Хоакин смотрит на фотографию.">.</span> <span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">Es</span> <span class="w" data-tr="Мадрид — столица Испании, родной город матери Хоакина" data-pos="имя" data-lemma="" data-grammar="">Madrid</span><span class="s" data-tr="Это Мадрид.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="30">Es</span> <span class="w" data-tr="Мадрид — столица Испании, родной город матери Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="30">Madrid</span><span class="s" data-tr="Это Мадрид.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">La</span> <span class="w" data-tr="город" data-pos="сущ." data-lemma="la ciudad" data-grammar="**la ciudad** — сущ. *ж. р.*, ед. ч.
+" data-si="31">La</span> <span class="w" data-tr="город" data-pos="сущ." data-lemma="la ciudad" data-grammar="**la ciudad** — сущ. *ж. р.*, ед. ч.
 
 Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
-">ciudad</span> <span class="w" data-tr="где" data-pos="нар." data-lemma="donde" data-grammar="**donde** — относительное наречие &quot;где&quot; (без ударения).
+" data-si="31">ciudad</span> <span class="w" data-tr="где" data-pos="нар." data-lemma="donde" data-grammar="**donde** — относительное наречие &quot;где&quot; (без ударения).
 
 *Не путать* с **dónde** (с ударением — вопросительное &quot;где?&quot;): `¿[[dónde]] vives?` vs `la ciudad [[donde]] nació`.
-">donde</span> <span class="w" data-tr="(она) родилась" data-pos="глаг." data-lemma="nacer" data-grammar="**nació** — *pretérito indefinido*, 3 л. ед. ч., от **nacer** (&quot;родиться&quot;).
+" data-si="31">donde</span> <span class="w" data-tr="(она) родилась" data-pos="глаг." data-lemma="nacer" data-grammar="**nació** — *pretérito indefinido*, 3 л. ед. ч., от **nacer** (&quot;родиться&quot;).
 
 Правильный на `-er` в претерите: `nac·[[er]]` → `nac·[[ió]]` (ударение на последнем слоге).
-">nació</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
+" data-si="31">nació</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
 
 Согласуется с *обладаемым*, не с владельцем: `[[su]] madre` (его мать), `[[su]] nieto` (его внук).
-">su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="">madre</span><span class="s" data-tr="Город, где родилась его мать.">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он) (вспомогательный глагол для perfecto)" data-pos="глаг." data-lemma="haber" data-grammar="**ha** — *presente*, 3 л. ед. ч., от **haber** (вспомог.).
+" data-si="31">su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="" data-si="31">madre</span><span class="s" data-tr="Город, где родилась его мать.">.</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="32">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="32">no</span> <span class="w" data-tr="(он) (вспомогательный глагол для perfecto)" data-pos="глаг." data-lemma="haber" data-grammar="**ha** — *presente*, 3 л. ед. ч., от **haber** (вспомог.).
 
 Вместе с причастием образует *pretérito perfecto compuesto*: `[[ha]] visto` = &quot;видел (к настоящему моменту)&quot;.
 
 Спряж. в перфекте: `he · has · ha · hemos · habéis · han` + причастие.
 
 *Нюанс:* перфект описывает прошлое, связанное с настоящим: `nunca [[ha]] visto Madrid` = &quot;никогда не видел Мадрид (за всю жизнь)&quot;.
-">ha</span> <span class="w" data-tr="увидел, видел (причастие)" data-pos="глаг." data-lemma="ver" data-grammar="**visto** — *причастие прошедшего времени* от **ver** (&quot;видеть&quot;).
+" data-si="32">ha</span> <span class="w" data-tr="увидел, видел (причастие)" data-pos="глаг." data-lemma="ver" data-grammar="**visto** — *причастие прошедшего времени* от **ver** (&quot;видеть&quot;).
 
 *Неправильное причастие:* не *veído*, а **visto**.
 
 С **haber** даёт перфект: `ha [[visto]]` = &quot;видел (за всю жизнь)&quot;. В тексте: `no [[ha]] [[visto]] Madrid nunca` = &quot;никогда не видел Мадрид&quot;.
-">visto</span> <span class="w" data-tr="Мадрид — столица Испании, родной город матери Хоакина" data-pos="имя" data-lemma="" data-grammar="">Madrid</span> <span class="w" data-tr="никогда" data-pos="нар." data-lemma="nunca" data-grammar="">nunca</span>, <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">pero</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
+" data-si="32">visto</span> <span class="w" data-tr="Мадрид — столица Испании, родной город матери Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="32">Madrid</span> <span class="w" data-tr="никогда" data-pos="нар." data-lemma="nunca" data-grammar="" data-si="32">nunca</span>, <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="32">pero</span> <span class="w" data-tr="его, её, их, ваш" data-pos="опр." data-lemma="su" data-grammar="**su** — притяж. опр., 3 л. (ед. и мн.): &quot;его / её / их / ваш&quot;.
 
 Согласуется с *обладаемым*, не с владельцем: `[[su]] madre` (его мать), `[[su]] nieto` (его внук).
-">su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="">madre</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
+" data-si="32">su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="" data-si="32">madre</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
 
 — *возвратная частица* 3 л.: `la radio [[se]] apagó` = &quot;радио замолчало (само)&quot;.
 
 — *вариант **le***: когда **le** стоит перед **la/lo/las/los**, оно превращается в **se**: `le la describía` → `[[se]] la describía` = &quot;ей это описывала&quot;.
 
 Во второй роли — здесь: `su madre [[se]] [[la]] describía` (&quot;его матери [[ему]] [[её]] описывала&quot; → &quot;его мать [[ему]] [[её]] описывала&quot;).
-">se</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="32">se</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="(она) описывала" data-pos="глаг." data-lemma="describir" data-grammar="**describía** — *pretérito imperfecto*, 3 л. ед. ч., от **describir** (&quot;описывать&quot;).
+" data-si="32">la</span> <span class="w" data-tr="(она) описывала" data-pos="глаг." data-lemma="describir" data-grammar="**describía** — *pretérito imperfecto*, 3 л. ед. ч., от **describir** (&quot;описывать&quot;).
 
 *Имперфект* для регулярного действия в прошлом: &quot;описывала (каждую ночь)&quot;.
 
 Правильный на `-ir`: `describ·[[ir]]` → `describ·[[ía]]`.
 
 В предложении: `su madre [[se la]] describía` — двойное местоим. (см. **se**, **la**).
-">describía</span> <span class="w" data-tr="каждый" data-pos="опр." data-lemma="cada" data-grammar="**cada** — одна форма для *м. и ж. р.*, ед. ч.: `[[cada]] mes`, `[[cada]] noche`.
+" data-si="32">describía</span> <span class="w" data-tr="каждый" data-pos="опр." data-lemma="cada" data-grammar="**cada** — одна форма для *м. и ж. р.*, ед. ч.: `[[cada]] mes`, `[[cada]] noche`.
 
 Не имеет мн. ч. (вместо этого: `todos los meses`).
-">cada</span> <span class="w" data-tr="ночь" data-pos="сущ." data-lemma="la noche" data-grammar="">noche</span><span class="s" data-tr="Хоакин никогда не видел Мадрид, но его мать описывала ему его каждую ночь.">.</span></p>
+" data-si="32">cada</span> <span class="w" data-tr="ночь" data-pos="сущ." data-lemma="la noche" data-grammar="" data-si="32">noche</span><span class="s" data-tr="Хоакин никогда не видел Мадрид, но его мать описывала ему его каждую ночь." data-note="**ha visto** — *pretérito perfecto* («(не) видел» — об опыте к настоящему моменту).
+
+**describía** — *imperfecto* (привычное действие в прошлом, «описывала каждую ночь»).
+">.</span></p>
 
     <p>—<span class="w" data-tr="(он/оно) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** (&quot;быть&quot;).
 
 *Неправильный.* Спряж. в наст.: `soy · eres · es · somos · sois · son`.
 
 *Нюанс:* **ser** — постоянное свойство (профессия, имя); **estar** — состояние/местоположение.
-">Es</span> <span class="w" data-tr="одна; неопр. артикль (ж. р.)" data-pos="арт." data-lemma="una" data-grammar="">una</span> <span class="w" data-tr="дом" data-pos="сущ." data-lemma="la casa" data-grammar="">casa</span> <span class="w" data-tr="очень" data-pos="нар." data-lemma="muy" data-grammar="">muy</span> <span class="w" data-tr="большой/-ая" data-pos="прил." data-lemma="grande" data-grammar="**grande** — прил., одна форма для *м. и ж. р.* в ед. ч.
+" data-si="33">Es</span> <span class="w" data-tr="одна; неопр. артикль (ж. р.)" data-pos="арт." data-lemma="una" data-grammar="" data-si="33">una</span> <span class="w" data-tr="дом" data-pos="сущ." data-lemma="la casa" data-grammar="" data-si="33">casa</span> <span class="w" data-tr="очень" data-pos="нар." data-lemma="muy" data-grammar="" data-si="33">muy</span> <span class="w" data-tr="большой/-ая" data-pos="прил." data-lemma="grande" data-grammar="**grande** — прил., одна форма для *м. и ж. р.* в ед. ч.
 
 Перед сущ. ед. ч. часто сокращается до **gran** (`un gran día`). После сущ. — полная форма: `una casa muy [[grande]]`.
-">grande</span> —<span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
+" data-si="33">grande</span> —<span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
 
 *Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`.
-">dice</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span>—<span class="s" data-tr="— Это очень большой дом, — говорит Хоакин.">.</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">En</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="">un</span> <span class="w" data-tr="место" data-pos="сущ." data-lemma="el lugar" data-grammar="">lugar</span> <span class="w" data-tr="очень" data-pos="нар." data-lemma="muy" data-grammar="">muy</span> <span class="w" data-tr="далеко" data-pos="нар." data-lemma="lejos" data-grammar="">lejos</span><span class="s" data-tr="В очень далёком месте.">.</span></p>
+" data-si="33">dice</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="33">Joaquín</span>—<span class="s" data-tr="— Это очень большой дом, — говорит Хоакин.">.</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="34">En</span> <span class="w" data-tr="один; неопр. артикль (м. р.)" data-pos="арт." data-lemma="un" data-grammar="" data-si="34">un</span> <span class="w" data-tr="место" data-pos="сущ." data-lemma="el lugar" data-grammar="" data-si="34">lugar</span> <span class="w" data-tr="очень" data-pos="нар." data-lemma="muy" data-grammar="" data-si="34">muy</span> <span class="w" data-tr="далеко" data-pos="нар." data-lemma="lejos" data-grammar="" data-si="34">lejos</span><span class="s" data-tr="В очень далёком месте.">.</span></p>
 
-    <p>—¿<span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">En</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="">el</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo" data-grammar="">cielo</span><span class="s" data-tr="— На небе?">?</span> —<span class="w" data-tr="(он) спрашивает" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunta** — *presente*, 3 л. ед. ч., от **preguntar** (&quot;спрашивать&quot;).
+    <p>—¿<span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="35">En</span> <span class="w" data-tr="определённый артикль (м. р., ед. ч.)" data-pos="арт." data-lemma="el" data-grammar="" data-si="35">el</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo" data-grammar="" data-si="35">cielo</span><span class="s" data-tr="— На небе?">?</span> —<span class="w" data-tr="(он) спрашивает" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunta** — *presente*, 3 л. ед. ч., от **preguntar** (&quot;спрашивать&quot;).
 
 `pregunt·[[ar]]` → `pregunt·[[a]]`.
-">pregunta</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span>—<span class="s" data-tr="— спрашивает Пабло.">.</span> ¿<span class="w" data-tr="близко, рядом" data-pos="нар." data-lemma="cerca" data-grammar="">Cerca</span> <span class="w" data-tr="из/о + the (m.) — слитная форма" data-pos="предл." data-lemma="de" data-grammar="**del** = **de** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+" data-si="36">pregunta</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="36">Pablo</span>—<span class="s" data-tr="— спрашивает Пабло.">.</span> ¿<span class="w" data-tr="близко, рядом" data-pos="нар." data-lemma="cerca" data-grammar="" data-si="37">Cerca</span> <span class="w" data-tr="из/о + the (m.) — слитная форма" data-pos="предл." data-lemma="de" data-grammar="**del** = **de** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
 
 `de + [[el]] Patrón` → `[[del]] Patrón`. (С другими артиклями не сливается: **de la**, **de los**, **de las**.)
-">del</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="">Patrón</span><span class="s" data-tr="— Рядом с Покровителем?">?</span></p>
+" data-si="37">del</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="" data-si="37">Patrón</span><span class="s" data-tr="— Рядом с Покровителем?">?</span></p>
 
-    <p><span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он) отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч., от **responder** (&quot;отвечать&quot;).
+    <p><span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="38">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="38">no</span> <span class="w" data-tr="(он) отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч., от **responder** (&quot;отвечать&quot;).
 
 Правильный на `-er`: `respond·[[er]]` → `respond·[[e]]`.
-">responde</span><span class="s" data-tr="Хоакин не отвечает.">.</span> <span class="w" data-tr="(он) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** (&quot;смотреть&quot;).
+" data-si="38">responde</span><span class="s" data-tr="Хоакин не отвечает.">.</span> <span class="w" data-tr="(он) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente*, 3 л. ед. ч., от **mirar** (&quot;смотреть&quot;).
 
 Правильный на `-ar`: `mir·[[ar]]` → `mir·[[a]]`.
-">Mira</span> <span class="w" data-tr="через, по, из-за" data-pos="предл." data-lemma="por" data-grammar="**por** — многозначный предлог.
+" data-si="39">Mira</span> <span class="w" data-tr="через, по, из-за" data-pos="предл." data-lemma="por" data-grammar="**por** — многозначный предлог.
 
 Здесь: `mira [[por]] la ventana` = &quot;смотрит [[через]] окно&quot;.
-">por</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="39">por</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="окно" data-pos="сущ." data-lemma="la ventana" data-grammar="">ventana</span><span class="s" data-tr="Он смотрит в окно.">.</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">Los</span> <span class="w" data-tr="дети, сыновья" data-pos="сущ." data-lemma="el hijo" data-grammar="**hijos** — мн. ч. от **hijo** (&quot;сын&quot;). В мн. ч. — также общее &quot;дети&quot; (мальчики и девочки): `los [[hijos]] del barrio` = &quot;дети района&quot;.
-">hijos</span> <span class="w" data-tr="из/о + the (m.) — слитная форма" data-pos="предл." data-lemma="de" data-grammar="**del** = **de** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+" data-si="39">la</span> <span class="w" data-tr="окно" data-pos="сущ." data-lemma="la ventana" data-grammar="" data-si="39">ventana</span><span class="s" data-tr="Он смотрит в окно.">.</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="" data-si="40">Los</span> <span class="w" data-tr="дети, сыновья" data-pos="сущ." data-lemma="el hijo" data-grammar="**hijos** — мн. ч. от **hijo** (&quot;сын&quot;). В мн. ч. — также общее &quot;дети&quot; (мальчики и девочки): `los [[hijos]] del barrio` = &quot;дети района&quot;.
+" data-si="40">hijos</span> <span class="w" data-tr="из/о + the (m.) — слитная форма" data-pos="предл." data-lemma="de" data-grammar="**del** = **de** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
 
 `de + [[el]] Patrón` → `[[del]] Patrón`. (С другими артиклями не сливается: **de la**, **de los**, **de las**.)
-">del</span> <span class="w" data-tr="район, квартал" data-pos="сущ." data-lemma="el barrio" data-grammar="">barrio</span> <span class="w" data-tr="(они) играют" data-pos="глаг." data-lemma="jugar" data-grammar="**juegan** — *presente*, 3 л. мн. ч., от **jugar** (&quot;играть&quot;).
+" data-si="40">del</span> <span class="w" data-tr="район, квартал" data-pos="сущ." data-lemma="el barrio" data-grammar="" data-si="40">barrio</span> <span class="w" data-tr="(они) играют" data-pos="глаг." data-lemma="jugar" data-grammar="**juegan** — *presente*, 3 л. мн. ч., от **jugar** (&quot;играть&quot;).
 
 *Редкое чередование:* `j[[u]]gar → j[[ue]]gan` (u → ue под ударением). **jugar** — единственный частый глагол с таким чередованием.
-">juegan</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="">en</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="40">juegan</span> <span class="w" data-tr="в, на (предлог места)" data-pos="предл." data-lemma="en" data-grammar="" data-si="40">en</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza" data-grammar="">plaza</span><span class="s" data-tr="Дети района играют на площади.">.</span> <span class="w" data-tr="(они) поют" data-pos="глаг." data-lemma="cantar" data-grammar="**cantan** — *presente*, 3 л. мн. ч., от **cantar**.
+" data-si="40">la</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza" data-grammar="" data-si="40">plaza</span><span class="s" data-tr="Дети района играют на площади.">.</span> <span class="w" data-tr="(они) поют" data-pos="глаг." data-lemma="cantar" data-grammar="**cantan** — *presente*, 3 л. мн. ч., от **cantar**.
 
 Правильный на `-ar`: `cant·[[ar]]` → `cant·[[an]]`.
-">Cantan</span> <span class="w" data-tr="песни" data-pos="сущ." data-lemma="la canción" data-grammar="**la canción** → **las canciones**. Сущ. на `-ción` всегда *ж. р.*
+" data-si="41">Cantan</span> <span class="w" data-tr="песни" data-pos="сущ." data-lemma="la canción" data-grammar="**la canción** → **las canciones**. Сущ. на `-ción` всегда *ж. р.*
 
 Во мн. ч. ударение уходит, `-ón` → `-ones`: `canc[[ión]]` → `canc[[iones]]`.
-">canciones</span> <span class="w" data-tr="к + the (m.) — слитная форма" data-pos="предл." data-lemma="a" data-grammar="**al** = **a** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
+" data-si="41">canciones</span> <span class="w" data-tr="к + the (m.) — слитная форма" data-pos="предл." data-lemma="a" data-grammar="**al** = **a** + **el** — обязательная слитная форма перед арт. *м. р.* ед. ч.
 
 `a + [[el]] Patrón` → `[[al]] Patrón`. (С другими артиклями не сливается: **a la**, **a los**, **a las**.)
-">al</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="">Patrón</span><span class="s" data-tr="Они поют песни Покровителю.">.</span> <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="">Las</span> <span class="w" data-tr="песни" data-pos="сущ." data-lemma="la canción" data-grammar="**la canción** → **las canciones**. Сущ. на `-ción` всегда *ж. р.*
+" data-si="41">al</span> <span class="w" data-tr="Patrón — «Покровитель», культовое имя Сатурна в Nueva Andalucía" data-pos="имя" data-lemma="" data-grammar="" data-si="41">Patrón</span><span class="s" data-tr="Они поют песни Покровителю.">.</span> <span class="w" data-tr="определённый артикль (ж. р., мн. ч.)" data-pos="арт." data-lemma="las" data-grammar="" data-si="42">Las</span> <span class="w" data-tr="песни" data-pos="сущ." data-lemma="la canción" data-grammar="**la canción** → **las canciones**. Сущ. на `-ción` всегда *ж. р.*
 
 Во мн. ч. ударение уходит, `-ón` → `-ones`: `canc[[ión]]` → `canc[[iones]]`.
-">canciones</span> <span class="w" data-tr="(они) есть, являются" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser** (&quot;быть&quot;).
+" data-si="42">canciones</span> <span class="w" data-tr="(они) есть, являются" data-pos="глаг." data-lemma="ser" data-grammar="**son** — *presente*, 3 л. мн. ч., от **ser** (&quot;быть&quot;).
 
 Спряж.: `soy · eres · es · somos · sois · [[son]]`.
-">son</span> <span class="w" data-tr="красивые" data-pos="прил." data-lemma="bonito" data-grammar="**bonitas** — *ж. р., мн. ч.* от **bonito** (&quot;красивый&quot;).
+" data-si="42">son</span> <span class="w" data-tr="красивые" data-pos="прил." data-lemma="bonito" data-grammar="**bonitas** — *ж. р., мн. ч.* от **bonito** (&quot;красивый&quot;).
 
 Согласуется с **canciones** (ж. р., мн. ч.): `las canciones son [[bonitas]]`.
-">bonitas</span><span class="s" data-tr="Песни красивые.">.</span></p>
+" data-si="42">bonitas</span><span class="s" data-tr="Песни красивые.">.</span></p>
 
     <p><span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — союз &quot;если&quot; (без ударения).
 
 *Не путать* с **sí** (с ударением — &quot;да&quot;).
-">Si</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="(он) рассказывает" data-pos="глаг." data-lemma="contar" data-grammar="**cuenta** — *presente*, 3 л. ед. ч., от **contar** (&quot;рассказывать&quot;).
+" data-si="43">Si</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="43">Joaquín</span> <span class="w" data-tr="(он) рассказывает" data-pos="глаг." data-lemma="contar" data-grammar="**cuenta** — *presente*, 3 л. ед. ч., от **contar** (&quot;рассказывать&quot;).
 
 *Чередование в корне:* `c[[o]]ntar → c[[ue]]nta` (o → ue под ударением).
-">cuenta</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="43">cuenta</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
+" data-si="43">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
 
 Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
-">verdad</span>, <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
+" data-si="43">verdad</span>, <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="43">Pablo</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
 
 *Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
 
@@ -1035,33 +1067,33 @@
 — `[[va]] a estar solo` = &quot;будет один&quot; (Пабло).
 
 Структура: **ir** (в наст.) + **a** + инфинитив.
-">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="рассказывать; считать" data-pos="глаг." data-lemma="contar" data-grammar="**contar** — *инфинитив* (&quot;рассказывать; считать&quot;).
+" data-si="43">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="43">a</span> <span class="w" data-tr="рассказывать; считать" data-pos="глаг." data-lemma="contar" data-grammar="**contar** — *инфинитив* (&quot;рассказывать; считать&quot;).
 
 В личных формах — чередование `o → ue`: `c[[ue]]nto · c[[ue]]ntas · c[[ue]]nta · contamos · contáis · c[[ue]]ntan`.
-">contar</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="43">contar</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
+" data-si="43">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
 
 Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
-">verdad</span><span class="s" data-tr="Если Хоакин расскажет правду, Пабло расскажет её тоже.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="43">verdad</span><span class="s" data-tr="Если Хоакин расскажет правду, Пабло расскажет её тоже.">.</span> <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">La</span> <span class="w" data-tr="люди, народ" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч. (собирательное).
+" data-si="44">La</span> <span class="w" data-tr="люди, народ" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч. (собирательное).
 
 Хотя по-русски &quot;люди&quot; — мн. ч., по-испански **gente** идёт с глаг. в *ед. ч.*: `la gente [[reza]]` (&quot;люди молятся&quot;).
-">gente</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
+" data-si="44">gente</span> <span class="w" data-tr="себя, -ся (возвратная частица); ей/ему (перед la/lo)" data-pos="мест." data-lemma="se" data-grammar="**se** — двойная роль:
 
 — *возвратная частица* 3 л.: `la radio [[se]] apagó` = &quot;радио замолчало (само)&quot;.
 
 — *вариант **le***: когда **le** стоит перед **la/lo/las/los**, оно превращается в **se**: `le la describía` → `[[se]] la describía` = &quot;ей это описывала&quot;.
 
 Во второй роли — здесь: `su madre [[se]] [[la]] describía` (&quot;его матери [[ему]] [[её]] описывала&quot; → &quot;его мать [[ему]] [[её]] описывала&quot;).
-">se</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
+" data-si="44">se</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
 
 *Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
 
@@ -1076,10 +1108,10 @@
 — `[[va]] a estar solo` = &quot;будет один&quot; (Пабло).
 
 Структура: **ir** (в наст.) + **a** + инфинитив.
-">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="сердить, злить (рассердиться — enojarse)" data-pos="глаг." data-lemma="enojar" data-grammar="**enojar** — *инфинитив*. С возвр. частицей **se** (&quot;рассердиться&quot;).
+" data-si="44">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="44">a</span> <span class="w" data-tr="сердить, злить (рассердиться — enojarse)" data-pos="глаг." data-lemma="enojar" data-grammar="**enojar** — *инфинитив*. С возвр. частицей **se** (&quot;рассердиться&quot;).
 
 В тексте: `la gente [[se]] va a [[enojar]]` = &quot;люди рассердятся&quot; — *futuro próximo* + возвратность.
-">enojar</span><span class="s" data-tr="Люди рассердятся.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
+" data-si="44">enojar</span><span class="s" data-tr="Люди рассердятся.">.</span> <span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="45">Pablo</span> <span class="w" data-tr="(он) идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** (&quot;идти, ехать&quot;).
 
 *Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
 
@@ -1094,67 +1126,67 @@
 — `[[va]] a estar solo` = &quot;будет один&quot; (Пабло).
 
 Структура: **ir** (в наст.) + **a** + инфинитив.
-">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="быть, находиться" data-pos="глаг." data-lemma="estar" data-grammar="**estar** — *инфинитив*.
+" data-si="45">va</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="45">a</span> <span class="w" data-tr="быть, находиться" data-pos="глаг." data-lemma="estar" data-grammar="**estar** — *инфинитив*.
 
 В тексте: `va a [[estar]] solo` — *futuro próximo* &quot;будет один&quot;. Состояние/местоположение → **estar**, не **ser**.
-">estar</span> <span class="w" data-tr="только; одинокий" data-pos="нар." data-lemma="solo" data-grammar="**solo** — два значения:
+" data-si="45">estar</span> <span class="w" data-tr="только; одинокий" data-pos="нар." data-lemma="solo" data-grammar="**solo** — два значения:
 
 — *нар.* &quot;только&quot;: `es [[solo]] un planeta` = &quot;это [[только]] планета&quot;.
 
 — *прил.* &quot;одинокий&quot;: `Pablo va a estar [[solo]]` = &quot;Пабло будет [[один]]&quot;.
 
 Контекст различает.
-">solo</span><span class="s" data-tr="Пабло останется один.">.</span></p>
+" data-si="45">solo</span><span class="s" data-tr="Пабло останется один.">.</span></p>
 
     <p><span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — союз &quot;если&quot; (без ударения).
 
 *Не путать* с **sí** (с ударением — &quot;да&quot;).
-">Si</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="">no</span> <span class="w" data-tr="(он) рассказывает" data-pos="глаг." data-lemma="contar" data-grammar="**cuenta** — *presente*, 3 л. ед. ч., от **contar** (&quot;рассказывать&quot;).
+" data-si="46">Si</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="46">Joaquín</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="46">no</span> <span class="w" data-tr="(он) рассказывает" data-pos="глаг." data-lemma="contar" data-grammar="**cuenta** — *presente*, 3 л. ед. ч., от **contar** (&quot;рассказывать&quot;).
 
 *Чередование в корне:* `c[[o]]ntar → c[[ue]]nta` (o → ue под ударением).
-">cuenta</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="">nada</span>, <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
+" data-si="46">cuenta</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="" data-si="46">nada</span>, <span class="w" data-tr="определённый артикль (ж. р., ед. ч.); её (мест.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два значения:
 
 — *арт. ж. р. ед. ч.*: `[[la]] foto`, `[[la]] verdad`.
 
 — *местоим. прям. доп., ж. р. ед. ч.* &quot;её, это&quot;: `su madre se [[la]] describía` = &quot;его мать [[её]] описывала&quot; (фотографию / город — относится к Мадриду).
-">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
+" data-si="46">la</span> <span class="w" data-tr="правда, истина" data-pos="сущ." data-lemma="la verdad" data-grammar="**la verdad** — сущ. *ж. р.*, ед. ч.
 
 Сущ. на `-dad` всегда *ж. р.*: `la verd[[ad]]`, `la ciud[[ad]]`, `la libert[[ad]]`.
-">verdad</span> <span class="w" data-tr="(она) умирает" data-pos="глаг." data-lemma="morir" data-grammar="**muere** — *presente*, 3 л. ед. ч., от **morir** (&quot;умирать&quot;).
+" data-si="46">verdad</span> <span class="w" data-tr="(она) умирает" data-pos="глаг." data-lemma="morir" data-grammar="**muere** — *presente*, 3 л. ед. ч., от **morir** (&quot;умирать&quot;).
 
 *Чередование в корне:* `m[[o]]rir → m[[ue]]re` (o → ue под ударением).
-">muere</span> <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="">con</span> <span class="w" data-tr="он" data-pos="мест." data-lemma="él" data-grammar="**él** (с ударением) — личн. местоим. 3 л. ед. ч. *м. р.*
+" data-si="46">muere</span> <span class="w" data-tr="с (предлог)" data-pos="предл." data-lemma="con" data-grammar="" data-si="46">con</span> <span class="w" data-tr="он" data-pos="мест." data-lemma="él" data-grammar="**él** (с ударением) — личн. местоим. 3 л. ед. ч. *м. р.*
 
 *Не путать* с **el** (без ударения — арт. *м. р.*): `[[el]] niño` (&quot;мальчик&quot;) vs `con [[él]]` (&quot;с ним&quot;).
-">él</span><span class="s" data-tr="Если Хоакин не расскажет ничего, правда умрёт вместе с ним.">.</span> <span class="w" data-tr="навсегда" data-pos="нар." data-lemma="" data-grammar="">Para siempre</span><span class="s" data-tr="Навсегда.">.</span></p>
+" data-si="46">él</span><span class="s" data-tr="Если Хоакин не расскажет ничего, правда умрёт вместе с ним.">.</span> <span class="w" data-tr="навсегда" data-pos="нар." data-lemma="" data-grammar="" data-si="47">Para siempre</span><span class="s" data-tr="Навсегда.">.</span></p>
 
-    <p>—<span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="">Pablo</span> —<span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
+    <p>—<span class="w" data-tr="Пабло — двенадцатилетний внук Хоакина" data-pos="имя" data-lemma="" data-grammar="" data-si="48">Pablo</span> —<span class="w" data-tr="(он) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente*, 3 л. ед. ч., от **decir** (&quot;говорить&quot;).
 
 *Неправильный.* Спряж. в наст.: `digo · dices · dice · decimos · decís · dicen`.
-">dice</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="">Joaquín</span>, <span class="w" data-tr="медленно" data-pos="нар." data-lemma="despacio" data-grammar="">despacio</span>—<span class="s" data-tr="— Пабло, — говорит Хоакин медленно.">.</span> <span class="w" data-tr="сядь (повелит.)" data-pos="глаг." data-lemma="sentarse" data-grammar="**siéntate** = **siéntate** (повелит.) + **te** (местоим.) — повеление от **sentarse** (&quot;садиться&quot;), 2 л. ед. ч.
+" data-si="48">dice</span> <span class="w" data-tr="Хоакин — старик, последний житель колонии, помнящий Землю" data-pos="имя" data-lemma="" data-grammar="" data-si="48">Joaquín</span>, <span class="w" data-tr="медленно" data-pos="нар." data-lemma="despacio" data-grammar="" data-si="48">despacio</span>—<span class="s" data-tr="— Пабло, — говорит Хоакин медленно.">.</span> <span class="w" data-tr="сядь (повелит.)" data-pos="глаг." data-lemma="sentarse" data-grammar="**siéntate** = **siéntate** (повелит.) + **te** (местоим.) — повеление от **sentarse** (&quot;садиться&quot;), 2 л. ед. ч.
 
 Стандартный *imperativo* `tú`: `sienta` + возвратная частица **te** приклеивается к концу: `sienta + [[te]]` → `siéntate` (ставится ударение, чтобы сохранить место).
 
 *Чередование в корне:* `s[[e]]ntar → s[[ie]]nta`.
-">Siéntate</span> <span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="aquí" data-grammar="">aquí</span><span class="s" data-tr="— Сядь здесь.">.</span> <span class="w" data-tr="(я) иду; собираюсь" data-pos="глаг." data-lemma="ir" data-grammar="**voy** — *presente*, 1 л. ед. ч., от **ir** (&quot;идти&quot;).
+" data-si="49">Siéntate</span> <span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="aquí" data-grammar="" data-si="49">aquí</span><span class="s" data-tr="— Сядь здесь.">.</span> <span class="w" data-tr="(я) иду; собираюсь" data-pos="глаг." data-lemma="ir" data-grammar="**voy** — *presente*, 1 л. ед. ч., от **ir** (&quot;идти&quot;).
 
 *Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
 
 *Periphrastic future* (`voy a + инф.`): `[[voy]] a contarte algo` = &quot;я [[расскажу]] тебе кое-что&quot;. Структура: **ir** (в наст.) + **a** + инфинитив.
-">Voy</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="">a</span> <span class="w" data-tr="рассказать тебе" data-pos="глаг." data-lemma="contar" data-grammar="**contarte** = **contar** + **te** — инфинитив с приклеенным местоим.
+" data-si="50">Voy</span> <span class="w" data-tr="в, к, на (предлог направления)" data-pos="предл." data-lemma="a" data-grammar="" data-si="50">a</span> <span class="w" data-tr="рассказать тебе" data-pos="глаг." data-lemma="contar" data-grammar="**contarte** = **contar** + **te** — инфинитив с приклеенным местоим.
 
 Безударные местоимения (`me, te, le, se, lo, la, nos, os, les, los, las`) приклеиваются к концу инфинитива: `contar + [[te]]` = &quot;рассказать [[тебе]]&quot;.
 
 Целиком: `voy a [[contarte]] algo` = &quot;я расскажу [[тебе]] кое-что&quot;.
-">contarte</span> <span class="w" data-tr="что-то, нечто" data-pos="мест." data-lemma="algo" data-grammar="">algo</span><span class="s" data-tr="— Я расскажу тебе кое-что.">.</span></p>
+" data-si="50">contarte</span> <span class="w" data-tr="что-то, нечто" data-pos="мест." data-lemma="algo" data-grammar="" data-si="50">algo</span><span class="s" data-tr="— Я расскажу тебе кое-что.">.</span></p>
 
-    <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="">Pero</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="">después</span> <span class="w" data-tr="(он) кашляет" data-pos="глаг." data-lemma="toser" data-grammar="**tose** — *presente*, 3 л. ед. ч., от **toser** (&quot;кашлять&quot;).
+    <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="51">Pero</span> <span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="" data-si="51">después</span> <span class="w" data-tr="(он) кашляет" data-pos="глаг." data-lemma="toser" data-grammar="**tose** — *presente*, 3 л. ед. ч., от **toser** (&quot;кашлять&quot;).
 
 Правильный на `-er`: `tos·[[er]]` → `tos·[[e]]`.
-">tose</span><span class="s" data-tr="Но потом он кашляет.">.</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="">Y</span> <span class="w" data-tr="(он) закрывает" data-pos="глаг." data-lemma="cerrar" data-grammar="**cierra** — *presente*, 3 л. ед. ч., от **cerrar** (&quot;закрывать&quot;).
+" data-si="51">tose</span><span class="s" data-tr="Но потом он кашляет.">.</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="52">Y</span> <span class="w" data-tr="(он) закрывает" data-pos="глаг." data-lemma="cerrar" data-grammar="**cierra** — *presente*, 3 л. ед. ч., от **cerrar** (&quot;закрывать&quot;).
 
 *Чередование в корне:* `c[[e]]rrar → c[[ie]]rra` (e → ie под ударением).
-">cierra</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="">los</span> <span class="w" data-tr="глаза" data-pos="сущ." data-lemma="el ojo" data-grammar="">ojos</span><span class="s" data-tr="И закрывает глаза.">.</span></p>
+" data-si="52">cierra</span> <span class="w" data-tr="определённый артикль (м. р., мн. ч.)" data-pos="арт." data-lemma="los" data-grammar="" data-si="52">los</span> <span class="w" data-tr="глаза" data-pos="сущ." data-lemma="el ojo" data-grammar="" data-si="52">ojos</span><span class="s" data-tr="И закрывает глаза.">.</span></p>
 
     <p><span class="w" data-tr="утро (сущ.) / завтра (нар.)" data-pos="сущ." data-lemma="la mañana" data-grammar="**mañana** — два значения:
 
@@ -1163,20 +1195,20 @@
 — **mañana** (*нар.*) &quot;завтра&quot;: `[[mañana]], quizás` = &quot;завтра, может быть&quot;.
 
 В этом тексте — нар. &quot;завтра&quot;.
-">Mañana</span>, <span class="w" data-tr="может быть, возможно" data-pos="нар." data-lemma="quizás" data-grammar="">quizás</span><span class="s" data-tr="Завтра, может быть.">.</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — союз &quot;если&quot; (без ударения).
+" data-si="53">Mañana</span>, <span class="w" data-tr="может быть, возможно" data-pos="нар." data-lemma="quizás" data-grammar="" data-si="53">quizás</span><span class="s" data-tr="Завтра, может быть.">.</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="**si** — союз &quot;если&quot; (без ударения).
 
 *Не путать* с **sí** (с ударением — &quot;да&quot;).
-">Si</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
+" data-si="54">Si</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente*, 3 л. ед. ч., от **vivir** (&quot;жить&quot;).
 
 Правильный на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
-">vive</span> <span class="w" data-tr="до (предел)" data-pos="предл." data-lemma="hasta" data-grammar="">hasta</span> <span class="w" data-tr="утро (сущ.) / завтра (нар.)" data-pos="сущ." data-lemma="la mañana" data-grammar="**mañana** — два значения:
+" data-si="54">vive</span> <span class="w" data-tr="до (предел)" data-pos="предл." data-lemma="hasta" data-grammar="" data-si="54">hasta</span> <span class="w" data-tr="утро (сущ.) / завтра (нар.)" data-pos="сущ." data-lemma="la mañana" data-grammar="**mañana** — два значения:
 
 — **la mañana** (*сущ., ж. р.*) &quot;утро&quot;: `esta mañana` = &quot;сегодня утром&quot;.
 
 — **mañana** (*нар.*) &quot;завтра&quot;: `[[mañana]], quizás` = &quot;завтра, может быть&quot;.
 
 В этом тексте — нар. &quot;завтра&quot;.
-">mañana</span><span class="s" data-tr="Если доживёт до завтра.">.</span></p>
+" data-si="54">mañana</span><span class="s" data-tr="Если доживёт до завтра.">.</span></p>
   </article>
 
   <svg class="ring-rule" viewBox="0 0 360 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1200,8 +1232,10 @@
 </main>
 
 <script data-popup>
+window.__leeSentences = [{"tr": "Дону Хоакину девяносто лет.", "note": ""}, {"tr": "Он живёт в Новой Андалусии.", "note": ""}, {"tr": "Он — последний человек, который помнит Землю.", "note": ""}, {"tr": "Когда он был ребёнком, корабли прилетали каждый месяц.", "note": "*Imperfecto* (`era`, `llegaban`) — прошедшее для привычных и длящихся действий: «был», «прилетали (регулярно)».\n\nОтличается от *pretérito* (однократное законченное действие).\n"}, {"tr": "Хоакин играл в порту.", "note": ""}, {"tr": "Он видел ящики с зелёными фруктами, книги, новую одежду.", "note": ""}, {"tr": "Его мать готовила белый хлеб.", "note": ""}, {"tr": "Дни были шумными.", "note": ""}, {"tr": "Потом корабли перестали прилетать.", "note": ""}, {"tr": "Радио замолчало.", "note": ""}, {"tr": "Люди ждали.", "note": ""}, {"tr": "Потом ждали меньше.", "note": ""}, {"tr": "Потом забыли.", "note": ""}, {"tr": "Теперь все молятся Сатурну.", "note": ""}, {"tr": "Говорят, что Покровитель живёт в золотом кольце.", "note": ""}, {"tr": "Говорят, что однажды он вернётся.", "note": ""}, {"tr": "Хоакин знает, что Сатурн — это всего лишь планета.", "note": ""}, {"tr": "Но он ничего не говорит.", "note": ""}, {"tr": "Уже много лет он молчит.", "note": "`hace` + время + `que` + глагол = «уже … как»: `hace años que no dice nada` — «уже много лет (как) молчит».\n\nДвойное отрицание: `no … nada`.\n"}, {"tr": "Сегодня Хоакин в постели.", "note": ""}, {"tr": "У него болит грудь.", "note": ""}, {"tr": "Врач молодой и серьёзный.", "note": ""}, {"tr": "Врач тоже молится Покровителю.", "note": ""}, {"tr": "Его внук Пабло приходит навестить его.", "note": ""}, {"tr": "Пабло двенадцать лет.", "note": ""}, {"tr": "Пабло приносит цветы и старую фотографию.", "note": ""}, {"tr": "— Дедушка, что это?", "note": ""}, {"tr": "— спрашивает Пабло.", "note": ""}, {"tr": "На фотографии — высокое серое здание с блестящими окнами.", "note": ""}, {"tr": "Хоакин смотрит на фотографию.", "note": ""}, {"tr": "Это Мадрид.", "note": ""}, {"tr": "Город, где родилась его мать.", "note": ""}, {"tr": "Хоакин никогда не видел Мадрид, но его мать описывала ему его каждую ночь.", "note": "**ha visto** — *pretérito perfecto* («(не) видел» — об опыте к настоящему моменту).\n\n**describía** — *imperfecto* (привычное действие в прошлом, «описывала каждую ночь»).\n"}, {"tr": "— Это очень большой дом, — говорит Хоакин.", "note": ""}, {"tr": "В очень далёком месте.", "note": ""}, {"tr": "— На небе?", "note": ""}, {"tr": "— спрашивает Пабло.", "note": ""}, {"tr": "— Рядом с Покровителем?", "note": ""}, {"tr": "Хоакин не отвечает.", "note": ""}, {"tr": "Он смотрит в окно.", "note": ""}, {"tr": "Дети района играют на площади.", "note": ""}, {"tr": "Они поют песни Покровителю.", "note": ""}, {"tr": "Песни красивые.", "note": ""}, {"tr": "Если Хоакин расскажет правду, Пабло расскажет её тоже.", "note": ""}, {"tr": "Люди рассердятся.", "note": ""}, {"tr": "Пабло останется один.", "note": ""}, {"tr": "Если Хоакин не расскажет ничего, правда умрёт вместе с ним.", "note": ""}, {"tr": "Навсегда.", "note": ""}, {"tr": "— Пабло, — говорит Хоакин медленно.", "note": ""}, {"tr": "— Сядь здесь.", "note": ""}, {"tr": "— Я расскажу тебе кое-что.", "note": ""}, {"tr": "Но потом он кашляет.", "note": ""}, {"tr": "И закрывает глаза.", "note": ""}, {"tr": "Завтра, может быть.", "note": ""}, {"tr": "Если доживёт до завтра.", "note": ""}];
 (function(){
-  var pop = null, active = null, isTouch = false;
+  var pop = null, active = null, hovered = null, isTouch = false;
+  var sentences = window.__leeSentences || [];
   function ensurePop(){
     if (pop) return pop;
     pop = document.createElement('div');
@@ -1230,27 +1264,53 @@
       return '<p>' + p + '</p>';
     }).join('');
   }
-  function show(el){
-    var tr = el.dataset.tr || '';
+  function sentenceHtml(tr, note){
+    return '<div class="s-label">traducción</div>' +
+      '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
+      (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  // forceSentence: true when Shift is held — render any word as its full-sentence popup.
+  function show(el, forceSentence){
     var p = ensurePop();
-    if (el.classList.contains('s')){
+    var asSentence = el.classList.contains('s') || (forceSentence && el.classList.contains('w'));
+    if (asSentence){
+      var str = '', snote = '';
+      if (el.classList.contains('s')){ str = el.dataset.tr || ''; snote = el.dataset.note || ''; }
+      else { var s = sentences[+el.dataset.si] || {}; str = s.tr || ''; snote = s.note || ''; }
       p.classList.add('sentence');
-      p.classList.remove('has-grammar');
-      p.innerHTML = '<div class="s-label">traducción</div><div class="s-tr">'+escapeHtml(tr)+'</div>';
+      p.classList.remove('idiom');
+      p.classList.toggle('has-grammar', !!snote);
+      p.innerHTML = sentenceHtml(str, snote);
     } else {
       p.classList.remove('sentence');
-      var pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var tr = el.dataset.tr || '', pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var rawParts = el.dataset.parts || '', literal = el.dataset.literal || '';
+      var isIdiom = !!rawParts || !!literal || pos === 'идиома';
       var displayLemma = lemma || el.textContent;
       var linkHtml = lemma
         ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
         : '';
+      var breakdownHtml = '';
+      if (rawParts){
+        try {
+          var arr = JSON.parse(rawParts);
+          if (arr && arr.length){
+            breakdownHtml = '<div class="breakdown">' + arr.map(function(it){
+              return '<div class="bd-row"><span class="bd-w">'+escapeHtml(it.w)+'</span>'+
+                     '<span class="bd-tr">'+escapeHtml(it.tr)+'</span></div>';
+            }).join('') + '</div>';
+          }
+        } catch(_){}
+      }
+      var literalHtml = literal ? '<div class="literal"><span class="lit-label">досл.</span> '+escapeHtml(literal)+'</div>' : '';
       var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
-      p.classList.toggle('has-grammar', !!grammar);
+      p.classList.toggle('has-grammar', !!grammar || !!breakdownHtml || !!literal);
+      p.classList.toggle('idiom', isIdiom);
       p.innerHTML =
         '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
         (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
         '<div class="tr">'+escapeHtml(tr)+'</div>' +
-        grammarHtml + linkHtml;
+        breakdownHtml + literalHtml + grammarHtml + linkHtml;
     }
     p.classList.add('show');
     position(p, el);
@@ -1259,6 +1319,7 @@
     active = el;
   }
   function hide(){
+    hovered = null;
     if (!pop) return;
     pop.classList.remove('show');
     if (active){ active.classList.remove('active'); active = null; }
@@ -1278,7 +1339,7 @@
   document.addEventListener('mouseover', function(e){
     if (isTouch) return;
     var el = e.target.closest('.w, .s');
-    if (el) show(el);
+    if (el){ hovered = el; show(el, e.shiftKey); }
   });
   document.addEventListener('mouseout', function(e){
     if (isTouch) return;
@@ -1288,14 +1349,35 @@
     if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
     hide();
   });
+  // Holding Shift turns any word popup into its full-sentence popup; releasing reverts.
+  function onShift(e){
+    if (e.key !== 'Shift' || !hovered) return;
+    if (hovered.classList.contains('w')) show(hovered, e.shiftKey);
+  }
+  document.addEventListener('keydown', onShift);
+  document.addEventListener('keyup', onShift);
   document.addEventListener('click', function(e){
     var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
-    if (el){ if (active === el) hide(); else show(el); }
+    if (el){ if (active === el) hide(); else { hovered = el; show(el, e.shiftKey); } }
     else if (!onPop) hide();
   });
   document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
   window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
   window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
 })();
 </script>
 </body>

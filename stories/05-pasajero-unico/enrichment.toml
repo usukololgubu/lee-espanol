@@ -1038,6 +1038,11 @@ tr = "Хожу десять минут."
 [[sentences]]
 es = "Luego vuelvo a dormir."
 tr = "Потом снова засыпаю."
+note = """
+`volver a` + инфинитив = «снова (сделать)»: `vuelvo a dormir` — «снова засыпаю».
+
+(Не путать с прямым значением **volver** — «возвращаться».)
+"""
 
 # Paragraph 3
 [[sentences]]
@@ -1067,6 +1072,11 @@ tr = "Девять лет."
 [[sentences]]
 es = "Debe dormir seiscientos años más."
 tr = "Она должна спать ещё шестьсот лет."
+note = """
+`deber` + инфинитив = долженствование: `debe dormir` — «(она) должна спать».
+
+`más` после срока = «ещё»: `seiscientos años más` — «ещё шестьсот лет».
+"""
 
 # Paragraph 4
 [[sentences]]
@@ -1106,6 +1116,11 @@ tr = "— Ты техник?"
 [[sentences]]
 es = "—¿Cuánto tiempo llevas despierta?"
 tr = "— Сколько времени ты не спишь?"
+note = """
+`llevar` + срок + причастие = «сколько времени уже …»: `llevas despierta` — «ты бодрствуешь уже (сколько-то)».
+
+**despierta** в женском роде — речь о девочке.
+"""
 
 [[sentences]]
 es = "—Tres días."

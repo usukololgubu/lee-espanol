@@ -1147,6 +1147,11 @@ tr = "Не хочу объяснять."
 [[sentences]]
 text = "Si pasas cerca, mira."
 tr = "Если пройдёшь рядом — посмотри."
+note = """
+*Условие:* `si` + *presente* (`pasas`) — «если пройдёшь».
+
+**mira** — *повелительное наклонение* (imperativo) «посмотри» (на «ты»).
+"""
 
 [[sentences]]
 text = "Por favor.»"
@@ -1187,6 +1192,11 @@ tr = "Матео ещё раз перечитывает сообщение."
 [[sentences]]
 text = "Conoce a Inés desde la escuela."
 tr = "Он знает Инес со школы."
+note = """
+Личный предлог **a** ставится перед одушевлённым дополнением: `conoce a Inés`.
+
+`desde` = «с (тех пор), начиная с»: `desde la escuela` — «со школы».
+"""
 
 [[sentences]]
 text = "Inés nunca pide favores."
@@ -1211,6 +1221,11 @@ tr = "Только пустота и камни."
 [[sentences]]
 text = "Habla con su tripulación, pero no les cuenta lo del mensaje."
 tr = "Он разговаривает со своим экипажем, но о сообщении им не рассказывает."
+note = """
+**les** — косвенное дополнение «им». `lo de` = «то, что касается…»: `lo del mensaje` — «история с сообщением».
+
+**cuenta** от **contar** («рассказывать»), чередование `o → ue`.
+"""
 
 [[sentences]]
 text = "—¿Y si llegamos un poco tarde a Ceres?"

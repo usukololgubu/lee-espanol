@@ -784,6 +784,11 @@ tr = "Я много думаю."
 [[sentences]]
 es = "La gente me programó para pensar."
 tr = "Люди запрограммировали меня думать."
+note = """
+*Цель действия:* `para` + инфинитив = «чтобы (делать)». `para pensar` — «чтобы думать».
+
+Местоимение-дополнение **me** («меня») стоит *перед* глаголом: `me programó`.
+"""
 
 [[sentences]]
 es = "Cuatrocientos doce días son muchos."
@@ -844,6 +849,11 @@ tr = "Я её редко использую."
 [[sentences]]
 es = "Mi protocolo dice: si un sensor falla, debo despertar al comandante."
 tr = "Мой протокол гласит: если датчик ломается, я должен разбудить командира."
+note = """
+*Условие (реальное):* `si` + *presente* — «если … (происходит)»: `si un sensor falla`.
+
+`deber` + инфинитив = долженствование: `debo despertar` — «я должен разбудить».
+"""
 
 [[sentences]]
 es = "Pero el comandante necesita dormir tres años más."
@@ -852,6 +862,11 @@ tr = "Но командиру нужно спать ещё три года."
 [[sentences]]
 es = "Si lo despierto ahora, la misión termina."
 tr = "Если я разбужу его сейчас — миссия закончится."
+note = """
+Местоимение **lo** («его») — прямое дополнение, стоит *перед* глаголом: `lo despierto`.
+
+В придаточном с `si` и в главном — *presente*, хотя речь о будущем.
+"""
 
 [[sentences]]
 es = "Seis personas vuelven a casa sin terminar el trabajo."

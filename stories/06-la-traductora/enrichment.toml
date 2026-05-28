@@ -1175,6 +1175,11 @@ tr = "Внутри — металлическая табличка с симво
 [[sentences]]
 text = "La placa viene de una nave rota, encontrada en el cinturón de asteroides."
 tr = "Табличка прибыла со сломанного корабля, найденного в поясе астероидов."
+note = """
+Причастия-определения согласуются с существительным: **nave** (ж. р.) → `rota`, `encontrada`.
+
+От глаголов **romper** («сломать») и **encontrar** («найти»).
+"""
 
 [[sentences]]
 text = "—Lengua extranjera —dice su jefe—."
@@ -1271,6 +1276,11 @@ tr = "Зелёной Колонии не существует."
 [[sentences]]
 text = "Nunca ha existido."
 tr = "Никогда не существовало."
+note = """
+**ha existido** — *pretérito perfecto* (`haber` + причастие) = «существовало (к настоящему моменту)».
+
+С **nunca** перед глаголом второе отрицание не нужно: `nunca ha existido`.
+"""
 
 [[sentences]]
 text = "Pero la placa está aquí, en su mesa."
@@ -1311,6 +1321,11 @@ tr = "Или может не писать ничего."
 [[sentences]]
 text = "Otra persona va a encontrar la placa, dentro de muchos años."
 tr = "Другой человек найдёт табличку — через много лет."
+note = """
+`dentro de` + время = «через»: `dentro de muchos años` — «через много лет».
+
+Сравни: `hace …` = «… назад» (в прошлом), `dentro de …` = «через …» (в будущем).
+"""
 
 [[sentences]]
 text = "Tal vez."

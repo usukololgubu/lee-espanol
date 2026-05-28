@@ -155,19 +155,46 @@ def esc_attr(v) -> str:
     return html.escape("" if v is None else str(v), quote=True)
 
 
-def word_span(form: str, entry: dict) -> str:
+def esc_text(s: str) -> str:
+    """Escape for HTML *text* content — leaves quotes alone, so a literal " in the
+    prose stays a " (not &quot;) and re-tokenization stays idempotent."""
+    return html.escape(s, quote=False)
+
+
+def unescape_stable(s: str) -> str:
+    """Fully decode HTML entities (tolerating accidental multi-level escaping like
+    &amp;quot;) so the tokenizer always sees plain text and re-renders are idempotent."""
+    for _ in range(6):
+        u = html.unescape(s)
+        if u == s:
+            return s
+        s = u
+    return s
+
+
+def word_span(form: str, entry: dict, si: int) -> str:
+    extra = ""
+    parts = entry.get("parts")
+    if parts:
+        extra += f' data-parts="{esc_attr(json.dumps(parts, ensure_ascii=False))}"'
+    literal = entry.get("literal")
+    if literal:
+        extra += f' data-literal="{esc_attr(literal)}"'
     return (
         '<span class="w"'
         f' data-tr="{esc_attr(entry.get("tr", ""))}"'
         f' data-pos="{esc_attr(entry.get("pos", ""))}"'
         f' data-lemma="{esc_attr(entry.get("lemma", ""))}"'
         f' data-grammar="{esc_attr(entry.get("grammar", ""))}"'
-        f">{html.escape(form)}</span>"
+        f' data-si="{si}"'
+        f"{extra}>{esc_text(form)}</span>"
     )
 
 
-def sentence_span(ch: str, tr: str) -> str:
-    return f'<span class="s" data-tr="{esc_attr(tr)}">{html.escape(ch)}</span>'
+def sentence_span(ch: str, entry: dict) -> str:
+    note = entry.get("note", "")
+    extra = f' data-note="{esc_attr(note)}"' if note else ""
+    return f'<span class="s" data-tr="{esc_attr(entry.get("tr", ""))}"{extra}>{esc_text(ch)}</span>'
 
 
 def detokenize(content: str) -> str:
@@ -184,9 +211,11 @@ def tokenize_text_segment(
     text: str,
     words: dict,
     phrase_idx: list[tuple[str, dict]],
-    take_sent_tr,
+    take_sent,
+    cur_si,
 ) -> tuple[str, list[str]]:
     """Tokenize a plain-text fragment (no HTML inside)."""
+    text = unescape_stable(text)
     out: list[str] = []
     missed: list[str] = []
     i = 0
@@ -194,7 +223,7 @@ def tokenize_text_segment(
         phrase_hit = next(((f, e) for f, e in phrase_idx if matches_phrase_at(text, i, f)), None)
         if phrase_hit:
             form, entry = phrase_hit
-            out.append(word_span(text[i:i + len(form)], entry))
+            out.append(word_span(text[i:i + len(form)], entry, cur_si()))
             i += len(form)
             continue
         wm = WORD_RE.match(text, i)
@@ -202,18 +231,18 @@ def tokenize_text_segment(
             w = wm.group()
             entry = words.get(w.lower())
             if entry:
-                out.append(word_span(w, entry))
+                out.append(word_span(w, entry, cur_si()))
             else:
-                out.append(html.escape(w))
+                out.append(esc_text(w))
                 missed.append(w)
             i = wm.end()
             continue
         ch = text[i]
         if SENT_RE.match(ch):
-            out.append(sentence_span(ch, take_sent_tr()))
+            out.append(sentence_span(ch, take_sent()))
             i += 1
             continue
-        out.append(html.escape(ch))
+        out.append(esc_text(ch))
         i += 1
     return "".join(out), missed
 
@@ -230,12 +259,15 @@ def walk_html_body(
     """
     s_used = [0]
 
-    def take_sent_tr() -> str:
+    def take_sent() -> dict:
         if s_used[0] < len(sentences):
-            tr = sentences[s_used[0]].get("tr", "")
+            entry = sentences[s_used[0]]
             s_used[0] += 1
-            return tr
-        return ""
+            return entry
+        return {}
+
+    def cur_si() -> int:
+        return s_used[0]
 
     out: list[str] = []
     missed: list[str] = []
@@ -253,7 +285,7 @@ def walk_html_body(
             if end == -1:
                 end = n
             seg = content[i:end]
-            toked, miss = tokenize_text_segment(seg, words, phrase_idx, take_sent_tr)
+            toked, miss = tokenize_text_segment(seg, words, phrase_idx, take_sent, cur_si)
             out.append(toked)
             missed.extend(miss)
             i = end
@@ -338,7 +370,8 @@ POPUP_CSS_INV = """\
 """
 
 POPUP_JS = r"""(function(){
-  var pop = null, active = null, isTouch = false;
+  var pop = null, active = null, hovered = null, isTouch = false;
+  var sentences = window.__leeSentences || [];
   function ensurePop(){
     if (pop) return pop;
     pop = document.createElement('div');
@@ -367,27 +400,53 @@ POPUP_JS = r"""(function(){
       return '<p>' + p + '</p>';
     }).join('');
   }
-  function show(el){
-    var tr = el.dataset.tr || '';
+  function sentenceHtml(tr, note){
+    return '<div class="s-label">traducción</div>' +
+      '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
+      (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  // forceSentence: true when Shift is held — render any word as its full-sentence popup.
+  function show(el, forceSentence){
     var p = ensurePop();
-    if (el.classList.contains('s')){
+    var asSentence = el.classList.contains('s') || (forceSentence && el.classList.contains('w'));
+    if (asSentence){
+      var str = '', snote = '';
+      if (el.classList.contains('s')){ str = el.dataset.tr || ''; snote = el.dataset.note || ''; }
+      else { var s = sentences[+el.dataset.si] || {}; str = s.tr || ''; snote = s.note || ''; }
       p.classList.add('sentence');
-      p.classList.remove('has-grammar');
-      p.innerHTML = '<div class="s-label">traducción</div><div class="s-tr">'+escapeHtml(tr)+'</div>';
+      p.classList.remove('idiom');
+      p.classList.toggle('has-grammar', !!snote);
+      p.innerHTML = sentenceHtml(str, snote);
     } else {
       p.classList.remove('sentence');
-      var pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var tr = el.dataset.tr || '', pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var rawParts = el.dataset.parts || '', literal = el.dataset.literal || '';
+      var isIdiom = !!rawParts || !!literal || pos === 'идиома';
       var displayLemma = lemma || el.textContent;
       var linkHtml = lemma
         ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
         : '';
+      var breakdownHtml = '';
+      if (rawParts){
+        try {
+          var arr = JSON.parse(rawParts);
+          if (arr && arr.length){
+            breakdownHtml = '<div class="breakdown">' + arr.map(function(it){
+              return '<div class="bd-row"><span class="bd-w">'+escapeHtml(it.w)+'</span>'+
+                     '<span class="bd-tr">'+escapeHtml(it.tr)+'</span></div>';
+            }).join('') + '</div>';
+          }
+        } catch(_){}
+      }
+      var literalHtml = literal ? '<div class="literal"><span class="lit-label">досл.</span> '+escapeHtml(literal)+'</div>' : '';
       var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
-      p.classList.toggle('has-grammar', !!grammar);
+      p.classList.toggle('has-grammar', !!grammar || !!breakdownHtml || !!literal);
+      p.classList.toggle('idiom', isIdiom);
       p.innerHTML =
         '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
         (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
         '<div class="tr">'+escapeHtml(tr)+'</div>' +
-        grammarHtml + linkHtml;
+        breakdownHtml + literalHtml + grammarHtml + linkHtml;
     }
     p.classList.add('show');
     position(p, el);
@@ -396,6 +455,7 @@ POPUP_JS = r"""(function(){
     active = el;
   }
   function hide(){
+    hovered = null;
     if (!pop) return;
     pop.classList.remove('show');
     if (active){ active.classList.remove('active'); active = null; }
@@ -415,7 +475,7 @@ POPUP_JS = r"""(function(){
   document.addEventListener('mouseover', function(e){
     if (isTouch) return;
     var el = e.target.closest('.w, .s');
-    if (el) show(el);
+    if (el){ hovered = el; show(el, e.shiftKey); }
   });
   document.addEventListener('mouseout', function(e){
     if (isTouch) return;
@@ -425,9 +485,16 @@ POPUP_JS = r"""(function(){
     if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
     hide();
   });
+  // Holding Shift turns any word popup into its full-sentence popup; releasing reverts.
+  function onShift(e){
+    if (e.key !== 'Shift' || !hovered) return;
+    if (hovered.classList.contains('w')) show(hovered, e.shiftKey);
+  }
+  document.addEventListener('keydown', onShift);
+  document.addEventListener('keyup', onShift);
   document.addEventListener('click', function(e){
     var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
-    if (el){ if (active === el) hide(); else show(el); }
+    if (el){ if (active === el) hide(); else { hovered = el; show(el, e.shiftKey); } }
     else if (!onPop) hide();
   });
   document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
@@ -485,6 +552,7 @@ article p {{ margin: 0 0 1.2rem; }}
   font-size: 0.92rem; line-height: 1.5;
 }}
 .pop.has-grammar {{ max-width: 380px; }}
+.pop.idiom {{ max-width: 400px; }}
 .pop.sentence {{ max-width: 340px; }}
 .pop .lemma {{ font-style: italic; font-size: 1.1rem; margin-bottom: 0.2rem; }}
 .pop .pos {{ font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.6; margin-bottom: 0.45rem; }}
@@ -496,9 +564,17 @@ article p {{ margin: 0 0 1.2rem; }}
 .pop .g-block i {{ font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.85; font-style: normal; }}
 .pop .g-block code {{ font-family: monospace; padding: 0 0.3em; background: rgba(255,255,255,0.08); border-radius: 2px; }}
 .pop .g-block u {{ text-decoration: none; background: rgba(255,255,255,0.18); padding: 0 0.2em; border-radius: 2px; font-weight: 600; }}
+/* Idiom word-by-word breakdown (one row per part). */
+.pop .breakdown {{ border-top: 1px solid rgba(255,255,255,0.18); margin-top: 0.45rem; padding-top: 0.45rem; display: grid; gap: 0.18rem; }}
+.pop .bd-row {{ display: flex; justify-content: space-between; gap: 1.2rem; font-size: 0.85rem; }}
+.pop .bd-w {{ font-style: italic; }}
+.pop .bd-tr {{ opacity: 0.7; text-align: right; }}
+.pop .literal {{ margin-top: 0.4rem; font-size: 0.82rem; opacity: 0.82; }}
+.pop .literal .lit-label {{ font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.6; margin-right: 0.35em; }}
 .pop .link {{ display: inline-block; margin-top: 0.3rem; font-size: 0.78rem; opacity: 0.7; color: inherit; }}
 .pop.sentence .s-label {{ font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.55; margin-bottom: 0.3rem; }}
 .pop.sentence .s-tr {{ font-style: italic; font-size: 1rem; }}
+.pop.sentence .s-note {{ font-style: normal; }}
 </style>
 </head>
 <body>
@@ -735,7 +811,9 @@ def apply_enrichment(story_dir: Path) -> None:
 
     html_text = html_text[:content_start] + new_body + html_text[content_end:]
     html_text = upsert_block(html_text, "style", "data-popup-invariants", POPUP_CSS_INV.strip(), "</head>")
-    html_text = upsert_block(html_text, "script", "data-popup", POPUP_JS.strip(), "</body>")
+    sent_payload = [{"tr": s.get("tr", ""), "note": s.get("note", "")} for s in sentences]
+    popup_js = "window.__leeSentences = " + json.dumps(sent_payload, ensure_ascii=False) + ";\n" + POPUP_JS.strip()
+    html_text = upsert_block(html_text, "script", "data-popup", popup_js, "</body>")
 
     out_path.write_text(html_text, encoding="utf-8")
 

@@ -371,6 +371,47 @@ footer.coda svg{
 }
 .pop.rich{max-width:340px}
 </style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
+</style>
 </head>
 <body>
 
@@ -486,37 +527,544 @@ footer.coda svg{
     </g>
   </svg>
 
-  <article>
+  <article data-story-body>
 
-  <p><span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).&#10;&#10;Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.&#10;&#10;`escrib·[[ir]]` → `escrib·[[e]]`">escribe</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en">en</span> <span class="w" data-tr="её" data-pos="опр." data-lemma="su">su</span> <span class="w" data-tr="тетрадь, блокнот" data-pos="сущ." data-lemma="el cuaderno">cuaderno</span>: "<span class="w" data-tr="день (заголовок записи)" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).">Día</span> 78<span class="s" data-tr="Elena пишет в своей тетради: «День 78».">.</span>"</p>
+  <p><span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="0">Elena</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
 
-  <p><span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza">plaza</span> <span class="w" data-tr="находится, есть" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente* от **estar** (&quot;находиться, быть в состоянии&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный.* Ударение на конечном `á`: `estoy · estás · está · estamos · estáis · están`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство, `estar` — состояние / местоположение.">está</span> <span class="w" data-tr="полная, заполненная" data-pos="прил." data-lemma="lleno">llena</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).&#10;&#10;*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).">gente</span><span class="s" data-tr="Площадь полна людей.">.</span> <span class="w" data-tr="(это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">Es</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el">el</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).">día</span> <span class="w" data-tr="(de + el) от/из + опр. артикль" data-pos="предл." data-lemma="del" data-grammar="**del** = **de** + **el** — обязательное слияние предлога `de` (&quot;из / от&quot;) и артикля `el`.&#10;&#10;`de` + `el día` → `del día` (не `de el día`).">del</span> <span class="w" data-tr="Покровитель (святой)" data-pos="имя">Patrón</span><span class="s" data-tr="Это день Покровителя.">.</span> <span class="w" data-tr="все" data-pos="мест." data-lemma="todo">Todos</span> <span class="w" data-tr="(они) смотрят" data-pos="глаг." data-lemma="mirar" data-grammar="**miran** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. мн. ч.&#10;&#10;Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.&#10;&#10;`mir·[[ar]]` → `mir·[[an]]`">miran</span> <span class="w" data-tr="(a + el) на/в" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.&#10;&#10;`a` + `el cielo` → `al cielo` (не `a el cielo`).">al</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo">cielo</span><span class="s" data-tr="Все смотрят на небо.">.</span> <span class="w" data-tr="(они) ждут, надеются" data-pos="глаг." data-lemma="esperar" data-grammar="**esperan** — *presente* от **esperar** (&quot;ждать, надеяться&quot;), 3 л. мн. ч.&#10;&#10;Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.&#10;&#10;`esper·[[ar]]` → `esper·[[an]]`">Esperan</span> <span class="w" data-tr="видеть (инф.)" data-pos="глаг." data-lemma="ver">ver</span> <span class="w" data-tr="(a + el) к / на" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.&#10;&#10;`a` + `el cielo` → `al cielo` (не `a el cielo`).">al</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo">santo</span><span class="s" data-tr="Они ждут, чтобы увидеть святого.">.</span> <span class="w" data-tr="некоторые" data-pos="мест." data-lemma="alguno">Algunos</span> <span class="w" data-tr="(они) молятся" data-pos="глаг." data-lemma="rezar" data-grammar="**rezan** — *presente* от **rezar** (&quot;молиться&quot;), 3 л. мн. ч.&#10;&#10;Правильный глагол на `-ar`: `rez·[[ar]]` → `rez·[[an]]`.">rezan</span><span class="s" data-tr="Некоторые молятся.">.</span> <span class="w" data-tr="другие" data-pos="мест." data-lemma="otro">Otros</span> <span class="w" data-tr="(они) плачут" data-pos="глаг." data-lemma="llorar" data-grammar="**lloran** — *presente* от **llorar** (&quot;плакать&quot;), 3 л. мн. ч.&#10;&#10;Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.&#10;&#10;`llor·[[ar]]` → `llor·[[an]]`">lloran</span><span class="s" data-tr="Другие плачут.">.</span></p>
+Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.
 
-  <p><span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">es</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí">aquí</span><span class="s" data-tr="Elena - не отсюда.">.</span> <span class="w" data-tr="(она) пришла, прибыла" data-pos="глаг." data-lemma="venir" data-grammar="**vino** — *pretérito indefinido* от **venir** (&quot;прийти&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный.* Корень меняется на [[vin-]]. Спряжение: `vine · viniste · vino · vinimos · vinisteis · vinieron`.&#10;&#10;(Не путать с существительным **el vino** &quot;вино&quot; — омоним.)">Vino</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя">Tierra</span> <span class="w" data-tr="(в выраж. времени) тому назад" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + *время* — идиома &quot;… (тому) назад&quot;.&#10;&#10;*Дословно:* &quot;делает шесть месяцев&quot; = &quot;шесть месяцев назад&quot;. В этом значении **hace** не переводится буквально.&#10;&#10;Сам глагол **hacer** (&quot;делать&quot;) тоже неправильный: `hago · haces · hace · hacemos · hacéis · hacen`.">hace</span> <span class="w" data-tr="шесть" data-pos="числ." data-lemma="seis">seis</span> <span class="w" data-tr="месяцы" data-pos="сущ." data-lemma="el mes">meses</span><span class="s" data-tr="Она прибыла с Земли шесть месяцев назад.">.</span> <span class="w" data-tr="(она) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">Es</span> <span class="w" data-tr="антрополог (женщина)" data-pos="сущ." data-lemma="la antropóloga">antropóloga</span><span class="s" data-tr="Она антрополог.">.</span> <span class="w" data-tr="(она) наблюдает" data-pos="глаг." data-lemma="observar">Observa</span>, <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).&#10;&#10;Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.&#10;&#10;`escrib·[[ir]]` → `escrib·[[e]]`">escribe</span>, <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="(она) вмешивается" data-pos="глаг." data-lemma="intervenir" data-grammar="**interviene** — *presente* от **intervenir** (&quot;вмешиваться&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный* (как **venir**): чередование `inter-v[[e]]nir → inter-v[[ie]]ne`. И 1 л.: `yo intervengo`.">interviene</span><span class="s" data-tr="Она наблюдает, пишет, не вмешивается.">.</span></p>
+`escrib·[[ir]]` → `escrib·[[e]]`
+" data-si="0">escribe</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="" data-si="0">en</span> <span class="w" data-tr="его / её / их" data-pos="опр." data-lemma="su" data-grammar="" data-si="0">su</span> <span class="w" data-tr="тетрадь, блокнот" data-pos="сущ." data-lemma="el cuaderno" data-grammar="" data-si="0">cuaderno</span>: "<span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
 
-  <p><span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).&#10;&#10;*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).">gente</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="«Новая Андалусия» - название колонии" data-pos="имя">Nueva Andalucía</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="помнит" data-pos="глаг." data-lemma="recordar" data-grammar="**recuerda** — *presente* от **recordar** (&quot;помнить&quot;), 3 л. ед. ч.&#10;&#10;*Чередование в корне:* `rec[[o]]rdar → rec[[ue]]rda` (o → ue под ударением).&#10;&#10;Спряжение: `recuerdo · recuerdas · recuerda · recordamos · recordáis · recuerdan` (1 и 2 л. мн. — без чередования).">recuerda</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя">Tierra</span><span class="s" data-tr="Жители Новой Андалусии не помнят Землю.">.</span> <span class="w" data-tr="(в выраж. времени) тому назад" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + *время* — идиома &quot;… (тому) назад&quot;.&#10;&#10;*Дословно:* &quot;делает шесть месяцев&quot; = &quot;шесть месяцев назад&quot;. В этом значении **hace** не переводится буквально.&#10;&#10;Сам глагол **hacer** (&quot;делать&quot;) тоже неправильный: `hago · haces · hace · hacemos · hacéis · hacen`.">Hace</span> <span class="w" data-tr="восемьдесят" data-pos="числ." data-lemma="ochenta">ochenta</span> <span class="w" data-tr="годы" data-pos="сущ." data-lemma="el año">años</span>, <span class="w" data-tr="опр. артикль мн.ч. ж.р." data-pos="арт." data-lemma="las">las</span> <span class="w" data-tr="корабли (косм.)" data-pos="сущ." data-lemma="la nave">naves</span> <span class="w" data-tr="(они) перестали" data-pos="глаг." data-lemma="dejar" data-grammar="**dejaron** — *pretérito indefinido* от **dejar**, 3 л. мн. ч.&#10;&#10;*Идиома* **dejar de + инфинитив** = &quot;перестать что-то делать&quot;.&#10;&#10;Здесь `dejaron de venir` = &quot;перестали приходить&quot;.&#10;&#10;Окончание `-aron` — стандартное для 3 л. мн. *pretérito* у глаголов на `-ar`.">dejaron</span> <span class="w" data-tr="(dejar de + инф.) перестать что-то делать" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="приходить, прибывать (инф.)" data-pos="глаг." data-lemma="venir">venir</span><span class="s" data-tr="Восемьдесят лет назад корабли перестали прилетать.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="радио" data-pos="сущ." data-lemma="la radio" data-grammar="**la radio** — сущ. *ж. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-o`, но женского рода (как **la mano**, **la foto**).">radio</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.&#10;&#10;*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:&#10;&#10;`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).">se</span> <span class="w" data-tr="(она) погасла, замолчала" data-pos="глаг." data-lemma="apagar" data-grammar="**(se) apagó** — *pretérito indefinido* от **apagarse** (&quot;погаснуть, замолчать&quot;), 3 л. ед. ч.&#10;&#10;*Возвратный глагол* (с частицей **se**). Субъект сам &quot;гасит себя&quot; — без явного виновника.&#10;&#10;Корень `apag-` + окончание `-ó` (3 л. ед. *pretérito*): `apag·[[ó]]`.">apagó</span><span class="s" data-tr="Радио замолчало.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).&#10;&#10;*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).">gente</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.&#10;&#10;*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:&#10;&#10;`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).">se</span> <span class="w" data-tr="(они/он) остались" data-pos="глаг." data-lemma="quedar" data-grammar="**(se) quedó** — *pretérito indefinido* от **quedarse** (&quot;остаться&quot;), 3 л. ед. ч.&#10;&#10;*Возвратный глагол* (с частицей **se**). Здесь `la gente se quedó sola` = &quot;люди остались одни&quot; (`la gente` — собирательное, грамматически ед. ч.).&#10;&#10;`qued·[[ó]]` — окончание 3 л. ед. *pretérito*.">quedó</span> <span class="w" data-tr="одинокая, одна" data-pos="прил." data-lemma="solo">sola</span><span class="s" data-tr="Люди остались одни.">.</span> <span class="w" data-tr="опр. артикль мн.ч. м.р." data-pos="арт." data-lemma="los" data-grammar="**los** — два употребления:&#10;&#10;1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).">Los</span> <span class="w" data-tr="сыновья, дети" data-pos="сущ." data-lemma="el hijo">hijos</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="опр. артикль мн.ч. м.р." data-pos="арт." data-lemma="los" data-grammar="**los** — два употребления:&#10;&#10;1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).">los</span> <span class="w" data-tr="сыновья, дети" data-pos="сущ." data-lemma="el hijo">hijos</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="(они) знают" data-pos="глаг." data-lemma="saber" data-grammar="**saben** — *presente* от **saber** (&quot;знать&quot;), 3 л. мн. ч.&#10;&#10;*Неправильный в 1 л.:* `yo sé`. В остальных лицах правильный.">saben</span> <span class="w" data-tr="что" data-pos="мест." data-lemma="qué">qué</span> <span class="w" data-tr="есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">es</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя">Tierra</span><span class="s" data-tr="Дети детей не знают, что такое Земля.">.</span></p>
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).
+" data-si="0">Día</span> 78<span class="s" data-tr="Elena пишет в своей тетради: «День 78».">.</span>"</p>
 
-  <p><span class="w" data-tr="сейчас, теперь" data-pos="нар." data-lemma="ahora">Ahora</span> <span class="w" data-tr="(они) имеют, у них есть" data-pos="глаг." data-lemma="tener" data-grammar="**tienen** — *presente* от **tener** (&quot;иметь&quot;), 3 л. мн. ч.&#10;&#10;*Чередование:* `t[[e]]ner → t[[ie]]nen` (e → ie). 1 л.: `yo tengo`.&#10;&#10;Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.">tienen</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un">un</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo">santo</span> <span class="w" data-tr="новый" data-pos="прил." data-lemma="nuevo">nuevo</span><span class="s" data-tr="Теперь у них есть новый святой.">.</span> <span class="w" data-tr="(это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">Es</span> <span class="w" data-tr="Сатурн (планета)" data-pos="имя">Saturno</span>, <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el">el</span> <span class="w" data-tr="Покровитель (святой)" data-pos="имя">Patrón</span><span class="s" data-tr="Это Сатурн, Покровитель.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.&#10;&#10;*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).&#10;&#10;Спряжение: `digo · dices · dice · decimos · decís · dicen`.">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que">que</span> <span class="w" data-tr="(он) живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente* от **vivir** (&quot;жить&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.">vive</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en">en</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el">el</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo">cielo</span>, <span class="w" data-tr="внутри" data-pos="нар." data-lemma="dentro">dentro</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un">un</span> <span class="w" data-tr="кольцо" data-pos="сущ." data-lemma="el anillo">anillo</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro">oro</span><span class="s" data-tr="Говорят, что он живёт в небе, внутри золотого кольца.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.&#10;&#10;*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).&#10;&#10;Спряжение: `digo · dices · dice · decimos · decís · dicen`.">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que">que</span> <span class="w" data-tr="их (мест. прям. доп.)" data-pos="мест." data-lemma="los" data-grammar="**los** — два употребления:&#10;&#10;1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).">los</span> <span class="w" data-tr="(он) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ar`: 3 л. ед. → окончание `-a`.&#10;&#10;`mir·[[ar]]` → `mir·[[a]]`">mira</span> <span class="w" data-tr="всегда" data-pos="нар." data-lemma="siempre">siempre</span><span class="s" data-tr="Говорят, что он всегда смотрит на них.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.&#10;&#10;*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).&#10;&#10;Спряжение: `digo · dices · dice · decimos · decís · dicen`.">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que">que</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un">un</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).">día</span> <span class="w" data-tr="(он) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.&#10;&#10;*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.&#10;&#10;*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.&#10;&#10;Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="вернуться (инф.)" data-pos="глаг." data-lemma="volver">volver</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y">y</span> <span class="w" data-tr="(он) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.&#10;&#10;*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.&#10;&#10;*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.&#10;&#10;Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="судить (инф.)" data-pos="глаг." data-lemma="juzgar">juzgar</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="всех" data-pos="мест." data-lemma="todo">todos</span><span class="s" data-tr="Говорят, что однажды он вернётся и будет судить всех.">.</span></p>
+  <p><span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
 
-  <p><span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente* от **saber** (&quot;знать&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный в 1 л.:* `yo sé` (с ударением). В остальном правильный: `sé · sabes · sabe · sabemos · sabéis · saben`.">sabe</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que">que</span> <span class="w" data-tr="Сатурн (планета)" data-pos="имя">Saturno</span> <span class="w" data-tr="есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">es</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un">un</span> <span class="w" data-tr="планета (м.р.!)" data-pos="сущ." data-lemma="el planeta" data-grammar="**el planeta** — сущ. *м. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-a`, но мужского рода (как **el día**, **el problema**, **el sistema**).">planeta</span><span class="s" data-tr="Elena знает, что Сатурн - это планета.">.</span> <span class="w" data-tr="имеет, у него есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.&#10;&#10;*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.&#10;&#10;Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.">Tiene</span> <span class="w" data-tr="кольца" data-pos="сущ." data-lemma="el anillo">anillos</span>, <span class="w" data-tr="да" data-pos="нар." data-lemma="sí">sí</span>, <span class="w" data-tr="но" data-pos="союз" data-lemma="pero">pero</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro">oro</span><span class="s" data-tr="У него есть кольца, да, но не из золота.">.</span> <span class="w" data-tr="(это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">Es</span> <span class="w" data-tr="только" data-pos="нар." data-lemma="solo">solo</span> <span class="w" data-tr="газ" data-pos="сущ." data-lemma="el gas">gas</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y">y</span> <span class="w" data-tr="лёд" data-pos="сущ." data-lemma="el hielo">hielo</span><span class="s" data-tr="Это только газ и лёд.">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie">Nadie</span> <span class="w" data-tr="живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente* от **vivir** (&quot;жить&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.">vive</span> <span class="w" data-tr="там" data-pos="нар." data-lemma="allí">allí</span><span class="s" data-tr="Там никто не живёт.">.</span></p>
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
 
-  <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero">Pero</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="ella">ella</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="(она) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente* от **decir** (&quot;говорить&quot;), 3 л. ед. ч.&#10;&#10;*Чередование:* `d[[e]]cir → d[[i]]ce` (e → i). И 1 л. — особый: `yo digo`.&#10;&#10;Спряжение: `digo · dices · dice · decimos · decís · dicen`.">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada">nada</span><span class="s" data-tr="Но она ничего не говорит.">.</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).&#10;&#10;Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.&#10;&#10;`escrib·[[ir]]` → `escrib·[[e]]`">Escribe</span><span class="s" data-tr="Пишет.">.</span></p>
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="1">La</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza" data-grammar="" data-si="1">plaza</span> <span class="w" data-tr="находится, есть" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente* от **estar** (&quot;находиться, быть в состоянии&quot;), 3 л. ед. ч.
 
-  <p><span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el">El</span> <span class="w" data-tr="дым" data-pos="сущ." data-lemma="el humo">humo</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="опр. артикль мн.ч. ж.р." data-pos="арт." data-lemma="las">las</span> <span class="w" data-tr="свечи" data-pos="сущ." data-lemma="la vela">velas</span> <span class="w" data-tr="поднимается" data-pos="глаг." data-lemma="subir" data-grammar="**sube** — *presente* от **subir** (&quot;подниматься, подняться&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ir`: `sub·[[ir]]` → `sub·[[e]]`.">sube</span> <span class="w" data-tr="медленно" data-pos="нар." data-lemma="despacio">despacio</span><span class="s" data-tr="Дым свечей медленно поднимается.">.</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una">Una</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña">niña</span> <span class="w" data-tr="маленькая" data-pos="прил." data-lemma="pequeño">pequeña</span> <span class="w" data-tr="ей (косв. доп.)" data-pos="мест." data-lemma="le">le</span> <span class="w" data-tr="(она) трогает" data-pos="глаг." data-lemma="tocar" data-grammar="**toca** — *presente* от **tocar** (&quot;трогать, касаться&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ar`: `toc·[[ar]]` → `toc·[[a]]`.">toca</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="рука" data-pos="сущ." data-lemma="la mano" data-grammar="**la mano** — сущ. *ж. р.*, ед. ч.&#10;&#10;*Исключение:* оканчивается на `-o`, но женского рода (как **la radio**, **la foto**).">mano</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span><span class="s" data-tr="Маленькая девочка трогает руку Elena.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña">niña</span> <span class="w" data-tr="имеет, у неё есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.&#10;&#10;*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.&#10;&#10;Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.">tiene</span> <span class="w" data-tr="температура (жар)" data-pos="сущ." data-lemma="la fiebre">fiebre</span><span class="s" data-tr="У девочки температура.">.</span> <span class="w" data-tr="её" data-pos="опр." data-lemma="su">Su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre">madre</span> <span class="w" data-tr="её (мест. прям. доп.)" data-pos="мест." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="приносит, приводит" data-pos="глаг." data-lemma="traer" data-grammar="**trae** — *presente* от **traer** (&quot;приносить, приводить&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный в 1 л.:* `yo traigo`. В 3 л. — правильный: `tra·[[e]]`.">trae</span> <span class="w" data-tr="(a + el) к / на" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.&#10;&#10;`a` + `el cielo` → `al cielo` (не `a el cielo`).">al</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo">santo</span><span class="s" data-tr="Мать привела её к святому.">.</span> <span class="w" data-tr="(она) хочет" data-pos="глаг." data-lemma="querer" data-grammar="**quiere** — *presente* от **querer** (&quot;хотеть&quot;), 3 л. ед. ч.&#10;&#10;*Чередование:* `qu[[e]]rer → qu[[ie]]re` (e → ie под ударением).&#10;&#10;Спряжение: `quiero · quieres · quiere · queremos · queréis · quieren` (1 и 2 л. мн. — без чередования).">Quiere</span> <span class="w" data-tr="помощь" data-pos="сущ." data-lemma="la ayuda">ayuda</span><span class="s" data-tr="Хочет помощи.">.</span></p>
+*Неправильный.* Ударение на конечном `á`: `estoy · estás · está · estamos · estáis · están`.
 
-  <p><span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="имеет, у неё есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.&#10;&#10;*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.&#10;&#10;Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.">tiene</span> <span class="w" data-tr="лекарство" data-pos="сущ." data-lemma="la medicina">medicina</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en">en</span> <span class="w" data-tr="её" data-pos="опр." data-lemma="su">su</span> <span class="w" data-tr="сумка" data-pos="сущ." data-lemma="la bolsa">bolsa</span><span class="s" data-tr="У Elena есть лекарство в сумке.">.</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una">Una</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla">pastilla</span><span class="s" data-tr="Одна таблетка.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña">niña</span> <span class="w" data-tr="(она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.&#10;&#10;*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.&#10;&#10;*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.&#10;&#10;Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="быть, находиться (инф.)" data-pos="глаг." data-lemma="estar">estar</span> <span class="w" data-tr="хорошо" data-pos="нар." data-lemma="bien">bien</span> <span class="w" data-tr="в, через" data-pos="предл." data-lemma="en">en</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una">una</span> <span class="w" data-tr="час" data-pos="сущ." data-lemma="la hora">hora</span><span class="s" data-tr="Девочке станет лучше через час.">.</span></p>
+**ser** vs **estar**: `ser` — постоянное свойство, `estar` — состояние / местоположение.
+" data-si="1">está</span> <span class="w" data-tr="полная, заполненная" data-pos="прил." data-lemma="lleno" data-grammar="" data-si="1">llena</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="1">de</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).
 
-  <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero">Pero</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si">si</span> <span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="ей (косв. доп.)" data-pos="мест." data-lemma="le">le</span> <span class="w" data-tr="(она) даёт" data-pos="глаг." data-lemma="dar" data-grammar="**da** — *presente* от **dar** (&quot;давать&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный в 1 л.:* `yo doy`. В 3 л. — короткое `d·[[a]]`.&#10;&#10;Полное спряжение: `doy · das · da · damos · dais · dan`.">da</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla">pastilla</span>, <span class="w" data-tr="все" data-pos="мест." data-lemma="todo">todos</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.&#10;&#10;*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.&#10;&#10;Пример: `van a saber` = &quot;узнают (скоро)&quot;.&#10;&#10;Полное спряжение: `voy · vas · va · vamos · vais · van`.">van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="узнать, знать (инф.)" data-pos="глаг." data-lemma="saber">saber</span><span class="s" data-tr="Но если Elena даст ей таблетку, все узнают.">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.&#10;&#10;*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.&#10;&#10;Пример: `van a saber` = &quot;узнают (скоро)&quot;.&#10;&#10;Полное спряжение: `voy · vas · va · vamos · vais · van`.">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="спрашивать (инф.)" data-pos="глаг." data-lemma="preguntar">preguntar</span><span class="s" data-tr="Будут спрашивать.">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.&#10;&#10;*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.&#10;&#10;Пример: `van a saber` = &quot;узнают (скоро)&quot;.&#10;&#10;Полное спряжение: `voy · vas · va · vamos · vais · van`.">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="хотеть (инф.)" data-pos="глаг." data-lemma="querer" data-grammar="**querer** — инфинитив, &quot;хотеть&quot;.&#10;&#10;*В спряжении* чередуется: `qu[[e]]rer → qu[[ie]]re` (e → ie под ударением).&#10;&#10;В инфинитиве чередования нет.">querer</span> <span class="w" data-tr="больше, ещё" data-pos="нар." data-lemma="más">más</span><span class="s" data-tr="Захотят ещё.">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.&#10;&#10;*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.&#10;&#10;Пример: `van a saber` = &quot;узнают (скоро)&quot;.&#10;&#10;Полное спряжение: `voy · vas · va · vamos · vais · van`.">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="понять (инф.)" data-pos="глаг." data-lemma="entender" data-grammar="**entender** — инфинитив, &quot;понимать&quot;.&#10;&#10;*В спряжении* чередуется: `ent[[e]]nder → ent[[ie]]nde` (e → ie под ударением).&#10;&#10;В инфинитиве чередования нет.">entender</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que">que</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="ella">ella</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.&#10;&#10;*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.&#10;&#10;**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.">es</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de">de</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí">aquí</span><span class="s" data-tr="Поймут, что она не отсюда.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="культура" data-pos="сущ." data-lemma="la cultura">cultura</span> <span class="w" data-tr="(она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.&#10;&#10;*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.&#10;&#10;*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.&#10;&#10;Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="меняться (инф.)" data-pos="глаг." data-lemma="cambiar">cambiar</span><span class="s" data-tr="Культура изменится.">.</span> <span class="w" data-tr="возможно, может быть" data-pos="нар." data-lemma="quizás">Quizás</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.&#10;&#10;*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:&#10;&#10;`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).">se</span> <span class="w" data-tr="ломается, разрушается" data-pos="глаг." data-lemma="romper" data-grammar="**(se) rompe** — *presente* от **romperse** (&quot;ломаться, разрушаться&quot;), 3 л. ед. ч.&#10;&#10;*Возвратный.* Здесь без явного виновника: &quot;культура сама разрушится&quot;.&#10;&#10;Корень `romp-` + окончание `-e` (3 л. ед. *presente*): `romp·[[e]]`.">rompe</span><span class="s" data-tr="Может быть, разрушится.">.</span></p>
+*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).
+" data-si="1">gente</span><span class="s" data-tr="Площадь полна людей.">.</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
 
-  <p><span class="w" data-tr="и" data-pos="союз" data-lemma="y">Y</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si">si</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">no</span> <span class="w" data-tr="ей (косв. доп.)" data-pos="мест." data-lemma="le">le</span> <span class="w" data-tr="(она) даёт" data-pos="глаг." data-lemma="dar" data-grammar="**da** — *presente* от **dar** (&quot;давать&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный в 1 л.:* `yo doy`. В 3 л. — короткое `d·[[a]]`.&#10;&#10;Полное спряжение: `doy · das · da · damos · dais · dan`.">da</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla">pastilla</span>, <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña">niña</span> <span class="w" data-tr="(она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.&#10;&#10;*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.&#10;&#10;*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.&#10;&#10;Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a">a</span> <span class="w" data-tr="страдать (инф.)" data-pos="глаг." data-lemma="sufrir">sufrir</span><span class="s" data-tr="А если не даст таблетку - девочка будет страдать.">.</span> <span class="w" data-tr="возможно, может быть" data-pos="нар." data-lemma="quizás">Quizás</span> <span class="w" data-tr="больше, сильнее" data-pos="нар." data-lemma="más">más</span><span class="s" data-tr="Может быть, сильнее.">.</span></p>
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
 
-  <p><span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre">madre</span> <span class="w" data-tr="(она) молится" data-pos="глаг." data-lemma="rezar" data-grammar="**reza** — *presente* от **rezar** (&quot;молиться&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ar`: `rez·[[ar]]` → `rez·[[a]]`.">reza</span><span class="s" data-tr="Мать молится.">.</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña">niña</span> <span class="w" data-tr="(она) дрожит" data-pos="глаг." data-lemma="temblar" data-grammar="**tiembla** — *presente* от **temblar** (&quot;дрожать&quot;), 3 л. ед. ч.&#10;&#10;*Чередование:* `t[[e]]mblar → t[[ie]]mbla` (e → ie под ударением).">tiembla</span><span class="s" data-tr="Девочка дрожит.">.</span></p>
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="2">Es</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el" data-grammar="" data-si="2">el</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
 
-  <p><span class="w" data-tr="Elena - антрополог" data-pos="имя">Elena</span> <span class="w" data-tr="(она) трогает" data-pos="глаг." data-lemma="tocar" data-grammar="**toca** — *presente* от **tocar** (&quot;трогать, касаться&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ar`: `toc·[[ar]]` → `toc·[[a]]`.">toca</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla">pastilla</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en">en</span> <span class="w" data-tr="её" data-pos="опр." data-lemma="su">su</span> <span class="w" data-tr="карман" data-pos="сущ." data-lemma="el bolsillo">bolsillo</span><span class="s" data-tr="Elena трогает таблетку в кармане.">.</span> <span class="w" data-tr="(она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. ед. ч.&#10;&#10;Правильный глагол на `-ar`: 3 л. ед. → окончание `-a`.&#10;&#10;`mir·[[ar]]` → `mir·[[a]]`">Mira</span> <span class="w" data-tr="(a + el) на" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.&#10;&#10;`a` + `el cielo` → `al cielo` (не `a el cielo`).">al</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo">cielo</span><span class="s" data-tr="Смотрит на небо.">.</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol">sol</span> <span class="w" data-tr="падает" data-pos="глаг." data-lemma="caer" data-grammar="**cae** — *presente* от **caer** (&quot;падать&quot;), 3 л. ед. ч.&#10;&#10;*Неправильный в 1 л.:* `yo caigo`. В 3 л. — правильный: `ca·[[e]]`.">cae</span> <span class="w" data-tr="над, на" data-pos="предл." data-lemma="sobre">sobre</span> <span class="w" data-tr="опр. артикль ж.р." data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:&#10;&#10;1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).&#10;2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).&#10;&#10;Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.">la</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza">plaza</span><span class="s" data-tr="Солнце падает на площадь.">.</span></p>
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).
+" data-si="2">día</span> <span class="w" data-tr="(de + el) от / из + опр. артикль" data-pos="предл." data-lemma="del" data-grammar="**del** = **de** + **el** — обязательное слияние предлога `de` (&quot;из / от&quot;) и артикля `el`.
 
-  <p><span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).&#10;&#10;Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.&#10;&#10;`escrib·[[ir]]` → `escrib·[[e]]`">Escribe</span>: "<span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy">Hoy</span> <span class="w" data-tr="(я) решаю" data-pos="глаг." data-lemma="decidir" data-grammar="**decido** — *presente*, 1 л. ед. ч., от **decidir** (&quot;решать&quot;).&#10;&#10;Правильный глагол на `-ir`: 1 л. ед. → окончание `-o`.&#10;&#10;`decid·[[ir]]` → `decid·[[o]]`">decido</span><span class="s" data-tr="Она пишет: «Сегодня я решаю».">.</span>"</p>
+`de` + `el día` → `del día` (не `de el día`).
+" data-si="2">del</span> <span class="w" data-tr="Покровитель (святой)" data-pos="имя" data-lemma="" data-grammar="" data-si="2">Patrón</span><span class="s" data-tr="Это день Покровителя.">.</span> <span class="w" data-tr="все" data-pos="мест." data-lemma="todo" data-grammar="" data-si="3">Todos</span> <span class="w" data-tr="(они) смотрят" data-pos="глаг." data-lemma="mirar" data-grammar="**miran** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. мн. ч.
 
-  <p><span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no">No</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).&#10;&#10;Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.&#10;&#10;`escrib·[[ir]]` → `escrib·[[e]]`">escribe</span> <span class="w" data-tr="что" data-pos="мест." data-lemma="qué">qué</span><span class="s" data-tr="Она не пишет что.">.</span></p>
+Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.
+
+`mir·[[ar]]` → `mir·[[an]]`
+" data-si="3">miran</span> <span class="w" data-tr="(a + el) к / на + опр. артикль" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.
+
+`a` + `el cielo` → `al cielo` (не `a el cielo`).
+" data-si="3">al</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo" data-grammar="" data-si="3">cielo</span><span class="s" data-tr="Все смотрят на небо.">.</span> <span class="w" data-tr="(они) ждут, надеются" data-pos="глаг." data-lemma="esperar" data-grammar="**esperan** — *presente* от **esperar** (&quot;ждать, надеяться&quot;), 3 л. мн. ч.
+
+Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.
+
+`esper·[[ar]]` → `esper·[[an]]`
+" data-si="4">Esperan</span> <span class="w" data-tr="видеть (инф.)" data-pos="глаг." data-lemma="ver" data-grammar="" data-si="4">ver</span> <span class="w" data-tr="(a + el) к / на + опр. артикль" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.
+
+`a` + `el cielo` → `al cielo` (не `a el cielo`).
+" data-si="4">al</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo" data-grammar="" data-si="4">santo</span><span class="s" data-tr="Они ждут, чтобы увидеть святого.">.</span> <span class="w" data-tr="некоторые" data-pos="мест." data-lemma="alguno" data-grammar="" data-si="5">Algunos</span> <span class="w" data-tr="(они) молятся" data-pos="глаг." data-lemma="rezar" data-grammar="**rezan** — *presente* от **rezar** (&quot;молиться&quot;), 3 л. мн. ч.
+
+Правильный глагол на `-ar`: `rez·[[ar]]` → `rez·[[an]]`.
+" data-si="5">rezan</span><span class="s" data-tr="Некоторые молятся.">.</span> <span class="w" data-tr="другие" data-pos="мест." data-lemma="otro" data-grammar="" data-si="6">Otros</span> <span class="w" data-tr="(они) плачут" data-pos="глаг." data-lemma="llorar" data-grammar="**lloran** — *presente* от **llorar** (&quot;плакать&quot;), 3 л. мн. ч.
+
+Правильный глагол на `-ar`: 3 л. мн. → окончание `-an`.
+
+`llor·[[ar]]` → `llor·[[an]]`
+" data-si="6">lloran</span><span class="s" data-tr="Другие плачут.">.</span></p>
+
+  <p><span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="7">Elena</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="7">no</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="7">es</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="7">de</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="" data-si="7">aquí</span><span class="s" data-tr="Elena — не отсюда.">.</span> <span class="w" data-tr="(она) пришла, прибыла" data-pos="глаг." data-lemma="venir" data-grammar="**vino** — *pretérito indefinido* от **venir** (&quot;прийти&quot;), 3 л. ед. ч.
+
+*Неправильный.* Корень меняется на [[vin-]]. Спряжение: `vine · viniste · vino · vinimos · vinisteis · vinieron`.
+
+(Не путать с существительным **el vino** &quot;вино&quot; — омоним.)
+" data-si="8">Vino</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="8">de</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="8">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="8">Tierra</span> <span class="w" data-tr="(в выраж. времени) тому назад" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + *время* — идиома &quot;… (тому) назад&quot;.
+
+*Дословно:* &quot;делает шесть месяцев&quot; = &quot;шесть месяцев назад&quot;. В этом значении **hace** не переводится буквально.
+
+Сам глагол **hacer** (&quot;делать&quot;) тоже неправильный: `hago · haces · hace · hacemos · hacéis · hacen`.
+" data-si="8">hace</span> <span class="w" data-tr="шесть" data-pos="числ." data-lemma="seis" data-grammar="" data-si="8">seis</span> <span class="w" data-tr="месяцы" data-pos="сущ." data-lemma="el mes" data-grammar="" data-si="8">meses</span><span class="s" data-tr="Она прибыла с Земли шесть месяцев назад." data-note="`hace` + *время* = «… (тому) назад»: `hace seis meses` — «шесть месяцев назад».
+
+**vino** — *pretérito* от **venir** («прийти, приехать»), неправильный глагол.
+">.</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="9">Es</span> <span class="w" data-tr="антрополог (женщина)" data-pos="сущ." data-lemma="la antropóloga" data-grammar="" data-si="9">antropóloga</span><span class="s" data-tr="Она антрополог.">.</span> <span class="w" data-tr="(она) наблюдает" data-pos="глаг." data-lemma="observar" data-grammar="**observa** — *presente*, 3 л. ед. ч., от **observar** (&quot;наблюдать&quot;).
+
+Правильный глагол на `-ar`: `observ·[[ar]]` → `observ·[[a]]`.
+" data-si="10">Observa</span>, <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
+
+Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.
+
+`escrib·[[ir]]` → `escrib·[[e]]`
+" data-si="10">escribe</span>, <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="10">no</span> <span class="w" data-tr="(она) вмешивается" data-pos="глаг." data-lemma="intervenir" data-grammar="**interviene** — *presente* от **intervenir** (&quot;вмешиваться&quot;), 3 л. ед. ч.
+
+*Неправильный* (как **venir**): чередование `inter-v[[e]]nir → inter-v[[ie]]ne`. И 1 л.: `yo intervengo`.
+" data-si="10">interviene</span><span class="s" data-tr="Она наблюдает, пишет, не вмешивается.">.</span></p>
+
+  <p><span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="11">La</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).
+
+*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).
+" data-si="11">gente</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="11">de</span> <span class="w" data-tr="«Новая Андалусия» — название колонии" data-pos="имя" data-lemma="" data-grammar="" data-si="11">Nueva Andalucía</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="11">no</span> <span class="w" data-tr="помнит / не помнит" data-pos="глаг." data-lemma="recordar" data-grammar="**recuerda** — *presente* от **recordar** (&quot;помнить&quot;), 3 л. ед. ч.
+
+*Чередование в корне:* `rec[[o]]rdar → rec[[ue]]rda` (o → ue под ударением).
+
+Спряжение: `recuerdo · recuerdas · recuerda · recordamos · recordáis · recuerdan` (1 и 2 л. мн. — без чередования).
+" data-si="11">recuerda</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="11">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="11">Tierra</span><span class="s" data-tr="Жители Новой Андалусии не помнят Землю.">.</span> <span class="w" data-tr="(в выраж. времени) тому назад" data-pos="глаг." data-lemma="hacer" data-grammar="**hace** + *время* — идиома &quot;… (тому) назад&quot;.
+
+*Дословно:* &quot;делает шесть месяцев&quot; = &quot;шесть месяцев назад&quot;. В этом значении **hace** не переводится буквально.
+
+Сам глагол **hacer** (&quot;делать&quot;) тоже неправильный: `hago · haces · hace · hacemos · hacéis · hacen`.
+" data-si="12">Hace</span> <span class="w" data-tr="восемьдесят" data-pos="числ." data-lemma="ochenta" data-grammar="" data-si="12">ochenta</span> <span class="w" data-tr="годы" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="12">años</span>, <span class="w" data-tr="опр. артикль мн.ч. ж.р." data-pos="арт." data-lemma="las" data-grammar="" data-si="12">las</span> <span class="w" data-tr="корабли (косм.)" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="12">naves</span> <span class="w" data-tr="(они) перестали" data-pos="глаг." data-lemma="dejar" data-grammar="**dejaron** — *pretérito indefinido* от **dejar**, 3 л. мн. ч.
+
+*Идиома* **dejar de + инфинитив** = &quot;перестать что-то делать&quot;.
+
+Здесь `dejaron de venir` = &quot;перестали приходить&quot;.
+
+Окончание `-aron` — стандартное для 3 л. мн. *pretérito* у глаголов на `-ar`.
+" data-si="12">dejaron</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="12">de</span> <span class="w" data-tr="приходить, прибывать (инф.)" data-pos="глаг." data-lemma="venir" data-grammar="" data-si="12">venir</span><span class="s" data-tr="Восемьдесят лет назад корабли перестали прилетать." data-note="`dejar de` + инфинитив = «перестать (делать)»: `dejaron de venir` — «перестали прилетать».
+
+`hace ochenta años` — «восемьдесят лет назад» (та же конструкция `hace` + время).
+">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="13">La</span> <span class="w" data-tr="радио" data-pos="сущ." data-lemma="la radio" data-grammar="**la radio** — сущ. *ж. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-o`, но женского рода (как **la mano**, **la foto**).
+" data-si="13">radio</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.
+
+*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:
+
+`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).
+" data-si="13">se</span> <span class="w" data-tr="(оно) погасло, замолчало" data-pos="глаг." data-lemma="apagar" data-grammar="**(se) apagó** — *pretérito indefinido* от **apagarse** (&quot;погаснуть, замолчать&quot;), 3 л. ед. ч.
+
+*Возвратный глагол* (с частицей **se**). Субъект сам &quot;гасит себя&quot; — без явного виновника.
+
+Корень `apag-` + окончание `-ó` (3 л. ед. *pretérito*): `apag·[[ó]]`.
+" data-si="13">apagó</span><span class="s" data-tr="Радио замолчало.">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="14">La</span> <span class="w" data-tr="люди (собир.)" data-pos="сущ." data-lemma="la gente" data-grammar="**la gente** — сущ. *ж. р.*, ед. ч., собирательное (&quot;люди&quot;).
+
+*Особенность:* грамматически единственное число, хотя по смыслу множественное. Глагол → 3 л. ед.: `la gente está` (а не `están`).
+" data-si="14">gente</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.
+
+*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:
+
+`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).
+" data-si="14">se</span> <span class="w" data-tr="(она/он) остался / осталось" data-pos="глаг." data-lemma="quedar" data-grammar="**(se) quedó** — *pretérito indefinido* от **quedarse** (&quot;остаться&quot;), 3 л. ед. ч.
+
+*Возвратный глагол* (с частицей **se**). Здесь `la gente se quedó sola` = &quot;люди остались одни&quot; (`la gente` — собирательное, грамматически ед. ч.).
+
+`qued·[[ó]]` — окончание 3 л. ед. *pretérito*.
+" data-si="14">quedó</span> <span class="w" data-tr="одинокая, одна" data-pos="прил." data-lemma="solo" data-grammar="" data-si="14">sola</span><span class="s" data-tr="Люди остались одни.">.</span> <span class="w" data-tr="опр. артикль мн.ч. м.р. / их (прям. доп.)" data-pos="арт." data-lemma="los" data-grammar="**los** — два употребления:
+
+1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).
+2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).
+" data-si="15">Los</span> <span class="w" data-tr="сыновья, дети" data-pos="сущ." data-lemma="el hijo" data-grammar="" data-si="15">hijos</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="15">de</span> <span class="w" data-tr="опр. артикль мн.ч. м.р. / их (прям. доп.)" data-pos="арт." data-lemma="los" data-grammar="**los** — два употребления:
+
+1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).
+2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).
+" data-si="15">los</span> <span class="w" data-tr="сыновья, дети" data-pos="сущ." data-lemma="el hijo" data-grammar="" data-si="15">hijos</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="15">no</span> <span class="w" data-tr="(они) знают" data-pos="глаг." data-lemma="saber" data-grammar="**saben** — *presente* от **saber** (&quot;знать&quot;), 3 л. мн. ч.
+
+*Неправильный в 1 л.:* `yo sé`. В остальных лицах правильный.
+" data-si="15">saben</span> <span class="w" data-tr="что (вопрос.)" data-pos="мест." data-lemma="qué" data-grammar="" data-si="15">qué</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="15">es</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="15">la</span> <span class="w" data-tr="Земля (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="15">Tierra</span><span class="s" data-tr="Дети детей не знают, что такое Земля.">.</span></p>
+
+  <p><span class="w" data-tr="сейчас, теперь" data-pos="нар." data-lemma="ahora" data-grammar="" data-si="16">Ahora</span> <span class="w" data-tr="(они) имеют, у них есть" data-pos="глаг." data-lemma="tener" data-grammar="**tienen** — *presente* от **tener** (&quot;иметь&quot;), 3 л. мн. ч.
+
+*Чередование:* `t[[e]]ner → t[[ie]]nen` (e → ie). 1 л.: `yo tengo`.
+
+Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+" data-si="16">tienen</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un" data-grammar="" data-si="16">un</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo" data-grammar="" data-si="16">santo</span> <span class="w" data-tr="новый" data-pos="прил." data-lemma="nuevo" data-grammar="" data-si="16">nuevo</span><span class="s" data-tr="Теперь у них есть новый святой.">.</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="17">Es</span> <span class="w" data-tr="Сатурн (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="17">Saturno</span>, <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el" data-grammar="" data-si="17">el</span> <span class="w" data-tr="Покровитель (святой)" data-pos="имя" data-lemma="" data-grammar="" data-si="17">Patrón</span><span class="s" data-tr="Это Сатурн, Покровитель.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.
+
+*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).
+
+Спряжение: `digo · dices · dice · decimos · decís · dicen`.
+" data-si="18">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que" data-grammar="" data-si="18">que</span> <span class="w" data-tr="живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente* от **vivir** (&quot;жить&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
+" data-si="18">vive</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="" data-si="18">en</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el" data-grammar="" data-si="18">el</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo" data-grammar="" data-si="18">cielo</span>, <span class="w" data-tr="внутри" data-pos="нар." data-lemma="dentro" data-grammar="" data-si="18">dentro</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="18">de</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un" data-grammar="" data-si="18">un</span> <span class="w" data-tr="кольцо" data-pos="сущ." data-lemma="el anillo" data-grammar="" data-si="18">anillo</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="18">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro" data-grammar="" data-si="18">oro</span><span class="s" data-tr="Говорят, что он живёт в небе, внутри золотого кольца.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.
+
+*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).
+
+Спряжение: `digo · dices · dice · decimos · decís · dicen`.
+" data-si="19">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que" data-grammar="" data-si="19">que</span> <span class="w" data-tr="опр. артикль мн.ч. м.р. / их (прям. доп.)" data-pos="арт." data-lemma="los" data-grammar="**los** — два употребления:
+
+1. *Определённый артикль* мн. ч., м. р.: `los hijos` (&quot;сыновья / дети&quot;).
+2. *Местоимение прямого дополнения* (3 л. мн. ч., м. р.): `los mira` (&quot;смотрит на них&quot;).
+" data-si="19">los</span> <span class="w" data-tr="(он/она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ar`: 3 л. ед. → окончание `-a`.
+
+`mir·[[ar]]` → `mir·[[a]]`
+" data-si="19">mira</span> <span class="w" data-tr="всегда" data-pos="нар." data-lemma="siempre" data-grammar="" data-si="19">siempre</span><span class="s" data-tr="Говорят, что он всегда смотрит на них.">.</span> <span class="w" data-tr="(они) говорят" data-pos="глаг." data-lemma="decir" data-grammar="**dicen** — *presente* от **decir** (&quot;говорить&quot;), 3 л. мн. ч.
+
+*Чередование:* `d[[e]]cir → d[[i]]cen` (e → i).
+
+Спряжение: `digo · dices · dice · decimos · decís · dicen`.
+" data-si="20">Dicen</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que" data-grammar="" data-si="20">que</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un" data-grammar="" data-si="20">un</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el problema**, **el planeta**, **el sistema**).
+" data-si="20">día</span> <span class="w" data-tr="(он/она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.
+
+*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.
+
+*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.
+
+Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.
+" data-si="20">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="20">a</span> <span class="w" data-tr="вернуться (инф.)" data-pos="глаг." data-lemma="volver" data-grammar="" data-si="20">volver</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="20">y</span> <span class="w" data-tr="(он/она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.
+
+*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.
+
+*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.
+
+Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.
+" data-si="20">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="20">a</span> <span class="w" data-tr="судить (инф.)" data-pos="глаг." data-lemma="juzgar" data-grammar="" data-si="20">juzgar</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="20">a</span> <span class="w" data-tr="все" data-pos="мест." data-lemma="todo" data-grammar="" data-si="20">todos</span><span class="s" data-tr="Говорят, что однажды он вернётся и будет судить всех." data-note="**Dicen que…** — безличное «говорят, что…» (3 л. мн. ч. без подлежащего).
+
+`ir a` + инфинитив = ближайшее будущее: `va a volver` («вернётся»), `va a juzgar` («будет судить»).
+">.</span></p>
+
+  <p><span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="21">Elena</span> <span class="w" data-tr="знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente* от **saber** (&quot;знать&quot;), 3 л. ед. ч.
+
+*Неправильный в 1 л.:* `yo sé` (с ударением). В остальном правильный: `sé · sabes · sabe · sabemos · sabéis · saben`.
+" data-si="21">sabe</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que" data-grammar="" data-si="21">que</span> <span class="w" data-tr="Сатурн (планета)" data-pos="имя" data-lemma="" data-grammar="" data-si="21">Saturno</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="21">es</span> <span class="w" data-tr="один; неопр. артикль м.р." data-pos="арт." data-lemma="un" data-grammar="" data-si="21">un</span> <span class="w" data-tr="планета" data-pos="сущ." data-lemma="el planeta" data-grammar="**el planeta** — сущ. *м. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-a`, но мужского рода (как **el día**, **el problema**, **el sistema**).
+" data-si="21">planeta</span><span class="s" data-tr="Elena знает, что Сатурн — это планета.">.</span> <span class="w" data-tr="имеет, у неё есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.
+
+*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.
+
+Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+" data-si="22">Tiene</span> <span class="w" data-tr="кольца" data-pos="сущ." data-lemma="el anillo" data-grammar="" data-si="22">anillos</span>, <span class="w" data-tr="да" data-pos="нар." data-lemma="sí" data-grammar="" data-si="22">sí</span>, <span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="22">pero</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="22">no</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="22">de</span> <span class="w" data-tr="золото" data-pos="сущ." data-lemma="el oro" data-grammar="" data-si="22">oro</span><span class="s" data-tr="У него есть кольца, да, но не из золота.">.</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="23">Es</span> <span class="w" data-tr="только" data-pos="нар." data-lemma="solo" data-grammar="" data-si="23">solo</span> <span class="w" data-tr="газ" data-pos="сущ." data-lemma="el gas" data-grammar="" data-si="23">gas</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="23">y</span> <span class="w" data-tr="лёд" data-pos="сущ." data-lemma="el hielo" data-grammar="" data-si="23">hielo</span><span class="s" data-tr="Это только газ и лёд.">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="nadie" data-grammar="" data-si="24">Nadie</span> <span class="w" data-tr="живёт" data-pos="глаг." data-lemma="vivir" data-grammar="**vive** — *presente* от **vivir** (&quot;жить&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ir`: `viv·[[ir]]` → `viv·[[e]]`.
+" data-si="24">vive</span> <span class="w" data-tr="там" data-pos="нар." data-lemma="allí" data-grammar="" data-si="24">allí</span><span class="s" data-tr="Там никто не живёт.">.</span></p>
+
+  <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="25">Pero</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="ella" data-grammar="" data-si="25">ella</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="25">no</span> <span class="w" data-tr="(он/она) говорит" data-pos="глаг." data-lemma="decir" data-grammar="**dice** — *presente* от **decir** (&quot;говорить&quot;), 3 л. ед. ч.
+
+*Чередование:* `d[[e]]cir → d[[i]]ce` (e → i). И 1 л. — особый: `yo digo`.
+
+Спряжение: `digo · dices · dice · decimos · decís · dicen`.
+" data-si="25">dice</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="nada" data-grammar="" data-si="25">nada</span><span class="s" data-tr="Но она ничего не говорит.">.</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
+
+Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.
+
+`escrib·[[ir]]` → `escrib·[[e]]`
+" data-si="26">Escribe</span><span class="s" data-tr="Пишет.">.</span></p>
+
+  <p><span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el" data-grammar="" data-si="27">El</span> <span class="w" data-tr="дым" data-pos="сущ." data-lemma="el humo" data-grammar="" data-si="27">humo</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="27">de</span> <span class="w" data-tr="опр. артикль мн.ч. ж.р." data-pos="арт." data-lemma="las" data-grammar="" data-si="27">las</span> <span class="w" data-tr="свечи" data-pos="сущ." data-lemma="la vela" data-grammar="" data-si="27">velas</span> <span class="w" data-tr="поднимается" data-pos="глаг." data-lemma="subir" data-grammar="**sube** — *presente* от **subir** (&quot;подниматься, подняться&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ir`: `sub·[[ir]]` → `sub·[[e]]`.
+" data-si="27">sube</span> <span class="w" data-tr="медленно" data-pos="нар." data-lemma="despacio" data-grammar="" data-si="27">despacio</span><span class="s" data-tr="Дым свечей медленно поднимается.">.</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una" data-grammar="" data-si="28">Una</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="28">niña</span> <span class="w" data-tr="маленькая" data-pos="прил." data-lemma="pequeño" data-grammar="" data-si="28">pequeña</span> <span class="w" data-tr="ей / ему (косв. доп.)" data-pos="мест." data-lemma="le" data-grammar="" data-si="28">le</span> <span class="w" data-tr="(она) трогает" data-pos="глаг." data-lemma="tocar" data-grammar="**toca** — *presente* от **tocar** (&quot;трогать, касаться&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ar`: `toc·[[ar]]` → `toc·[[a]]`.
+" data-si="28">toca</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="28">la</span> <span class="w" data-tr="рука" data-pos="сущ." data-lemma="la mano" data-grammar="**la mano** — сущ. *ж. р.*, ед. ч.
+
+*Исключение:* оканчивается на `-o`, но женского рода (как **la radio**, **la foto**).
+" data-si="28">mano</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="28">a</span> <span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="28">Elena</span><span class="s" data-tr="Маленькая девочка трогает руку Elena.">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="29">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="29">niña</span> <span class="w" data-tr="имеет, у неё есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.
+
+*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.
+
+Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+" data-si="29">tiene</span> <span class="w" data-tr="температура (жар)" data-pos="сущ." data-lemma="la fiebre" data-grammar="" data-si="29">fiebre</span><span class="s" data-tr="У девочки температура.">.</span> <span class="w" data-tr="его / её / их" data-pos="опр." data-lemma="su" data-grammar="" data-si="30">Su</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="" data-si="30">madre</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="30">la</span> <span class="w" data-tr="приносит, приводит" data-pos="глаг." data-lemma="traer" data-grammar="**trae** — *presente* от **traer** (&quot;приносить, приводить&quot;), 3 л. ед. ч.
+
+*Неправильный в 1 л.:* `yo traigo`. В 3 л. — правильный: `tra·[[e]]`.
+" data-si="30">trae</span> <span class="w" data-tr="(a + el) к / на + опр. артикль" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.
+
+`a` + `el cielo` → `al cielo` (не `a el cielo`).
+" data-si="30">al</span> <span class="w" data-tr="святой" data-pos="сущ." data-lemma="el santo" data-grammar="" data-si="30">santo</span><span class="s" data-tr="Мать привела её к святому.">.</span> <span class="w" data-tr="(она) хочет" data-pos="глаг." data-lemma="querer" data-grammar="**quiere** — *presente* от **querer** (&quot;хотеть&quot;), 3 л. ед. ч.
+
+*Чередование:* `qu[[e]]rer → qu[[ie]]re` (e → ie под ударением).
+
+Спряжение: `quiero · quieres · quiere · queremos · queréis · quieren` (1 и 2 л. мн. — без чередования).
+" data-si="31">Quiere</span> <span class="w" data-tr="помощь" data-pos="сущ." data-lemma="la ayuda" data-grammar="" data-si="31">ayuda</span><span class="s" data-tr="Хочет помощи.">.</span></p>
+
+  <p><span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="32">Elena</span> <span class="w" data-tr="имеет, у неё есть" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente* от **tener** (&quot;иметь&quot;), 3 л. ед. ч.
+
+*Чередование в корне:* `t[[e]]ner → t[[ie]]ne` (e → ie под ударением). И 1 л. — особый: `yo tengo`.
+
+Спряжение: `tengo · tienes · tiene · tenemos · tenéis · tienen`.
+" data-si="32">tiene</span> <span class="w" data-tr="лекарство" data-pos="сущ." data-lemma="la medicina" data-grammar="" data-si="32">medicina</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="" data-si="32">en</span> <span class="w" data-tr="его / её / их" data-pos="опр." data-lemma="su" data-grammar="" data-si="32">su</span> <span class="w" data-tr="сумка" data-pos="сущ." data-lemma="la bolsa" data-grammar="" data-si="32">bolsa</span><span class="s" data-tr="У Elena есть лекарство в сумке.">.</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una" data-grammar="" data-si="33">Una</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla" data-grammar="" data-si="33">pastilla</span><span class="s" data-tr="Одна таблетка.">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="34">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="34">niña</span> <span class="w" data-tr="(он/она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.
+
+*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.
+
+*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.
+
+Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.
+" data-si="34">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="34">a</span> <span class="w" data-tr="быть, находиться (инф.)" data-pos="глаг." data-lemma="estar" data-grammar="" data-si="34">estar</span> <span class="w" data-tr="хорошо" data-pos="нар." data-lemma="bien" data-grammar="" data-si="34">bien</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="" data-si="34">en</span> <span class="w" data-tr="одна; неопр. артикль ж.р." data-pos="арт." data-lemma="una" data-grammar="" data-si="34">una</span> <span class="w" data-tr="час" data-pos="сущ." data-lemma="la hora" data-grammar="" data-si="34">hora</span><span class="s" data-tr="Девочке станет лучше через час.">.</span></p>
+
+  <p><span class="w" data-tr="но" data-pos="союз" data-lemma="pero" data-grammar="" data-si="35">Pero</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="" data-si="35">si</span> <span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="35">Elena</span> <span class="w" data-tr="ей / ему (косв. доп.)" data-pos="мест." data-lemma="le" data-grammar="" data-si="35">le</span> <span class="w" data-tr="(она) даёт" data-pos="глаг." data-lemma="dar" data-grammar="**da** — *presente* от **dar** (&quot;давать&quot;), 3 л. ед. ч.
+
+*Неправильный в 1 л.:* `yo doy`. В 3 л. — короткое `d·[[a]]`.
+
+Полное спряжение: `doy · das · da · damos · dais · dan`.
+" data-si="35">da</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="35">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla" data-grammar="" data-si="35">pastilla</span>, <span class="w" data-tr="все" data-pos="мест." data-lemma="todo" data-grammar="" data-si="35">todos</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.
+
+*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.
+
+Пример: `van a saber` = &quot;узнают (скоро)&quot;.
+
+Полное спряжение: `voy · vas · va · vamos · vais · van`.
+" data-si="35">van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="35">a</span> <span class="w" data-tr="знать, узнавать (инф.)" data-pos="глаг." data-lemma="saber" data-grammar="" data-si="35">saber</span><span class="s" data-tr="Но если Elena даст ей таблетку, все узнают." data-note="*Условие:* `si` + *presente* в придаточном, будущее (`van a saber`) в главном.
+
+**le** — косвенное дополнение «ей»: `le da la pastilla` — «даёт ей таблетку».
+">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.
+
+*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.
+
+Пример: `van a saber` = &quot;узнают (скоро)&quot;.
+
+Полное спряжение: `voy · vas · va · vamos · vais · van`.
+" data-si="36">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="36">a</span> <span class="w" data-tr="спрашивать (инф.)" data-pos="глаг." data-lemma="preguntar" data-grammar="" data-si="36">preguntar</span><span class="s" data-tr="Будут спрашивать.">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.
+
+*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.
+
+Пример: `van a saber` = &quot;узнают (скоро)&quot;.
+
+Полное спряжение: `voy · vas · va · vamos · vais · van`.
+" data-si="37">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="37">a</span> <span class="w" data-tr="хотеть (инф.)" data-pos="глаг." data-lemma="querer" data-grammar="**querer** — инфинитив, &quot;хотеть&quot;.
+
+*В спряжении* чередуется: `qu[[e]]rer → qu[[ie]]re` (e → ie под ударением).
+
+В инфинитиве чередования нет.
+" data-si="37">querer</span> <span class="w" data-tr="больше, ещё" data-pos="нар." data-lemma="más" data-grammar="" data-si="37">más</span><span class="s" data-tr="Захотят ещё.">.</span> <span class="w" data-tr="(они) идут / собираются" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente* от **ir** (&quot;идти&quot;), 3 л. мн. ч.
+
+*В конструкции* **van a + инф.** = *futuro próximo* (мн. ч.): &quot;(они) собираются X&quot;.
+
+Пример: `van a saber` = &quot;узнают (скоро)&quot;.
+
+Полное спряжение: `voy · vas · va · vamos · vais · van`.
+" data-si="38">Van</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="38">a</span> <span class="w" data-tr="понять (инф.)" data-pos="глаг." data-lemma="entender" data-grammar="**entender** — инфинитив, &quot;понимать&quot;.
+
+*В спряжении* чередуется: `ent[[e]]nder → ent[[ie]]nde` (e → ie под ударением).
+
+В инфинитиве чередования нет.
+" data-si="38">entender</span> <span class="w" data-tr="что (союз)" data-pos="союз" data-lemma="que" data-grammar="" data-si="38">que</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="ella" data-grammar="" data-si="38">ella</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="38">no</span> <span class="w" data-tr="(это) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente* от **ser** (&quot;быть&quot;), 3 л. ед. ч.
+
+*Полностью неправильный.* Спряжение: `soy · eres · es · somos · sois · son`.
+
+**ser** vs **estar**: `ser` — постоянное свойство (кто/что), `estar` — состояние / местоположение.
+" data-si="38">es</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="de" data-grammar="" data-si="38">de</span> <span class="w" data-tr="здесь" data-pos="нар." data-lemma="aquí" data-grammar="" data-si="38">aquí</span><span class="s" data-tr="Поймут, что она не отсюда.">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="39">La</span> <span class="w" data-tr="культура" data-pos="сущ." data-lemma="la cultura" data-grammar="" data-si="39">cultura</span> <span class="w" data-tr="(он/она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.
+
+*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.
+
+*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.
+
+Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.
+" data-si="39">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="39">a</span> <span class="w" data-tr="меняться, измениться (инф.)" data-pos="глаг." data-lemma="cambiar" data-grammar="" data-si="39">cambiar</span><span class="s" data-tr="Культура изменится.">.</span> <span class="w" data-tr="возможно, может быть" data-pos="нар." data-lemma="quizás" data-grammar="" data-si="40">Quizás</span> <span class="w" data-tr="(возвратное)" data-pos="мест." data-lemma="se" data-grammar="**se** — возвратное местоимение, 3 л.
+
+*Возвратные глаголы* строятся с **se** (или личным вариантом: `me, te, se, nos, os, se`). Действие направлено на сам субъект:
+
+`apagar` (&quot;гасить кого-то&quot;) → `apagarse` (&quot;погаснуть&quot;). `quedar` (&quot;оставлять&quot;) → `quedarse` (&quot;остаться&quot;).
+" data-si="40">se</span> <span class="w" data-tr="ломается, разрушается" data-pos="глаг." data-lemma="romper" data-grammar="**(se) rompe** — *presente* от **romperse** (&quot;ломаться, разрушаться&quot;), 3 л. ед. ч.
+
+*Возвратный.* Здесь без явного виновника: &quot;культура сама разрушится&quot;.
+
+Корень `romp-` + окончание `-e` (3 л. ед. *presente*): `romp·[[e]]`.
+" data-si="40">rompe</span><span class="s" data-tr="Может быть, разрушится.">.</span></p>
+
+  <p><span class="w" data-tr="и" data-pos="союз" data-lemma="y" data-grammar="" data-si="41">Y</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="si" data-grammar="" data-si="41">si</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="41">no</span> <span class="w" data-tr="ей / ему (косв. доп.)" data-pos="мест." data-lemma="le" data-grammar="" data-si="41">le</span> <span class="w" data-tr="(она) даёт" data-pos="глаг." data-lemma="dar" data-grammar="**da** — *presente* от **dar** (&quot;давать&quot;), 3 л. ед. ч.
+
+*Неправильный в 1 л.:* `yo doy`. В 3 л. — короткое `d·[[a]]`.
+
+Полное спряжение: `doy · das · da · damos · dais · dan`.
+" data-si="41">da</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="41">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla" data-grammar="" data-si="41">pastilla</span>, <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="41">la</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="41">niña</span> <span class="w" data-tr="(он/она) идёт / собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente* от **ir** (&quot;идти&quot;), 3 л. ед. ч.
+
+*Очень неправильный.* Спряжение: `voy · vas · va · vamos · vais · van`.
+
+*В конструкции* **va a + инф.** = *futuro próximo* (&quot;собирается X&quot;, близкое будущее). Здесь **va** — маркёр будущего, а не &quot;идёт&quot;.
+
+Пример: `va a volver` = &quot;вернётся (в скором времени)&quot;.
+" data-si="41">va</span> <span class="w" data-tr="к, в (предлог)" data-pos="предл." data-lemma="a" data-grammar="" data-si="41">a</span> <span class="w" data-tr="страдать (инф.)" data-pos="глаг." data-lemma="sufrir" data-grammar="" data-si="41">sufrir</span><span class="s" data-tr="А если не даст таблетку — девочка будет страдать.">.</span> <span class="w" data-tr="возможно, может быть" data-pos="нар." data-lemma="quizás" data-grammar="" data-si="42">Quizás</span> <span class="w" data-tr="больше, ещё" data-pos="нар." data-lemma="más" data-grammar="" data-si="42">más</span><span class="s" data-tr="Может быть, сильнее.">.</span></p>
+
+  <p><span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="43">La</span> <span class="w" data-tr="мать" data-pos="сущ." data-lemma="la madre" data-grammar="" data-si="43">madre</span> <span class="w" data-tr="(она) молится" data-pos="глаг." data-lemma="rezar" data-grammar="**reza** — *presente* от **rezar** (&quot;молиться&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ar`: `rez·[[ar]]` → `rez·[[a]]`.
+" data-si="43">reza</span><span class="s" data-tr="Мать молится.">.</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="44">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="44">niña</span> <span class="w" data-tr="(она) дрожит" data-pos="глаг." data-lemma="temblar" data-grammar="**tiembla** — *presente* от **temblar** (&quot;дрожать&quot;), 3 л. ед. ч.
+
+*Чередование:* `t[[e]]mblar → t[[ie]]mbla` (e → ie под ударением).
+" data-si="44">tiembla</span><span class="s" data-tr="Девочка дрожит.">.</span></p>
+
+  <p><span class="w" data-tr="Elena — антрополог с Земли" data-pos="имя" data-lemma="" data-grammar="" data-si="45">Elena</span> <span class="w" data-tr="(она) трогает" data-pos="глаг." data-lemma="tocar" data-grammar="**toca** — *presente* от **tocar** (&quot;трогать, касаться&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ar`: `toc·[[ar]]` → `toc·[[a]]`.
+" data-si="45">toca</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="45">la</span> <span class="w" data-tr="таблетка" data-pos="сущ." data-lemma="la pastilla" data-grammar="" data-si="45">pastilla</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="en" data-grammar="" data-si="45">en</span> <span class="w" data-tr="его / её / их" data-pos="опр." data-lemma="su" data-grammar="" data-si="45">su</span> <span class="w" data-tr="карман" data-pos="сущ." data-lemma="el bolsillo" data-grammar="" data-si="45">bolsillo</span><span class="s" data-tr="Elena трогает таблетку в кармане.">.</span> <span class="w" data-tr="(он/она) смотрит" data-pos="глаг." data-lemma="mirar" data-grammar="**mira** — *presente* от **mirar** (&quot;смотреть&quot;), 3 л. ед. ч.
+
+Правильный глагол на `-ar`: 3 л. ед. → окончание `-a`.
+
+`mir·[[ar]]` → `mir·[[a]]`
+" data-si="46">Mira</span> <span class="w" data-tr="(a + el) к / на + опр. артикль" data-pos="предл." data-lemma="al" data-grammar="**al** = **a** + **el** — обязательное слияние предлога `a` (&quot;к / на&quot;) и артикля `el`.
+
+`a` + `el cielo` → `al cielo` (не `a el cielo`).
+" data-si="46">al</span> <span class="w" data-tr="небо" data-pos="сущ." data-lemma="el cielo" data-grammar="" data-si="46">cielo</span><span class="s" data-tr="Смотрит на небо.">.</span> <span class="w" data-tr="опр. артикль м.р." data-pos="арт." data-lemma="el" data-grammar="" data-si="47">El</span> <span class="w" data-tr="солнце" data-pos="сущ." data-lemma="el sol" data-grammar="" data-si="47">sol</span> <span class="w" data-tr="падает" data-pos="глаг." data-lemma="caer" data-grammar="**cae** — *presente* от **caer** (&quot;падать&quot;), 3 л. ед. ч.
+
+*Неправильный в 1 л.:* `yo caigo`. В 3 л. — правильный: `ca·[[e]]`.
+" data-si="47">cae</span> <span class="w" data-tr="над, на" data-pos="предл." data-lemma="sobre" data-grammar="" data-si="47">sobre</span> <span class="w" data-tr="опр. артикль ж.р. / её (прям. доп.)" data-pos="арт." data-lemma="la" data-grammar="**la** — два употребления:
+
+1. *Определённый артикль* ж. р., ед. ч.: `la plaza` (&quot;эта площадь / площадь&quot;).
+2. *Местоимение прямого дополнения* (3 л. ж. р., ед. ч.): `la trae` (&quot;приносит её&quot;).
+
+Различить помогает контекст: перед существительным — артикль, перед глаголом — местоимение.
+" data-si="47">la</span> <span class="w" data-tr="площадь" data-pos="сущ." data-lemma="la plaza" data-grammar="" data-si="47">plaza</span><span class="s" data-tr="Солнце падает на площадь.">.</span></p>
+
+  <p><span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
+
+Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.
+
+`escrib·[[ir]]` → `escrib·[[e]]`
+" data-si="48">Escribe</span>: "<span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy" data-grammar="" data-si="48">Hoy</span> <span class="w" data-tr="(я) решаю" data-pos="глаг." data-lemma="decidir" data-grammar="**decido** — *presente*, 1 л. ед. ч., от **decidir** (&quot;решать&quot;).
+
+Правильный глагол на `-ir`: 1 л. ед. → окончание `-o`.
+
+`decid·[[ir]]` → `decid·[[o]]`
+" data-si="48">decido</span><span class="s" data-tr="Она пишет: «Сегодня я решаю».">.</span>"</p>
+
+  <p><span class="w" data-tr="не, нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="49">No</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
+
+Правильный глагол на `-ir`: 3 л. ед. → окончание `-e`.
+
+`escrib·[[ir]]` → `escrib·[[e]]`
+" data-si="49">escribe</span> <span class="w" data-tr="что (вопрос.)" data-pos="мест." data-lemma="qué" data-grammar="" data-si="49">qué</span><span class="s" data-tr="Она не пишет что.">.</span></p>
 
   </article>
 
@@ -536,18 +1084,21 @@ footer.coda svg{
   </footer>
 </main>
 
-<script>
+
+<script data-popup>
+window.__leeSentences = [{"tr": "Elena пишет в своей тетради: «День 78».", "note": ""}, {"tr": "Площадь полна людей.", "note": ""}, {"tr": "Это день Покровителя.", "note": ""}, {"tr": "Все смотрят на небо.", "note": ""}, {"tr": "Они ждут, чтобы увидеть святого.", "note": ""}, {"tr": "Некоторые молятся.", "note": ""}, {"tr": "Другие плачут.", "note": ""}, {"tr": "Elena — не отсюда.", "note": ""}, {"tr": "Она прибыла с Земли шесть месяцев назад.", "note": "`hace` + *время* = «… (тому) назад»: `hace seis meses` — «шесть месяцев назад».\n\n**vino** — *pretérito* от **venir** («прийти, приехать»), неправильный глагол.\n"}, {"tr": "Она антрополог.", "note": ""}, {"tr": "Она наблюдает, пишет, не вмешивается.", "note": ""}, {"tr": "Жители Новой Андалусии не помнят Землю.", "note": ""}, {"tr": "Восемьдесят лет назад корабли перестали прилетать.", "note": "`dejar de` + инфинитив = «перестать (делать)»: `dejaron de venir` — «перестали прилетать».\n\n`hace ochenta años` — «восемьдесят лет назад» (та же конструкция `hace` + время).\n"}, {"tr": "Радио замолчало.", "note": ""}, {"tr": "Люди остались одни.", "note": ""}, {"tr": "Дети детей не знают, что такое Земля.", "note": ""}, {"tr": "Теперь у них есть новый святой.", "note": ""}, {"tr": "Это Сатурн, Покровитель.", "note": ""}, {"tr": "Говорят, что он живёт в небе, внутри золотого кольца.", "note": ""}, {"tr": "Говорят, что он всегда смотрит на них.", "note": ""}, {"tr": "Говорят, что однажды он вернётся и будет судить всех.", "note": "**Dicen que…** — безличное «говорят, что…» (3 л. мн. ч. без подлежащего).\n\n`ir a` + инфинитив = ближайшее будущее: `va a volver` («вернётся»), `va a juzgar` («будет судить»).\n"}, {"tr": "Elena знает, что Сатурн — это планета.", "note": ""}, {"tr": "У него есть кольца, да, но не из золота.", "note": ""}, {"tr": "Это только газ и лёд.", "note": ""}, {"tr": "Там никто не живёт.", "note": ""}, {"tr": "Но она ничего не говорит.", "note": ""}, {"tr": "Пишет.", "note": ""}, {"tr": "Дым свечей медленно поднимается.", "note": ""}, {"tr": "Маленькая девочка трогает руку Elena.", "note": ""}, {"tr": "У девочки температура.", "note": ""}, {"tr": "Мать привела её к святому.", "note": ""}, {"tr": "Хочет помощи.", "note": ""}, {"tr": "У Elena есть лекарство в сумке.", "note": ""}, {"tr": "Одна таблетка.", "note": ""}, {"tr": "Девочке станет лучше через час.", "note": ""}, {"tr": "Но если Elena даст ей таблетку, все узнают.", "note": "*Условие:* `si` + *presente* в придаточном, будущее (`van a saber`) в главном.\n\n**le** — косвенное дополнение «ей»: `le da la pastilla` — «даёт ей таблетку».\n"}, {"tr": "Будут спрашивать.", "note": ""}, {"tr": "Захотят ещё.", "note": ""}, {"tr": "Поймут, что она не отсюда.", "note": ""}, {"tr": "Культура изменится.", "note": ""}, {"tr": "Может быть, разрушится.", "note": ""}, {"tr": "А если не даст таблетку — девочка будет страдать.", "note": ""}, {"tr": "Может быть, сильнее.", "note": ""}, {"tr": "Мать молится.", "note": ""}, {"tr": "Девочка дрожит.", "note": ""}, {"tr": "Elena трогает таблетку в кармане.", "note": ""}, {"tr": "Смотрит на небо.", "note": ""}, {"tr": "Солнце падает на площадь.", "note": ""}, {"tr": "Она пишет: «Сегодня я решаю».", "note": ""}, {"tr": "Она не пишет что.", "note": ""}];
 (function(){
-  var pop=null,active=null,isTouch=false;
+  var pop = null, active = null, hovered = null, isTouch = false;
+  var sentences = window.__leeSentences || [];
   function ensurePop(){
-    if(pop) return pop;
-    pop=document.createElement('div');
-    pop.className='pop';
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
     document.body.appendChild(pop);
     return pop;
   }
   function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g,function(c){
+    return String(s).replace(/[&<>"']/g, function(c){
       return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
     });
   }
@@ -556,8 +1107,8 @@ footer.coda svg{
   }
   function mdToHtml(md){
     if(!md) return '';
-    md = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return md.split(/\n\n+/).map(function(p){
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
       p = p.replace(/`([^`]+)`/g, function(_, c){
         return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
       });
@@ -567,95 +1118,120 @@ footer.coda svg{
       return '<p>' + p + '</p>';
     }).join('');
   }
-  function show(el){
-    var tr=el.dataset.tr||'';
-    var p=ensurePop();
-    var isSentence=el.classList.contains('s');
-    if(isSentence){
+  function sentenceHtml(tr, note){
+    return '<div class="s-label">traducción</div>' +
+      '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
+      (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  // forceSentence: true when Shift is held — render any word as its full-sentence popup.
+  function show(el, forceSentence){
+    var p = ensurePop();
+    var asSentence = el.classList.contains('s') || (forceSentence && el.classList.contains('w'));
+    if (asSentence){
+      var str = '', snote = '';
+      if (el.classList.contains('s')){ str = el.dataset.tr || ''; snote = el.dataset.note || ''; }
+      else { var s = sentences[+el.dataset.si] || {}; str = s.tr || ''; snote = s.note || ''; }
       p.classList.add('sentence');
-      p.classList.remove('rich');
-      p.innerHTML=
-        '<div class="s-label">перевод</div>'+
-        '<div class="s-tr">'+escapeHtml(tr)+'</div>';
-    }else{
+      p.classList.remove('idiom');
+      p.classList.toggle('has-grammar', !!snote);
+      p.innerHTML = sentenceHtml(str, snote);
+    } else {
       p.classList.remove('sentence');
-      var pos=el.dataset.pos||'';
-      var lemma=el.dataset.lemma||'';
-      var grammar=el.dataset.grammar||'';
-      var displayLemma=lemma||el.textContent;
-      var hasLink=!!lemma;
-      var linkHtml=hasLink
-        ? '<a class="link" href="https://www.spanishdict.com/translate/'+encodeURIComponent(dictKey(lemma))+'" target="_blank" rel="noopener">Открыть в SpanishDict ↗</a>'
+      var tr = el.dataset.tr || '', pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var rawParts = el.dataset.parts || '', literal = el.dataset.literal || '';
+      var isIdiom = !!rawParts || !!literal || pos === 'идиома';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
         : '';
-      var grammarHtml=grammar?'<div class="g-block">'+mdToHtml(grammar)+'</div>':'';
-      p.classList.toggle('rich', !!grammarHtml);
-      p.innerHTML=
-        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>'+
-        (pos?'<div class="pos">'+escapeHtml(pos)+'</div>':'')+
-        '<div class="tr">'+escapeHtml(tr)+'</div>'+
-        grammarHtml+
-        linkHtml;
+      var breakdownHtml = '';
+      if (rawParts){
+        try {
+          var arr = JSON.parse(rawParts);
+          if (arr && arr.length){
+            breakdownHtml = '<div class="breakdown">' + arr.map(function(it){
+              return '<div class="bd-row"><span class="bd-w">'+escapeHtml(it.w)+'</span>'+
+                     '<span class="bd-tr">'+escapeHtml(it.tr)+'</span></div>';
+            }).join('') + '</div>';
+          }
+        } catch(_){}
+      }
+      var literalHtml = literal ? '<div class="literal"><span class="lit-label">досл.</span> '+escapeHtml(literal)+'</div>' : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar || !!breakdownHtml || !!literal);
+      p.classList.toggle('idiom', isIdiom);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        breakdownHtml + literalHtml + grammarHtml + linkHtml;
     }
     p.classList.add('show');
-    position(p,el);
-    if(active && active!==el) active.classList.remove('active');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
     el.classList.add('active');
-    active=el;
+    active = el;
   }
   function hide(){
-    if(!pop) return;
+    hovered = null;
+    if (!pop) return;
     pop.classList.remove('show');
-    if(active){active.classList.remove('active');active=null;}
+    if (active){ active.classList.remove('active'); active = null; }
   }
-  function position(p,el){
-    var r=el.getBoundingClientRect();
-    var ph=p.offsetHeight||120;
-    var pw=p.offsetWidth||220;
-    var top=window.scrollY+r.top-ph-12;
-    var below=false;
-    if(top<window.scrollY+8){
-      top=window.scrollY+r.bottom+12;
-      below=true;
-    }
-    var left=window.scrollX+r.left-10;
-    if(left+pw>window.scrollX+window.innerWidth-12){
-      left=window.scrollX+window.innerWidth-pw-12;
-    }
-    if(left<window.scrollX+8) left=window.scrollX+8;
-    p.style.top=top+'px';
-    p.style.left=left+'px';
-    p.classList.toggle('below',below);
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
   }
-  document.addEventListener('mouseover',function(e){
-    if(isTouch) return;
-    var el=e.target.closest('.w, .s');
-    if(el) show(el);
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el){ hovered = el; show(el, e.shiftKey); }
   });
-  document.addEventListener('mouseout',function(e){
-    if(isTouch) return;
-    var el=e.target.closest('.w, .s');
-    if(!el) return;
-    var to=e.relatedTarget;
-    if(to && to.closest && (to.closest('.w, .s')===el || to.closest('.pop'))) return;
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
     hide();
   });
-  document.addEventListener('click',function(e){
-    var el=e.target.closest('.w, .s');
-    var onPop=e.target.closest('.pop');
-    if(el){
-      if(active===el){hide();}
-      else{show(el);}
-    }else if(!onPop){
-      hide();
-    }
+  // Holding Shift turns any word popup into its full-sentence popup; releasing reverts.
+  function onShift(e){
+    if (e.key !== 'Shift' || !hovered) return;
+    if (hovered.classList.contains('w')) show(hovered, e.shiftKey);
+  }
+  document.addEventListener('keydown', onShift);
+  document.addEventListener('keyup', onShift);
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else { hovered = el; show(el, e.shiftKey); } }
+    else if (!onPop) hide();
   });
-  document.addEventListener('touchstart',function(){isTouch=true;},{passive:true});
-  window.addEventListener('scroll',function(){
-    if(active && pop) position(pop,active);
-  },{passive:true});
-  window.addEventListener('resize',function(){
-    if(active && pop) position(pop,active);
-  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
 })();
 </script>
 </body>

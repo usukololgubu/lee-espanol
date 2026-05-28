@@ -23,6 +23,20 @@ pos = "имя"
 # Single-word vocabulary — keyed by lowercased surface form
 # ============================================================
 
+[words."elena"]
+tr = "Elena — антрополог с Земли"
+pos = "имя"
+
+[words."observa"]
+tr = "(она) наблюдает"
+pos = "глаг."
+lemma = "observar"
+grammar = """
+**observa** — *presente*, 3 л. ед. ч., от **observar** ("наблюдать").
+
+Правильный глагол на `-ar`: `observ·[[ar]]` → `observ·[[a]]`.
+"""
+
 [words."a"]
 tr = "к, в (предлог)"
 pos = "предл."
@@ -984,6 +998,11 @@ tr = "Elena — не отсюда."
 [[sentences]]
 text = "Vino de la Tierra hace seis meses."
 tr = "Она прибыла с Земли шесть месяцев назад."
+note = """
+`hace` + *время* = «… (тому) назад»: `hace seis meses` — «шесть месяцев назад».
+
+**vino** — *pretérito* от **venir** («прийти, приехать»), неправильный глагол.
+"""
 
 [[sentences]]
 text = "Es antropóloga."
@@ -1000,6 +1019,11 @@ tr = "Жители Новой Андалусии не помнят Землю."
 [[sentences]]
 text = "Hace ochenta años, las naves dejaron de venir."
 tr = "Восемьдесят лет назад корабли перестали прилетать."
+note = """
+`dejar de` + инфинитив = «перестать (делать)»: `dejaron de venir` — «перестали прилетать».
+
+`hace ochenta años` — «восемьдесят лет назад» (та же конструкция `hace` + время).
+"""
 
 [[sentences]]
 text = "La radio se apagó."
@@ -1032,6 +1056,11 @@ tr = "Говорят, что он всегда смотрит на них."
 [[sentences]]
 text = "Dicen que un día va a volver y va a juzgar a todos."
 tr = "Говорят, что однажды он вернётся и будет судить всех."
+note = """
+**Dicen que…** — безличное «говорят, что…» (3 л. мн. ч. без подлежащего).
+
+`ir a` + инфинитив = ближайшее будущее: `va a volver` («вернётся»), `va a juzgar` («будет судить»).
+"""
 
 [[sentences]]
 text = "Elena sabe que Saturno es un planeta."
@@ -1092,6 +1121,11 @@ tr = "Девочке станет лучше через час."
 [[sentences]]
 text = "Pero si Elena le da la pastilla, todos van a saber."
 tr = "Но если Elena даст ей таблетку, все узнают."
+note = """
+*Условие:* `si` + *presente* в придаточном, будущее (`van a saber`) в главном.
+
+**le** — косвенное дополнение «ей»: `le da la pastilla` — «даёт ей таблетку».
+"""
 
 [[sentences]]
 text = "Van a preguntar."

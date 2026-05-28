@@ -34,6 +34,7 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
    - A1 grammar: present indicative, `ir + a + infinitivo`, basic *pretérito perfecto* / *indefinido*. Avoid *subjuntivo*.
    - ~80% top-1500 frequency vocab, ~20% new/thematic words
    - Neutral Latin American Spanish — no *vosotros*, no strong regionalisms
+   - A few natural, common fixed expressions / light idioms (`por fin`, `tal vez`, `otra vez`, `dejar de`, `tener que`, `hacer falta`) are welcome where they fit the A1 register and the moment — the downstream popups now explain idioms richly (whole meaning + word-by-word breakdown), so don't avoid them. But never force one in, and never reach above A1 for the sake of an idiom.
    - Self-contained: closed mini-story, **no cliffhangers**
    - Tone follows profile (Strugatsky × Matt Haig — observer in alien-to-them setting, single unresolved moral dilemma, slow contemplative pace, occasional dry irony)
 6. **Save the file** as `stories/NN-slug/story.md` (create the `stories/NN-slug/` folder first if it does not exist) with this structure:

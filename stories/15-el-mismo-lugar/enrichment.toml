@@ -1152,6 +1152,11 @@ tr = "Корабли их скачивают, архивируют — и ник
 [[sentences]]
 text = "Fobos pasa por encima del mismo punto de Marte una vez a la semana."
 tr = "Фобос проходит над одной и той же точкой Марса раз в неделю."
+note = """
+`por encima de` = «над, поверх»: `por encima del punto`.
+
+Частотность: `una vez a la semana` = «раз в неделю».
+"""
 
 [[sentences]]
 text = "Hugo llama a este momento el paso del sur."
@@ -1224,6 +1229,11 @@ tr = "Уго открывает исторический архив."
 [[sentences]]
 text = "En los mapas viejos, hace cien años, no hay ningún punto."
 tr = "На старых картах, сто лет назад, нет никакой точки."
+note = """
+`no … ningún` — «никакой / ни одного»: `no hay ningún punto` — «нет ни одной точки».
+
+**hay** — безличное «есть / имеется». `hace cien años` = «сто лет назад».
+"""
 
 [[sentences]]
 text = "Hugo piensa en el protocolo."
@@ -1272,3 +1282,6 @@ tr = "Потом — решит."
 [[sentences]]
 text = "Es lo que él dice cada semana."
 tr = "Это то, что он говорит каждую неделю."
+note = """
+`lo que` = «то, что» (вводит придаточное): `lo que él dice` — «то, что он говорит».
+"""

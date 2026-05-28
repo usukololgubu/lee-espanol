@@ -1047,6 +1047,9 @@ tr = "Три года назад открылся новый коридор."
 [[sentences]]
 text = "Es más corto y más rápido."
 tr = "Он короче и быстрее."
+note = """
+Сравнительная степень: `más` + прилагательное = «более / -ее»: `más corto` — «короче», `más rápido` — «быстрее».
+"""
 
 [[sentences]]
 text = "Los cargueros pasaron al corredor nuevo."
@@ -1107,6 +1110,11 @@ tr = "Выключить маяк."
 [[sentences]]
 text = "Una nave va a llegar en treinta días para recoger a la operadora."
 tr = "Через тридцать дней прилетит корабль, чтобы забрать оператора."
+note = """
+`para` + инфинитив = цель «чтобы»: `para recoger` — «чтобы забрать».
+
+Личный `a` перед одушевлённым дополнением: `recoger a la operadora`.
+"""
 
 [[sentences]]
 text = "«Apagar el faro. Una nave va a llegar en treinta días para recoger a la operadora. Confirmar recepción»."
@@ -1143,6 +1151,11 @@ tr = "Она смотрит на обе кнопки долгое время."
 [[sentences]]
 text = "Piensa: «Tal vez hay un barco viejo, sin radio buena, perdido en el corredor."
 tr = "Она думает: «Может быть, в коридоре есть старый корабль, без хорошей радиосвязи, заблудившийся."
+note = """
+`sin` + существительное = «без»: `sin radio buena` — «без хорошей радиосвязи».
+
+**perdido** — причастие-определение «заблудившийся» (от **perder**), согласуется с **barco** (м. р.).
+"""
 
 [[sentences]]
 text = "Tal vez busca esta señal."

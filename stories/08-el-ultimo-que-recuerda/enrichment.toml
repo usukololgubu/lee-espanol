@@ -1341,6 +1341,11 @@ tr = "Он — последний человек, который помнит З
 [[sentences]]
 text = "Cuando era niño, las naves llegaban cada mes."
 tr = "Когда он был ребёнком, корабли прилетали каждый месяц."
+note = """
+*Imperfecto* (`era`, `llegaban`) — прошедшее для привычных и длящихся действий: «был», «прилетали (регулярно)».
+
+Отличается от *pretérito* (однократное законченное действие).
+"""
 
 [[sentences]]
 text = "Joaquín jugaba en el puerto."
@@ -1401,6 +1406,11 @@ tr = "Но он ничего не говорит."
 [[sentences]]
 text = "Hace años que no dice nada."
 tr = "Уже много лет он молчит."
+note = """
+`hace` + время + `que` + глагол = «уже … как»: `hace años que no dice nada` — «уже много лет (как) молчит».
+
+Двойное отрицание: `no … nada`.
+"""
 
 [[sentences]]
 text = "Hoy Joaquín está en cama."
@@ -1457,6 +1467,11 @@ tr = "Город, где родилась его мать."
 [[sentences]]
 text = "Joaquín no ha visto Madrid nunca, pero su madre se la describía cada noche."
 tr = "Хоакин никогда не видел Мадрид, но его мать описывала ему его каждую ночь."
+note = """
+**ha visto** — *pretérito perfecto* («(не) видел» — об опыте к настоящему моменту).
+
+**describía** — *imperfecto* (привычное действие в прошлом, «описывала каждую ночь»).
+"""
 
 [[sentences]]
 text = "—Es una casa muy grande —dice Joaquín—."

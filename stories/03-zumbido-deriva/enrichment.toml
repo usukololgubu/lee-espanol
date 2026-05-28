@@ -23,6 +23,16 @@ pos = "имя"
 # Single-word vocabulary
 # ============================================================
 
+[words."año"]
+tr = "год"
+pos = "сущ."
+lemma = "el año"
+
+[words."bip"]
+tr = "бип (звук сигнала зонда)"
+pos = "сущ."
+lemma = "el bip"
+
 [words."a"]
 tr = "к, в (предлог)"
 pos = "предл."
@@ -797,6 +807,11 @@ tr = "Marco работает один."
 [[sentences]]
 text = "Su nave se llama Tortuga."
 tr = "Его корабль называется Tortuga."
+note = """
+**se llama** — возвратная форма от **llamar** («звать»): `llamarse` = «называться».
+
+Дословно «себя зовёт» → «называется».
+"""
 
 [[sentences]]
 text = "Arrastra hielo a Ceres."
@@ -893,6 +908,11 @@ tr = "Называется «Pioneer-12»."
 [[sentences]]
 text = "La gente la mandó al espacio hace casi noventa años."
 tr = "Люди отправили его в космос почти девяносто лет назад."
+note = """
+**la** — прямое дополнение «её» (о зонде, `la sonda` — ж. р.): `la mandó` — «отправили её».
+
+`hace` + *время* = «… (тому) назад»: `hace casi noventa años` — «почти девяносто лет назад».
+"""
 
 [[sentences]]
 text = "La gente la olvidó."
@@ -921,6 +941,11 @@ tr = "Зонд одинок."
 [[sentences]]
 text = "Está sola hace décadas."
 tr = "Одинок уже десятилетиями."
+note = """
+Здесь `hace` + *время* = «(уже) … как»: `está sola hace décadas` — «одинок уже десятилетиями».
+
+То же `hace` может значить «назад» (законченное действие) или «уже … времени» (длящееся) — различаем по смыслу.
+"""
 
 [[sentences]]
 text = "Y nadie la oye."
@@ -941,6 +966,11 @@ tr = "Гудение продолжается."
 [[sentences]]
 text = "La sonda no puede oírlo."
 tr = "Зонд не может его услышать."
+note = """
+Местоимение **lo** («его») здесь *присоединяется к инфинитиву*: `oír` + `lo` → **oírlo**.
+
+С `poder` + инфинитив возможны оба варианта: `no lo puede oír` и `no puede oírlo`.
+"""
 
 [[sentences]]
 text = "Solo manda."

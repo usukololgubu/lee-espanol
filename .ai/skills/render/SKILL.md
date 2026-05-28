@@ -36,7 +36,7 @@ Each render must invent, from scratch, design choices driven by the story's fron
 - **CSS background texture / decoration**: subtle gradients, blur, noise (via SVG filter), conic patterns, scanlines, vignettes — whatever fits the mood. Layered, atmospheric, not loud.
 - **Layout / composition**: vary aggressively across stories. **Avoid defaulting to a single narrow horizontally centered text column** — that is the AI-design comfort zone and reads as generic across stories. Reserve the centered-column choice for stories that explicitly benefit from minimalism (intimate monologue, brief confessional letter, museum-placard quiet). Otherwise, reach for editorial, cinematic, atmospheric, spatially expressive compositions. See "Layout philosophy — editorial, cinematic, spatial" below for the full toolkit and constraints.
 - **Reading width**: ~640–720px max for body text; never less than 18px font-size; line-height 1.7–1.9 for A1 readers.
-- **Ambient background motion** (optional, encouraged): a subtle, slow CSS-only or SMIL-driven layer behind the text that reinforces the story's mood — drifting starfield for cold sci-fi, slow conic-gradient drift for manuscript-warm, faint flicker / scanlines for hard sci-fi, ink-bleed wash for contemplative. Keep it at low opacity, slow (multi-second cycles), and behind text. Never animate the body text itself, and never use motion that competes with reading. Always pure CSS keyframes or inline animated SVG — **no raster GIFs**, no external image URLs.
+- **Ambient background motion** (default — include it unless the story genuinely wants stillness): a subtle, slow CSS-only or SMIL-driven layer behind the text that reinforces the story's mood — drifting starfield for cold sci-fi, slow conic-gradient drift for manuscript-warm, faint flicker / scanlines for hard sci-fi, ink-bleed wash for contemplative, dust motes / heat shimmer / slow parallax for others. Reach for a lightweight ambient layer on most pages; a fully static page should be a deliberate choice (e.g. a quiet museum-placard or confessional letter), not the fallback. Keep it at low opacity, slow (multi-second cycles), and behind text. Never animate the body text itself, and never use motion that competes with reading. Always pure CSS keyframes or inline animated SVG — **no raster GIFs**, no external image URLs.
 - **Refined popup entrance** (optional): override the default `.pop` / `.pop.show` transition in the page's own design language — e.g. add `filter: blur(6px) → 0`, a small `translateY`, or a soft `scale(0.96) → 1` to give the popup a story-themed reveal. The behavior invariants (`opacity`, `pointer-events`, the `::after` bridge) must stay intact — only enrich, don't replace. Similarly, the `.w:hover` underline can animate (e.g. a `linear-gradient` background-size growing from 0 to 100% on hover) instead of the static dotted line.
 
 Distinctive ≠ chaotic. Each page should feel like a curated print artifact, not a random theme dump. If two consecutive renders feel similar, push harder on differentiation. Motion is decorative — every animation must remain readable, slow, and quiet.
@@ -67,8 +67,9 @@ These techniques **compose**. A page can be a split-screen with a side-annotatio
 - **Layouts must remain responsive.** Use fluid units (`clamp()`, `minmax()`, percentages, `vw/vh`), CSS Grid and Flexbox. Multi-column, split-screen, and floating regions must collapse to a clean single column on narrow viewports — no horizontal scroll, no overlapping text, no truncated panels on mobile.
 - **Semantic HTML stays intact.** Story body still lives inside `<article data-story-body>` with real `<p>`, `<h1>`, `<h2>`, `<blockquote>`, `<aside>`, `<figure>` tags. Don't replace paragraphs with `<div>` salad to hit a visual; don't strip headings for compactness; don't break the structure the popup tokenizer depends on (paragraphs of text inside the `data-story-body` element).
 - **Contrast and typography stay accessible.** Real font sizes, real line-height, real color contrast — including inside framed panels, marginalia, and split panes. Decorative scripts or display faces belong on titles, pull quotes, and metadata strips — never on the body prose.
+- **No underlined text unless there is a specific reason.** Do not use `text-decoration: underline` for emphasis, links, headings, or decoration — reach for weight, color, italics, letter-spacing, hairline rules, or chip-style highlights instead. The only sanctioned underlines are functional affordances: the dotted `border-bottom` on `.w` / `.s` that signals a hoverable word/sentence (keep it, or replace it with an equally clear non-underline hover cue), and even there prefer subtlety. The grammar-block `[[…]]` highlight (`<u>` in the markup) must always be styled as a colored chip — never a literal underline (`.g-block u { text-decoration: none; … }`).
 - **Decorative effects never overpower the story text.** Ambient gradients, framing chrome, marginalia, and split-pane visuals stay quieter than the prose. If the eye lands on the decoration before the words, dial it back. Pull quotes and highlights are the one allowed exception, and only because they *are* story text.
-- **Motion is avoided unless explicitly requested.** Default to fully static. The "ambient background motion" and "refined popup entrance" options earlier in this contract are opt-in, not default; they apply when the story or the user clearly calls for atmosphere. When motion is used, follow the existing motion rules (slow, low-opacity, behind text, `prefers-reduced-motion` respected, no raster GIFs).
+- **Lightweight ambient motion is the default, not the exception.** Most pages should carry a quiet background animation layer (see "Ambient background motion" earlier); a fully static page is a deliberate choice for stories that want stillness, not the fallback. Whenever motion is used it must stay slow, low-opacity, behind text, with `prefers-reduced-motion` respected and no raster GIFs — and it must never pull the eye before the prose or compete with reading. "Lightweight" is the operative word: one or two restrained layers, not a motion showcase.
 
 ## Found-document framing
 
@@ -126,8 +127,8 @@ Walk the Spanish body of the .md, paragraph by paragraph. For each token:
 
 | Token type | What to emit |
 |------------|--------------|
-| Word (Spanish letters incl. accents and `ñ`) | `<span class="w" data-tr="…" data-pos="…" data-lemma="…" data-grammar="…">word</span>` — values pulled from `[words.<lowercase(form)>]` in the .toml |
-| Sentence-terminator (`.`, `?`, `!`) | `<span class="s" data-tr="…">.</span>` — `data-tr` is the next entry from the `[[sentences]]` array in the .toml |
+| Word (Spanish letters incl. accents and `ñ`) | `<span class="w" data-tr="…" data-pos="…" data-lemma="…" data-grammar="…" data-si="N">word</span>` — values pulled from `[words.<lowercase(form)>]`; `data-si` is the 0-based index of the sentence this word belongs to (for Shift-to-sentence). Idiom entries additionally carry `data-parts` (JSON `[{w,tr},…]`) and optional `data-literal`. |
+| Sentence-terminator (`.`, `?`, `!`) | `<span class="s" data-tr="…" data-note="…">.</span>` — `data-tr` is the next entry from the `[[sentences]]` array; `data-note` is that entry's optional `note` (omitted when empty) |
 | Digits (`412`, `78`) | plain text, no span |
 | Other punctuation (`,`, `…`, `¿`, `¡`, opening/closing quotes) | plain text |
 | Whitespace | preserved |
@@ -140,17 +141,19 @@ Walk the Spanish body of the .md, paragraph by paragraph. For each token:
 
 ### Inline JS — popup behavior
 
-Vanilla JS (~100–150 lines), no frameworks. Behavior:
+Vanilla JS (~150–200 lines), no frameworks — **auto-injected by `render.py`** (the `<script data-popup>` block); designers do not author it, only style its output. Behavior:
 
 - **Desktop**: hover shows the popup; mouseleave hides it
 - **Mobile/touch**: tap shows; tap elsewhere hides
-- Popup contents (in order):
+- **Word popup contents** (in order):
   1. **Lemma line**: dictionary form (or the word itself for proper nouns), display font italic
   2. **POS**: small caps / tracked, muted
   3. **Translation**: Russian gloss
-  4. **Grammar block** (only if `data-grammar` is non-empty): parsed at show time from the markdown-ish markup — see below
-  5. **SpanishDict link**: only when `data-lemma` is present and non-empty. URL: `https://www.spanishdict.com/translate/<encoded-lemma>` — strip leading articles (`el `, `la `, `los `, `las `, `un `, `una `, `unos `, `unas `) before encoding.
-- Sentence popups (`.s`) show **only** the Russian translation. No lemma line, no POS, no grammar, no link.
+  4. **Idiom breakdown** (only if the entry has `parts` / `literal` — see "Idiom popups" below): a per-word `form → Russian` list (`.breakdown` › `.bd-row` › `.bd-w` + `.bd-tr`) followed by an optional literal-meaning line (`.literal`, prefixed `досл.`). The popup also gets the `idiom` class so its width can grow.
+  5. **Grammar block** (only if `data-grammar` is non-empty): parsed at show time from the markdown-ish markup — see below
+  6. **SpanishDict link**: only when `data-lemma` is present and non-empty. URL: `https://www.spanishdict.com/translate/<encoded-lemma>` — strip leading articles (`el `, `la `, `los `, `las `, `un `, `una `, `unos `, `unas `) before encoding.
+- **Sentence popups** (`.s`) show the Russian translation (`.s-label` + `.s-tr`), plus — **if** the sentence's `[[sentences]]` entry carries a `note` — an extra explanation block (`.g-block.s-note`, parsed with the same markdown-ish `mdToHtml`). Still no lemma line, no POS, no SpanishDict link. The note is for sentence-level grammar (word order, tense interplay, *si*-clause structure) or other learner-useful context.
+- **Shift-to-sentence**: while **Shift is held**, hovering *any* word shows that word's full-sentence popup instead of its word popup (same content as clicking the sentence's terminating dot). Releasing Shift reverts to the word popup live (handled via `keydown`/`keyup`, no mouse move needed). Each word carries a `data-si` sentence index; the per-story sentence translations + notes are injected as `window.__leeSentences` (an array of `{tr, note}`) ahead of the popup script. `.s` dots always show the sentence popup regardless of Shift.
 
 ### Grammar block — markup parser (JS)
 
@@ -205,6 +208,22 @@ The grammar block lives inside the popup, between the translation line and the S
 - `.g-block u` — no underline; instead a colored chip-style highlight (background tint + bold weight) so the suffix/morpheme stands out; the same style works whether `<u>` is nested inside `<code>` or stands alone
 
 When `data-grammar` is non-empty, also add a `has-grammar` class to the popup so its `max-width` can grow (350–400px) to fit the extra content.
+
+### Idiom popups — whole + per-word in one popup
+
+When `enrich` marks a multi-word expression as an idiom (a `[[phrases]]` entry with `parts` and/or `literal`), the renderer emits the matched run as a **single** `.w` span carrying `data-parts` (a JSON array of `{w, tr}`) and optional `data-literal`. The popup then shows, in one place:
+
+1. the idiom as the lemma line, `pos` of `идиома`, and the idiom's **whole** meaning in `.tr`;
+2. a **word-by-word breakdown** — each component word with its own Russian gloss (`.breakdown` › `.bd-row`);
+3. an optional **literal** (word-for-word) reading (`.literal`, label `досл.`) when the literal sense differs usefully from the idiomatic one;
+4. an optional **grammar / context** block (`data-grammar`) for extra notes (register, typical usage, how it inflects);
+5. the SpanishDict link (idioms keep `lemma`, so the link is present).
+
+The popup gets the `idiom` class (wider max-width). The breakdown is rendered from `JSON.parse(data-parts)` at show time — keep the JSON small (the words of the idiom only). Style `.breakdown`, `.bd-row`, `.bd-w`, `.bd-tr`, `.literal`, `.lit-label` in the page's design language; the auto-injected behavior block does not style them.
+
+### Sentence-note popups
+
+`[[sentences]]` entries may carry an optional `note` (same markdown-ish markup as `grammar`). When present, the sentence popup renders it as a `.g-block.s-note` block beneath the translation, and gains `has-grammar` for width. Use it for sentence-scope explanations a per-word grammar block can't capture: word order, why two tenses sit together, *si*-clause shape, an idiomatic turn of the whole clause, or cultural context. Keep it A1-short.
 
 ### Popup CSS — critical invariants
 
@@ -326,11 +345,11 @@ Requires Python 3.11+ (`tomllib`). Reports sentences paired and any words missin
 ### What the script writes (auto-managed; do not hand-edit)
 
 - **Inside `[data-story-body]`** — every text node is tokenized:
-  - Each Spanish word becomes `<span class="w" data-tr=… data-pos=… data-lemma=… data-grammar=…>word</span>`
-  - Each sentence-terminator (`.?!`) becomes `<span class="s" data-tr=…>.</span>`
+  - Each Spanish word becomes `<span class="w" data-tr=… data-pos=… data-lemma=… data-grammar=… data-si=…>word</span>` (idioms also get `data-parts` / `data-literal`)
+  - Each sentence-terminator (`.?!`) becomes `<span class="s" data-tr=… data-note=…>.</span>`
   - HTML inside `<p>` is preserved (you can use `<em>`, `<small>`, etc. — only text between tags is tokenized)
 - **`<style data-popup-invariants>…</style>`** at the end of `<head>` — the behavior-critical bits popups break without (`pointer-events`, `.pop::after` hit-area bridge, default `.w` / `.s` cursor + dotted underline), plus the reading-progress hairline styling and the `prefers-reduced-motion` guard. Replaced (not appended to) on each run.
-- **`<script data-popup>…</script>`** before `</body>` — the popup show/hide/position logic, the markdown-ish grammar parser (`mdToHtml`), and the reading-progress scroll listener (which appends a `<div class="reading-progress">` to body on load). Replaced on each run.
+- **`<script data-popup>…</script>`** before `</body>` — first a `window.__leeSentences = [{tr,note},…]` assignment (the per-story sentence translations + notes, used by Shift-to-sentence), then the popup show/hide/position logic, the markdown-ish grammar parser (`mdToHtml`), the idiom-breakdown + sentence-note rendering, the Shift `keydown`/`keyup` handlers, and the reading-progress scroll listener (which appends a `<div class="reading-progress">` to body on load). Replaced on each run.
 
 ### Re-runnability
 
@@ -363,15 +382,19 @@ The workflow has a **design** phase (steps 1–6, produces an enrichment-free HT
 The `data-popup-invariants` block sets only behavior. To style the popup visually, target these classes in your own `<style>` (declared above the auto-managed block in source order — they win because of the cascade):
 
 - `.pop` — the floating tooltip container (background, color, padding, border-radius, font, max-width)
-- `.pop.has-grammar` — wider variant when a grammar block is present
-- `.pop.sentence` — variant for sentence-terminator hover
+- `.pop.has-grammar` — wider variant when a grammar block, idiom breakdown, or sentence note is present
+- `.pop.idiom` — wider variant for idiom popups (whole + per-word breakdown)
+- `.pop.sentence` — variant for sentence-terminator hover (and Shift-on-word)
 - `.pop .lemma` — dictionary form line (italic by convention)
 - `.pop .pos` — part-of-speech label (small caps + tracking by convention)
 - `.pop .tr` — Russian translation
+- `.pop .breakdown` / `.bd-row` / `.bd-w` / `.bd-tr` — idiom word-by-word list (one row per component word: Spanish form + Russian gloss)
+- `.pop .literal` / `.lit-label` — idiom literal (word-for-word) reading, with the `досл.` label
 - `.pop .g-block` — grammar explanation block
-- `.pop .g-block b` / `i` / `code` / `u` — markdown-ish markup tokens (Spanish form / grammar term / monospace inline / suffix highlight)
+- `.pop .g-block b` / `i` / `code` / `u` — markdown-ish markup tokens (Spanish form / grammar term / monospace inline / suffix highlight — the `u` is a chip, never a literal underline)
 - `.pop .link` — SpanishDict link
 - `.pop.sentence .s-label` / `.s-tr` — sentence popup parts
+- `.pop.sentence .s-note` — optional sentence-level note block (styled like `.g-block`)
 
 To re-color word/sentence underlines on hover, use higher specificity than `.w` / `.s` (e.g. `article .w:hover`) since the auto-managed block's defaults use `currentColor`.
 
@@ -393,13 +416,14 @@ To re-color word/sentence underlines on hover, use higher specificity than `.w` 
 - No protagonist-profession-as-decorative-veneer (e.g. a few thematic SVGs glued onto an otherwise-generic centered serif column). The artifact framing must shape page chrome, metadata, layout, and motion — not just illustration
 - No defaulting to a narrow horizontally centered single-column body. That layout is allowed only when the story explicitly benefits from minimalism (intimate monologue, brief confessional, museum-placard quiet); otherwise the page must use the editorial / cinematic / spatial toolkit in "Layout philosophy"
 - No decorative pass that pulls the reader's eye before the prose does, and no body text below 18 px or contrast ratio 4.5:1, even inside framed panels, marginalia, or split panes
+- No underlined text for emphasis, links, headings, or decoration — underlines are reserved for the functional `.w` / `.s` hover affordance and for the chip-rendered `[[…]]` highlight (which must never appear as a literal underline). Everywhere else use weight, color, italics, spacing, or rules
 - No layout that breaks on narrow viewports — split-screen, multi-column, and floating regions must collapse to a clean single column on mobile with no horizontal scroll and no overlapping text
 - No external JS libraries (no jQuery, no Tailwind CDN, no Bootstrap, no markdown library)
 - No tracking scripts, no analytics, no Google Tag Manager
 - No emoji used as primary illustration (Unicode dingbats sparingly OK as accents)
 - No raster images or external image URLs (illustrations = inline SVG; CSS textures = data URIs or pure CSS)
 - No raster GIFs anywhere (inline data URIs included) — motion must come from inline animated SVG (CSS keyframes or SMIL) or pure CSS animations
-- No fast, loud, or attention-grabbing motion — ambient layers must be slow (multi-second cycles), low-opacity, and behind text; the body text itself never moves once loaded
+- No fast, loud, or attention-grabbing motion — ambient layers must be slow (multi-second cycles), low-opacity, and behind text; the body text itself never moves once loaded. (Note: a quiet ambient layer is now the *default*, not a special case — the rule constrains how it moves, not whether to include it)
 - No JS-driven motion that ignores `prefers-reduced-motion` — gate it on `matchMedia` or use CSS `animation` / `transition` so the auto-injected guard applies
 - No grammar lessons, keyword lists, or full-sentence translations visible on the page
 - No English in popups — Russian only (lemma stays Spanish)

@@ -23,6 +23,16 @@ pos = "имя"
 # Single-word vocabulary
 # ============================================================
 
+[words."bebe"]
+tr = "(он/она) пьёт"
+pos = "глаг."
+lemma = "beber"
+grammar = """
+**bebe** — *presente*, 3 л. ед. ч., от **beber** ("пить").
+
+Правильный глагол на `-er`: `beb·[[er]]` → `beb·[[e]]`.
+"""
+
 [words."a"]
 tr = "к, на (предлог)"
 pos = "предл."
@@ -1040,10 +1050,18 @@ tr = "Её работа простая."
 [[sentences]]
 text = "Antes de derretir el hielo, ella busca vida."
 tr = "Прежде чем растопить лёд, она ищет жизнь."
+note = """
+`antes de` + инфинитив = «прежде чем (сделать)»: `antes de derretir` — «прежде чем растопить».
+"""
 
 [[sentences]]
 text = "Si hay vida, la misión termina."
 tr = "Если есть жизнь, миссия заканчивается."
+note = """
+*Условие:* `si` + *presente* — «если …».
+
+**hay** — безличное «есть / имеется» (от **haber**); форма не меняется по числу: `hay vida`, `hay filamentos`.
+"""
 
 [[sentences]]
 text = "Si no hay vida, la gente bebe."
@@ -1112,6 +1130,11 @@ tr = "Думает о своих родителях, далеко, на Земл
 [[sentences]]
 text = "Piensa en los doscientos colonos que duermen arriba."
 tr = "Думает о двухстах колонистах, которые спят наверху."
+note = """
+`pensar en` = «думать о (ком/чём-то)»: `piensa en los colonos`.
+
+**que** здесь — «которые» (относит. местоимение): `los colonos que duermen` — «колонисты, которые спят».
+"""
 
 [[sentences]]
 text = "Piensa en los filamentos."
@@ -1140,6 +1163,9 @@ tr = "Нити останутся здесь, в покое."
 [[sentences]]
 text = "Pero si Lucía no reporta, los colonos derriten el hielo."
 tr = "Но если Lucía не сообщит, колонисты растопят лёд."
+note = """
+*Условие:* `si` + *presente* в придаточном; в главном тоже *presente*, хотя смысл будущий: `si no reporta… derriten` — «если не сообщит… растопят».
+"""
 
 [[sentences]]
 text = "Beben."

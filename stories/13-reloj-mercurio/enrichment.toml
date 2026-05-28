@@ -1074,6 +1074,11 @@ tr = "Объект — старый корпус, разведывательны
 [[sentences]]
 text = "Va a chocar con el escudo si nadie hace nada."
 tr = "Он столкнётся со щитом, если никто ничего не сделает."
+note = """
+*Условие:* `si` + *presente* (`hace`).
+
+Несколько отрицаний вместе — это норма: `nadie hace nada` — «никто ничего (не) делает».
+"""
 
 [[sentences]]
 text = "Ella puede disparar pulsos de desvío."
@@ -1158,10 +1163,18 @@ tr = "В колонии есть дети."
 [[sentences]]
 text = "Eso lo sabe."
 tr = "Это она знает."
+note = """
+Дополнение вынесено вперёд для выделения (`Eso` — «это»), и его дублирует местоимение **lo**: `Eso lo sabe` ≈ «вот это она знает».
+"""
 
 [[sentences]]
 text = "Los conoce a casi todos por nombre."
 tr = "Она знает почти всех по имени."
+note = """
+Местоимение **los** дублирует дополнение `a casi todos` (с личным `a`): `los conoce a casi todos` — «знает почти всех».
+
+`por nombre` = «по имени».
+"""
 
 [[sentences]]
 text = "El escudo es la única cosa entre ellos y el sol."

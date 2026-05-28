@@ -22,7 +22,7 @@ UTF-8, no BOM. Always overwrite cleanly — do not append.
 
 ## File format
 
-Two top-level sections: `[words.*]` (one entry per surface form) and `[[sentences]]` (one array entry per sentence-terminator in story order).
+Top-level sections: `[words.*]` (one entry per single-word surface form), `[[phrases]]` (multi-word expressions & idioms, optional), and `[[sentences]]` (one array entry per sentence-terminator in story order).
 
 ### `[words.<form>]` — vocabulary lookup
 
@@ -157,6 +157,58 @@ Optional. Add it to any word where the grammar is non-obvious for an A1 reader. 
 - Idioms (`hace + time`, `dejar de + inf`)
 - Anything else where a learner would benefit
 
+### `[[phrases]]` — multi-word expressions & idioms
+
+Ordered array. Each entry is a run of text spanning **more than one word** that should be treated as a single popup target instead of being tokenized word-by-word. The renderer matches phrases greedily (longest first) and case-insensitively against the body, so list the full surface form in `form`.
+
+Use it for two kinds of run:
+
+**1. Fixed multi-word lexemes** — set phrases that translate as a unit (`por favor`, `por fin`, `tal vez`, `otra vez`), and multi-word proper nouns (`Colonia Verde`). These take the same fields as a `[words.*]` entry:
+
+```toml
+[[phrases]]
+form = "por fin"
+tr = "наконец"
+pos = "нар."
+
+[[phrases]]
+form = "Colonia Verde"
+tr = "«Зелёная Колония» — название колонии"
+pos = "имя"            # no lemma → no SpanishDict link
+```
+
+**2. Idioms** — expressions whose meaning isn't the sum of their words. Show **both** the whole-idiom meaning **and** a per-word breakdown in one popup by adding `parts` (and usually `literal`):
+
+```toml
+[[phrases]]
+form = "tomar el pelo"
+tr = "разыгрывать, подшучивать (над кем-то)"   # whole-idiom meaning
+pos = "идиома"                                   # use the literal POS "идиома" for idioms
+lemma = "tomar el pelo"                          # keeps the SpanishDict link
+literal = "брать за волосы"                       # word-for-word reading (optional but recommended)
+parts = [
+  { w = "tomar", tr = "брать" },
+  { w = "el",    tr = "(артикль м. р.)" },
+  { w = "pelo",  tr = "волосы" },
+]
+grammar = """
+**tomar el pelo** — устойчивое выражение.
+
+Спрягается обычный глагол **tomar**: `te toma el pelo` («он тебя разыгрывает»).
+"""
+```
+
+- `tr` — the **idiom's overall meaning** (this is the headline translation).
+- `pos = "идиома"` — flags it as an idiom (the renderer also auto-detects via `parts`/`literal`).
+- `parts` — an array of `{ w, tr }`, one per component word, in order. The renderer renders these as a small `form → Russian` list under the headline translation. Keep glosses short; this is the literal value of each word, not its contextual sense.
+- `literal` (optional, recommended when it differs usefully) — the word-for-word reading of the whole expression.
+- `grammar` (optional) — extra context: how it inflects, register, typical usage. Same markdown-ish markup as the word `grammar` field.
+- `lemma` (optional) — include the idiom form to keep the SpanishDict link; omit for non-dictionary set phrases.
+
+**When to make something an idiom (with `parts`) vs. a plain phrase:** if a learner who knew every individual word would still misread the meaning, it's an idiom — give it `parts` + `literal` so the popup shows both layers. If the phrase is just a fixed collocation that means roughly what its words say (`por favor`), a plain `tr` is enough.
+
+A still-stronger alternative for one-off idioms that are *not* a contiguous fixed string: leave the words tokenized individually and put the idiom explanation in the terminating sentence's `note` (see `[[sentences]]`). Prefer `[[phrases]]` + `parts` when the idiom is a clean contiguous run.
+
 ### `[[sentences]]` — sentence translations
 
 Ordered array. The renderer pairs each sentence-terminator (`.`, `?`, `!`) in the story body with the next entry from this array, in document order.
@@ -169,10 +221,20 @@ tr = "Elena пишет в своей тетради: «День 78»."
 [[sentences]]
 text = "La plaza está llena de gente."
 tr = "Площадь полна людей."
+
+[[sentences]]
+text = "Si el faro se apaga, la colonia muere."
+tr = "Если маяк погаснет, колония погибнет."
+note = """
+*Условное предложение (1-й тип):* `si` + *presente* в придаточном, *presente/futuro* в главном — реальное условие.
+
+Порядок гибкий: придаточное с `si` может стоять в начале или в конце.
+"""
 ```
 
 - `text` is the **full Spanish sentence** as it appears in the story. Not used by the renderer at runtime — it is for human sanity-checking and lets the user spot drift if the .md is edited but the .toml is not.
 - `tr` is the **Russian translation** of that sentence.
+- `note` (**optional**) — a sentence-level explanation shown in the dot popup *beneath* the translation, written in the **same markdown-ish markup** as the word `grammar` field (`**form**`, `*term*`, `` `code` ``, `[[suffix]]`, blank line = new paragraph). Use it for things a per-word grammar block can't capture: word order, why two tenses sit together, the shape of a *si*-clause, the meaning of the whole clause as a turn of phrase, or brief cultural context. Add it only where it genuinely helps an A1 reader — most sentences need no note. Keep it short. This same `note` is also what surfaces when the reader holds **Shift** and hovers any word in the sentence (Shift-to-sentence), so it should read as useful context for the whole sentence.
 - **One entry per sentence-terminator**, in story order. A period inside quotes (`"Día 78."`) counts as one terminator and gets its own entry if it is the only one on the line; otherwise it gets the inner-sentence translation and the outer sentence gets a separate entry on its own terminator.
 - If a paragraph contains multiple short sentences (`Saturno gira. Los anillos brillan. El comandante duerme.`), each gets its own entry.
 
@@ -187,11 +249,16 @@ tr = "Площадь полна людей."
    - For each unique lowercased form, emit `[words.<form>]` with `tr`, `pos`, `lemma`, and `grammar` (where useful)
    - Disambiguate by sense across the whole story if the same form means different things (rare at A1; if it happens, pick the dominant sense and note the alternative in `grammar`)
    - Proper nouns get `pos = "имя"` and no `lemma`
-5. **Build the sentences array**:
+5. **Build the phrases array** (`[[phrases]]`):
+   - Scan for multi-word expressions: fixed collocations (`por fin`, `tal vez`), multi-word proper nouns (`Colonia Verde`), and **idioms**
+   - For idioms, add `pos = "идиома"`, a whole-meaning `tr`, a per-word `parts` breakdown, and (where useful) a `literal` reading + `grammar` context — so the popup shows both the idiom and its words
+   - List longer phrases first conceptually; the renderer matches longest-first regardless
+6. **Build the sentences array**:
    - One `[[sentences]]` entry per terminator, in story order
    - `text` is the full Spanish sentence, `tr` is the Russian translation
-6. **Write the file** to `stories/NN-slug/enrichment.toml` (overwrite if exists)
-7. **Report to user**:
+   - Add an optional `note` where a sentence-level explanation helps (word order, *si*-clauses, tense interplay, an idiomatic whole clause, cultural context) — this also powers Shift-to-sentence on every word in the sentence
+7. **Write the file** to `stories/NN-slug/enrichment.toml` (overwrite if exists)
+8. **Report to user**:
    - Path
    - Word count and sentence count enriched
    - Any forms you flagged as ambiguous or where grammar was particularly tricky
