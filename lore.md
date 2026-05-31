@@ -139,3 +139,9 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Characters: Daniela (meteoróloga atmosférica / atmospheric meteorologist)
 - Locations: Estación Húygens-4 (small atmospheric monitor on the surface of Titan, beneath orange methane sky); campamento Perforación-Sur (Titan methane drill camp on the southern dunes, ~8 personnel)
 - Terms: las dunas del sur (Titan southern dune field), satélite Argos-2 (Titan-orbit observation satellite), bitácora (station log register), nube anómala (years-long unmodeled cloud system over the south)
+
+### #17 — el-permiso
+- Characters: Iván (controlador de atraque / docking controller)
+- Locations: Puerto de Ceres (orbital harbor at Ceres — the long-referenced belt hub now seen on-page; all belt traffic routes through it, los muelles / docking berths)
+- Ships: *Peregrino* (automated colony ship, left 70 years ago, 40 sleepers aboard, returns unmanifested asking permission to dock)
+- Terms: el permiso para atracar (docking permission protocol — no manifest, no permit), el reglamento (port rulebook)

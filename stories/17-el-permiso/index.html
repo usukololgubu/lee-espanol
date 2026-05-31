@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El permiso · Autoridad Portuaria de Ceres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#dadfd9;
+    --paper-hi:#e6e9e1;
+    --paper-lo:#c6ccc3;
+    --ink:#181d1b;
+    --ink-soft:#3c443f;
+    --ink-faint:#6c746d;
+    --rule:#9aa39a;
+    --rule-soft:#b3bab1;
+    --oxblood:#9e3328;
+    --oxblood-deep:#7c271e;
+    --amber:#c98a3c;
+    --accent:#9e3328;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Serif",Georgia,serif;
+    line-height:1.8;
+    /* layered atmosphere: faint amber dock glow + carbon grid + grain */
+    background-image:
+      radial-gradient(120% 80% at 82% 118%, rgba(201,138,60,0.16), rgba(201,138,60,0) 60%),
+      radial-gradient(90% 60% at 10% -10%, rgba(24,29,27,0.06), rgba(24,29,27,0) 55%),
+      repeating-linear-gradient(0deg, rgba(24,29,27,0.035) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(90deg, rgba(24,29,27,0.025) 0 1px, transparent 1px 26px);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  /* paper grain overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:0.5; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .back{
+    position:fixed; top:16px; left:18px; z-index:40;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--ink-faint); text-decoration:none;
+    padding:5px 9px; border:1px solid var(--rule-soft);
+    background:rgba(230,233,225,0.7); backdrop-filter:blur(2px);
+    transition:color .2s,border-color .2s;
+  }
+  .back:hover{ color:var(--oxblood); border-color:var(--oxblood); }
+
+  .sheet{
+    position:relative; z-index:1;
+    max-width:1040px;
+    margin:54px auto 80px;
+    padding:clamp(20px,4vw,44px);
+    background:
+      linear-gradient(180deg, rgba(230,233,225,0.55), rgba(198,204,195,0.25));
+    border:1.5px solid var(--ink-soft);
+    box-shadow:
+      0 0 0 1px var(--paper) inset,
+      0 1px 0 2px var(--rule-soft),
+      0 28px 60px -40px rgba(24,29,27,0.6);
+  }
+  /* corner registration crosses */
+  .sheet::before,.sheet::after{
+    content:"+"; position:absolute;
+    font-family:"IBM Plex Mono",monospace; font-size:18px; color:var(--ink-faint);
+    line-height:1;
+  }
+  .sheet::before{ top:7px; left:9px; }
+  .sheet::after{ bottom:7px; right:9px; }
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end;
+    gap:14px 24px;
+    border-bottom:3px double var(--ink-soft);
+    padding-bottom:14px;
+  }
+  .authority{ max-width:60ch; }
+  .authority .org{
+    font-family:"IBM Plex Mono",monospace; font-weight:600;
+    font-size:clamp(13px,2.4vw,16px); letter-spacing:0.22em; text-transform:uppercase;
+    color:var(--ink);
+  }
+  .authority .sub{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--ink-faint); margin-top:5px;
+  }
+  .docref{ text-align:right; font-family:"IBM Plex Mono",monospace; }
+  .docref .formno{
+    font-size:12px; letter-spacing:0.14em; color:var(--oxblood); font-weight:600;
+  }
+  .docref .turno{
+    font-size:11px; letter-spacing:0.12em; color:var(--ink-soft); margin-top:3px;
+  }
+
+  h1.title{
+    margin:22px 0 2px;
+    font-family:"IBM Plex Serif",serif; font-weight:500; font-style:italic;
+    font-size:clamp(30px,6vw,52px); letter-spacing:0.01em; line-height:1.05;
+    color:var(--ink);
+  }
+  .title-tag{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:0.26em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+
+  /* ---------- metadata strip ---------- */
+  .fields{
+    margin-top:20px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--rule); border:1px solid var(--rule);
+  }
+  .field{ background:var(--paper-hi); padding:8px 11px; }
+  .field .k{
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+  .field .v{
+    font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:0.04em;
+    color:var(--ink); margin-top:3px;
+  }
+
+  /* ---------- two-pane body ---------- */
+  .grid{
+    margin-top:26px;
+    display:grid; grid-template-columns:minmax(0,1fr) 282px; gap:30px;
+    align-items:start;
+  }
+
+  .section-label{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--ink-faint);
+    border-bottom:1px solid var(--rule-soft); padding-bottom:6px; margin-bottom:14px;
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+  }
+  .section-label .lz{ color:var(--oxblood); }
+
+  /* story body — the controller's log entries */
+  article{ font-size:19px; }
+  article p{ margin:0 0 1.1em; }
+  article p:first-of-type::first-letter{
+    font-family:"IBM Plex Mono",monospace; font-weight:600;
+    font-size:3.05em; line-height:0.74; float:left;
+    padding:6px 12px 2px 0; color:var(--oxblood);
+  }
+  article em{ font-style:italic; color:var(--oxblood-deep); font-weight:500; }
+
+  /* transmission slips (blockquotes) — pasted teletype */
+  article blockquote{
+    margin:1.6em 0; padding:14px 16px 14px 18px;
+    background:
+      repeating-linear-gradient(180deg, rgba(24,29,27,0.05) 0 1px, transparent 1px 22px),
+      var(--paper-lo);
+    border-left:3px solid var(--oxblood);
+    box-shadow:2px 3px 0 -1px rgba(24,29,27,0.18), inset 0 0 0 1px rgba(24,29,27,0.06);
+    transform:rotate(-0.5deg);
+    position:relative;
+  }
+  article blockquote:nth-of-type(2){ transform:rotate(0.6deg); }
+  article blockquote::before{
+    content:"◀ TRANSMISIÓN ENTRANTE · CANAL 7";
+    display:block;
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:0.16em;
+    color:var(--ink-faint); margin-bottom:8px;
+  }
+  article blockquote p{
+    margin:0; font-family:"IBM Plex Mono",monospace; font-size:14.5px; line-height:1.7;
+    color:var(--ink-soft); letter-spacing:0.01em;
+  }
+  /* a "paste tape" corner on slips */
+  article blockquote::after{
+    content:""; position:absolute; top:-7px; left:24px; width:46px; height:14px;
+    background:rgba(201,138,60,0.28); border:1px solid rgba(24,29,27,0.12);
+    transform:rotate(-3deg);
+  }
+
+  /* ---------- aside rail ---------- */
+  aside.rail{ position:sticky; top:24px; display:flex; flex-direction:column; gap:22px; }
+
+  .panel{ border:1px solid var(--ink-soft); background:var(--paper-hi); }
+  .panel .phead{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--ink-faint);
+    padding:7px 11px; border-bottom:1px solid var(--rule);
+    background:var(--paper-lo);
+    display:flex; justify-content:space-between;
+  }
+  .panel .pbody{ padding:13px; }
+
+  /* radar / berth schematic */
+  .schematic svg{ display:block; width:100%; height:auto; }
+  .schematic .caption{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:0.05em;
+    color:var(--ink-faint); margin-top:9px; line-height:1.5;
+  }
+  .schematic .caption b{ color:var(--oxblood); font-weight:600; }
+
+  /* resolution stamp box — left blank (the dilemma) */
+  .resolution .pbody{ padding:16px 14px; }
+  .stampbox{
+    border:2px solid var(--oxblood);
+    padding:14px 12px 12px; position:relative;
+    background:repeating-linear-gradient(135deg, rgba(158,51,40,0.05) 0 6px, transparent 6px 12px);
+  }
+  .stampbox .rlabel{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:0.22em;
+    text-transform:uppercase; color:var(--oxblood-deep); font-weight:600;
+    text-align:center; margin-bottom:12px;
+  }
+  .choice{
+    display:flex; align-items:center; gap:9px; margin:8px 2px;
+    font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .choice .box{
+    width:15px; height:15px; border:1.5px solid var(--oxblood-deep);
+    flex:0 0 auto;
+  }
+  .stampbox .pend{
+    position:absolute; right:-8px; bottom:14px;
+    font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:0.14em;
+    color:rgba(158,51,40,0.55); font-weight:600; text-transform:uppercase;
+    border:1.5px solid rgba(158,51,40,0.5); padding:2px 7px;
+    transform:rotate(-9deg);
+  }
+  .await{
+    margin-top:14px; display:flex; align-items:center; gap:9px;
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:0.13em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .await .blip{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 7px 1px rgba(201,138,60,0.8);
+    animation:blink 1.9s steps(1,end) infinite;
+  }
+  @keyframes blink{ 0%,55%{opacity:1;} 56%,100%{opacity:0.12;} }
+
+  /* radar sweep + ship drift */
+  .sweep{ transform-box:view-box; transform-origin:160px 160px; animation:rsweep 9s linear infinite; }
+  @keyframes rsweep{ to{ transform:rotate(360deg); } }
+  .sweep{ animation-name:rsweep; }
+  .ship{ animation:shipfade 4.5s ease-in-out infinite; }
+  @keyframes shipfade{ 0%,100%{opacity:0.45;} 50%{opacity:1;} }
+
+  /* ---------- footer colophon ---------- */
+  .colophon{
+    margin-top:30px; padding-top:14px; border-top:1px solid var(--rule-soft);
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 18px;
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+
+  /* ---------- popup styling (behavior auto-injected) ---------- */
+  .pop{
+    background:linear-gradient(180deg,#1d2421,#141815);
+    color:var(--paper-hi);
+    border:1px solid #38423c;
+    box-shadow:0 14px 34px -16px rgba(0,0,0,0.8);
+    padding:11px 13px; max-width:266px; z-index:60;
+    font-family:"IBM Plex Serif",serif; line-height:1.5;
+  }
+  .pop.has-grammar{ max-width:372px; }
+  .pop.idiom{ max-width:340px; }
+  .pop .lemma{
+    font-family:"IBM Plex Serif",serif; font-style:italic; font-size:16px;
+    color:var(--amber);
+  }
+  .pop .pos{
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:0.2em;
+    text-transform:uppercase; color:#9aa79e; margin-top:3px;
+  }
+  .pop .tr{ font-size:15px; margin-top:6px; color:var(--paper-hi); }
+
+  .pop .breakdown{ margin-top:9px; border-top:1px solid #313a34; padding-top:8px; display:grid; gap:4px; }
+  .pop .bd-row{ display:flex; gap:9px; align-items:baseline; }
+  .pop .bd-w{ font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--amber); min-width:74px; }
+  .pop .bd-tr{ font-size:13px; color:#cdd4ca; }
+  .pop .literal{ margin-top:7px; font-size:13px; color:#b9c0b6; font-style:italic; }
+  .pop .lit-label{ font-family:"IBM Plex Mono",monospace; font-style:normal; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#8a9389; margin-right:6px; }
+
+  .pop .g-block{
+    margin-top:9px; border-top:1px solid #313a34; padding-top:8px;
+    font-size:13.5px; color:#cdd4ca;
+  }
+  .pop .g-block p{ margin:0 0 6px; }
+  .pop .g-block b{ font-style:italic; font-weight:600; color:var(--amber); }
+  .pop .g-block i{
+    font-family:"IBM Plex Mono",monospace; font-style:normal; font-size:11px;
+    letter-spacing:0.1em; text-transform:uppercase; color:#9aa79e;
+  }
+  .pop .g-block code{
+    font-family:"IBM Plex Mono",monospace; font-size:12px;
+    background:rgba(201,138,60,0.12); border:1px solid rgba(201,138,60,0.22);
+    padding:0 4px; border-radius:2px; color:#e7dcc8;
+  }
+  .pop .g-block u{
+    text-decoration:none; background:rgba(158,51,40,0.34); color:#f0c9c2;
+    font-weight:600; padding:0 3px; border-radius:2px;
+  }
+  .pop .g-block code u{ background:rgba(158,51,40,0.42); color:#f3d2cc; }
+
+  .pop.sentence .s-label{
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:0.2em;
+    text-transform:uppercase; color:#8a9389;
+  }
+  .pop.sentence .s-tr{ font-size:15px; margin-top:5px; color:var(--paper-hi); }
+  .pop.sentence .s-note{ margin-top:9px; border-top:1px solid #313a34; padding-top:8px; }
+
+  .pop .link{
+    display:inline-block; margin-top:10px;
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--amber); text-decoration:none;
+    border-bottom:1px solid rgba(201,138,60,0.5); padding-bottom:1px;
+  }
+  .pop .link:hover{ color:#e7b878; }
+
+  /* hover affordance recolor */
+  article .w{ cursor:help; }
+  article .w:hover{
+    background:linear-gradient(transparent 62%, rgba(158,51,40,0.28) 0);
+    border-bottom-color:var(--oxblood)!important;
+  }
+  article .s:hover{ border-bottom-color:var(--oxblood)!important; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    .grid{ grid-template-columns:1fr; gap:26px; }
+    aside.rail{ position:static; flex-direction:column; }
+    .fields{ grid-template-columns:repeat(2,1fr); }
+    h1.title{ font-size:clamp(28px,9vw,40px); }
+    .masthead{ flex-direction:column; align-items:flex-start; }
+    .docref{ text-align:left; }
+    .sheet{ margin:44px 12px 60px; }
+  }
+  @media (max-width:420px){
+    .fields{ grid-template-columns:1fr; }
+    article{ font-size:18px; }
+  }
+</style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+/* Scope highlight: the whole sentence (when a sentence popup is open) or the whole
+   idiom span. Themed via --accent, falling back to the page's ink color. Designers may
+   override with higher specificity. */
+.w.hl, .s.hl { background: color-mix(in srgb, var(--accent, currentColor) 16%, transparent); border-radius: 2px; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="back" href="../../index.html">← Índice</a>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <div class="authority">
+      <div class="org">Autoridad Portuaria de Ceres</div>
+      <div class="sub">Estación de Control de Atraque · Anillo de Carga 4</div>
+    </div>
+    <div class="docref">
+      <div class="formno">FORM. PA-7 · ATRAQUE</div>
+      <div class="turno">Turno nocturno · 02:00 – 06:00</div>
+    </div>
+  </header>
+
+  <div class="title-tag">Parte del turno — solicitud de atraque sin manifiesto</div>
+  <h1 class="title">El permiso</h1>
+
+  <section class="fields">
+    <div class="field"><div class="k">Estación</div><div class="v">Puerto de Ceres</div></div>
+    <div class="field"><div class="k">Muelle</div><div class="v">07 · en espera</div></div>
+    <div class="field"><div class="k">Controlador</div><div class="v">I. — turno solo</div></div>
+    <div class="field"><div class="k">Estado</div><div class="v" style="color:var(--oxblood)">Sin resolver</div></div>
+  </section>
+
+  <div class="grid">
+
+    <div class="maincol">
+      <div class="section-label"><span>Observaciones del controlador</span><span class="lz">[ registro 02:00 ]</span></div>
+
+      <article data-story-body>
+        <p><span class="w" data-tr="(я) работаю" data-pos="глаг." data-lemma="trabajar" data-grammar="**trabajo** — *presente*, 1 л. ед. ч.
+
+`trabaj·[[ar]]` → `trabaj·[[o]]`
+
+Тж. сущ. **el trabajo** «работа» (ниже в тексте).
+" data-si="0">Trabajo</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="" data-grammar="" data-si="0">en</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="0">el</span> <span class="w" data-tr="порт" data-pos="сущ." data-lemma="el puerto" data-grammar="" data-si="0">Puerto</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="0">de</span> <span class="w" data-tr="Церера — карликовая планета, узловой порт пояса астероидов" data-pos="имя" data-lemma="" data-grammar="" data-si="0">Ceres</span><span class="s" data-tr="Я работаю в порту Цереры." data-si="0">.</span> <span class="w" data-tr="здесь, вот" data-pos="нар." data-lemma="" data-grammar="" data-si="1">Aquí</span> <span class="w" data-tr="проходят" data-pos="глаг." data-lemma="pasar" data-grammar="**pasan** — *presente*, 3 л. мн. ч.
+
+`pas·[[ar]]` → `pas·[[an]]`
+" data-si="1">pasan</span> <span class="w" data-tr="все" data-pos="опр." data-lemma="todo" data-grammar="" data-si="1">todas</span> <span class="w" data-tr="(артикль ж. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="1">las</span> <span class="w" data-tr="корабли" data-pos="сущ." data-lemma="la nave" data-grammar="**naves** — мн. ч. от **la nave** «корабль».
+" data-si="1">naves</span> <span class="w" data-tr="из (de + el)" data-pos="предл." data-lemma="" data-grammar="**del** = `de` + `el` — обязательное слияние предлога и артикля.
+" data-si="1">del</span> <span class="w" data-tr="пояс (астероидов)" data-pos="сущ." data-lemma="el cinturón" data-grammar="" data-si="1">cinturón</span><span class="s" data-tr="Здесь проходят все корабли пояса." data-si="1">.</span> <span class="w" data-tr="я" data-pos="мест." data-lemma="" data-grammar="" data-si="2">Yo</span> <span class="w" data-tr="(я) даю" data-pos="глаг." data-lemma="dar" data-grammar="**doy** — *presente*, 1 л. ед. ч., неправильный, от **dar**.
+" data-si="2">doy</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="2">el</span> <span class="w" data-tr="разрешение" data-pos="сущ." data-lemma="el permiso" data-grammar="" data-si="2">permiso</span> <span class="w" data-tr="чтобы; для" data-pos="предл." data-lemma="" data-grammar="" data-si="2">para</span> <span class="w" data-tr="пришвартоваться" data-pos="глаг." data-lemma="atracar" data-grammar="**atracar** — *infinitivo*. После `para` всегда инфинитив: «чтобы пришвартоваться».
+" data-si="2">atracar</span><span class="s" data-tr="Я даю разрешение на швартовку." data-si="2">.</span> <span class="w" data-tr="(он/это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser**.
+" data-si="3">Es</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="3">un</span> <span class="w" data-tr="(я) работаю" data-pos="глаг." data-lemma="trabajar" data-grammar="**trabajo** — *presente*, 1 л. ед. ч.
+
+`trabaj·[[ar]]` → `trabaj·[[o]]`
+
+Тж. сущ. **el trabajo** «работа» (ниже в тексте).
+" data-si="3">trabajo</span> <span class="w" data-tr="спокойный" data-pos="прил." data-lemma="tranquilo" data-grammar="" data-si="3">tranquilo</span><span class="s" data-tr="Это спокойная работа." data-si="3">.</span> <span class="w" data-tr="(артикль ж. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="4">Las</span> <span class="w" data-tr="корабли" data-pos="сущ." data-lemma="la nave" data-grammar="**naves** — мн. ч. от **la nave** «корабль».
+" data-si="4">naves</span> <span class="w" data-tr="прибывают" data-pos="глаг." data-lemma="llegar" data-grammar="**llegan** — *presente*, 3 л. мн. ч.
+
+`lleg·[[ar]]` → `lleg·[[an]]`
+" data-si="4">llegan</span>, <span class="w" data-tr="ждут" data-pos="глаг." data-lemma="esperar" data-grammar="**esperan** — *presente*, 3 л. мн. ч.
+" data-si="4">esperan</span>, <span class="w" data-tr="швартуются" data-pos="глаг." data-lemma="atracar" data-grammar="**atracan** — *presente*, 3 л. мн. ч.
+" data-si="4">atracan</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="4">y</span> <span class="w" data-tr="(возвратная частица)" data-pos="мест." data-lemma="" data-grammar="" data-si="4">se</span> <span class="w" data-tr="уходят, едут" data-pos="глаг." data-lemma="ir" data-grammar="**van** — *presente*, 3 л. мн. ч., неправильный, от **ir**.
+
+Здесь **se van** — «уходят» (возвратное).
+" data-si="4">van</span><span class="s" data-tr="Корабли прибывают, ждут, швартуются и уходят." data-si="4">.</span></p>
+
+        <p><span class="w" data-tr="сегодня" data-pos="нар." data-lemma="" data-grammar="" data-si="5">Hoy</span> <span class="w" data-tr="(он/это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser**.
+" data-si="5">es</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="5">un</span> <span class="w" data-tr="день" data-pos="сущ." data-lemma="el día" data-grammar="**el día** — сущ. *м. р.*, хотя оканчивается на `-a` (исключение, как **el problema**).
+" data-si="5">día</span> <span class="w" data-tr="обычный" data-pos="прил." data-lemma="normal" data-grammar="" data-si="5">normal</span><span class="s" data-tr="Сегодня обычный день." data-si="5">.</span> <span class="w" data-tr="(я) пью; беру" data-pos="глаг." data-lemma="tomar" data-grammar="**tomo** — *presente*, 1 л. ед. ч. **tomar café** «пить кофе».
+" data-si="6">Tomo</span> <span class="w" data-tr="кофе" data-pos="сущ." data-lemma="el café" data-grammar="" data-si="6">café</span><span class="s" data-tr="Я пью кофе." data-si="6">.</span> <span class="w" data-tr="(я) смотрю" data-pos="глаг." data-lemma="mirar" data-grammar="**miro** — *presente*, 1 л. ед. ч.
+
+`mir·[[ar]]` → `mir·[[o]]`
+" data-si="7">Miro</span> <span class="w" data-tr="(артикль ж. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="7">las</span> <span class="w" data-tr="огни, свет" data-pos="сущ." data-lemma="la luz" data-grammar="**luces** — мн. ч. от **la luz**: `lu[[z]]` → `lu[[c]]es` (z → c перед `-es`).
+" data-si="7">luces</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="7">de</span> <span class="w" data-tr="(артикль м. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="7">los</span> <span class="w" data-tr="причалы" data-pos="сущ." data-lemma="el muelle" data-grammar="" data-si="7">muelles</span><span class="s" data-tr="Смотрю на огни причалов." data-si="7">.</span></p>
+
+        <p><span class="w" data-tr="в, к; (перед временем/лицом)" data-pos="предл." data-lemma="" data-grammar="" data-si="8">A</span> <span class="w" data-tr="(артикль ж. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="8">las</span> <span class="w" data-tr="три" data-pos="числ." data-lemma="" data-grammar="" data-si="8">tres</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="8">de</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="8">la</span> <span class="w" data-tr="утро" data-pos="сущ." data-lemma="la mañana" data-grammar="**a las tres de la mañana** — «в три часа ночи». По-испански часы до рассвета — «de la mañana».
+" data-si="8">mañana</span>, <span class="w" data-tr="(артикль ж. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="8">una</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="8">nave</span> <span class="w" data-tr="старая" data-pos="прил." data-lemma="viejo" data-grammar="**vieja** — ж. р. от **viejo**.
+" data-si="8">vieja</span> <span class="w" data-tr="просит" data-pos="глаг." data-lemma="pedir" data-grammar="**pide** — *presente*, 3 л. ед. ч., от **pedir**.
+
+*Чередование в корне:* `p[[e]]dir` → `p[[i]]de` (e → i).
+" data-si="8">pide</span> <span class="w" data-tr="войти, въехать" data-pos="глаг." data-lemma="entrar" data-grammar="**entrar** — *infinitivo*.
+" data-si="8">entrar</span><span class="s" data-tr="В три часа ночи старый корабль просит впустить его." data-si="8" data-note="**a las tres de la mañana** — «в три часа ночи». Время до рассвета по-испански — *de la mañana*.
+">.</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="9">No</span> <span class="w" data-tr="(он/она) находится" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** (местонахождение).
+" data-si="9">está</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="" data-grammar="" data-si="9">en</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="9">la</span> <span class="w" data-tr="список" data-pos="сущ." data-lemma="la lista" data-grammar="" data-si="9">lista</span><span class="s" data-tr="Его нет в списке." data-si="9">.</span> <span class="w" data-tr="его, её" data-pos="опр." data-lemma="" data-grammar="" data-si="10">Su</span> <span class="w" data-tr="номер" data-pos="сущ." data-lemma="el número" data-grammar="" data-si="10">número</span> <span class="w" data-tr="(он/это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser**.
+" data-si="10">es</span> <span class="w" data-tr="очень" data-pos="нар." data-lemma="" data-grammar="" data-si="10">muy</span> <span class="w" data-tr="старинный, древний" data-pos="прил." data-lemma="antiguo" data-grammar="" data-si="10">antiguo</span><span class="s" data-tr="Его номер очень старый." data-si="10">.</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="11">La</span> <span class="w" data-tr="(я) зову, вызываю" data-pos="глаг." data-lemma="llamar" data-grammar="**llamo** — *presente*, 1 л. ед. ч.
+" data-si="11">llamo</span>, <span class="w" data-tr="но" data-pos="союз" data-lemma="" data-grammar="" data-si="11">pero</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="11">no</span> <span class="w" data-tr="отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч.
+
+`respond·[[er]]` → `respond·[[e]]`
+" data-si="11">responde</span> <span class="w" data-tr="(артикль ж. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="11">una</span> <span class="w" data-tr="человек" data-pos="сущ." data-lemma="la persona" data-grammar="" data-si="11">persona</span><span class="s" data-tr="Я вызываю его, но отвечает не человек." data-si="11">.</span> <span class="w" data-tr="отвечает" data-pos="глаг." data-lemma="responder" data-grammar="**responde** — *presente*, 3 л. ед. ч.
+
+`respond·[[er]]` → `respond·[[e]]`
+" data-si="12">Responde</span> <span class="w" data-tr="(артикль ж. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="12">una</span> <span class="w" data-tr="машина, автомат" data-pos="сущ." data-lemma="la máquina" data-grammar="" data-si="12">máquina</span><span class="s" data-tr="Отвечает машина." data-si="12">.</span></p>
+
+        <blockquote>
+          <p><span class="w" data-tr="порт" data-pos="сущ." data-lemma="el puerto" data-grammar="" data-si="13">Puerto</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="13">de</span> <span class="w" data-tr="Церера — карликовая планета, узловой порт пояса астероидов" data-pos="имя" data-lemma="" data-grammar="" data-si="13">Ceres</span>, <span class="w" data-tr="здесь, вот" data-pos="нар." data-lemma="" data-grammar="" data-si="13">aquí</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="13">la</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="13">nave</span> <em><span class="w" data-tr="«Перегрино» (Странник) — название старого корабля" data-pos="имя" data-lemma="" data-grammar="" data-si="13">Peregrino</span></em><span class="s" data-tr="Порт Цереры, это корабль «Перегрино»." data-si="13">.</span> <span class="w" data-tr="(мы) просим" data-pos="глаг." data-lemma="pedir" data-grammar="**pedimos** — *presente*, 1 л. мн. ч. (в `-imos` чередования нет).
+" data-si="14">Pedimos</span> <span class="w" data-tr="разрешение" data-pos="сущ." data-lemma="el permiso" data-grammar="" data-si="14">permiso</span> <span class="w" data-tr="чтобы; для" data-pos="предл." data-lemma="" data-grammar="" data-si="14">para</span> <span class="w" data-tr="пришвартоваться" data-pos="глаг." data-lemma="atracar" data-grammar="**atracar** — *infinitivo*. После `para` всегда инфинитив: «чтобы пришвартоваться».
+" data-si="14">atracar</span><span class="s" data-tr="Просим разрешение на швартовку." data-si="14">.</span> <span class="w" data-tr="(мы) везём" data-pos="глаг." data-lemma="traer" data-grammar="**traemos** — *presente*, 1 л. мн. ч., от **traer** «везти, нести».
+" data-si="15">Traemos</span> <span class="w" data-tr="сорок" data-pos="числ." data-lemma="" data-grammar="" data-si="15">cuarenta</span> <span class="w" data-tr="пассажиры" data-pos="сущ." data-lemma="el pasajero" data-grammar="" data-si="15">pasajeros</span><span class="s" data-tr="Везём сорок пассажиров." data-si="15">.</span> <span class="w" data-tr="все" data-pos="опр." data-lemma="todo" data-grammar="" data-si="16">Todos</span> <span class="w" data-tr="спят" data-pos="глаг." data-lemma="dormir" data-grammar="**duermen** — *presente*, 3 л. мн. ч., от **dormir**.
+
+*Чередование в корне:* `d[[o]]rmir` → `d[[ue]]rmen` (o → ue).
+" data-si="16">duermen</span><span class="s" data-tr="Все спят." data-si="16">.</span> <span class="w" data-tr="спасибо" data-pos="сущ." data-lemma="gracias" data-grammar="" data-si="17">Gracias</span><span class="s" data-tr="Спасибо." data-si="17">.</span></p>
+        </blockquote>
+
+        <p><span class="w" data-tr="(я) ищу" data-pos="глаг." data-lemma="buscar" data-grammar="**busco** — *presente*, 1 л. ед. ч.
+" data-si="18">Busco</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="18">el</span> <span class="w" data-tr="имя, название" data-pos="сущ." data-lemma="el nombre" data-grammar="" data-si="18">nombre</span> <em><span class="w" data-tr="«Перегрино» (Странник) — название старого корабля" data-pos="имя" data-lemma="" data-grammar="" data-si="18">Peregrino</span></em> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="" data-grammar="" data-si="18">en</span> <span class="w" data-tr="(артикль м. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="18">los</span> <span class="w" data-tr="записи, реестр" data-pos="сущ." data-lemma="el registro" data-grammar="" data-si="18">registros</span><span class="s" data-tr="Я ищу название «Перегрино» в реестре." data-si="18">.</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="19">La</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="19">nave</span> <span class="w" data-tr="вышла, отбыла" data-pos="глаг." data-lemma="salir" data-grammar="**salió** — *pretérito indefinido*, 3 л. ед. ч., от **salir**.
+
+`sal·[[ió]]` — законченное действие в прошлом.
+" data-si="19">salió</span> <span class="w" data-tr="семьдесят лет назад" data-pos="идиома" data-lemma="hacer" data-grammar="**hace** + отрезок времени = «… (тому) назад».
+
+*Дословно* «делает семьдесят лет» = «семьдесят лет назад». Глагол **hace** не меняется.
+" data-si="19" data-parts="[{&quot;w&quot;: &quot;hace&quot;, &quot;tr&quot;: &quot;делает (3 л. от hacer)&quot;}, {&quot;w&quot;: &quot;setenta&quot;, &quot;tr&quot;: &quot;семьдесят&quot;}, {&quot;w&quot;: &quot;años&quot;, &quot;tr&quot;: &quot;лет&quot;}]" data-literal="делает семьдесят лет">hace setenta años</span><span class="s" data-tr="Корабль отбыл семьдесят лет назад." data-si="19" data-note="**hace** + время = «… назад»: *hace setenta años* — «семьдесят лет назад».
+">.</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="" data-grammar="" data-si="20">Nadie</span> <span class="w" data-tr="знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** «знать».
+" data-si="20">sabe</span> <span class="w" data-tr="ничего" data-pos="мест." data-lemma="" data-grammar="" data-si="20">nada</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="20">de</span> <span class="w" data-tr="она; неё" data-pos="мест." data-lemma="" data-grammar="" data-si="20">ella</span> <span class="w" data-tr="с (тех пор)" data-pos="предл." data-lemma="" data-grammar="" data-si="20">desde</span> <span class="w" data-tr="тогда" data-pos="нар." data-lemma="" data-grammar="**desde entonces** — «с тех пор».
+" data-si="20">entonces</span><span class="s" data-tr="С тех пор о нём никто ничего не знает." data-si="20" data-note="*Двойное отрицание:* **nadie … nada** — в испанском это норма, а не ошибка.
+">.</span> <span class="w" data-tr="(артикль м. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="21">Los</span> <span class="w" data-tr="сорок" data-pos="числ." data-lemma="" data-grammar="" data-si="21">cuarenta</span> <span class="w" data-tr="пассажиры" data-pos="сущ." data-lemma="el pasajero" data-grammar="" data-si="21">pasajeros</span> <span class="w" data-tr="всё ещё, до сих пор" data-pos="нар." data-lemma="" data-grammar="" data-si="21">todavía</span> <span class="w" data-tr="спят" data-pos="глаг." data-lemma="dormir" data-grammar="**duermen** — *presente*, 3 л. мн. ч., от **dormir**.
+
+*Чередование в корне:* `d[[o]]rmir` → `d[[ue]]rmen` (o → ue).
+" data-si="21">duermen</span><span class="s" data-tr="Сорок пассажиров всё ещё спят." data-si="21">.</span> <span class="w" data-tr="или" data-pos="союз" data-lemma="" data-grammar="" data-si="22">O</span> <span class="w" data-tr="уже" data-pos="нар." data-lemma="" data-grammar="" data-si="22">ya</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="22">no</span> <span class="w" data-tr="спят" data-pos="глаг." data-lemma="dormir" data-grammar="**duermen** — *presente*, 3 л. мн. ч., от **dormir**.
+
+*Чередование в корне:* `d[[o]]rmir` → `d[[ue]]rmen` (o → ue).
+" data-si="22">duermen</span><span class="s" data-tr="Или уже не спят." data-si="22">.</span> <span class="w" data-tr="может быть, возможно" data-pos="нар." data-lemma="" data-grammar="" data-si="23">Tal vez</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="23">la</span> <span class="w" data-tr="машина, автомат" data-pos="сущ." data-lemma="la máquina" data-grammar="" data-si="23">máquina</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="23">no</span> <span class="w" data-tr="знает" data-pos="глаг." data-lemma="saber" data-grammar="**sabe** — *presente*, 3 л. ед. ч., от **saber** «знать».
+" data-si="23">sabe</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="23">la</span> <span class="w" data-tr="разница" data-pos="сущ." data-lemma="la diferencia" data-grammar="" data-si="23">diferencia</span><span class="s" data-tr="Может быть, машина не знает разницы." data-si="23">.</span></p>
+
+        <p><span class="w" data-tr="(я) зову, вызываю" data-pos="глаг." data-lemma="llamar" data-grammar="**llamo** — *presente*, 1 л. ед. ч.
+" data-si="24">Llamo</span> <span class="w" data-tr="снова, ещё раз" data-pos="нар." data-lemma="" data-grammar="" data-si="24">otra vez</span><span class="s" data-tr="Зову ещё раз." data-si="24">.</span></p>
+
+        <p>—¿<span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber**: «есть / имеется». Одна на ед. и мн. ч.
+" data-si="25">Hay</span> <span class="w" data-tr="кто-то, кто-нибудь" data-pos="мест." data-lemma="" data-grammar="" data-si="25">alguien</span> <span class="w" data-tr="бодрствующий, не спит" data-pos="прил." data-lemma="despierto" data-grammar="" data-si="25">despierto</span> <span class="w" data-tr="на борту" data-pos="нар." data-lemma="" data-grammar="" data-si="25">a bordo</span><span class="s" data-tr="Есть кто-нибудь, кто не спит, на борту?" data-si="25">?</span> —<span class="w" data-tr="(я) спрашиваю" data-pos="глаг." data-lemma="preguntar" data-grammar="**pregunto** — *presente*, 1 л. ед. ч.
+" data-si="26">pregunto</span><span class="s" data-tr="— спрашиваю я." data-si="26">.</span></p>
+
+        <blockquote>
+          <p><span class="w" data-tr="все" data-pos="опр." data-lemma="todo" data-grammar="" data-si="27">Todos</span> <span class="w" data-tr="спят" data-pos="глаг." data-lemma="dormir" data-grammar="**duermen** — *presente*, 3 л. мн. ч., от **dormir**.
+
+*Чередование в корне:* `d[[o]]rmir` → `d[[ue]]rmen` (o → ue).
+" data-si="27">duermen</span><span class="s" data-tr="Все спят." data-si="27">.</span> <span class="w" data-tr="(мы) просим" data-pos="глаг." data-lemma="pedir" data-grammar="**pedimos** — *presente*, 1 л. мн. ч. (в `-imos` чередования нет).
+" data-si="28">Pedimos</span> <span class="w" data-tr="разрешение" data-pos="сущ." data-lemma="el permiso" data-grammar="" data-si="28">permiso</span> <span class="w" data-tr="чтобы; для" data-pos="предл." data-lemma="" data-grammar="" data-si="28">para</span> <span class="w" data-tr="пришвартоваться" data-pos="глаг." data-lemma="atracar" data-grammar="**atracar** — *infinitivo*. После `para` всегда инфинитив: «чтобы пришвартоваться».
+" data-si="28">atracar</span><span class="s" data-tr="Просим разрешение на швартовку." data-si="28">.</span> <span class="w" data-tr="спасибо" data-pos="сущ." data-lemma="gracias" data-grammar="" data-si="29">Gracias</span><span class="s" data-tr="Спасибо." data-si="29">.</span></p>
+        </blockquote>
+
+        <p><span class="w" data-tr="всегда" data-pos="нар." data-lemma="" data-grammar="" data-si="30">Siempre</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="30">la</span> <span class="w" data-tr="та же самая" data-pos="прил." data-lemma="mismo" data-grammar="" data-si="30">misma</span> <span class="w" data-tr="фраза" data-pos="сущ." data-lemma="la frase" data-grammar="" data-si="30">frase</span><span class="s" data-tr="Всегда одна и та же фраза." data-si="30">.</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="31">La</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="31">nave</span> <span class="w" data-tr="(возвратная частица)" data-pos="мест." data-lemma="" data-grammar="" data-si="31">se</span> <span class="w" data-tr="приближается" data-pos="глаг." data-lemma="acercarse" data-grammar="**se acerca** — *presente*, 3 л. ед. ч., возвратный, от **acercarse** «приближаться».
+" data-si="31">acerca</span> <span class="w" data-tr="медленно" data-pos="нар." data-lemma="" data-grammar="" data-si="31">despacio</span>, <span class="w" data-tr="с" data-pos="предл." data-lemma="" data-grammar="" data-si="31">con</span> <span class="w" data-tr="терпение" data-pos="сущ." data-lemma="la paciencia" data-grammar="" data-si="31">paciencia</span>, <span class="w" data-tr="как" data-pos="союз" data-lemma="" data-grammar="" data-si="31">como</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="31">un</span> <span class="w" data-tr="животное" data-pos="сущ." data-lemma="el animal" data-grammar="" data-si="31">animal</span> <span class="w" data-tr="усталый" data-pos="прил." data-lemma="cansado" data-grammar="" data-si="31">cansado</span> <span class="w" data-tr="который; что" data-pos="мест." data-lemma="" data-grammar="" data-si="31">que</span> <span class="w" data-tr="наконец" data-pos="нар." data-lemma="" data-grammar="" data-si="31">por fin</span> <span class="w" data-tr="возвращается" data-pos="глаг." data-lemma="volver" data-grammar="**vuelve** — *presente*, 3 л. ед. ч., от **volver**.
+
+*Чередование в корне:* `v[[o]]lver` → `v[[ue]]lve` (o → ue).
+" data-si="31">vuelve</span> <span class="w" data-tr="в, к; (перед временем/лицом)" data-pos="предл." data-lemma="" data-grammar="" data-si="31">a</span> <span class="w" data-tr="дом" data-pos="сущ." data-lemma="la casa" data-grammar="" data-si="31">casa</span><span class="s" data-tr="Корабль приближается медленно, терпеливо, как усталое животное, что наконец возвращается домой." data-si="31">.</span></p>
+
+        <p><span class="w" data-tr="если" data-pos="союз" data-lemma="" data-grammar="" data-si="32">Si</span> <span class="w" data-tr="(я) открываю" data-pos="глаг." data-lemma="abrir" data-grammar="**abro** — *presente*, 1 л. ед. ч.
+" data-si="32">abro</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="32">el</span> <span class="w" data-tr="причал" data-pos="сущ." data-lemma="el muelle" data-grammar="" data-si="32">muelle</span>, <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="32">no</span> <span class="w" data-tr="(я) знаю" data-pos="глаг." data-lemma="saber" data-grammar="**sé** — *presente*, 1 л. ед. ч., неправильный, от **saber**. (С ударением — чтобы отличать от **se**.)
+" data-si="32">sé</span> <span class="w" data-tr="что" data-pos="мест." data-lemma="" data-grammar="" data-si="32">qué</span> <span class="w" data-tr="(я) иду; собираюсь" data-pos="глаг." data-lemma="ir" data-grammar="**voy a + инфинитив** — *futuro próximo* (ближайшее будущее): `voy` (от **ir**) + `a` + **encontrar** = «найду / собираюсь найти».
+" data-si="32">voy</span> <span class="w" data-tr="в, к; (перед временем/лицом)" data-pos="предл." data-lemma="" data-grammar="" data-si="32">a</span> <span class="w" data-tr="найти, обнаружить" data-pos="глаг." data-lemma="encontrar" data-grammar="**encontrar** — *infinitivo*. Часть конструкции **voy a encontrar**.
+" data-si="32">encontrar</span> <span class="w" data-tr="внутри" data-pos="нар." data-lemma="" data-grammar="" data-si="32">dentro</span><span class="s" data-tr="Если я открою причал, я не знаю, что найду внутри." data-si="32" data-note="*Условие 1-го типа:* `si` + *presente* — реальное условие. Главная часть тоже в настоящем/будущем.
+">.</span> <span class="w" data-tr="если" data-pos="союз" data-lemma="" data-grammar="" data-si="33">Si</span> <span class="w" data-tr="(я) говорю" data-pos="глаг." data-lemma="decir" data-grammar="**digo** — *presente*, 1 л. ед. ч., неправильный, от **decir**.
+" data-si="33">digo</span> <span class="w" data-tr="который; что" data-pos="мест." data-lemma="" data-grammar="" data-si="33">que</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="33">no</span>, <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="33">la</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="33">nave</span> <span class="w" data-tr="идёт; собирается" data-pos="глаг." data-lemma="ir" data-grammar="**va a + инфинитив** — *futuro próximo* (ближайшее будущее): `va` (3 л. от **ir**) + `a` + **seguir** = «полетит дальше».
+" data-si="33">va</span> <span class="w" data-tr="в, к; (перед временем/лицом)" data-pos="предл." data-lemma="" data-grammar="" data-si="33">a</span> <span class="w" data-tr="продолжать, лететь дальше" data-pos="глаг." data-lemma="seguir" data-grammar="**seguir** — *infinitivo*. Здесь **va a seguir** — ближайшее будущее: «полетит дальше».
+" data-si="33">seguir</span> <span class="w" data-tr="одна, в одиночестве" data-pos="прил." data-lemma="solo" data-grammar="" data-si="33">sola</span>, <span class="w" data-tr="к, в сторону" data-pos="предл." data-lemma="" data-grammar="" data-si="33">hacia</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="33">el</span> <span class="w" data-tr="холод" data-pos="сущ." data-lemma="el frío" data-grammar="" data-si="33">frío</span>, <span class="w" data-tr="навсегда" data-pos="нар." data-lemma="" data-grammar="" data-si="33">para siempre</span><span class="s" data-tr="Если я скажу нет, корабль полетит дальше один, в холод, навсегда." data-si="33">.</span></p>
+
+        <p><span class="w" data-tr="мой" data-pos="опр." data-lemma="" data-grammar="" data-si="34">Mi</span> <span class="w" data-tr="начальник" data-pos="сущ." data-lemma="el jefe" data-grammar="" data-si="34">jefe</span> <span class="w" data-tr="спит" data-pos="глаг." data-lemma="dormir" data-grammar="**duerme** — *presente*, 3 л. ед. ч., от **dormir**.
+
+*Чередование в корне:* `d[[o]]rmir` → `d[[ue]]rme` (o → ue).
+" data-si="34">duerme</span><span class="s" data-tr="Мой начальник спит." data-si="34">.</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="35">El</span> <span class="w" data-tr="регламент, правила" data-pos="сущ." data-lemma="el reglamento" data-grammar="" data-si="35">reglamento</span> <span class="w" data-tr="(он/это) есть" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser**.
+" data-si="35">es</span> <span class="w" data-tr="ясный, понятный" data-pos="прил." data-lemma="claro" data-grammar="" data-si="35">claro</span>: <span class="w" data-tr="без" data-pos="предл." data-lemma="" data-grammar="" data-si="35">sin</span> <span class="w" data-tr="список" data-pos="сущ." data-lemma="la lista" data-grammar="" data-si="35">lista</span>, <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="35">no</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber**: «есть / имеется». Одна на ед. и мн. ч.
+" data-si="35">hay</span> <span class="w" data-tr="разрешение" data-pos="сущ." data-lemma="el permiso" data-grammar="" data-si="35">permiso</span><span class="s" data-tr="Регламент ясен: без списка — нет разрешения." data-si="35">.</span> <span class="w" data-tr="но" data-pos="союз" data-lemma="" data-grammar="" data-si="36">Pero</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="36">el</span> <span class="w" data-tr="регламент, правила" data-pos="сущ." data-lemma="el reglamento" data-grammar="" data-si="36">reglamento</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="36">no</span> <span class="w" data-tr="написал(а)" data-pos="глаг." data-lemma="escribir" data-grammar="**escribió** — *pretérito indefinido*, 3 л. ед. ч., от **escribir**.
+" data-si="36">escribió</span> <span class="w" data-tr="та, эта" data-pos="опр." data-lemma="ese" data-grammar="" data-si="36">esa</span> <span class="w" data-tr="слово" data-pos="сущ." data-lemma="la palabra" data-grammar="" data-si="36">palabra</span>, "<span class="w" data-tr="спасибо" data-pos="сущ." data-lemma="gracias" data-grammar="" data-si="36">gracias</span>"<span class="s" data-tr="Но регламент не написал этого слова — «спасибо»." data-si="36">.</span></p>
+
+        <p><span class="w" data-tr="(я) смотрю" data-pos="глаг." data-lemma="mirar" data-grammar="**miro** — *presente*, 1 л. ед. ч.
+
+`mir·[[ar]]` → `mir·[[o]]`
+" data-si="37">Miro</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="37">la</span> <span class="w" data-tr="экран" data-pos="сущ." data-lemma="la pantalla" data-grammar="" data-si="37">pantalla</span><span class="s" data-tr="Смотрю на экран." data-si="37">.</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="38">La</span> <span class="w" data-tr="корабль" data-pos="сущ." data-lemma="la nave" data-grammar="" data-si="38">nave</span> <span class="w" data-tr="ждёт" data-pos="глаг." data-lemma="esperar" data-grammar="**espera** — *presente*, 3 л. ед. ч.
+" data-si="38">espera</span><span class="s" data-tr="Корабль ждёт." data-si="38">.</span> <span class="w" data-tr="(я) имею, у меня" data-pos="глаг." data-lemma="tener" data-grammar="**tengo** — *presente*, 1 л. ед. ч., неправильный, от **tener**.
+" data-si="39">Tengo</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="" data-si="39">la</span> <span class="w" data-tr="рука" data-pos="сущ." data-lemma="la mano" data-grammar="**la mano** — сущ. *ж. р.*, хотя оканчивается на `-o` (исключение).
+" data-si="39">mano</span> <span class="w" data-tr="на, над" data-pos="предл." data-lemma="" data-grammar="" data-si="39">sobre</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="39">el</span> <span class="w" data-tr="кнопка" data-pos="сущ." data-lemma="el botón" data-grammar="" data-si="39">botón</span><span class="s" data-tr="Моя рука над кнопкой." data-si="39">.</span></p>
+
+        <p><span class="w" data-tr="снаружи" data-pos="нар." data-lemma="" data-grammar="" data-si="40">Afuera</span>, <span class="w" data-tr="(артикль ж. мн.)" data-pos="арт." data-lemma="" data-grammar="" data-si="40">las</span> <span class="w" data-tr="огни, свет" data-pos="сущ." data-lemma="la luz" data-grammar="**luces** — мн. ч. от **la luz**: `lu[[z]]` → `lu[[c]]es` (z → c перед `-es`).
+" data-si="40">luces</span> <span class="w" data-tr="из, от" data-pos="предл." data-lemma="" data-grammar="" data-si="40">de</span> <span class="w" data-tr="Церера — карликовая планета, узловой порт пояса астероидов" data-pos="имя" data-lemma="" data-grammar="" data-si="40">Ceres</span> <span class="w" data-tr="продолжают, по-прежнему (горят)" data-pos="глаг." data-lemma="seguir" data-grammar="**siguen** — *presente*, 3 л. мн. ч., от **seguir**.
+
+*Чередование в корне:* `s[[e]]guir` → `s[[i]]guen` (e → i). **seguir + причастие** = «продолжать быть».
+" data-si="40">siguen</span> <span class="w" data-tr="включённые, горящие" data-pos="прил." data-lemma="encendido" data-grammar="**encendidas** — причастие от **encender** «зажигать», ж. мн.
+" data-si="40">encendidas</span>, <span class="w" data-tr="спокойные" data-pos="прил." data-lemma="tranquilo" data-grammar="" data-si="40">tranquilas</span>, <span class="w" data-tr="как" data-pos="союз" data-lemma="" data-grammar="" data-si="40">como</span> <span class="w" data-tr="всегда" data-pos="нар." data-lemma="" data-grammar="" data-si="40">siempre</span><span class="s" data-tr="Снаружи огни Цереры по-прежнему горят, спокойные, как всегда." data-si="40">.</span></p>
+      </article>
+    </div>
+
+    <aside class="rail">
+
+      <div class="panel schematic">
+        <div class="phead"><span>Esquema de aproximación</span><span>R-07</span></div>
+        <div class="pbody">
+          <svg viewBox="0 0 320 320" role="img" aria-label="Esquema de radar: una nave solitaria se acerca al puerto de Ceres">
+            <defs>
+              <radialGradient id="sweepGrad" cx="0%" cy="0%" r="100%">
+                <stop offset="0%" stop-color="#c98a3c" stop-opacity="0.42"/>
+                <stop offset="100%" stop-color="#c98a3c" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- range rings -->
+            <g fill="none" stroke="#6c746d" stroke-width="1">
+              <circle cx="160" cy="160" r="36"/>
+              <circle cx="160" cy="160" r="74"/>
+              <circle cx="160" cy="160" r="112"/>
+              <circle cx="160" cy="160" r="150" stroke="#3c443f"/>
+            </g>
+
+            <!-- bearing ticks -->
+            <g stroke="#6c746d" stroke-width="1">
+              <line x1="160" y1="10" x2="160" y2="26"/>
+              <line x1="160" y1="294" x2="160" y2="310"/>
+              <line x1="10" y1="160" x2="26" y2="160"/>
+              <line x1="294" y1="160" x2="310" y2="160"/>
+            </g>
+            <!-- diagonal hairlines -->
+            <g stroke="#9aa39a" stroke-width="0.6" stroke-dasharray="2 5">
+              <line x1="54" y1="54" x2="266" y2="266"/>
+              <line x1="266" y1="54" x2="54" y2="266"/>
+            </g>
+
+            <!-- sweep -->
+            <g class="sweep">
+              <path d="M160 160 L160 10 A150 150 0 0 1 266 54 Z" fill="url(#sweepGrad)"/>
+              <line x1="160" y1="160" x2="160" y2="10" stroke="#c98a3c" stroke-width="1.4"/>
+            </g>
+
+            <!-- port marker (center) -->
+            <g>
+              <circle cx="160" cy="160" r="6" fill="#9e3328"/>
+              <circle cx="160" cy="160" r="11" fill="none" stroke="#9e3328" stroke-width="1.2"/>
+              <text x="160" y="184" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" letter-spacing="1" fill="#6c746d">CERES · PA-7</text>
+            </g>
+
+            <!-- lone ship on outer arc -->
+            <g class="ship" transform="translate(243 92)">
+              <path d="M0 0 L13 5 L0 10 L4 5 Z" fill="#181d1b" transform="rotate(150)"/>
+              <circle cx="0" cy="0" r="2.4" fill="#9e3328"/>
+              <text x="-6" y="-9" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="9" letter-spacing="0.5" fill="#7c271e">PRG·?</text>
+            </g>
+          </svg>
+          <div class="caption">Contacto único, sin transpondedor válido. Rumbo <b>directo a muelle</b>. Velocidad: lenta, constante.</div>
+        </div>
+      </div>
+
+      <div class="panel resolution">
+        <div class="phead"><span>Resolución</span><span>§ 4.1</span></div>
+        <div class="pbody">
+          <div class="stampbox">
+            <div class="rlabel">Permiso de atraque</div>
+            <div class="choice"><span class="box"></span>Concedido</div>
+            <div class="choice"><span class="box"></span>Denegado</div>
+            <div class="pend">Pendiente</div>
+          </div>
+          <div class="await"><span class="blip"></span>En espera de autorización</div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer class="colophon">
+    <span>Doc. PA-7 / 9·17 · carbón 2 de 3</span>
+    <span>Nivel A1 · 271 palabras</span>
+    <span>Universo: Expansión</span>
+  </footer>
+
+</main>
+
+<script data-popup>
+window.__leeSentences = [{"tr": "Я работаю в порту Цереры.", "note": ""}, {"tr": "Здесь проходят все корабли пояса.", "note": ""}, {"tr": "Я даю разрешение на швартовку.", "note": ""}, {"tr": "Это спокойная работа.", "note": ""}, {"tr": "Корабли прибывают, ждут, швартуются и уходят.", "note": ""}, {"tr": "Сегодня обычный день.", "note": ""}, {"tr": "Я пью кофе.", "note": ""}, {"tr": "Смотрю на огни причалов.", "note": ""}, {"tr": "В три часа ночи старый корабль просит впустить его.", "note": "**a las tres de la mañana** — «в три часа ночи». Время до рассвета по-испански — *de la mañana*.\n"}, {"tr": "Его нет в списке.", "note": ""}, {"tr": "Его номер очень старый.", "note": ""}, {"tr": "Я вызываю его, но отвечает не человек.", "note": ""}, {"tr": "Отвечает машина.", "note": ""}, {"tr": "Порт Цереры, это корабль «Перегрино».", "note": ""}, {"tr": "Просим разрешение на швартовку.", "note": ""}, {"tr": "Везём сорок пассажиров.", "note": ""}, {"tr": "Все спят.", "note": ""}, {"tr": "Спасибо.", "note": ""}, {"tr": "Я ищу название «Перегрино» в реестре.", "note": ""}, {"tr": "Корабль отбыл семьдесят лет назад.", "note": "**hace** + время = «… назад»: *hace setenta años* — «семьдесят лет назад».\n"}, {"tr": "С тех пор о нём никто ничего не знает.", "note": "*Двойное отрицание:* **nadie … nada** — в испанском это норма, а не ошибка.\n"}, {"tr": "Сорок пассажиров всё ещё спят.", "note": ""}, {"tr": "Или уже не спят.", "note": ""}, {"tr": "Может быть, машина не знает разницы.", "note": ""}, {"tr": "Зову ещё раз.", "note": ""}, {"tr": "Есть кто-нибудь, кто не спит, на борту?", "note": ""}, {"tr": "— спрашиваю я.", "note": ""}, {"tr": "Все спят.", "note": ""}, {"tr": "Просим разрешение на швартовку.", "note": ""}, {"tr": "Спасибо.", "note": ""}, {"tr": "Всегда одна и та же фраза.", "note": ""}, {"tr": "Корабль приближается медленно, терпеливо, как усталое животное, что наконец возвращается домой.", "note": ""}, {"tr": "Если я открою причал, я не знаю, что найду внутри.", "note": "*Условие 1-го типа:* `si` + *presente* — реальное условие. Главная часть тоже в настоящем/будущем.\n"}, {"tr": "Если я скажу нет, корабль полетит дальше один, в холод, навсегда.", "note": ""}, {"tr": "Мой начальник спит.", "note": ""}, {"tr": "Регламент ясен: без списка — нет разрешения.", "note": ""}, {"tr": "Но регламент не написал этого слова — «спасибо».", "note": ""}, {"tr": "Смотрю на экран.", "note": ""}, {"tr": "Корабль ждёт.", "note": ""}, {"tr": "Моя рука над кнопкой.", "note": ""}, {"tr": "Снаружи огни Цереры по-прежнему горят, спокойные, как всегда.", "note": ""}];
+(function(){
+  var pop = null, active = null, hovered = null, isTouch = false, hlEls = [];
+  var sentences = window.__leeSentences || [];
+  function ensurePop(){
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
+    document.body.appendChild(pop);
+    return pop;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function dictKey(lemma){
+    return lemma.replace(/^(el |la |los |las |un |una |unos |unas )/i,'').trim();
+  }
+  function mdToHtml(md){
+    if(!md) return '';
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
+      p = p.replace(/`([^`]+)`/g, function(_, c){
+        return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
+      });
+      p = p.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+      p = p.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+      p = p.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>');
+      return '<p>' + p + '</p>';
+    }).join('');
+  }
+  function sentenceHtml(tr, note){
+    return '<div class="s-label">traducción</div>' +
+      '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
+      (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  function clearHl(){
+    for (var i=0;i<hlEls.length;i++) hlEls[i].classList.remove('hl');
+    hlEls = [];
+  }
+  function setHl(els){
+    clearHl();
+    for (var i=0;i<els.length;i++) els[i].classList.add('hl');
+    hlEls = els;
+  }
+  // forceSentence: true when Shift is held — render any word as its full-sentence popup.
+  function show(el, forceSentence){
+    var p = ensurePop();
+    var asSentence = el.classList.contains('s') || (forceSentence && el.classList.contains('w'));
+    if (asSentence){
+      var str = '', snote = '';
+      if (el.classList.contains('s')){ str = el.dataset.tr || ''; snote = el.dataset.note || ''; }
+      else { var s = sentences[+el.dataset.si] || {}; str = s.tr || ''; snote = s.note || ''; }
+      p.classList.add('sentence');
+      p.classList.remove('idiom');
+      p.classList.toggle('has-grammar', !!snote);
+      p.innerHTML = sentenceHtml(str, snote);
+    } else {
+      p.classList.remove('sentence');
+      var tr = el.dataset.tr || '', pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var rawParts = el.dataset.parts || '', literal = el.dataset.literal || '';
+      var isIdiom = !!rawParts || !!literal || pos === 'идиома';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
+        : '';
+      var breakdownHtml = '';
+      if (rawParts){
+        try {
+          var arr = JSON.parse(rawParts);
+          if (arr && arr.length){
+            breakdownHtml = '<div class="breakdown">' + arr.map(function(it){
+              return '<div class="bd-row"><span class="bd-w">'+escapeHtml(it.w)+'</span>'+
+                     '<span class="bd-tr">'+escapeHtml(it.tr)+'</span></div>';
+            }).join('') + '</div>';
+          }
+        } catch(_){}
+      }
+      var literalHtml = literal ? '<div class="literal"><span class="lit-label">досл.</span> '+escapeHtml(literal)+'</div>' : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar || !!breakdownHtml || !!literal);
+      p.classList.toggle('idiom', isIdiom);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        breakdownHtml + literalHtml + grammarHtml + linkHtml;
+    }
+    p.classList.add('show');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
+    el.classList.add('active');
+    active = el;
+    // Scope highlight: whole sentence (all spans sharing data-si) or whole idiom span.
+    if (asSentence){
+      var si = el.dataset.si;
+      var set = si != null
+        ? Array.prototype.slice.call(document.querySelectorAll('.w[data-si="'+si+'"], .s[data-si="'+si+'"]'))
+        : [];
+      setHl(set.length ? set : [el]);
+    } else if (isIdiom){
+      setHl([el]);
+    } else {
+      clearHl();
+    }
+  }
+  function hide(){
+    hovered = null;
+    clearHl();
+    if (!pop) return;
+    pop.classList.remove('show');
+    if (active){ active.classList.remove('active'); active = null; }
+  }
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    // top/left are document coordinates. The popup is positioned relative to its
+    // offsetParent (e.g. a position:relative <body> shifted down by a child's
+    // margin), whose origin may differ from the document origin — subtract it so
+    // the popup lands on the correct side of the word instead of over it.
+    var host = p.offsetParent;
+    if (host){
+      var hr = host.getBoundingClientRect(), cs = getComputedStyle(host);
+      top -= hr.top + window.scrollY + (parseFloat(cs.borderTopWidth) || 0);
+      left -= hr.left + window.scrollX + (parseFloat(cs.borderLeftWidth) || 0);
+    }
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
+  }
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el){ hovered = el; show(el, e.shiftKey); }
+  });
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
+    hide();
+  });
+  // Holding Shift turns any word popup into its full-sentence popup; releasing reverts.
+  function onShift(e){
+    if (e.key !== 'Shift' || !hovered) return;
+    if (hovered.classList.contains('w')) show(hovered, e.shiftKey);
+  }
+  document.addEventListener('keydown', onShift);
+  document.addEventListener('keyup', onShift);
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else { hovered = el; show(el, e.shiftKey); } }
+    else if (!onPop) hide();
+  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+})();
+</script>
+</body>
+</html>
