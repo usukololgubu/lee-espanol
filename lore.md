@@ -145,3 +145,10 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Locations: Puerto de Ceres (orbital harbor at Ceres — the long-referenced belt hub now seen on-page; all belt traffic routes through it, los muelles / docking berths)
 - Ships: *Peregrino* (automated colony ship, left 70 years ago, 40 sleepers aboard, returns unmanifested asking permission to dock)
 - Terms: el permiso para atracar (docking permission protocol — no manifest, no permit), el reglamento (port rulebook)
+
+### #18 — la-carga
+- Characters: Nadia (minera de cometa / comet miner), Leo (compañero, en cryosleep aboard La Garza)
+- Locations: roca PK-9 (tiny belt mining camp, ~6 people, in a comet's near-pass path)
+- Ships: *La Garza* (cometero / comet-harvesting craft — first appearance of comet-mining ship; long-period comet bound for Ceres to sell ice)
+- Terms: cometero (comet harvester ship type), bodegas (cargo holds of harvested ice)
+- Timeline: día 121 (La Garza's harvest count on this comet run)
