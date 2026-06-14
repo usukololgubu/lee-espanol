@@ -152,3 +152,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Ships: *La Garza* (cometero / comet-harvesting craft — first appearance of comet-mining ship; long-period comet bound for Ceres to sell ice)
 - Terms: cometero (comet harvester ship type), bodegas (cargo holds of harvested ice)
 - Timeline: día 121 (La Garza's harvest count on this comet run)
+
+### #19 — la-boveda
+- Characters: Teresa (guardiana de la bóveda de semillas / seed-vault keeper)
+- Locations: Estación de Tritón (cold-storage seed/gene vault on Triton, Neptune's moon, outer edge of the system); la colonia vecina (a small hungry colony on the next moon, off-page, sends the radio request)
+- Terms: la bóveda (sealed Earth seed/gene archive, kept "para el regreso", never opened); el regreso (awaited return that may never come — sibling euphemism to *el silencio*); los dormidos (reused — here likened to the dormant seeds)
