@@ -72,121 +72,84 @@ body{
   color:var(--muted);
 }
 .entries{
-  display:grid;
-  grid-template-columns:repeat(2, minmax(0, 1fr));
-  gap:0.9rem;
+  display:flex;
+  flex-direction:column;
   margin:0;
   padding:0;
+  border-top:1px solid var(--hair);
 }
 .entry{
   position:relative;
-  display:flex;
-  flex-direction:column;
-  gap:0.35rem;
-  padding:0.95rem 1rem 0.9rem;
-  border:1px solid var(--ink);
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:baseline;
+  column-gap:1.1rem;
+  padding:0.85rem 0.7rem 0.85rem 1.5rem;
+  border-bottom:1px solid var(--hair);
+  border-left:3px solid var(--card-accent, var(--hair));
   text-decoration:none;
   color:inherit;
   background:var(--bg);
-  min-height:6.4rem;
-  overflow:hidden;
-  /* per-card palette is supplied inline via --card-bg/--card-ink/--card-accent */
-  transition:
-    background 0.32s ease,
-    color 0.32s ease,
-    border-color 0.32s ease,
-    transform 0.18s ease,
-    box-shadow 0.28s ease;
-}
-.entry::before{
-  /* accent stripe across the top, hidden until hover */
-  content:"";
-  position:absolute;
-  inset:0 0 auto 0;
-  height:3px;
-  background:var(--card-accent, transparent);
-  transform:scaleX(0);
-  transform-origin:left center;
-  transition:transform 0.34s ease;
+  /* per-card accent is supplied inline via --card-accent */
+  transition:background 0.22s ease, padding-left 0.22s ease;
 }
 .entry:hover{
-  background:var(--card-bg, var(--bg-soft));
-  color:var(--card-ink, var(--ink));
-  border-color:var(--card-ink, var(--ink));
-  transform:translateY(-2px);
-  box-shadow:0 4px 14px -8px rgba(0,0,0,0.35);
+  background:var(--bg-soft);
+  padding-left:1.8rem;
 }
-.entry:hover::before{
-  transform:scaleX(1);
+/* unread marker — a small accent dot in the left gutter; hidden once read */
+.entry::after{
+  content:"";
+  position:absolute;
+  left:0.55rem;
+  top:1.18rem;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--card-accent, var(--ink));
+  transition:opacity 0.22s ease;
 }
-.row1{
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  font-size:0.78rem;
-  letter-spacing:0.08em;
-  color:var(--ink-soft);
-  transition:color 0.32s ease;
-}
-.entry:hover .row1{
-  color:var(--card-accent, var(--ink-soft));
-}
-.row1 .num{
+.entry.is-read{color:var(--muted)}
+.entry.is-read::after{opacity:0}
+.entry.is-read:hover{color:inherit}
+.entry .num{
   font-weight:700;
-  color:var(--ink);
-  transition:color 0.32s ease;
-}
-.entry:hover .row1 .num{
+  font-size:1.05rem;
+  letter-spacing:0.02em;
   color:var(--card-accent, var(--ink));
+  font-variant-numeric:tabular-nums;
+  min-width:1.4em;
 }
-.row1 .date{
-  color:var(--muted);
-  transition:color 0.32s ease;
-}
-.entry:hover .row1 .date{
-  color:color-mix(in srgb, var(--card-ink, var(--muted)) 65%, transparent);
-}
+.entry .body{min-width:0}
 .entry .e-title{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.05em;
   font-size:0.98rem;
-  line-height:1.22;
-  margin-top:0.1rem;
-  color:var(--ink);
-  transition:color 0.32s ease;
+  line-height:1.2;
+  color:inherit;
 }
-.entry:hover .e-title{color:var(--card-ink, var(--ink))}
-.entry .meta{
+.entry .logline{
   font-style:italic;
-  font-size:0.84rem;
+  font-size:0.86rem;
   line-height:1.45;
   color:var(--ink-soft);
-  margin-top:auto;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  transition:color 0.32s ease;
+  margin-top:0.22rem;
 }
-.entry:hover .meta{
-  color:color-mix(in srgb, var(--card-ink, var(--ink-soft)) 70%, transparent);
-}
-.entry .words{
-  font-size:0.78rem;
+.entry.is-read .logline{color:var(--muted)}
+.entry .aside{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:0.15rem;
+  font-size:0.72rem;
   letter-spacing:0.06em;
   color:var(--muted);
-  transition:color 0.32s ease;
-}
-.entry:hover .words{
-  color:color-mix(in srgb, var(--card-ink, var(--muted)) 55%, transparent);
+  white-space:nowrap;
+  text-align:right;
 }
 @media (prefers-reduced-motion: reduce){
-  .entry, .entry::before, .row1, .row1 .num, .row1 .date, .entry .e-title, .entry .meta, .entry .words{
-    transition:none;
-  }
-  .entry:hover{transform:none}
+  .entry, .entry::after{transition:none}
 }
 footer.colophon{
   margin-top:2.2rem;
@@ -218,8 +181,8 @@ footer.colophon a:hover{
 @media(max-width:640px){
   .page{padding:2.2rem 1.1rem 2.8rem;max-width:none}
   body{font-size:14px}
-  .entries{grid-template-columns:1fr;gap:0.7rem}
-  .entry{min-height:auto}
+  .entry{grid-template-columns:auto 1fr;column-gap:0.8rem;row-gap:0.3rem;padding:0.8rem 0.4rem 0.8rem 1.4rem}
+  .entry .aside{grid-column:2;flex-direction:row;gap:0.7rem;align-items:baseline;justify-content:flex-start;text-align:left}
   footer.colophon{flex-direction:column;gap:0.4rem}
   .head{font-size:0.68rem;letter-spacing:0.14em}
 }
@@ -247,204 +210,244 @@ footer.colophon a:hover{
   <div class="entries">
 <!-- STORIES:START -->
 
-    <a class="entry" href="stories/19-la-boveda/index.html" style="--card-bg:#0d1512;--card-ink:#e8ead8;--card-accent:#7cbb63">
-      <div class="row1">
-        <span class="num">19</span>
+    <a class="entry" data-slug="20-la-orden" href="stories/20-la-orden/index.html" style="--card-accent:#63cfc4">
+      <span class="num">20</span>
+      <div class="body">
+        <div class="e-title">La orden</div>
+        <div class="logline">Emilio recibe la orden de cerrar una ruta de la que dependen setenta personas.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·06·14</span>
+        <span class="words">267 palabras</span>
       </div>
-      <div class="e-title">La bóveda</div>
-      <div class="meta">Teresa, guardiana de la bóveda de semillas · Estación de Tritón, luna de Neptuno, borde del sistema</div>
-      <div class="words">268 palabras</div>
     </a>
 
-    <a class="entry" href="stories/20-la-orden/index.html" style="--card-bg:#0e1416;--card-ink:#e7e2d3;--card-accent:#63cfc4">
-      <div class="row1">
-        <span class="num">20</span>
+    <a class="entry" data-slug="19-la-boveda" href="stories/19-la-boveda/index.html" style="--card-accent:#7cbb63">
+      <span class="num">19</span>
+      <div class="body">
+        <div class="e-title">La bóveda</div>
+        <div class="logline">Teresa guarda una bóveda de semillas en el borde del sistema, tras una puerta cerrada.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·06·14</span>
+        <span class="words">268 palabras</span>
       </div>
-      <div class="e-title">La orden</div>
-      <div class="meta">Emilio, administrador de la Estación Oberón · Estación Oberón, sistema de Urano (relé y suministro)</div>
-      <div class="words">267 palabras</div>
     </a>
 
-    <a class="entry" href="stories/17-el-permiso/index.html" style="--card-bg:#dadfd9;--card-ink:#181d1b;--card-accent:#9e3328">
-      <div class="row1">
-        <span class="num">17</span>
-        <span class="date">26·05·31</span>
+    <a class="entry" data-slug="18-la-carga" href="stories/18-la-carga/index.html" style="--card-accent:#ff9d2e">
+      <span class="num">18</span>
+      <div class="body">
+        <div class="e-title">La carga</div>
+        <div class="logline">Nadia vigila sola un cometero mientras su compañero duerme, y debe decidir.</div>
       </div>
-      <div class="e-title">El permiso</div>
-      <div class="meta">controlador de atraque Iván · Puerto de Ceres (orbital harbor, asteroid belt hub)</div>
-      <div class="words">271 palabras</div>
-    </a>
-
-    <a class="entry" href="stories/18-la-carga/index.html" style="--card-bg:#070b14;--card-ink:#e6f0f7;--card-accent:#ff9d2e">
-      <div class="row1">
-        <span class="num">18</span>
+      <div class="aside">
         <span class="date">26·06·06</span>
+        <span class="words">281 palabras</span>
       </div>
-      <div class="e-title">La carga</div>
-      <div class="meta">minera Nadia · cometero La Garza, sobre un cometa de período largo, en el espacio exterior</div>
-      <div class="words">281 palabras</div>
     </a>
 
-    <a class="entry" href="stories/15-el-mismo-lugar/index.html" style="--card-bg:#0e0a08;--card-ink:#e8ddc7;--card-accent:#c9613a">
-      <div class="row1">
-        <span class="num">15</span>
+    <a class="entry" data-slug="17-el-permiso" href="stories/17-el-permiso/index.html" style="--card-accent:#9e3328">
+      <span class="num">17</span>
+      <div class="body">
+        <div class="e-title">El permiso</div>
+        <div class="logline">Iván da permiso para atracar en el Puerto de Ceres, y una nave le pide lo imposible.</div>
+      </div>
+      <div class="aside">
+        <span class="date">26·05·31</span>
+        <span class="words">271 palabras</span>
+      </div>
+    </a>
+
+    <a class="entry" data-slug="16-la-nube" href="stories/16-la-nube/index.html" style="--card-accent:#d9852a">
+      <span class="num">16</span>
+      <div class="body">
+        <div class="e-title">La nube</div>
+        <div class="logline">Daniela estudia el cielo naranja de Titán, donde nunca cambia nada. Hasta hoy.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·22</span>
+        <span class="words">278 palabras</span>
       </div>
-      <div class="e-title">El mismo lugar</div>
-      <div class="meta">Hugo, cartógrafo de superficie · Estación Fobos, órbita de Marte</div>
-      <div class="words">265 palabras</div>
     </a>
 
-    <a class="entry" href="stories/16-la-nube/index.html" style="--card-bg:#160c06;--card-ink:#f3e3c8;--card-accent:#d9852a">
-      <div class="row1">
-        <span class="num">16</span>
+    <a class="entry" data-slug="15-el-mismo-lugar" href="stories/15-el-mismo-lugar/index.html" style="--card-accent:#c9613a">
+      <span class="num">15</span>
+      <div class="body">
+        <div class="e-title">El mismo lugar</div>
+        <div class="logline">Desde Fobos, Hugo dibuja los mismos mapas del polvo de Marte, día tras día.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·22</span>
+        <span class="words">265 palabras</span>
       </div>
-      <div class="e-title">La nube</div>
-      <div class="meta">meteoróloga Daniela · Estación Húygens-4, Titán</div>
-      <div class="words">278 palabras</div>
     </a>
 
-    <a class="entry" href="stories/13-reloj-mercurio/index.html" style="--card-bg:#ede0bd;--card-ink:#1a1612;--card-accent:#d4671f">
-      <div class="row1">
-        <span class="num">13</span>
-        <span class="date">26·05·13</span>
+    <a class="entry" data-slug="14-orquideas-vega" href="stories/14-orquideas-vega/index.html" style="--card-accent:#6b4f7a">
+      <span class="num">14</span>
+      <div class="body">
+        <div class="e-title">Las orquídeas de Vega</div>
+        <div class="logline">Camila cuida orquídeas frías en una ciudad que flota sobre las nubes de Venus.</div>
       </div>
-      <div class="e-title">El reloj de Mercurio</div>
-      <div class="meta">ingeniera de escudo (Paola) · Plataforma Para-sol, L1 entre el sol y Mercurio, sobre la sombra polar de la colonia</div>
-      <div class="words">271 palabras</div>
-    </a>
-
-    <a class="entry" href="stories/14-orquideas-vega/index.html" style="--card-bg:#ebe4d2;--card-ink:#2a2520;--card-accent:#6b4f7a">
-      <div class="row1">
-        <span class="num">14</span>
+      <div class="aside">
         <span class="date">26·05·22</span>
+        <span class="words">274 palabras</span>
       </div>
-      <div class="e-title">Las orquídeas de Vega</div>
-      <div class="meta">jardinera Camila · Ciudad-Globo Vega, Venus cloud city</div>
-      <div class="words">274 palabras</div>
     </a>
 
-    <a class="entry" href="stories/11-la-dosis/index.html" style="--card-bg:#f4ecdc;--card-ink:#1a1814;--card-accent:#8a1f1f">
-      <div class="row1">
-        <span class="num">11</span>
+    <a class="entry" data-slug="13-reloj-mercurio" href="stories/13-reloj-mercurio/index.html" style="--card-accent:#d4671f">
+      <span class="num">13</span>
+      <div class="body">
+        <div class="e-title">El reloj de Mercurio</div>
+        <div class="logline">Frente al sol, cerca de Mercurio, Paola vigila el escudo que protege una colonia.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·13</span>
+        <span class="words">271 palabras</span>
       </div>
-      <div class="e-title">La dosis</div>
-      <div class="meta">doctor (Dra. Ana Soto) · Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists</div>
-      <div class="words">288 palabras</div>
     </a>
 
-    <a class="entry" href="stories/12-el-faro-apagado/index.html" style="--card-bg:#0c1220;--card-ink:#e8e0d1;--card-accent:#8db6b0">
-      <div class="row1">
-        <span class="num">12</span>
+    <a class="entry" data-slug="12-el-faro-apagado" href="stories/12-el-faro-apagado/index.html" style="--card-accent:#8db6b0">
+      <span class="num">12</span>
+      <div class="body">
+        <div class="e-title">El faro apagado</div>
+        <div class="logline">Renata cuida un faro solitario entre Ceres y Júpiter, y un día la señal calla.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·13</span>
+        <span class="words">244 palabras</span>
       </div>
-      <div class="e-title">El faro apagado</div>
-      <div class="meta">lighthouse keeper (Renata) · Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter</div>
-      <div class="words">244 palabras</div>
     </a>
 
-    <a class="entry" href="stories/09-la-senal/index.html" style="--card-bg:#06061a;--card-ink:#e6e2d4;--card-accent:#6ad1e3">
-      <div class="row1">
-        <span class="num">09</span>
+    <a class="entry" data-slug="11-la-dosis" href="stories/11-la-dosis/index.html" style="--card-accent:#8a1f1f">
+      <span class="num">11</span>
+      <div class="body">
+        <div class="e-title">La dosis</div>
+        <div class="logline">La única médica de una estación marciana reparte una medicina que no alcanza.</div>
+      </div>
+      <div class="aside">
+        <span class="date">26·05·13</span>
+        <span class="words">288 palabras</span>
+      </div>
+    </a>
+
+    <a class="entry" data-slug="10-el-reloj" href="stories/10-el-reloj/index.html" style="--card-accent:#e08060">
+      <span class="num">10</span>
+      <div class="body">
+        <div class="e-title">El reloj</div>
+        <div class="logline">Sofía cuida el software viejo de una colonia religiosa en el cinturón de Kuiper.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·12</span>
+        <span class="words">249 palabras</span>
       </div>
-      <div class="e-title">La señal</div>
-      <div class="meta">radioastrónoma (Mariela) · Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets</div>
-      <div class="words">253 palabras</div>
     </a>
 
-    <a class="entry" href="stories/10-el-reloj/index.html" style="--card-bg:#1a1814;--card-ink:#d4cdb8;--card-accent:#e08060">
-      <div class="row1">
-        <span class="num">10</span>
+    <a class="entry" data-slug="09-la-senal" href="stories/09-la-senal/index.html" style="--card-accent:#6ad1e3">
+      <span class="num">09</span>
+      <div class="body">
+        <div class="e-title">La señal</div>
+        <div class="logline">Desde Plutón, Mariela escucha el espacio vacío hasta que llega una señal.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·12</span>
+        <span class="words">253 palabras</span>
       </div>
-      <div class="e-title">El reloj</div>
-      <div class="meta">software maintainer (Sofía) · Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid</div>
-      <div class="words">249 palabras</div>
     </a>
 
-    <a class="entry" href="stories/07-el-desvio/index.html" style="--card-bg:#e6dec6;--card-ink:#2c2a22;--card-accent:#b8802d">
-      <div class="row1">
-        <span class="num">07</span>
+    <a class="entry" data-slug="08-el-ultimo-que-recuerda" href="stories/08-el-ultimo-que-recuerda/index.html" style="--card-accent:#b88b3b">
+      <span class="num">08</span>
+      <div class="body">
+        <div class="e-title">El último que recuerda</div>
+        <div class="logline">Don Joaquín, de noventa años, es el último que recuerda la Tierra.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·12</span>
+        <span class="words">278 palabras</span>
       </div>
-      <div class="e-title">El desvío</div>
-      <div class="meta">cargo captain (Mateo) · freighter La Mula, asteroid belt, between Mars and Ceres</div>
-      <div class="words">272 palabras</div>
     </a>
 
-    <a class="entry" href="stories/08-el-ultimo-que-recuerda/index.html" style="--card-bg:#ebddc6;--card-ink:#3a2818;--card-accent:#b88b3b">
-      <div class="row1">
-        <span class="num">08</span>
+    <a class="entry" data-slug="07-el-desvio" href="stories/07-el-desvio/index.html" style="--card-accent:#b8802d">
+      <span class="num">07</span>
+      <div class="body">
+        <div class="e-title">El desvío</div>
+        <div class="logline">El capitán Mateo lleva carga entre Marte y Ceres y duda si cambiar de ruta.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·12</span>
+        <span class="words">272 palabras</span>
       </div>
-      <div class="e-title">El último que recuerda</div>
-      <div class="meta">old colonist (Don Joaquín) · Nueva Andalucía, 85 years after losing contact with Earth</div>
-      <div class="words">278 palabras</div>
     </a>
 
-    <a class="entry" href="stories/05-pasajero-unico/index.html" style="--card-bg:#1a1210;--card-ink:#d8c8a4;--card-accent:#f4a85e">
-      <div class="row1">
-        <span class="num">05</span>
+    <a class="entry" data-slug="06-la-traductora" href="stories/06-la-traductora/index.html" style="--card-accent:#b94327">
+      <span class="num">06</span>
+      <div class="body">
+        <div class="e-title">La traductora</div>
+        <div class="logline">Inés traduce textos viejos en Marte y encuentra un mensaje inesperado.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·11</span>
+        <span class="words">268 palabras</span>
       </div>
-      <div class="e-title">Pasajero único</div>
-      <div class="meta">maintenance engineer (Tomás) · generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri</div>
-      <div class="words">264 palabras</div>
     </a>
 
-    <a class="entry" href="stories/06-la-traductora/index.html" style="--card-bg:#ece8df;--card-ink:#15140f;--card-accent:#b94327">
-      <div class="row1">
-        <span class="num">06</span>
+    <a class="entry" data-slug="05-pasajero-unico" href="stories/05-pasajero-unico/index.html" style="--card-accent:#f4a85e">
+      <span class="num">05</span>
+      <div class="body">
+        <div class="e-title">Pasajero único</div>
+        <div class="logline">Tomás despierta a ratos en una nave que tardará ochocientos años en llegar.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·11</span>
+        <span class="words">264 palabras</span>
       </div>
-      <div class="e-title">La traductora</div>
-      <div class="meta">junior linguist (Inés) · Instituto de Lenguas, on Mars — a small translation lab</div>
-      <div class="words">268 palabras</div>
     </a>
 
-    <a class="entry" href="stories/03-zumbido-deriva/index.html" style="--card-bg:#050810;--card-ink:#d0d6dc;--card-accent:#5cdce2">
-      <div class="row1">
-        <span class="num">03</span>
+    <a class="entry" data-slug="04-algo-verde" href="stories/04-algo-verde/index.html" style="--card-accent:#7ee8b8">
+      <span class="num">04</span>
+      <div class="body">
+        <div class="e-title">Algo verde</div>
+        <div class="logline">Sola sobre el hielo de Europa, Lucía encuentra algo verde.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·11</span>
+        <span class="words">255 palabras</span>
       </div>
-      <div class="e-title">Un zumbido en la deriva</div>
-      <div class="meta">navigator (Marco) · ice tug Tortuga, mid-route to Ceres, outer drift</div>
-      <div class="words">215 palabras</div>
     </a>
 
-    <a class="entry" href="stories/04-algo-verde/index.html" style="--card-bg:#04101a;--card-ink:#e7eef0;--card-accent:#7ee8b8">
-      <div class="row1">
-        <span class="num">04</span>
+    <a class="entry" data-slug="03-zumbido-deriva" href="stories/03-zumbido-deriva/index.html" style="--card-accent:#5cdce2">
+      <span class="num">03</span>
+      <div class="body">
+        <div class="e-title">Un zumbido en la deriva</div>
+        <div class="logline">Marco arrastra hielo hacia Ceres y oye un zumbido que no debería existir.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·11</span>
+        <span class="words">215 palabras</span>
       </div>
-      <div class="e-title">Algo verde</div>
-      <div class="meta">biologist (Lucía) · Europa-3 station, atop the ice of Europa, Jupiter system</div>
-      <div class="words">255 palabras</div>
     </a>
 
-    <a class="entry" href="stories/01-saturn-ai/index.html" style="--card-bg:#060912;--card-ink:#e5ebf3;--card-accent:#f0a13a">
-      <div class="row1">
-        <span class="num">01</span>
+    <a class="entry" data-slug="02-nueva-andalucia" href="stories/02-nueva-andalucia/index.html" style="--card-accent:#b48340">
+      <span class="num">02</span>
+      <div class="body">
+        <div class="e-title">Plaza del Patrón</div>
+        <div class="logline">Una antropóloga observa una colonia que reza a Saturno como a un dios.</div>
+      </div>
+      <div class="aside">
         <span class="date">26·05·10</span>
+        <span class="words">273 palabras</span>
       </div>
-      <div class="e-title">Día 412</div>
-      <div class="meta">AI (ARES, station observatory) · Saturn orbit</div>
-      <div class="words">270 palabras</div>
     </a>
 
-    <a class="entry" href="stories/02-nueva-andalucia/index.html" style="--card-bg:#efe4cc;--card-ink:#1d1612;--card-accent:#b48340">
-      <div class="row1">
-        <span class="num">02</span>
-        <span class="date">26·05·10</span>
+    <a class="entry" data-slug="01-saturn-ai" href="stories/01-saturn-ai/index.html" style="--card-accent:#f0a13a">
+      <span class="num">01</span>
+      <div class="body">
+        <div class="e-title">Día 412</div>
+        <div class="logline">Una inteligencia artificial orbita Saturno, sola, y cuenta los días.</div>
       </div>
-      <div class="e-title">Plaza del Patrón</div>
-      <div class="meta">anthropologist (Elena) · Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron</div>
-      <div class="words">273 palabras</div>
+      <div class="aside">
+        <span class="date">26·05·10</span>
+        <span class="words">270 palabras</span>
+      </div>
     </a>
 
 <!-- STORIES:END -->
@@ -457,6 +460,27 @@ footer.colophon a:hover{
   </footer>
 
 </div>
+
+<script>
+// Read/unread state — persisted locally, no backend. Clicking an entry marks it read;
+// read entries dim and lose their accent dot.
+(function(){
+  var KEY = 'lee-read';
+  var set;
+  try { set = new Set(JSON.parse(localStorage.getItem(KEY)) || []); }
+  catch (e) { set = new Set(); }
+  document.querySelectorAll('.entry[data-slug]').forEach(function(a){
+    var slug = a.getAttribute('data-slug');
+    if (set.has(slug)) a.classList.add('is-read');
+    a.addEventListener('click', function(){
+      if (!set.has(slug)) {
+        set.add(slug);
+        try { localStorage.setItem(KEY, JSON.stringify(Array.from(set))); } catch (e) {}
+      }
+    });
+  });
+})();
+</script>
 
 </body>
 </html>

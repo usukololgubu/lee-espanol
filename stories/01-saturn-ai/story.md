@@ -1,6 +1,7 @@
 ---
 seq: 1
 title: "Día 412"
+logline: "Una inteligencia artificial orbita Saturno, sola, y cuenta los días."
 universe: Space Expansion
 protagonist: AI (ARES, station observatory)
 setting: Saturn orbit

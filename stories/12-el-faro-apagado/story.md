@@ -1,6 +1,7 @@
 ---
 seq: 12
 title: "El faro apagado"
+logline: "Renata cuida un faro solitario entre Ceres y Júpiter, y un día la señal calla."
 universe: Space Expansion
 protagonist: lighthouse keeper (Renata)
 setting: Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter

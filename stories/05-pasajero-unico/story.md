@@ -1,6 +1,7 @@
 ---
 seq: 5
 title: "Pasajero único"
+logline: "Tomás despierta a ratos en una nave que tardará ochocientos años en llegar."
 universe: Space Expansion
 protagonist: maintenance engineer (Tomás)
 setting: generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri

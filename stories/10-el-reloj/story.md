@@ -1,6 +1,7 @@
 ---
 seq: 10
 title: "El reloj"
+logline: "Sofía cuida el software viejo de una colonia religiosa en el cinturón de Kuiper."
 universe: Space Expansion
 protagonist: software maintainer (Sofía)
 setting: Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid

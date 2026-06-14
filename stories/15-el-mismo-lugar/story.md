@@ -1,6 +1,7 @@
 ---
 seq: 15
 title: "El mismo lugar"
+logline: "Desde Fobos, Hugo dibuja los mismos mapas del polvo de Marte, día tras día."
 universe: Space Expansion
 protagonist: Hugo, cartógrafo de superficie
 setting: Estación Fobos, órbita de Marte

@@ -49,7 +49,7 @@ STORIES_DIR = ROOT / "stories"
 INDEX_HTML = ROOT / "index.html"
 INDEX_CACHE = ROOT / ".ai" / "stories-index.json"
 ARCHETYPES_JSONL = ROOT / ".ai" / "archetypes.jsonl"
-INDEX_FIELDS = ("title", "protagonist", "setting", "date_generated", "length_words")
+INDEX_FIELDS = ("title", "logline", "protagonist", "setting", "date_generated", "length_words")
 DEFAULT_PALETTE = {"bg": "#f5f3ec", "ink": "#1f1d18", "accent": "#8a877e"}
 
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
@@ -908,42 +908,32 @@ def load_palettes() -> dict[str, dict]:
 def render_entry(slug: str, fm: dict, palette: dict | None = None) -> str:
     num = slug[:2]
     title = fm.get("title", slug)
-    meta_parts = [fm.get("protagonist", ""), fm.get("setting", "")]
-    meta = " · ".join(p for p in meta_parts if p)
+    logline = fm.get("logline", "")
+    if not logline:
+        # fall back to the old protagonist · setting line so nothing renders blank
+        parts = [fm.get("protagonist", ""), fm.get("setting", "")]
+        logline = " · ".join(p for p in parts if p)
     p = palette or DEFAULT_PALETTE
-    style = (
-        f'--card-bg:{p["bg"]};'
-        f'--card-ink:{p["ink"]};'
-        f'--card-accent:{p["accent"]}'
-    )
+    style = f'--card-accent:{p["accent"]}'
     return (
-        f'    <a class="entry" href="stories/{slug}/index.html" style="{html.escape(style, quote=True)}">\n'
-        '      <div class="row1">\n'
-        f'        <span class="num">{html.escape(num)}</span>\n'
-        f'        <span class="date">{html.escape(fmt_date(fm.get("date_generated", "")))}</span>\n'
+        f'    <a class="entry" data-slug="{html.escape(slug, quote=True)}" href="stories/{slug}/index.html" style="{html.escape(style, quote=True)}">\n'
+        f'      <span class="num">{html.escape(num)}</span>\n'
+        '      <div class="body">\n'
+        f'        <div class="e-title">{html.escape(title)}</div>\n'
+        f'        <div class="logline">{html.escape(logline)}</div>\n'
         '      </div>\n'
-        f'      <div class="e-title">{html.escape(title)}</div>\n'
-        f'      <div class="meta">{html.escape(meta)}</div>\n'
-        f'      <div class="words">{html.escape(str(fm.get("length_words", "")))} palabras</div>\n'
+        '      <div class="aside">\n'
+        f'        <span class="date">{html.escape(fmt_date(fm.get("date_generated", "")))}</span>\n'
+        f'        <span class="words">{html.escape(str(fm.get("length_words", "")))} palabras</span>\n'
+        '      </div>\n'
         '    </a>'
     )
 
 
 def ordered_slugs(slugs: list[str]) -> list[str]:
-    """Newest-first overall, but within each 2-slot row place the older slug on the
-    left and the newer on the right. So the visual grid reads (per row, top→bottom):
-       11 | 12
-       09 | 10
-       …
-       01 | 02
-    For odd counts the lone oldest slug ends up in the final row's left cell.
-    """
-    desc = sorted(slugs, reverse=True)
-    out: list[str] = []
-    for i in range(0, len(desc), 2):
-        pair = desc[i:i + 2]
-        out.extend(reversed(pair))
-    return out
+    """Newest-first by slug number (e.g. 20, 19, … 01). The index is a single-column
+    ledger, so the freshest story sits at the top with no extra scrolling."""
+    return sorted(slugs, reverse=True)
 
 
 def write_index_html(cache: dict) -> int:

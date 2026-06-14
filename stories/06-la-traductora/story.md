@@ -1,6 +1,7 @@
 ---
 seq: 6
 title: "La traductora"
+logline: "Inés traduce textos viejos en Marte y encuentra un mensaje inesperado."
 universe: Space Expansion
 protagonist: junior linguist (Inés)
 setting: Instituto de Lenguas, on Mars — a small translation lab

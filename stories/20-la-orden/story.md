@@ -1,6 +1,7 @@
 ---
 seq: 20
 title: "La orden"
+logline: "Emilio recibe la orden de cerrar una ruta de la que dependen setenta personas."
 universe: Space Expansion
 protagonist: Emilio, administrador de la Estación Oberón
 setting: Estación Oberón, sistema de Urano (relé y suministro)

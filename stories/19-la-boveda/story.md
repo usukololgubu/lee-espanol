@@ -1,6 +1,7 @@
 ---
 seq: 19
 title: "La bóveda"
+logline: "Teresa guarda una bóveda de semillas en el borde del sistema, tras una puerta cerrada."
 universe: Space Expansion
 protagonist: Teresa, guardiana de la bóveda de semillas
 setting: Estación de Tritón, luna de Neptuno, borde del sistema

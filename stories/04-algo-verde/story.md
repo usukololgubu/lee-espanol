@@ -1,6 +1,7 @@
 ---
 seq: 4
 title: "Algo verde"
+logline: "Sola sobre el hielo de Europa, Lucía encuentra algo verde."
 universe: Space Expansion
 protagonist: biologist (Lucía)
 setting: Europa-3 station, atop the ice of Europa, Jupiter system

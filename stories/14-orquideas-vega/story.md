@@ -1,6 +1,7 @@
 ---
 seq: 14
 title: "Las orquídeas de Vega"
+logline: "Camila cuida orquídeas frías en una ciudad que flota sobre las nubes de Venus."
 universe: Space Expansion
 protagonist: jardinera Camila
 setting: Ciudad-Globo Vega, Venus cloud city

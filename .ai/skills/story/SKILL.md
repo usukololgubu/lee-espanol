@@ -42,6 +42,7 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
    ---
    seq: <number>
    title: "<Spanish title>"
+   logline: "<one A1 Spanish sentence, ~10-16 words: a hook teasing the dilemma, no spoiler — this is what shows on the index>"
    universe: Space Expansion
    protagonist: <role + name>
    setting: <where>

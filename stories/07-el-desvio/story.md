@@ -1,6 +1,7 @@
 ---
 seq: 7
 title: "El desvío"
+logline: "El capitán Mateo lleva carga entre Marte y Ceres y duda si cambiar de ruta."
 universe: Space Expansion
 protagonist: cargo captain (Mateo)
 setting: freighter La Mula, asteroid belt, between Mars and Ceres

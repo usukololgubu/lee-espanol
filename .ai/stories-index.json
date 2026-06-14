@@ -1,6 +1,7 @@
 {
   "01-saturn-ai": {
     "title": "Día 412",
+    "logline": "Una inteligencia artificial orbita Saturno, sola, y cuenta los días.",
     "protagonist": "AI (ARES, station observatory)",
     "setting": "Saturn orbit",
     "date_generated": "2026-05-10",
@@ -8,6 +9,7 @@
   },
   "02-nueva-andalucia": {
     "title": "Plaza del Patrón",
+    "logline": "Una antropóloga observa una colonia que reza a Saturno como a un dios.",
     "protagonist": "anthropologist (Elena)",
     "setting": "Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron",
     "date_generated": "2026-05-10",
@@ -15,6 +17,7 @@
   },
   "03-zumbido-deriva": {
     "title": "Un zumbido en la deriva",
+    "logline": "Marco arrastra hielo hacia Ceres y oye un zumbido que no debería existir.",
     "protagonist": "navigator (Marco)",
     "setting": "ice tug Tortuga, mid-route to Ceres, outer drift",
     "date_generated": "2026-05-11",
@@ -22,6 +25,7 @@
   },
   "04-algo-verde": {
     "title": "Algo verde",
+    "logline": "Sola sobre el hielo de Europa, Lucía encuentra algo verde.",
     "protagonist": "biologist (Lucía)",
     "setting": "Europa-3 station, atop the ice of Europa, Jupiter system",
     "date_generated": "2026-05-11",
@@ -29,6 +33,7 @@
   },
   "05-pasajero-unico": {
     "title": "Pasajero único",
+    "logline": "Tomás despierta a ratos en una nave que tardará ochocientos años en llegar.",
     "protagonist": "maintenance engineer (Tomás)",
     "setting": "generation ship Caracol, year 198 of an 800-year voyage to Próxima Centauri",
     "date_generated": "2026-05-11",
@@ -36,6 +41,7 @@
   },
   "06-la-traductora": {
     "title": "La traductora",
+    "logline": "Inés traduce textos viejos en Marte y encuentra un mensaje inesperado.",
     "protagonist": "junior linguist (Inés)",
     "setting": "Instituto de Lenguas, on Mars — a small translation lab",
     "date_generated": "2026-05-11",
@@ -43,6 +49,7 @@
   },
   "07-el-desvio": {
     "title": "El desvío",
+    "logline": "El capitán Mateo lleva carga entre Marte y Ceres y duda si cambiar de ruta.",
     "protagonist": "cargo captain (Mateo)",
     "setting": "freighter La Mula, asteroid belt, between Mars and Ceres",
     "date_generated": "2026-05-12",
@@ -50,6 +57,7 @@
   },
   "08-el-ultimo-que-recuerda": {
     "title": "El último que recuerda",
+    "logline": "Don Joaquín, de noventa años, es el último que recuerda la Tierra.",
     "protagonist": "old colonist (Don Joaquín)",
     "setting": "Nueva Andalucía, 85 years after losing contact with Earth",
     "date_generated": "2026-05-12",
@@ -57,6 +65,7 @@
   },
   "09-la-senal": {
     "title": "La señal",
+    "logline": "Desde Plutón, Mariela escucha el espacio vacío hasta que llega una señal.",
     "protagonist": "radioastrónoma (Mariela)",
     "setting": "Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets",
     "date_generated": "2026-05-12",
@@ -64,6 +73,7 @@
   },
   "10-el-reloj": {
     "title": "El reloj",
+    "logline": "Sofía cuida el software viejo de una colonia religiosa en el cinturón de Kuiper.",
     "protagonist": "software maintainer (Sofía)",
     "setting": "Colonia Brasa — a small religious outpost on a Kuiper Belt asteroid",
     "date_generated": "2026-05-12",
@@ -71,6 +81,7 @@
   },
   "11-la-dosis": {
     "title": "La dosis",
+    "logline": "La única médica de una estación marciana reparte una medicina que no alcanza.",
     "protagonist": "doctor (Dra. Ana Soto)",
     "setting": "Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists",
     "date_generated": "2026-05-13",
@@ -78,6 +89,7 @@
   },
   "12-el-faro-apagado": {
     "title": "El faro apagado",
+    "logline": "Renata cuida un faro solitario entre Ceres y Júpiter, y un día la señal calla.",
     "protagonist": "lighthouse keeper (Renata)",
     "setting": "Faro Vesta-7, a small relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter",
     "date_generated": "2026-05-13",
@@ -85,6 +97,7 @@
   },
   "13-reloj-mercurio": {
     "title": "El reloj de Mercurio",
+    "logline": "Frente al sol, cerca de Mercurio, Paola vigila el escudo que protege una colonia.",
     "protagonist": "ingeniera de escudo (Paola)",
     "setting": "Plataforma Para-sol, L1 entre el sol y Mercurio, sobre la sombra polar de la colonia",
     "date_generated": "2026-05-13",
@@ -92,6 +105,7 @@
   },
   "14-orquideas-vega": {
     "title": "Las orquídeas de Vega",
+    "logline": "Camila cuida orquídeas frías en una ciudad que flota sobre las nubes de Venus.",
     "protagonist": "jardinera Camila",
     "setting": "Ciudad-Globo Vega, Venus cloud city",
     "date_generated": "2026-05-22",
@@ -99,6 +113,7 @@
   },
   "15-el-mismo-lugar": {
     "title": "El mismo lugar",
+    "logline": "Desde Fobos, Hugo dibuja los mismos mapas del polvo de Marte, día tras día.",
     "protagonist": "Hugo, cartógrafo de superficie",
     "setting": "Estación Fobos, órbita de Marte",
     "date_generated": "2026-05-22",
@@ -106,6 +121,7 @@
   },
   "16-la-nube": {
     "title": "La nube",
+    "logline": "Daniela estudia el cielo naranja de Titán, donde nunca cambia nada. Hasta hoy.",
     "protagonist": "meteoróloga Daniela",
     "setting": "Estación Húygens-4, Titán",
     "date_generated": "2026-05-22",
@@ -113,6 +129,7 @@
   },
   "17-el-permiso": {
     "title": "El permiso",
+    "logline": "Iván da permiso para atracar en el Puerto de Ceres, y una nave le pide lo imposible.",
     "protagonist": "controlador de atraque Iván",
     "setting": "Puerto de Ceres (orbital harbor, asteroid belt hub)",
     "date_generated": "2026-05-31",
@@ -120,6 +137,7 @@
   },
   "18-la-carga": {
     "title": "La carga",
+    "logline": "Nadia vigila sola un cometero mientras su compañero duerme, y debe decidir.",
     "protagonist": "minera Nadia",
     "setting": "cometero La Garza, sobre un cometa de período largo, en el espacio exterior",
     "date_generated": "2026-06-06",
@@ -127,6 +145,7 @@
   },
   "19-la-boveda": {
     "title": "La bóveda",
+    "logline": "Teresa guarda una bóveda de semillas en el borde del sistema, tras una puerta cerrada.",
     "protagonist": "Teresa, guardiana de la bóveda de semillas",
     "setting": "Estación de Tritón, luna de Neptuno, borde del sistema",
     "date_generated": "2026-06-14",
@@ -134,6 +153,7 @@
   },
   "20-la-orden": {
     "title": "La orden",
+    "logline": "Emilio recibe la orden de cerrar una ruta de la que dependen setenta personas.",
     "protagonist": "Emilio, administrador de la Estación Oberón",
     "setting": "Estación Oberón, sistema de Urano (relé y suministro)",
     "date_generated": "2026-06-14",

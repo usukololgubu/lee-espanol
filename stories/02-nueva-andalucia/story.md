@@ -1,6 +1,7 @@
 ---
 seq: 2
 title: "Plaza del Patrón"
+logline: "Una antropóloga observa una colonia que reza a Saturno como a un dios."
 universe: Space Expansion
 protagonist: anthropologist (Elena)
 setting: Nueva Andalucía — a colony that lost contact with Earth 80 years ago and reverted to a religious cult of Saturn-the-Patron

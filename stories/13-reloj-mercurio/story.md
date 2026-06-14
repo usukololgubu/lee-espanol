@@ -1,6 +1,7 @@
 ---
 seq: 13
 title: "El reloj de Mercurio"
+logline: "Frente al sol, cerca de Mercurio, Paola vigila el escudo que protege una colonia."
 universe: Space Expansion
 protagonist: ingeniera de escudo (Paola)
 setting: Plataforma Para-sol, L1 entre el sol y Mercurio, sobre la sombra polar de la colonia

@@ -1,6 +1,7 @@
 ---
 seq: 8
 title: "El último que recuerda"
+logline: "Don Joaquín, de noventa años, es el último que recuerda la Tierra."
 universe: Space Expansion
 protagonist: old colonist (Don Joaquín)
 setting: Nueva Andalucía, 85 years after losing contact with Earth

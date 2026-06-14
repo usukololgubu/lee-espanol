@@ -1,6 +1,7 @@
 ---
 seq: 3
 title: "Un zumbido en la deriva"
+logline: "Marco arrastra hielo hacia Ceres y oye un zumbido que no debería existir."
 universe: Space Expansion
 protagonist: navigator (Marco)
 setting: ice tug Tortuga, mid-route to Ceres, outer drift

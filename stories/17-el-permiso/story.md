@@ -1,6 +1,7 @@
 ---
 seq: 17
 title: "El permiso"
+logline: "Iván da permiso para atracar en el Puerto de Ceres, y una nave le pide lo imposible."
 universe: Space Expansion
 protagonist: controlador de atraque Iván
 setting: Puerto de Ceres (orbital harbor, asteroid belt hub)

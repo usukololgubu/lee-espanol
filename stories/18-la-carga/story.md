@@ -1,6 +1,7 @@
 ---
 seq: 18
 title: "La carga"
+logline: "Nadia vigila sola un cometero mientras su compañero duerme, y debe decidir."
 universe: Space Expansion
 protagonist: minera Nadia
 setting: cometero La Garza, sobre un cometa de período largo, en el espacio exterior

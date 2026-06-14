@@ -1,6 +1,7 @@
 ---
 seq: 9
 title: "La señal"
+logline: "Desde Plutón, Mariela escucha el espacio vacío hasta que llega una señal."
 universe: Space Expansion
 protagonist: radioastrónoma (Mariela)
 setting: Estación Casiopea, on the icy surface of Plutón — a small radio listening post beyond the planets

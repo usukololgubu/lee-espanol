@@ -1,6 +1,7 @@
 ---
 seq: 11
 title: "La dosis"
+logline: "La única médica de una estación marciana reparte una medicina que no alcanza."
 universe: Space Expansion
 protagonist: doctor (Dra. Ana Soto)
 setting: Estación Argyre, a small terraforming outpost in the southern highlands of Mars, ~40 colonists

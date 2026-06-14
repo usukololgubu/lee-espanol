@@ -1,6 +1,7 @@
 ---
 seq: 16
 title: "La nube"
+logline: "Daniela estudia el cielo naranja de Titán, donde nunca cambia nada. Hasta hoy."
 universe: Space Expansion
 protagonist: meteoróloga Daniela
 setting: Estación Húygens-4, Titán
