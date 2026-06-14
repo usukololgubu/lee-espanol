@@ -157,3 +157,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Characters: Teresa (guardiana de la bóveda de semillas / seed-vault keeper)
 - Locations: Estación de Tritón (cold-storage seed/gene vault on Triton, Neptune's moon, outer edge of the system); la colonia vecina (a small hungry colony on the next moon, off-page, sends the radio request)
 - Terms: la bóveda (sealed Earth seed/gene archive, kept "para el regreso", never opened); el regreso (awaited return that may never come — sibling euphemism to *el silencio*); los dormidos (reused — here likened to the dormant seeds)
+
+### #20 — la-orden
+- Characters: Emilio (administrador de la Estación Oberón / station administrator)
+- Locations: Estación Oberón (relay-and-supply waystation in the **Uranus** system — first Uranus appearance; last manned node on the convoy route); Colonia de Umbriel (small ~70-person colony on a darker Uranus moon, off-page, depends on the monthly convoy)
+- Terms: la orden (a weeks-stale directive from Ceres declaring a colony "no viable" — stop the convoy, close the route); Central de Ceres (Ceres now seen as the route's administrative authority, extending the Ceres hub of #17); convoy de carga (monthly supply run Oberón → Umbriel, carries comida y aire)
