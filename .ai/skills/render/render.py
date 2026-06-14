@@ -55,7 +55,180 @@ DEFAULT_PALETTE = {"bg": "#f5f3ec", "ink": "#1f1d18", "accent": "#8a877e"}
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
 WORD_RE = re.compile(rf"[{SP_LETTERS}]+")
 SENT_RE = re.compile(r"[.?!]")
+# Match a run of digits, optionally space-grouped thousands (1 234, 18 942) using
+# a regular space, NBSP, or narrow NBSP as the group separator.
+NUM_RE = re.compile(r"\d{1,3}(?:[   ]\d{3})+|\d+")
+NUM_SEP_RE = re.compile(r"[   ]")
 WORDISH_RE = re.compile(rf"[{SP_LETTERS}0-9]")
+
+
+# ─── number → words (Spanish cardinal + Russian gloss + grammar) ────────────
+# Numbers in the body get the same popup treatment as words, but their entries
+# are generated here at render time (deterministic) rather than authored in
+# enrichment.toml. A [numbers."<digits>"] table in enrichment.toml can override
+# or extend any auto-generated field for a specific token.
+
+_ES_UNITS = [
+    "cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve",
+    "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete",
+    "dieciocho", "diecinueve", "veinte", "veintiuno", "veintidós", "veintitrés",
+    "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve",
+]
+_ES_TENS = {30: "treinta", 40: "cuarenta", 50: "cincuenta", 60: "sesenta",
+            70: "setenta", 80: "ochenta", 90: "noventa"}
+_ES_HUNDREDS = {1: "ciento", 2: "doscientos", 3: "trescientos", 4: "cuatrocientos",
+                5: "quinientos", 6: "seiscientos", 7: "setecientos", 8: "ochocientos",
+                9: "novecientos"}
+
+
+def _es_below_thousand(n: int) -> str:
+    if n == 0:
+        return ""
+    if n < 30:
+        return _ES_UNITS[n]
+    if n < 100:
+        t, u = (n // 10) * 10, n % 10
+        return _ES_TENS[t] + (" y " + _ES_UNITS[u] if u else "")
+    if n == 100:
+        return "cien"
+    h, rest = n // 100, n % 100
+    return _ES_HUNDREDS[h] + (" " + _es_below_thousand(rest) if rest else "")
+
+
+def _es_apocope(s: str) -> str:
+    """uno → un, veintiuno → veintiún, treinta y uno → treinta y un."""
+    if s.endswith("veintiuno"):
+        return s[:-len("veintiuno")] + "veintiún"
+    if s.endswith("uno"):
+        return s[:-3] + "un"
+    return s
+
+
+def _es_feminine(s: str) -> str:
+    """…cientos → …cientas, trailing uno → una."""
+    s = s.replace("cientos", "cientas")
+    if s.endswith("veintiuno"):
+        return s[:-len("veintiuno")] + "veintiuna"
+    if s.endswith("uno"):
+        return s[:-3] + "una"
+    return s
+
+
+def spanish_cardinal(n: int) -> str:
+    if n == 0:
+        return "cero"
+    parts: list[str] = []
+    millions, rest = divmod(n, 1_000_000)
+    if millions:
+        parts.append("un millón" if millions == 1
+                     else _es_apocope(_es_below_thousand(millions)) + " millones")
+    thousands, rest2 = divmod(rest, 1000)
+    if thousands:
+        parts.append("mil" if thousands == 1
+                     else _es_apocope(_es_below_thousand(thousands)) + " mil")
+    if rest2:
+        parts.append(_es_below_thousand(rest2))
+    return " ".join(parts)
+
+
+_RU_UNITS = [
+    "ноль", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+    "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
+    "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать",
+]
+_RU_TENS = {20: "двадцать", 30: "тридцать", 40: "сорок", 50: "пятьдесят", 60: "шестьдесят",
+            70: "семьдесят", 80: "восемьдесят", 90: "девяносто"}
+_RU_HUNDREDS = {1: "сто", 2: "двести", 3: "триста", 4: "четыреста", 5: "пятьсот",
+                6: "шестьсот", 7: "семьсот", 8: "восемьсот", 9: "девятьсот"}
+
+
+def _ru_below_thousand(n: int) -> str:
+    out: list[str] = []
+    h, r = n // 100, n % 100
+    if h:
+        out.append(_RU_HUNDREDS[h])
+    if r:
+        if r < 20:
+            out.append(_RU_UNITS[r])
+        else:
+            out.append(_RU_TENS[(r // 10) * 10])
+            if r % 10:
+                out.append(_RU_UNITS[r % 10])
+    return " ".join(out)
+
+
+def _ru_plural(n: int, one: str, few: str, many: str) -> str:
+    if n % 100 in range(11, 15):
+        return many
+    d = n % 10
+    if d == 1:
+        return one
+    if d in (2, 3, 4):
+        return few
+    return many
+
+
+def russian_cardinal(n: int) -> str:
+    """Nominative reading, masculine baseline (citation form for the gloss)."""
+    if n == 0:
+        return "ноль"
+    parts: list[str] = []
+    millions, rest = divmod(n, 1_000_000)
+    if millions:
+        parts.append(_ru_below_thousand(millions) + " "
+                     + _ru_plural(millions, "миллион", "миллиона", "миллионов"))
+    thousands, rest2 = divmod(rest, 1000)
+    if thousands:
+        tw = _ru_below_thousand(thousands)
+        # тысяча is feminine: один→одна, два→две (last unit word only)
+        if tw.endswith("один"):
+            tw = tw[:-len("один")] + "одна"
+        elif tw.endswith("два"):
+            tw = tw[:-len("два")] + "две"
+        parts.append(tw + " " + _ru_plural(thousands, "тысяча", "тысячи", "тысяч"))
+    if rest2:
+        parts.append(_ru_below_thousand(rest2))
+    return " ".join(p for p in parts if p)
+
+
+def number_grammar(n: int, es: str) -> str:
+    """Generate an A1 grammar note for the classic number gotchas, else ''."""
+    blocks: list[str] = []
+    if n % 10 == 1 and n % 100 != 11:
+        apoc, fem = _es_apocope(es), _es_feminine(es)
+        blocks.append(
+            f"**{es}** → **{apoc}** перед сущ. м. р.: `{apoc} libro`.\n\n"
+            f"Ж. р.: **{fem}**: `{fem} casa`."
+        )
+    if n == 100:
+        blocks.append(
+            "**cien / ciento** — `cien` перед существительным и перед `mil`/`millones`; "
+            "`ciento` в составе 101–199 (`ciento uno`)."
+        )
+    hundreds = (n % 1000) // 100
+    if 2 <= hundreds <= 9:
+        masc = _ES_HUNDREDS[hundreds]
+        blocks.append(
+            f"*-cientos / -cientas* согласуется в роде: **{masc}** (м. р.) → "
+            f"**{masc.replace('cientos', 'cientas')}** (ж. р.)."
+        )
+    return "\n\n".join(blocks)
+
+
+def number_entry(num_str: str, overrides: dict) -> dict | None:
+    try:
+        n = int(NUM_SEP_RE.sub("", num_str))
+    except ValueError:
+        return None
+    es = spanish_cardinal(n)
+    entry = {"tr": russian_cardinal(n), "pos": "числ.", "lemma": es}
+    g = number_grammar(n, es)
+    if g:
+        entry["grammar"] = g
+    ov = overrides.get(num_str)
+    if ov:
+        entry = {**entry, **ov}
+    return entry
 
 
 # ─── parsers ────────────────────────────────────────────────────────────────
@@ -77,14 +250,19 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return fm, body
 
 
-def load_enrichment(path: Path) -> tuple[dict, list, list]:
+def load_enrichment(path: Path) -> tuple[dict, list, list, dict]:
     text = path.read_text(encoding="utf-8")
     try:
         data = tomllib.loads(text)
     except tomllib.TOMLDecodeError as exc:
         hint = _toml_error_hint(text, exc)
         sys.exit(f"error: {path} — TOML parse failed: {exc}\n{hint}" if hint else f"error: {path} — TOML parse failed: {exc}")
-    return data.get("words", {}), data.get("phrases", []) or [], data.get("sentences", []) or []
+    return (
+        data.get("words", {}),
+        data.get("phrases", []) or [],
+        data.get("sentences", []) or [],
+        data.get("numbers", {}) or {},
+    )
 
 
 def _toml_error_hint(text: str, exc: tomllib.TOMLDecodeError) -> str:
@@ -213,6 +391,7 @@ def tokenize_text_segment(
     phrase_idx: list[tuple[str, dict]],
     take_sent,
     cur_si,
+    numbers: dict,
 ) -> tuple[str, list[str]]:
     """Tokenize a plain-text fragment (no HTML inside)."""
     text = unescape_stable(text)
@@ -237,6 +416,13 @@ def tokenize_text_segment(
                 missed.append(w)
             i = wm.end()
             continue
+        nm = NUM_RE.match(text, i)
+        if nm:
+            num = nm.group()
+            entry = number_entry(num, numbers)
+            out.append(word_span(num, entry, cur_si()) if entry else esc_text(num))
+            i = nm.end()
+            continue
         ch = text[i]
         if SENT_RE.match(ch):
             si = cur_si()
@@ -253,6 +439,7 @@ def walk_html_body(
     words: dict,
     phrase_idx: list[tuple[str, dict]],
     sentences: list,
+    numbers: dict,
 ) -> tuple[str, list[str], int]:
     """Walk content, leaving HTML tags untouched and tokenizing text between them.
 
@@ -286,7 +473,7 @@ def walk_html_body(
             if end == -1:
                 end = n
             seg = content[i:end]
-            toked, miss = tokenize_text_segment(seg, words, phrase_idx, take_sent, cur_si)
+            toked, miss = tokenize_text_segment(seg, words, phrase_idx, take_sent, cur_si, numbers)
             out.append(toked)
             missed.extend(miss)
             i = end
@@ -831,7 +1018,7 @@ def apply_enrichment(story_dir: Path) -> None:
         )
 
     fm, body = parse_frontmatter(md_path.read_text(encoding="utf-8"))
-    words, phrases, sentences = load_enrichment(toml_path)
+    words, phrases, sentences, numbers = load_enrichment(toml_path)
     phrase_idx = build_phrase_index(words, phrases)
 
     html_text = out_path.read_text(encoding="utf-8")
@@ -844,7 +1031,7 @@ def apply_enrichment(story_dir: Path) -> None:
     content_start, content_end, _tag = region
     body_region = html_text[content_start:content_end]
     body_region = detokenize(body_region)
-    new_body, missed, used = walk_html_body(body_region, words, phrase_idx, sentences)
+    new_body, missed, used = walk_html_body(body_region, words, phrase_idx, sentences, numbers)
 
     html_text = html_text[:content_start] + new_body + html_text[content_end:]
     html_text = upsert_block(html_text, "style", "data-popup-invariants", POPUP_CSS_INV.strip(), "</head>")

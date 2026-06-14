@@ -1,0 +1,3 @@
+# Python bytecode cache (render.py)
+__pycache__/
+*.pyc
