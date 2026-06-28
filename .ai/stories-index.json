@@ -158,5 +158,13 @@
     "setting": "Estación Oberón, sistema de Urano (relé y suministro)",
     "date_generated": "2026-06-14",
     "length_words": "267"
+  },
+  "21-el-vigia": {
+    "title": "El vigía",
+    "logline": "Después de años solo, el sistema de la nave oye algo lejano. ¿Despierta a alguien?",
+    "protagonist": "MIRO (sistema de la nave)",
+    "setting": "nave automática Alción, en ruta a Ceres",
+    "date_generated": "2026-06-28",
+    "length_words": "289"
   }
 }

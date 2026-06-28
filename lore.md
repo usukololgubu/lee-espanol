@@ -162,3 +162,9 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Characters: Emilio (administrador de la Estación Oberón / station administrator)
 - Locations: Estación Oberón (relay-and-supply waystation in the **Uranus** system — first Uranus appearance; last manned node on the convoy route); Colonia de Umbriel (small ~70-person colony on a darker Uranus moon, off-page, depends on the monthly convoy)
 - Terms: la orden (a weeks-stale directive from Ceres declaring a colony "no viable" — stop the convoy, close the route); Central de Ceres (Ceres now seen as the route's administrative authority, extending the Ceres hub of #17); convoy de carga (monthly supply run Oberón → Umbriel, carries comida y aire)
+
+### #21 — el-vigia
+- Characters: MIRO (shipboard AI / nave-system, first-person narrator — second AI POV after ARES #1, but inside a far longer solitude); Lía (la supervisora, the single human aboard, in cryosleep the whole route, never wakes on-page)
+- Ships: *Alción* (automated long-haul freighter hauling agua y aire to a small colony at Ceres; 19-year solo transit through the dark corredor)
+- Terms: el vigía (the AI's self-cast role of standing watch — "yo vigilo"); la señal vieja (an ancient, ownerless, looping human signal off-corridor, repeats one untranslatable word — not a distress call); el reglamento (protocol requiring the supervisor be woken before leaving the corredor)
+- Timeline: Día 7.012 (MIRO's watch-log count aboard *Alción*)
