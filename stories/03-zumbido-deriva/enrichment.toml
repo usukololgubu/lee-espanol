@@ -854,6 +854,10 @@ text = "Un zumbido."
 tr = "Гудение."
 
 [[sentences]]
+text = "Bip... bip... bip..."
+tr = "Бип... бип... бип..."
+
+[[sentences]]
 text = "Cada cinco segundos."
 tr = "Каждые пять секунд."
 
@@ -927,6 +931,10 @@ text = "La sonda todavía habla."
 tr = "Зонд всё ещё говорит."
 
 [[sentences]]
+text = "Bip... bip... bip..."
+tr = "Бип... бип... бип..."
+
+[[sentences]]
 text = "Marco se queda quieto."
 tr = "Marco замирает."
 
@@ -962,6 +970,10 @@ tr = "«Я тебя слышу»."
 [[sentences]]
 text = "El zumbido continúa."
 tr = "Гудение продолжается."
+
+[[sentences]]
+text = "Bip... bip... bip..."
+tr = "Бип... бип... бип..."
 
 [[sentences]]
 text = "La sonda no puede oírlo."

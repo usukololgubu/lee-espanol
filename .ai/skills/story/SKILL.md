@@ -28,7 +28,7 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
 3. **List `stories/`** — find existing `NN-slug/` subfolders (those starting with two digits and a hyphen). Determine the next sequential `NN`.
 4. **Pick the concept**:
    - If the user named a specific concept, use it.
-   - Otherwise, propose a next concept consistent with `lore.md` and tone, and confirm before writing.
+   - Otherwise, scan `lore.md`'s top-level lists (Characters, Locations, Ships, Terms) and pick 1-2 existing entities to reuse or extend — follow their story links and reread **only** those linked `story.md` files (not the whole corpus). Propose a next concept that states the chosen connection explicitly (e.g. "reuses the *corredor* term from #12/#21, sends Marco's *Tortuga* past Faro Vesta-7") and confirm with the user before writing.
 5. **Write the Spanish text** to spec:
    - 150–300 words (target ~270)
    - A1 grammar: present indicative, `ir + a + infinitivo`, basic *pretérito perfecto* / *indefinido*. Avoid *subjuntivo*.
@@ -65,8 +65,11 @@ This skill is concerned **only** with step 1. It outputs pure Spanish. No transl
    - Ships: <new ships>
    - Terms: <new terms / tech / cult words>
    - Timeline: <new anchors, e.g. "Año 198 / 800 Caracol">
+   - Reappears: <existing entities reused or extended from step 4, if any>
    ```
-   Include only categories with new entries; omit empty ones. Do **not** restate elements already in earlier deltas or top-level lists. The top-level lists are touched up by hand from these deltas — leave them alone in the automated step.
+   Include only categories with new entries; omit empty ones (including `Reappears` when nothing was reused). Do **not** restate elements already in earlier deltas or top-level lists.
+
+   Then do one mechanical ref-list update: for every entity that is either reused (from step 4) or newly introduced by this story, find its bullet in the matching top-level list (Characters / Locations / Ships / Terms / Timeline anchors) and append `, [#NN](stories/NN-slug/story.md)` to its ref list (create the trailing ref list if the entity is brand new to the top level). This is a mechanical append to the ref list only — never edit the description text of an existing bullet.
 8. **Report to user**: file path + a one-line hook (e.g. "AI logs first sensor failure on day 412 — wakes the commander or stays silent?"). Do not paste the full story into chat. Mention that the `lore.md` delta has been appended.
 9. **Suggest next step**: remind the user that `enrich` is the next step before rendering, e.g. "Next: run /enrich to generate translation data, then /render for the HTML page."
 
@@ -111,4 +114,4 @@ Still pure Spanish. Still A1 grammar and vocab control. Still no inline glossary
 
 - The story should work as fiction first, learning material second. If a fluent reader would find it inert, it fails.
 - Strugatsky × Matt Haig is the reference: outsider observing humans / civilization, moral dilemma without a clean answer, occasional dry irony.
-- Lore consistency across stories matters: reuse names of factions, ships, places, technologies listed in `lore.md`. Any new element introduced must be recorded in the per-story delta appended to `lore.md` (workflow step 7).
+- Lore consistency across stories matters: reuse names of factions, ships, places, technologies listed in `lore.md`. Any new element introduced must be recorded in the per-story delta appended to `lore.md` (workflow step 7), and every reused or new entity's ref list in the top-level lists must be kept current (same step).

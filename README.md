@@ -41,3 +41,12 @@ interview, scaffolds the project, and generates stories on demand.
 Personal project. Stories are written for one reader's taste; I publish them in
 case they're useful to other RU→ES A1 learners, but this is not a curated
 product.
+
+## Development
+
+Run the stdlib-only test suite (unittest, no pip deps) from the project root:
+`py -m unittest discover tests -v`. Its centerpiece re-renders a copy of every
+story and checks the result is byte-identical to the on-disk page. Before
+committing story changes, also run `render.py --lint` (coverage/consistency
+checks) and, after re-enriching, `render.py --refresh-all` (re-applies
+enrichment to every story, then rebuilds index.html/vocabulario.html).

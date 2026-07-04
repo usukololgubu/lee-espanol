@@ -415,6 +415,19 @@ footer.coda svg{
   }
   .reading-progress { display: none; }
 }
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
 </style>
 </head>
 <body>
@@ -1071,6 +1084,83 @@ footer.coda svg{
 " data-si="49">escribe</span> <span class="w" data-tr="что (вопрос.)" data-pos="мест." data-lemma="qué" data-grammar="" data-si="49">qué</span><span class="s" data-tr="Она не пишет что." data-si="49">.</span></p>
 
   </article>
+<details data-new-words class="nw">
+  <summary>Palabras nuevas (71)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#alguno"><span class="nw-lemma">alguno</span> <span class="nw-pos">мест.</span> <span class="nw-tr">некоторые</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#alli"><span class="nw-lemma">allí</span> <span class="nw-pos">нар.</span> <span class="nw-tr">там</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-antropologa"><span class="nw-lemma">la antropóloga</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">антрополог (женщина)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#apagar"><span class="nw-lemma">apagar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(оно) погасло, замолчало</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-ayuda"><span class="nw-lemma">la ayuda</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">помощь</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-bolsa"><span class="nw-lemma">la bolsa</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">сумка</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-bolsillo"><span class="nw-lemma">el bolsillo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">карман</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#caer"><span class="nw-lemma">caer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">падает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#cambiar"><span class="nw-lemma">cambiar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">меняться, измениться (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-cielo"><span class="nw-lemma">el cielo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">небо</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-cuaderno"><span class="nw-lemma">el cuaderno</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">тетрадь, блокнот</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-cultura"><span class="nw-lemma">la cultura</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">культура</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#dar"><span class="nw-lemma">dar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) даёт</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#dejar"><span class="nw-lemma">dejar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(они) перестали</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#dentro"><span class="nw-lemma">dentro</span> <span class="nw-pos">нар.</span> <span class="nw-tr">внутри</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#despacio"><span class="nw-lemma">despacio</span> <span class="nw-pos">нар.</span> <span class="nw-tr">медленно</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#elena"><span class="nw-lemma">elena</span> <span class="nw-pos">имя</span> <span class="nw-tr">Elena — антрополог с Земли</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#ella"><span class="nw-lemma">ella</span> <span class="nw-pos">мест.</span> <span class="nw-tr">она</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#entender"><span class="nw-lemma">entender</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">понять (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#esperar"><span class="nw-lemma">esperar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(они) ждут, надеются</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-fiebre"><span class="nw-lemma">la fiebre</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">температура (жар)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-gas"><span class="nw-lemma">el gas</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">газ</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#hacer"><span class="nw-lemma">hacer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(в выраж. времени) тому назад</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-hielo"><span class="nw-lemma">el hielo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">лёд</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-hijo"><span class="nw-lemma">el hijo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">сыновья, дети</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-hora"><span class="nw-lemma">la hora</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">час</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-humo"><span class="nw-lemma">el humo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">дым</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#intervenir"><span class="nw-lemma">intervenir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) вмешивается</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#juzgar"><span class="nw-lemma">juzgar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">судить (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#las"><span class="nw-lemma">las</span> <span class="nw-pos">арт.</span> <span class="nw-tr">опр. артикль мн.ч. ж.р.</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#le"><span class="nw-lemma">le</span> <span class="nw-pos">мест.</span> <span class="nw-tr">ей / ему (косв. доп.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#lleno"><span class="nw-lemma">lleno</span> <span class="nw-pos">прил.</span> <span class="nw-tr">полная, заполненная</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#llorar"><span class="nw-lemma">llorar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(они) плачут</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-madre"><span class="nw-lemma">la madre</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">мать</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-mano"><span class="nw-lemma">la mano</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">рука</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-medicina"><span class="nw-lemma">la medicina</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">лекарство</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-mes"><span class="nw-lemma">el mes</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">месяцы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-nave"><span class="nw-lemma">la nave</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">корабли (косм.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-nina"><span class="nw-lemma">la niña</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">девочка</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#nueva-andalucia"><span class="nw-lemma">Nueva Andalucía</span> <span class="nw-pos">имя</span> <span class="nw-tr">«Новая Андалусия» — название колонии</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#observar"><span class="nw-lemma">observar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) наблюдает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-oro"><span class="nw-lemma">el oro</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">золото</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-pastilla"><span class="nw-lemma">la pastilla</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">таблетка</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#patron"><span class="nw-lemma">patrón</span> <span class="nw-pos">имя</span> <span class="nw-tr">Покровитель (святой)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-planeta"><span class="nw-lemma">el planeta</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">планета</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-plaza"><span class="nw-lemma">la plaza</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">площадь</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#preguntar"><span class="nw-lemma">preguntar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">спрашивать (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#que"><span class="nw-lemma">qué</span> <span class="nw-pos">мест.</span> <span class="nw-tr">что (вопрос.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#quedar"><span class="nw-lemma">quedar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она/он) остался / осталось</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#querer"><span class="nw-lemma">querer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">хотеть (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-radio"><span class="nw-lemma">la radio</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">радио</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#recordar"><span class="nw-lemma">recordar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">помнит / не помнит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#rezar"><span class="nw-lemma">rezar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) молится</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#romper"><span class="nw-lemma">romper</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">ломается, разрушается</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#saber"><span class="nw-lemma">saber</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">знает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-santo"><span class="nw-lemma">el santo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">святой</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#se"><span class="nw-lemma">se</span> <span class="nw-pos">мест.</span> <span class="nw-tr">(возвратное)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#si"><span class="nw-lemma">sí</span> <span class="nw-pos">нар.</span> <span class="nw-tr">да</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#siempre"><span class="nw-lemma">siempre</span> <span class="nw-pos">нар.</span> <span class="nw-tr">всегда</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#sobre"><span class="nw-lemma">sobre</span> <span class="nw-pos">предл.</span> <span class="nw-tr">над, на</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-sol"><span class="nw-lemma">el sol</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">солнце</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#subir"><span class="nw-lemma">subir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">поднимается</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#sufrir"><span class="nw-lemma">sufrir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">страдать (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#temblar"><span class="nw-lemma">temblar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) дрожит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#tierra"><span class="nw-lemma">tierra</span> <span class="nw-pos">имя</span> <span class="nw-tr">Земля (планета)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#tocar"><span class="nw-lemma">tocar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) трогает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#traer"><span class="nw-lemma">traer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">приносит, приводит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-vela"><span class="nw-lemma">la vela</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">свечи</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#venir"><span class="nw-lemma">venir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">приходить, прибывать (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#ver"><span class="nw-lemma">ver</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">видеть (инф.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#vivir"><span class="nw-lemma">vivir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">живёт</span></a></li>
+  </ol>
+</details>
+
 
   <footer class="coda">
     <span><em>silencio en la plaza</em></span>
@@ -1268,6 +1358,30 @@ window.__leeSentences = [{"tr": "Elena пишет в своей тетради: 
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();
 </script>
 </body>

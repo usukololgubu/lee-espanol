@@ -396,6 +396,19 @@
   }
   .reading-progress { display: none; }
 }
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
 </style>
 </head>
 <body>
@@ -572,6 +585,31 @@
 " data-si="40">siguen</span> <span class="w" data-tr="включённые, горящие" data-pos="прил." data-lemma="encendido" data-grammar="**encendidas** — причастие от **encender** «зажигать», ж. мн.
 " data-si="40">encendidas</span>, <span class="w" data-tr="спокойные" data-pos="прил." data-lemma="tranquilo" data-grammar="" data-si="40">tranquilas</span>, <span class="w" data-tr="как" data-pos="союз" data-lemma="" data-grammar="" data-si="40">como</span> <span class="w" data-tr="всегда" data-pos="нар." data-lemma="" data-grammar="" data-si="40">siempre</span><span class="s" data-tr="Снаружи огни Цереры по-прежнему горят, спокойные, как всегда." data-si="40">.</span></p>
       </article>
+<details data-new-words class="nw">
+  <summary>Palabras nuevas (19)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#a-bordo"><span class="nw-lemma">a bordo</span> <span class="nw-pos">нар.</span> <span class="nw-tr">на борту</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#acercarse"><span class="nw-lemma">acercarse</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">приближается</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-animal"><span class="nw-lemma">el animal</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">животное</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#atracar"><span class="nw-lemma">atracar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">пришвартоваться</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-bordo"><span class="nw-lemma">el bordo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">борт</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#cansado"><span class="nw-lemma">cansado</span> <span class="nw-pos">прил.</span> <span class="nw-tr">усталый</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-diferencia"><span class="nw-lemma">la diferencia</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">разница</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#encendido"><span class="nw-lemma">encendido</span> <span class="nw-pos">прил.</span> <span class="nw-tr">включённые, горящие</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#entonces"><span class="nw-lemma">entonces</span> <span class="nw-pos">нар.</span> <span class="nw-tr">тогда</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#gracias"><span class="nw-lemma">gracias</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">спасибо</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#hace-setenta-anos"><span class="nw-lemma">hace setenta años</span> <span class="nw-pos">идиома</span> <span class="nw-tr">семьдесят лет назад</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-lista"><span class="nw-lemma">la lista</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">список</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-maquina"><span class="nw-lemma">la máquina</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">машина, автомат</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-muelle"><span class="nw-lemma">el muelle</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">причалы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-paciencia"><span class="nw-lemma">la paciencia</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">терпение</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-pasajero"><span class="nw-lemma">el pasajero</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">пассажиры</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#peregrino"><span class="nw-lemma">peregrino</span> <span class="nw-pos">имя</span> <span class="nw-tr">«Перегрино» (Странник) — название старого корабля</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-permiso"><span class="nw-lemma">el permiso</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">разрешение</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-reglamento"><span class="nw-lemma">el reglamento</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">регламент, правила</span></a></li>
+  </ol>
+</details>
+
     </div>
 
     <aside class="rail">
@@ -835,6 +873,30 @@ window.__leeSentences = [{"tr": "Я работаю в порту Цереры.",
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();
 </script>
 </body>

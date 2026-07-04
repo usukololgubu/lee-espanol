@@ -42,24 +42,54 @@ import json
 import re
 import sys
 import tomllib
+import unicodedata
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[3]
 STORIES_DIR = ROOT / "stories"
 INDEX_HTML = ROOT / "index.html"
 INDEX_CACHE = ROOT / ".ai" / "stories-index.json"
 ARCHETYPES_JSONL = ROOT / ".ai" / "archetypes.jsonl"
+VOCABULARIO_HTML = ROOT / "vocabulario.html"
+LORE_MD = ROOT / "lore.md"
 INDEX_FIELDS = ("title", "logline", "protagonist", "setting", "date_generated", "length_words")
 DEFAULT_PALETTE = {"bg": "#f5f3ec", "ink": "#1f1d18", "accent": "#8a877e"}
 
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
 WORD_RE = re.compile(rf"[{SP_LETTERS}]+")
-SENT_RE = re.compile(r"[.?!]")
-# Match a run of digits, optionally space-grouped thousands (1 234, 18 942) using
-# a regular space, NBSP, or narrow NBSP as the group separator.
-NUM_RE = re.compile(r"\d{1,3}(?:[   ]\d{3})+|\d+")
-NUM_SEP_RE = re.compile(r"[   ]")
+# A consecutive run of sentence terminators ("...", "?!", "…") is ONE sentence mark,
+# not N — and only an END mark pairs with a [[sentences]] entry. See term_run_is_end().
+TERM_RUN_RE = re.compile(r"[.?!…]+")
+# After a terminator run: optional closing quote/paren chars, optional whitespace, then
+# a lowercase Spanish letter ⇒ the run is a mid-sentence pause, not a sentence end.
+TERM_CLOSING_CHARS = "\"'»”’)]"
+ES_LOWER_RE = re.compile(r"[a-záéíóúñü]")
+# Match a run of digits with strict 3-digit thousands grouping — dot-grouped (7.012,
+# 18.942) or space-grouped (1 234, 18 942; regular space, NBSP, or narrow NBSP as the
+# separator) — or a plain digit run. Dot grouping is deliberately strict
+# (\d{1,3}(\.\d{3})+ only) so a real sentence dot adjacent to digits ("2.5",
+# "…el año 100. 5 naves…") is never swallowed into a number token.
+NUM_RE = re.compile(r"\d{1,3}(?:\.\d{3})+|\d{1,3}(?:[   ]\d{3})+|\d+")
+NUM_SEP_RE = re.compile(r"[.   ]")
 WORDISH_RE = re.compile(rf"[{SP_LETTERS}0-9]")
+
+
+def term_run_is_end(text: str, run_end: int) -> bool:
+    """Classify the terminator run ending at `run_end`: True = sentence END (one
+    <span class="s"> around the whole run, pairs with one [[sentences]] entry),
+    False = mid-sentence pause ("Bip... bip") — plain text, no entry consumed.
+
+    A run is a pause iff it is followed — within the same text segment — by optional
+    closing quote/paren chars, optional whitespace, then a lowercase Spanish letter.
+    A run at the very end of a segment counts as an end. This is the single shared
+    classifier for both rendering and --lint, so their counts can never disagree."""
+    k = run_end
+    while k < len(text) and text[k] in TERM_CLOSING_CHARS:
+        k += 1
+    while k < len(text) and text[k].isspace():
+        k += 1
+    return not (k < len(text) and ES_LOWER_RE.match(text[k]))
 
 
 # ─── number → words (Spanish cardinal + Russian gloss + grammar) ────────────
@@ -106,7 +136,7 @@ def _es_apocope(s: str) -> str:
 
 def _es_feminine(s: str) -> str:
     """…cientos → …cientas, trailing uno → una."""
-    s = s.replace("cientos", "cientas")
+    s = s.replace("cientos", "cientas").replace("quinientos", "quinientas")
     if s.endswith("veintiuno"):
         return s[:-len("veintiuno")] + "veintiuna"
     if s.endswith("uno"):
@@ -392,8 +422,20 @@ def tokenize_text_segment(
     take_sent,
     cur_si,
     numbers: dict,
+    used_keys: set[str] | None = None,
+    stats: dict | None = None,
 ) -> tuple[str, list[str]]:
-    """Tokenize a plain-text fragment (no HTML inside)."""
+    """Tokenize a plain-text fragment (no HTML inside).
+
+    `used_keys`, when passed, collects the lowercased surface form of every
+    [words.*] / [[phrases]] entry actually matched — used by `--lint` to find
+    orphan entries (authored but never matched in the body) without a second
+    tokenizer implementation.
+
+    `stats`, when passed, accumulates "ends" / "pauses" counts of terminator runs
+    (classified by term_run_is_end) — again so --lint counts exactly what rendering
+    does, through the very same code path.
+    """
     text = unescape_stable(text)
     out: list[str] = []
     missed: list[str] = []
@@ -403,6 +445,8 @@ def tokenize_text_segment(
         if phrase_hit:
             form, entry = phrase_hit
             out.append(word_span(text[i:i + len(form)], entry, cur_si()))
+            if used_keys is not None:
+                used_keys.add(form.lower())
             i += len(form)
             continue
         wm = WORD_RE.match(text, i)
@@ -411,6 +455,8 @@ def tokenize_text_segment(
             entry = words.get(w.lower())
             if entry:
                 out.append(word_span(w, entry, cur_si()))
+                if used_keys is not None:
+                    used_keys.add(w.lower())
             else:
                 out.append(esc_text(w))
                 missed.append(w)
@@ -423,13 +469,21 @@ def tokenize_text_segment(
             out.append(word_span(num, entry, cur_si()) if entry else esc_text(num))
             i = nm.end()
             continue
-        ch = text[i]
-        if SENT_RE.match(ch):
-            si = cur_si()
-            out.append(sentence_span(ch, take_sent(), si))
-            i += 1
+        tm = TERM_RUN_RE.match(text, i)
+        if tm:
+            run = tm.group()
+            if term_run_is_end(text, tm.end()):
+                si = cur_si()
+                out.append(sentence_span(run, take_sent(), si))
+                if stats is not None:
+                    stats["ends"] = stats.get("ends", 0) + 1
+            else:
+                out.append(esc_text(run))
+                if stats is not None:
+                    stats["pauses"] = stats.get("pauses", 0) + 1
+            i = tm.end()
             continue
-        out.append(esc_text(ch))
+        out.append(esc_text(text[i]))
         i += 1
     return "".join(out), missed
 
@@ -558,7 +612,20 @@ POPUP_CSS_INV = """\
     transition-duration: 0.001ms !important;
   }
   .reading-progress { display: none; }
-}\
+}
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }\
 """
 
 POPUP_JS = r"""(function(){
@@ -738,6 +805,30 @@ POPUP_JS = r"""(function(){
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();"""
 
 
@@ -962,14 +1053,329 @@ def refresh_index_incremental(slug: str) -> int:
     else:
         cache[slug] = slug_fm(slug)
     save_index_cache(cache)
-    return write_index_html(cache)
+    count = write_index_html(cache)
+    vocab_count = write_vocabulario(cache)
+    print(f"vocabulario.html refreshed — {vocab_count} entries")
+    return count
 
 
 def refresh_index_full() -> int:
     """Force a full rebuild from disk; used by --index-only."""
     cache = build_cache_from_disk()
     save_index_cache(cache)
-    return write_index_html(cache)
+    count = write_index_html(cache)
+    vocab_count = write_vocabulario(cache)
+    print(f"vocabulario.html refreshed — {vocab_count} entries")
+    return count
+
+
+# ─── vocabulary aggregation (vocabulario.html) ──────────────────────────────
+# Aggregates every story's [words.*] / [[phrases]] tables into a single
+# cross-story reference page. Regenerated on every render (single-story or
+# full) so it can never go stale — see write_vocabulario() and its two call
+# sites in refresh_index_incremental / refresh_index_full above.
+
+_LEADING_ARTICLES = ("el ", "la ", "los ", "las ", "un ", "una ")
+
+
+def _strip_accents(s: str) -> str:
+    n = unicodedata.normalize("NFKD", s)
+    return "".join(c for c in n if not unicodedata.combining(c))
+
+
+def es_sort_key(lemma: str) -> tuple:
+    """Spanish-alphabetical sort key: leading article and accents stripped (sort key only)."""
+    low = lemma.lower()
+    for art in _LEADING_ARTICLES:
+        if low.startswith(art):
+            low = low[len(art):]
+            break
+    return (_strip_accents(low), lemma.lower())
+
+
+def slugify_lemma(s: str) -> str:
+    """Stable HTML-id-safe anchor for a lemma/expression (accent-stripped, lowercased)."""
+    base = _strip_accents(s).lower()
+    base = re.sub(r"[^a-z0-9]+", "-", base).strip("-")
+    return base or "x"
+
+
+def collect_story_vocab_rows(words: dict, phrases: list) -> list[tuple[str, str, str, str, str, str]]:
+    """Flatten one story's [words.*] and [[phrases]] tables into aggregation rows:
+    (group_key, display_lemma, pos, tr, match_target, origin).
+
+    `group_key` is the identity used to merge the same word/expression across stories:
+    lemma.lower() (fallback: surface form) for [words.*], form.lower() for [[phrases]].
+    `match_target` is the value that ends up in the rendered <span data-lemma=…> for
+    *this* story's own occurrence (or, when the entry carries no lemma, the surface
+    form) — used to build vocabulario.html's #hl=… deep links and matched by the popup
+    JS's data-lemma / text-content fallback. `origin` is "word" or "phrase" (phrases
+    always classify as Expresiones regardless of their `pos`, per the vocab-page spec).
+    Numbers are never present here — they are generated at render time, not authored.
+    """
+    rows: list[tuple[str, str, str, str, str, str]] = []
+    for form, entry in words.items():
+        pos = entry.get("pos", "")
+        if pos == "числ.":
+            continue
+        raw_lemma = entry.get("lemma", "")
+        lemma = raw_lemma or form
+        rows.append((lemma.lower(), lemma, pos, entry.get("tr", ""), raw_lemma or form, "word"))
+    for p in phrases:
+        form = p.get("form")
+        if not form:
+            continue
+        raw_lemma = p.get("lemma", "")
+        rows.append((form.lower(), form, p.get("pos", ""), p.get("tr", ""), raw_lemma or form, "phrase"))
+    return rows
+
+
+def _vocab_section(origin: str, pos: str) -> str:
+    if origin == "phrase":
+        return "expresiones"
+    if pos == "имя":
+        return "nombres"
+    if pos == "идиома":
+        return "expresiones"
+    return "palabras"
+
+
+def aggregate_vocabulary(slugs: list[str], cache: dict) -> dict[str, list[dict]]:
+    """Aggregate [words.*] / [[phrases]] across `slugs` (expected in ascending seq order)
+    into {"palabras": […], "expresiones": […], "nombres": […]}, each entry carrying
+    lemma/pos/tr (from first appearance) and an ordered, per-slug-deduped appearances list."""
+    buckets: dict[tuple[str, str], dict] = {}
+    for slug in slugs:
+        toml_path = STORIES_DIR / slug / "enrichment.toml"
+        if not toml_path.exists():
+            continue
+        try:
+            words, phrases, _, _ = load_enrichment(toml_path)
+        except SystemExit:
+            continue
+        seq = int(slug[:2]) if slug[:2].isdigit() else 0
+        title = cache.get(slug, {}).get("title", slug)
+        for key, lemma, pos, tr, match_target, origin in collect_story_vocab_rows(words, phrases):
+            section = _vocab_section(origin, pos)
+            bucket_key = (section, key)
+            b = buckets.get(bucket_key)
+            if b is None:
+                b = {"lemma": lemma, "pos": pos, "tr": tr, "appearances": [], "seen": set()}
+                buckets[bucket_key] = b
+            if slug not in b["seen"]:
+                b["seen"].add(slug)
+                b["appearances"].append((seq, slug, title, match_target))
+
+    out: dict[str, list[dict]] = {"palabras": [], "expresiones": [], "nombres": []}
+    for (section, _key), b in buckets.items():
+        out[section].append({
+            "lemma": b["lemma"],
+            "pos": b["pos"],
+            "tr": b["tr"],
+            "appearances": b["appearances"],
+            "count": len(b["appearances"]),
+        })
+    for section in out:
+        out[section].sort(key=lambda e: es_sort_key(e["lemma"]))
+    return out
+
+
+def assign_anchors(sections: dict[str, list[dict]]) -> None:
+    """Give every entry a stable, collision-free HTML id, in sorted (display) order."""
+    used: set[str] = set()
+    for section in ("palabras", "expresiones", "nombres"):
+        for entry in sections[section]:
+            base = slugify_lemma(entry["lemma"])
+            anchor = base
+            n = 2
+            while anchor in used:
+                anchor = f"{base}-{n}"
+                n += 1
+            used.add(anchor)
+            entry["anchor"] = anchor
+
+
+VOCAB_CSS = """
+:root{
+  --bg:#f5f3ec;
+  --bg-soft:#ede9da;
+  --ink:#1f1d18;
+  --ink-soft:#4a4740;
+  --muted:#8a877e;
+  --hair:#c8c2b3;
+  --hair-soft:#dcd6c5;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;
+  font-family:'Courier Prime','Courier New',Courier,monospace;
+  font-size:15px;
+  line-height:1.6;
+  color:var(--ink);
+  background:var(--bg);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:880px;margin:0 auto;padding:3rem 2rem 3.5rem;position:relative}
+.head{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:0.55rem 0;font-weight:700;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center}
+.head .sep{color:var(--muted);margin:0 0.45em;font-weight:400}
+.intro{margin:1.7rem auto 1.4rem;max-width:640px;font-size:0.92rem;line-height:1.7;color:var(--ink-soft)}
+.stats{display:flex;gap:1.4rem;flex-wrap:wrap;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--ink);padding-bottom:0.6rem;margin-bottom:1rem}
+.stats b{color:var(--ink);font-weight:700}
+.filter-row{margin:0 0 1.6rem}
+.filter-row input{width:100%;font:inherit;font-size:0.92rem;padding:0.55rem 0.7rem;border:1px solid var(--hair);border-radius:2px;background:var(--bg-soft);color:var(--ink)}
+.filter-row input::placeholder{color:var(--muted)}
+.filter-row input:focus{outline:none;border-color:var(--muted)}
+.v-section{margin-top:2.2rem}
+.v-section h2{font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--ink);padding-bottom:0.4rem;margin:0 0 0.2rem}
+.v-sec-count{font-weight:400;letter-spacing:0.1em;color:var(--muted)}
+.v-list{border-top:1px solid var(--hair)}
+.v-entry{display:grid;grid-template-columns:1fr auto auto;column-gap:1rem;row-gap:0.15rem;align-items:baseline;padding:0.6rem 0.2rem;border-bottom:1px solid var(--hair)}
+.v-entry.is-hidden{display:none}
+.v-lemma{font-weight:700;grid-column:1}
+.v-pos{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);grid-column:2}
+.v-count{font-size:0.72rem;color:var(--muted);grid-column:3;text-align:right}
+.v-tr{grid-column:1/3;font-style:italic;color:var(--ink-soft);font-size:0.88rem}
+.v-refs{grid-column:3;text-align:right;font-size:0.78rem;white-space:nowrap}
+.v-refs a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--hair);margin-left:0.35em}
+.v-refs a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.v-section.is-hidden{display:none}
+.empty-note{color:var(--muted);font-style:italic;padding:0.6rem 0.2rem}
+footer.colophon{margin-top:2.2rem;padding-top:0.7rem;border-top:1px solid var(--ink);display:flex;justify-content:space-between;flex-wrap:wrap;font-size:0.72rem;letter-spacing:0.12em;color:var(--ink-soft);gap:0.8rem}
+footer.colophon a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--hair)}
+footer.colophon a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+@media(max-width:640px){
+  .page{padding:2.2rem 1.1rem 2.8rem;max-width:none}
+  body{font-size:14px}
+  .v-entry{grid-template-columns:1fr auto}
+  .v-refs{grid-column:1/3;text-align:left}
+  .v-count{grid-column:2}
+}
+""".strip()
+
+VOCAB_JS = r"""
+(function(){
+  var input = document.getElementById('filter');
+  if (!input) return;
+  var entries = Array.prototype.slice.call(document.querySelectorAll('.v-entry'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.v-section'));
+  function apply(){
+    var q = input.value.trim().toLowerCase();
+    entries.forEach(function(el){
+      var hit = !q || (el.dataset.search || '').indexOf(q) !== -1;
+      el.classList.toggle('is-hidden', !hit);
+    });
+    sections.forEach(function(sec){
+      var visible = sec.querySelectorAll('.v-entry:not(.is-hidden)').length;
+      sec.classList.toggle('is-hidden', !!q && visible === 0);
+    });
+  }
+  input.addEventListener('input', apply);
+})();
+""".strip()
+
+
+def render_vocabulario_html(sections: dict[str, list[dict]], story_count: int) -> str:
+    assign_anchors(sections)
+    counts = {k: len(v) for k, v in sections.items()}
+
+    def entry_html(e: dict) -> str:
+        refs = " ".join(
+            f'<a href="stories/{slug}/index.html#hl={quote(match_target)}">#{seq}</a>'
+            for seq, slug, _title, match_target in e["appearances"]
+        )
+        search = html.escape((e["lemma"] + " " + e["tr"]).lower(), quote=True)
+        return (
+            f'    <div class="v-entry" id="{e["anchor"]}" data-search="{search}">\n'
+            f'      <span class="v-lemma">{html.escape(e["lemma"])}</span>\n'
+            f'      <span class="v-pos">{html.escape(e["pos"])}</span>\n'
+            f'      <span class="v-count">×{e["count"]}</span>\n'
+            f'      <span class="v-tr">{html.escape(e["tr"])}</span>\n'
+            f'      <span class="v-refs">{refs}</span>\n'
+            f'    </div>'
+        )
+
+    def section_html(key: str, title: str) -> str:
+        items = sections[key]
+        body = "\n\n".join(entry_html(e) for e in items) if items else '    <p class="empty-note">(vacío)</p>'
+        return (
+            f'  <section class="v-section" data-section="{key}">\n'
+            f'    <h2>{title} <span class="v-sec-count">({len(items)})</span></h2>\n'
+            f'    <div class="v-list">\n{body}\n    </div>\n'
+            f'  </section>'
+        )
+
+    body_sections = "\n\n".join([
+        section_html("palabras", "Palabras"),
+        section_html("expresiones", "Expresiones"),
+        section_html("nombres", "Nombres"),
+    ])
+
+    return f"""<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Spanish Reader · Vocabulario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+{VOCAB_CSS}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="head">
+    Spanish Reader<span class="sep">·</span>Vocabulario acumulado<span class="sep">·</span>2026
+  </header>
+
+  <p class="intro">
+    Todo el vocabulario visto a lo largo de los relatos, en un solo lugar.
+    Cada entrada enlaza a las historias donde aparece.
+  </p>
+
+  <div class="stats">
+    <span><b>{counts['palabras']}</b> palabras</span>
+    <span><b>{counts['expresiones']}</b> expresiones</span>
+    <span><b>{counts['nombres']}</b> nombres</span>
+    <span><b>{story_count}</b> historias</span>
+  </div>
+
+  <div class="filter-row">
+    <input id="filter" type="text" placeholder="Filtrar por palabra o traducción…" autocomplete="off">
+  </div>
+
+{body_sections}
+
+  <footer class="colophon">
+    <span class="motto">generado automáticamente por render.py</span>
+    <a href="index.html">Índice</a>
+  </footer>
+
+</div>
+
+<script>
+{VOCAB_JS}
+</script>
+</body>
+</html>
+"""
+
+
+def write_vocabulario(cache: dict) -> int:
+    """Rebuild vocabulario.html from every story that has an enrichment.toml. Returns total entries."""
+    slugs = sorted(
+        (s for s in cache.keys() if (STORIES_DIR / s / "enrichment.toml").exists()),
+        key=lambda s: int(s[:2]) if s[:2].isdigit() else 0,
+    )
+    sections = aggregate_vocabulary(slugs, cache)
+    VOCABULARIO_HTML.write_text(render_vocabulario_html(sections, len(slugs)), encoding="utf-8")
+    return sum(len(v) for v in sections.values())
 
 
 # ─── orchestration ──────────────────────────────────────────────────────────
@@ -990,6 +1396,56 @@ def resolve_story_path(arg: str | None) -> Path:
     if not candidates:
         sys.exit("error: no stories with story.md + enrichment.toml found; pass a path explicitly")
     return candidates[-1]
+
+
+def region_close_end(html_text: str, tag: str, content_end: int) -> int:
+    """Position right after the closing `</tag …>` located at `content_end` (as returned by
+    find_body_region), so callers can insert a sibling element immediately following it."""
+    m = re.match(rf"</{re.escape(tag)}\b[^>]*>", html_text[content_end:], re.IGNORECASE)
+    return content_end + m.end() if m else content_end
+
+
+def new_words_for_story(words: dict, phrases: list, earlier_keys: set[str]) -> list[dict]:
+    """This story's [words.*] / [[phrases]] group-keys minus every EARLIER story's
+    (lower seq) group-keys = first appearances in the corpus, Spanish-alphabetically sorted."""
+    seen: dict[str, dict] = {}
+    for key, lemma, pos, tr, _match_target, _origin in collect_story_vocab_rows(words, phrases):
+        if key not in seen:
+            seen[key] = {"lemma": lemma, "pos": pos, "tr": tr}
+    items = [v for k, v in seen.items() if k not in earlier_keys]
+    items.sort(key=lambda e: es_sort_key(e["lemma"]))
+    return items
+
+
+def upsert_new_words_block(html_text: str, body_tag: str, content_end: int, items: list[dict]) -> str:
+    """Fill an existing [data-new-words] element in place (designer-placed or previously
+    injected), or auto-insert a fresh <details> immediately after the story-body element."""
+    lis = "\n".join(
+        '      <li class="nw-item"><a href="../../vocabulario.html#{anchor}">'
+        '<span class="nw-lemma">{lemma}</span> <span class="nw-pos">{pos}</span> '
+        '<span class="nw-tr">{tr}</span></a></li>'.format(
+            anchor=slugify_lemma(e["lemma"]),
+            lemma=html.escape(e["lemma"]),
+            pos=html.escape(e["pos"]),
+            tr=html.escape(e["tr"]),
+        )
+        for e in items
+    )
+    inner = f'  <summary>Palabras nuevas ({len(items)})</summary>\n  <ol>\n{lis}\n  </ol>' if items else \
+        f'  <summary>Palabras nuevas (0)</summary>'
+
+    existing_re = re.compile(r"<(\w+)([^>]*\bdata-new-words\b[^>]*)>.*?</\1>", re.DOTALL)
+    m = existing_re.search(html_text)
+    if m:
+        tag, attrs = m.group(1), m.group(2)
+        if "class=" not in attrs:
+            attrs += ' class="nw"'
+        block = f"<{tag}{attrs}>\n{inner}\n</{tag}>"
+        return html_text[:m.start()] + block + html_text[m.end():]
+
+    close_end = region_close_end(html_text, body_tag, content_end)
+    block = f"\n<details data-new-words class=\"nw\">\n{inner}\n</details>\n"
+    return html_text[:close_end] + block + html_text[close_end:]
 
 
 def apply_enrichment(story_dir: Path) -> None:
@@ -1018,12 +1474,36 @@ def apply_enrichment(story_dir: Path) -> None:
             f"error: {out_path} has no element with [data-story-body]. "
             f"Add data-story-body to the element wrapping your <p> tags."
         )
-    content_start, content_end, _tag = region
+    content_start, content_end, body_tag = region
     body_region = html_text[content_start:content_end]
     body_region = detokenize(body_region)
     new_body, missed, used = walk_html_body(body_region, words, phrase_idx, sentences, numbers)
 
     html_text = html_text[:content_start] + new_body + html_text[content_end:]
+
+    # "Palabras nuevas": this story's lemma-keys minus the union of every earlier (lower
+    # seq) story's lemma-keys. Earlier stories with unreadable enrichment.toml are skipped
+    # (best-effort — a broken sibling file must not block this story's own render).
+    seq = int(story_dir.name[:2]) if story_dir.name[:2].isdigit() else 0
+    earlier_keys: set[str] = set()
+    for other in disk_slugs():
+        if other == story_dir.name or not other[:2].isdigit() or int(other[:2]) >= seq:
+            continue
+        other_toml = STORIES_DIR / other / "enrichment.toml"
+        if not other_toml.exists():
+            continue
+        try:
+            other_words, other_phrases, _, _ = load_enrichment(other_toml)
+        except SystemExit as exc:
+            print(f"  warning: skipping {other} for new-words comparison — {exc}")
+            continue
+        earlier_keys.update(k for k, *_ in collect_story_vocab_rows(other_words, other_phrases))
+    new_words = new_words_for_story(words, phrases, earlier_keys)
+
+    region2 = find_body_region(html_text)
+    body_tag, new_content_end = (region2[2], region2[1]) if region2 else (body_tag, content_end)
+    html_text = upsert_new_words_block(html_text, body_tag, new_content_end, new_words)
+
     html_text = upsert_block(html_text, "style", "data-popup-invariants", POPUP_CSS_INV.strip(), "</head>")
     sent_payload = [{"tr": s.get("tr", ""), "note": s.get("note", "")} for s in sentences]
     popup_js = "window.__leeSentences = " + json.dumps(sent_payload, ensure_ascii=False) + ";\n" + POPUP_JS.strip()
@@ -1037,6 +1517,7 @@ def apply_enrichment(story_dir: Path) -> None:
         seen = sorted(set(missed))
         more = "" if len(seen) <= 30 else f" (+{len(seen) - 30} more)"
         print(f"  missed words ({len(seen)}): {', '.join(seen[:30])}{more}")
+    print(f"  new words: {len(new_words)}")
 
 
 def bootstrap(story_dir: Path, force: bool) -> None:
@@ -1053,13 +1534,284 @@ def bootstrap(story_dir: Path, force: bool) -> None:
     print("  next: design the page freely, then re-run without --bootstrap to apply enrichment")
 
 
+# ─── --refresh-all ──────────────────────────────────────────────────────────
+
+def refresh_all() -> None:
+    """Re-apply enrichment to every story that has story.md + enrichment.toml + index.html.
+    Skip-and-report (never abort) on a per-story failure, then do one full index + vocab
+    refresh. Safe/idempotent: detokenize + upsert_block make re-runs byte-identical."""
+    ok, failed = [], []
+    for slug in disk_slugs():
+        story_dir = STORIES_DIR / slug
+        if not (story_dir / "story.md").exists():
+            continue
+        if not (story_dir / "enrichment.toml").exists() or not (story_dir / "index.html").exists():
+            print(f"{slug}: skipped (missing enrichment.toml or index.html)")
+            continue
+        try:
+            apply_enrichment(story_dir)
+            ok.append(slug)
+        except SystemExit as exc:
+            print(f"{slug}: FAILED — {exc}")
+            failed.append(slug)
+
+    count = refresh_index_full()
+    print(f"index.html refreshed (full rebuild) — {count} entries")
+    summary = f"--refresh-all: {len(ok)} ok, {len(failed)} failed"
+    if failed:
+        summary += f" ({', '.join(failed)})"
+    print(summary)
+
+
+# ─── --lint ──────────────────────────────────────────────────────────────────
+
+def lint_story(slug: str) -> tuple[list[str], list[str], list[str]]:
+    """Dry-run coverage check for one story against its own story.md / enrichment.toml.
+    Returns (errors, warnings, infos) — plain ASCII strings, no slug prefix."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    infos: list[str] = []
+    story_dir = STORIES_DIR / slug
+    md_path = story_dir / "story.md"
+    toml_path = story_dir / "enrichment.toml"
+
+    if not md_path.exists():
+        errors.append("missing story.md")
+    if not toml_path.exists():
+        errors.append("missing enrichment.toml")
+    if errors:
+        return errors, warnings, infos
+
+    fm, body = parse_frontmatter(md_path.read_text(encoding="utf-8"))
+    missing_fm = [k for k in INDEX_FIELDS if not fm.get(k)]
+    if missing_fm:
+        errors.append(f"frontmatter missing field(s): {', '.join(missing_fm)}")
+
+    raw_toml = toml_path.read_text(encoding="utf-8")
+    try:
+        data = tomllib.loads(raw_toml)
+    except tomllib.TOMLDecodeError as exc:
+        hint = _toml_error_hint(raw_toml, exc)
+        msg = f"TOML parse failed: {exc}"
+        if hint:
+            msg += " -- " + " ".join(hint.strip().splitlines())
+        errors.append(msg)
+        return errors, warnings, infos
+
+    words = data.get("words", {}) or {}
+    phrases = data.get("phrases", []) or []
+    sentences = data.get("sentences", []) or []
+    numbers = data.get("numbers", {}) or {}
+
+    phrase_idx = build_phrase_index(words, phrases)
+    full_text = "\n\n".join(split_paragraphs(body))
+
+    s_used = [0]
+
+    def take_sent():
+        if s_used[0] < len(sentences):
+            entry = sentences[s_used[0]]
+            s_used[0] += 1
+            return entry
+        s_used[0] += 1
+        return {}
+
+    def cur_si():
+        return s_used[0]
+
+    used_keys: set[str] = set()
+    stats: dict = {}
+    _rendered, missed = tokenize_text_segment(
+        full_text, words, phrase_idx, take_sent, cur_si, numbers, used_keys, stats)
+
+    if missed:
+        seen = sorted(set(missed))
+        more = "" if len(seen) <= 30 else f" (+{len(seen) - 30} more)"
+        errors.append(f"missed words ({len(seen)}): {', '.join(seen[:30])}{more}")
+
+    # End marks come from the same tokenizer pass rendering uses (terminator runs
+    # collapse to one mark; runs followed by a lowercase letter are pauses).
+    term_count = stats.get("ends", 0)
+    if term_count != len(sentences):
+        errors.append(
+            f"sentence count mismatch: {term_count} end mark(s) in body vs "
+            f"{len(sentences)} [[sentences]] entries"
+        )
+    pause_count = stats.get("pauses", 0)
+    if pause_count:
+        infos.append(f"{pause_count} mid-sentence pause mark(s) (no [[sentences]] entry consumed)")
+
+    orphan_words = sorted(f for f in words if f.lower() not in used_keys)
+    if orphan_words:
+        more = "" if len(orphan_words) <= 30 else f" (+{len(orphan_words) - 30} more)"
+        warnings.append(f"orphan word entries ({len(orphan_words)}): {', '.join(orphan_words[:30])}{more}")
+
+    orphan_phrases = sorted(p.get("form", "") for p in phrases if p.get("form", "").lower() not in used_keys)
+    if orphan_phrases:
+        warnings.append(f"orphan phrase entries ({len(orphan_phrases)}): {', '.join(orphan_phrases[:30])}")
+
+    return errors, warnings, infos
+
+
+def lint_cross_story(slugs: list[str]) -> list[str]:
+    """Corpus-wide, informational-only warnings: same lemma tagged with different pos
+    across stories, or the same surface form mapped to different lemmas (e.g. `la` as
+    article vs. object pronoun is an expected, legitimate case of the latter)."""
+    lemma_pos: dict[str, dict[str, set[str]]] = {}
+    form_lemma: dict[str, dict[str, set[str]]] = {}
+    for slug in slugs:
+        toml_path = STORIES_DIR / slug / "enrichment.toml"
+        if not toml_path.exists():
+            continue
+        try:
+            words, _phrases, _sentences, _numbers = load_enrichment(toml_path)
+        except SystemExit:
+            continue
+        for form, entry in words.items():
+            lemma = (entry.get("lemma") or form).lower()
+            pos = entry.get("pos", "")
+            lemma_pos.setdefault(lemma, {}).setdefault(pos, set()).add(slug)
+            form_lemma.setdefault(form.lower(), {}).setdefault(lemma, set()).add(slug)
+
+    out: list[str] = []
+    for lemma, by_pos in sorted(lemma_pos.items()):
+        if len(by_pos) > 1:
+            detail = "; ".join(f"{pos or '(none)'}: {','.join(sorted(s))}" for pos, s in sorted(by_pos.items()))
+            out.append(f'lemma "{lemma}" has inconsistent pos across stories -- {detail}')
+    for form, by_lemma in sorted(form_lemma.items()):
+        if len(by_lemma) > 1:
+            detail = "; ".join(f"{lemma}: {','.join(sorted(s))}" for lemma, s in sorted(by_lemma.items()))
+            out.append(f'surface form "{form}" maps to different lemmas -- {detail}')
+    return out
+
+
+def lint_cmd(story_arg: str | None) -> bool:
+    """Run --lint. Prints one line per story ("NN-slug: OK" or itemized findings), then a
+    cross-story consistency block and a summary line. Returns True iff no errors (exit 0)."""
+    if story_arg:
+        story_dir = resolve_story_path(story_arg)
+        target_slugs = [story_dir.name]
+    else:
+        target_slugs = disk_slugs()
+
+    all_ok = True
+    for slug in target_slugs:
+        errors, warnings, infos = lint_story(slug)
+        if errors:
+            all_ok = False
+            print(f"{slug}: FAIL")
+        elif warnings:
+            print(f"{slug}: OK (with warnings)")
+        else:
+            print(f"{slug}: OK")
+        for e in errors:
+            print(f"  error: {e}")
+        for w in warnings:
+            print(f"  warning: {w}")
+        for note in infos:
+            print(f"  info: {note}")
+
+    cross = lint_cross_story(disk_slugs())
+    if cross:
+        print("cross-story consistency:")
+        for w in cross:
+            print(f"  warning: {w}")
+
+    print(f"lint summary: {len(target_slugs)} story(ies) checked -- {'OK' if all_ok else 'ERRORS found'}")
+    return all_ok
+
+
+# ─── --atlas-check ───────────────────────────────────────────────────────────
+
+_ATLAS_STOP_RE = re.compile(r"^## Per-story deltas", re.MULTILINE)
+_ATLAS_ENTRY_RE = re.compile(r"^- \*\*([^*]+)\*\*\s*[—-]\s*(.*)$", re.MULTILINE)
+_ATLAS_LINKED_REF_RE = re.compile(r"\[#(\d+)\]\(([^)]+)\)")
+_ATLAS_PLAIN_REF_RE = re.compile(r"#(\d+)")
+
+
+def atlas_check() -> None:
+    """Warning-only (exit 0) cross-check of lore.md against stories/*/story.md:
+    - an entity's bolded top-list entry appears in a story body without that
+      story's #N in its ref list;
+    - a markdown link in lore.md points at a story.md path that doesn't exist.
+
+    Parses BOTH the plain `(#N)` ref form and the linked `[#N](path)` form (lore.md is
+    being restructured to the latter independently of this feature), so the check works
+    regardless of which lands first."""
+    if not LORE_MD.exists():
+        print("atlas-check: lore.md not found -- skipping")
+        return
+
+    text = LORE_MD.read_text(encoding="utf-8")
+    stop = _ATLAS_STOP_RE.search(text)
+    scope = text[:stop.start()] if stop else text
+
+    story_bodies: dict[str, str] = {}
+    for slug in disk_slugs():
+        try:
+            _fm, body = parse_frontmatter((STORIES_DIR / slug / "story.md").read_text(encoding="utf-8"))
+        except OSError:
+            continue
+        story_bodies[slug] = body
+
+    warn_count = 0
+    dead_links: list[str] = []
+    seen_paths: set[str] = set()
+
+    for m in _ATLAS_ENTRY_RE.finditer(scope):
+        name, rest = m.group(1).strip(), m.group(2)
+        linked = list(_ATLAS_LINKED_REF_RE.finditer(rest))
+        nums = {lm.group(1) for lm in linked}
+        for lm in linked:
+            path = lm.group(2)
+            if path in seen_paths:
+                continue
+            seen_paths.add(path)
+            if not (ROOT / path).exists():
+                dead_links.append(f"[#{lm.group(1)}]({path})")
+        rest_stripped = _ATLAS_LINKED_REF_RE.sub("", rest)
+        nums |= set(_ATLAS_PLAIN_REF_RE.findall(rest_stripped))
+
+        for slug, body in story_bodies.items():
+            if name and name in body:
+                n = str(int(slug[:2])) if slug[:2].isdigit() else slug[:2]
+                if n not in nums:
+                    print(f'warning: "{name}" appears in {slug} but #{n} is missing from its lore.md ref list')
+                    warn_count += 1
+
+    for dl in dead_links:
+        print(f"warning: dead link in lore.md -- {dl} does not exist")
+        warn_count += 1
+
+    print(f"atlas-check: {warn_count} warning(s)")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="lee-espanol render — apply enrichment to a designer-authored HTML")
     ap.add_argument("story", nargs="?", help="path to stories/NN-slug/ (auto-picks newest if omitted)")
     ap.add_argument("--bootstrap", action="store_true", help="write a minimal design scaffold (use when starting a new story)")
     ap.add_argument("--force", action="store_true", help="with --bootstrap: overwrite existing index.html")
     ap.add_argument("--index-only", action="store_true", help="only refresh the project-wide index.html")
+    ap.add_argument("--refresh-all", action="store_true",
+                     help="re-apply enrichment to every story with story.md+enrichment.toml+index.html, "
+                          "skip-and-report per-story failures, then a full index+vocab refresh")
+    ap.add_argument("--lint", action="store_true",
+                     help="validate story.md/enrichment.toml coverage (optional story arg = one story, "
+                          "default = all); prints findings, exits 1 on errors")
+    ap.add_argument("--atlas-check", action="store_true",
+                     help="cross-check lore.md entity refs against stories/*/story.md (warning-only)")
     args = ap.parse_args()
+
+    if args.atlas_check:
+        atlas_check()
+        return
+
+    if args.lint:
+        sys.exit(0 if lint_cmd(args.story) else 1)
+
+    if args.refresh_all:
+        refresh_all()
+        return
 
     if args.index_only:
         count = refresh_index_full()

@@ -578,6 +578,19 @@ article .s:hover{color:var(--oxblood);}
   }
   .reading-progress { display: none; }
 }
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
 </style>
 </head>
 <body>
@@ -1219,6 +1232,59 @@ article .s:hover{color:var(--oxblood);}
 " data-si="44">mesa</span><span class="s" data-tr="Синяя таблетка чуть-чуть блестит на столе." data-si="44">.</span></p>
 
   </article>
+<details data-new-words class="nw">
+  <summary>Palabras nuevas (47)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#abrir"><span class="nw-lemma">abrir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) открывает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#acumulado"><span class="nw-lemma">acumulado</span> <span class="nw-pos">прил.</span> <span class="nw-tr">накопленная</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#ana"><span class="nw-lemma">ana</span> <span class="nw-pos">имя</span> <span class="nw-tr">Ана — имя главной героини, врача станции</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#aparecer"><span class="nw-lemma">aparecer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(они) появляются</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-arbol"><span class="nw-lemma">el árbol</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">деревья</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#argyre"><span class="nw-lemma">argyre</span> <span class="nw-pos">имя</span> <span class="nw-tr">Аргиры — название станции; от Argyre Planitia (равнина в южном полушарии Марса)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#azul"><span class="nw-lemma">azul</span> <span class="nw-pos">прил.</span> <span class="nw-tr">синий/-яя</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-borrador"><span class="nw-lemma">el borrador</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">черновики</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-colonista"><span class="nw-lemma">el colonista</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">колонист</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#comparar"><span class="nw-lemma">comparar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">сравнивать</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-consulta"><span class="nw-lemma">la consulta</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">консультация; запрос</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-doctora"><span class="nw-lemma">la doctora</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">врач (ж.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-dosis"><span class="nw-lemma">la dosis</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">доза; дозы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#efectivo"><span class="nw-lemma">efectivo</span> <span class="nw-pos">прил.</span> <span class="nw-tr">эффективная</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#enfermo"><span class="nw-lemma">enfermo</span> <span class="nw-pos">прил.</span> <span class="nw-tr">больной</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#entrar"><span class="nw-lemma">entrar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он/она) входит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#estandar"><span class="nw-lemma">estándar</span> <span class="nw-pos">прил.</span> <span class="nw-tr">стандартный/-ая</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-evacuacion"><span class="nw-lemma">la evacuación</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">эвакуация</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-examen"><span class="nw-lemma">el examen</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">осмотры; экзамены</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#fabricar"><span class="nw-lemma">fabricar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(они) изготовили</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-formula"><span class="nw-lemma">la fórmula</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">формула</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-idea"><span class="nw-lemma">la idea</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">мысль; идея</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#informar"><span class="nw-lemma">informar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он/она) сообщает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#inquietar"><span class="nw-lemma">inquietar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он/она) тревожит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-invernadero"><span class="nw-lemma">el invernadero</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">теплицы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-limite"><span class="nw-lemma">el límite</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">предел</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#marciano"><span class="nw-lemma">marciano</span> <span class="nw-pos">прил.</span> <span class="nw-tr">марсианский</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-medica"><span class="nw-lemma">la médica</span> <span class="nw-pos">сущ. / прил.</span> <span class="nw-tr">врач (ж.); медицинская</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#medico"><span class="nw-lemma">médico</span> <span class="nw-pos">прил.</span> <span class="nw-tr">медицинский</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#mensual"><span class="nw-lemma">mensual</span> <span class="nw-pos">прил.</span> <span class="nw-tr">ежемесячные</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-mitad"><span class="nw-lemma">la mitad</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">половина</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#nacido"><span class="nw-lemma">nacido</span> <span class="nw-pos">прил.</span> <span class="nw-tr">родившиеся</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-orden"><span class="nw-lemma">la orden</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">приказ</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-pildora"><span class="nw-lemma">la píldora</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">таблетка</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-profilaxis"><span class="nw-lemma">la profilaxis</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">профилактика; профилактическое средство</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-puesto"><span class="nw-lemma">el puesto</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">пост; пункт</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-radiacion"><span class="nw-lemma">la radiación</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">радиация</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#recibido"><span class="nw-lemma">recibido</span> <span class="nw-pos">прил.</span> <span class="nw-tr">полученная</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-sintoma"><span class="nw-lemma">el síntoma</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">симптомы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#sonar"><span class="nw-lemma">soñar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он/она) мечтает; видит сны</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#soto"><span class="nw-lemma">soto</span> <span class="nw-pos">имя</span> <span class="nw-tr">Сото — фамилия Аны</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-sur"><span class="nw-lemma">el sur</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">юг</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#tecnico"><span class="nw-lemma">técnico</span> <span class="nw-pos">прил.</span> <span class="nw-tr">техническая</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-terraformacion"><span class="nw-lemma">la terraformación</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">терраформирование</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-tumba"><span class="nw-lemma">la tumba</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">могилы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#unico"><span class="nw-lemma">único</span> <span class="nw-pos">прил.</span> <span class="nw-tr">единственная</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#urgente"><span class="nw-lemma">urgente</span> <span class="nw-pos">прил.</span> <span class="nw-tr">срочный/-ая</span></a></li>
+  </ol>
+</details>
+
 
   <aside class="sidebar" aria-label="metadatos del expediente">
 
@@ -1442,6 +1508,30 @@ window.__leeSentences = [{"tr": "Доктор Ана Сото — единств
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();
 </script>
 </body>

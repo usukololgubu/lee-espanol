@@ -338,6 +338,19 @@
   }
   .reading-progress { display: none; }
 }
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
 </style>
 </head>
 <body>
@@ -699,6 +712,44 @@
 `brill·[[ar]]` → `brill·[[a]]`
 " data-si="32">brilla</span><span class="s" data-tr="Снаружи блестит лёд." data-si="32">.</span></p>
     </article>
+<details data-new-words class="nw">
+  <summary>Palabras nuevas (32)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#asi"><span class="nw-lemma">así</span> <span class="nw-pos">нар.</span> <span class="nw-tr">так, вот так</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-aviso"><span class="nw-lemma">el aviso</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">сообщение, предупреждение</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#barrer"><span class="nw-lemma">barrer</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">смести, вымести</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-bodega"><span class="nw-lemma">la bodega</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">трюмы, отсеки груза</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-carga"><span class="nw-lemma">la carga</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">груз; ноша</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-cometa"><span class="nw-lemma">el cometa</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">комета</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-cometero"><span class="nw-lemma">el cometero</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">кометолов (корабль-добытчик льда с комет)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-companero"><span class="nw-lemma">el compañero</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">напарник, товарищ</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#cortar"><span class="nw-lemma">cortar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) режет</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-decision"><span class="nw-lemma">la decisión</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">решение</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#desde-hace"><span class="nw-lemma">desde hace</span> <span class="nw-pos">идиома</span> <span class="nw-tr">(вот уже) — о длительности до сих пор</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#desviar"><span class="nw-lemma">desviar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">отклонить, увести в сторону</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#encender"><span class="nw-lemma">encender</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">включить, зажечь</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#estimado"><span class="nw-lemma">estimado</span> <span class="nw-pos">прил.</span> <span class="nw-tr">оценочное, примерное</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#garza"><span class="nw-lemma">garza</span> <span class="nw-pos">имя</span> <span class="nw-tr">«Гарса» (цапля) — название корабля</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-garza"><span class="nw-lemma">La Garza</span> <span class="nw-pos">имя</span> <span class="nw-tr">«Ла-Гарса» (Цапля) — корабль-кометолов Надии</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-grado"><span class="nw-lemma">el grado</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">градусы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#leo"><span class="nw-lemma">leo</span> <span class="nw-pos">имя</span> <span class="nw-tr">Лео — мужское имя, напарник Надии</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#minero"><span class="nw-lemma">minero</span> <span class="nw-pos">прил.</span> <span class="nw-tr">рудничный, шахтёрский</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-motor"><span class="nw-lemma">el motor</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">двигатели</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#nadia"><span class="nw-lemma">nadia</span> <span class="nw-pos">имя</span> <span class="nw-tr">Надия — женское имя, шахтёрка кометолова</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-nucleo"><span class="nw-lemma">el núcleo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">ядро</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-pago"><span class="nw-lemma">el pago</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">оплата, заработок</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#pk"><span class="nw-lemma">pk</span> <span class="nw-pos">имя</span> <span class="nw-tr">PK-9 — маленький рудничный лагерь на астероиде</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#pk-9"><span class="nw-lemma">PK-9</span> <span class="nw-pos">имя</span> <span class="nw-tr">PK-9 — крошечный рудничный лагерь на астероиде (≈6 человек)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-poblacion"><span class="nw-lemma">la población</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">население</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#soltar"><span class="nw-lemma">soltar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">отпустить, сбросить</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-solucion"><span class="nw-lemma">la solución</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">решение, выход</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#tan"><span class="nw-lemma">tan</span> <span class="nw-pos">нар.</span> <span class="nw-tr">так, настолько</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#tiene-que"><span class="nw-lemma">tiene que</span> <span class="nw-pos">идиома</span> <span class="nw-tr">(она) должна, ей нужно</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#vender"><span class="nw-lemma">vender</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">продать</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#vigilar"><span class="nw-lemma">vigilar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он) дежурит, следит</span></a></li>
+  </ol>
+</details>
+
   </section>
 
 </div>
@@ -887,6 +938,30 @@ window.__leeSentences = [{"tr": "Надия работает одна.", "note":
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();
 </script>
 </body>

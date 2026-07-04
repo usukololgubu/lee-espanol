@@ -556,6 +556,19 @@ article[data-story-body] .s:hover {
   }
   .reading-progress { display: none; }
 }
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
 </style>
 </head>
 <body>
@@ -1033,6 +1046,35 @@ article[data-story-body] .s:hover {
 " data-si="39">todavía</span> <span class="w" data-tr="не; нет" data-pos="нар." data-lemma="no" data-grammar="" data-si="39">no</span><span class="s" data-tr="Сегодня ещё нет." data-si="39">.</span></p>
 
     </article>
+<details data-new-words class="nw">
+  <summary>Palabras nuevas (23)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#la-antena"><span class="nw-lemma">la antena</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">антенна</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#apretar"><span class="nw-lemma">apretar</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(она) нажимает</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-barco"><span class="nw-lemma">el barco</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">корабль; судно</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-boton"><span class="nw-lemma">el botón</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">кнопки</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#bueno"><span class="nw-lemma">bueno</span> <span class="nw-pos">прил.</span> <span class="nw-tr">хорошая</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-carguero"><span class="nw-lemma">el carguero</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">грузовые корабли</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-ciclo"><span class="nw-lemma">el ciclo</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">цикл</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-consola"><span class="nw-lemma">la consola</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">пульт; консоль</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-corredor"><span class="nw-lemma">el corredor</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">коридор</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-cuidado"><span class="nw-lemma">el cuidado</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">осторожно!; внимание</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#espacial"><span class="nw-lemma">espacial</span> <span class="nw-pos">прил.</span> <span class="nw-tr">космический</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#el-faro"><span class="nw-lemma">el faro</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">маяк</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-operadora"><span class="nw-lemma">la operadora</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">оператор (ж.)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-orbita"><span class="nw-lemma">la órbita</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">орбита</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-prueba"><span class="nw-lemma">la prueba</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">доказательства</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#rapido"><span class="nw-lemma">rápido</span> <span class="nw-pos">прил.</span> <span class="nw-tr">быстрый; быстрее</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-recepcion"><span class="nw-lemma">la recepción</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">получение; приём</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#renata"><span class="nw-lemma">renata</span> <span class="nw-pos">имя</span> <span class="nw-tr">Рената — имя главной героини, смотрительницы маяка</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-roca"><span class="nw-lemma">la roca</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">скала; камень</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#salir"><span class="nw-lemma">salir</span> <span class="nw-pos">глаг.</span> <span class="nw-tr">(он/она) выходит</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-transmision"><span class="nw-lemma">la transmisión</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">передача; трансляция</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#uno"><span class="nw-lemma">uno</span> <span class="nw-pos">числ. / мест.</span> <span class="nw-tr">один</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#vesta-7"><span class="nw-lemma">vesta-7</span> <span class="nw-pos">имя</span> <span class="nw-tr">Веста-7 — позывной маяка-ретранслятора на астероиде в старом коридоре между Церерой и Юпитером</span></a></li>
+  </ol>
+</details>
+
 
     <aside class="panel" aria-label="estado del faro">
       <div class="panel-h">consola · vesta-7</div>
@@ -1259,6 +1301,30 @@ window.__leeSentences = [{"tr": "Рената живёт одна на Маяк�
   window.addEventListener('scroll', updateProgress, {passive:true});
   window.addEventListener('resize', updateProgress);
   updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
 })();
 </script>
 </body>

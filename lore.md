@@ -2,43 +2,45 @@
 
 Compact continuity reference for the lee-espanol corpus. The `story` skill reads this in step 2 instead of opening the 12 prior `story.md` bodies. Top-level lists below are curated; per-story delta sections (at the bottom) are appended automatically by the skill after each new story and are the source of truth for what got introduced.
 
+Every entry in the top-level lists links to each story where that entity appears, introduction story first. The per-story deltas below hold the granular per-story detail; the `story` skill maintains these ref lists mechanically as new stories reuse or extend an entry, while descriptions stay hand-curated.
+
 ## Characters
 
-- **ARES** — AI, Anillo-7 observatory at Saturn (#1)
-- **Elena** — anthropologist, Nueva Andalucía (#2)
-- **Marco** — navigator, ice tug *Tortuga* (#3)
-- **Lucía** — biologist, Europa-3 (#4)
-- **Tomás** — maintenance engineer, *Caracol* (#5)
-- **Inés** — junior linguist, Instituto de Lenguas (#6)
-- **Mateo** — cargo captain, freighter *La Mula* (#7)
-- **Don Joaquín** — old colonist, Nueva Andalucía 85 yr after silence (#8)
-- **Mariela** — radioastrónoma, Estación Casiopea (#9)
-- **Sofía** — software maintainer, Colonia Brasa (#10)
-- **Dra. Ana Soto** — doctor, Estación Argyre (#11)
-- **Renata** — lighthouse keeper, Faro Vesta-7 (#12)
+- **ARES** — AI, Anillo-7 observatory at Saturn — [#1](stories/01-saturn-ai/story.md)
+- **Elena** — anthropologist, Nueva Andalucía — [#2](stories/02-nueva-andalucia/story.md)
+- **Marco** — navigator, ice tug *Tortuga* — [#3](stories/03-zumbido-deriva/story.md)
+- **Lucía** — biologist, Europa-3 — [#4](stories/04-algo-verde/story.md)
+- **Tomás** — maintenance engineer, *Caracol* — [#5](stories/05-pasajero-unico/story.md)
+- **Inés** — junior linguist, Instituto de Lenguas — [#6](stories/06-la-traductora/story.md), [#7](stories/07-el-desvio/story.md)
+- **Mateo** — cargo captain, freighter *La Mula* — [#7](stories/07-el-desvio/story.md)
+- **Don Joaquín** — old colonist, Nueva Andalucía 85 yr after silence — [#8](stories/08-el-ultimo-que-recuerda/story.md)
+- **Mariela** — radioastrónoma, Estación Casiopea — [#9](stories/09-la-senal/story.md)
+- **Sofía** — software maintainer, Colonia Brasa — [#10](stories/10-el-reloj/story.md)
+- **Dra. Ana Soto** — doctor, Estación Argyre — [#11](stories/11-la-dosis/story.md)
+- **Renata** — lighthouse keeper, Faro Vesta-7 — [#12](stories/12-el-faro-apagado/story.md)
 
 ## Locations
 
-- **Anillo-7** — observatory station, Saturn orbit (#1)
-- **Nueva Andalucía** — lost colony, contact severed; reverted to Saturn-the-Patron cult; #2 is 80 yr post-silence, #8 is 85 yr post-silence (#2, #8)
-- **Europa-3** — research station on the ice of Europa, Jupiter system (#4)
-- **Instituto de Lenguas** — small translation lab, Mars (#6)
-- **Estación Casiopea** — radio listening post on the icy surface of Plutón, beyond the planets (#9)
-- **Colonia Brasa** — small religious outpost on a Kuiper Belt asteroid (#10)
-- **Estación Argyre** — terraforming outpost, southern highlands of Mars, ~40 colonists (#11)
-- **Faro Vesta-7** — relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter (#12)
+- **Anillo-7** — observatory station, Saturn orbit — [#1](stories/01-saturn-ai/story.md)
+- **Nueva Andalucía** — lost colony, contact severed; reverted to Saturn-the-Patron cult; [#2](stories/02-nueva-andalucia/story.md) is 80 yr post-silence, [#8](stories/08-el-ultimo-que-recuerda/story.md) is 85 yr post-silence — [#2](stories/02-nueva-andalucia/story.md), [#8](stories/08-el-ultimo-que-recuerda/story.md)
+- **Europa-3** — research station on the ice of Europa, Jupiter system — [#4](stories/04-algo-verde/story.md)
+- **Instituto de Lenguas** — small translation lab, Mars — [#6](stories/06-la-traductora/story.md)
+- **Estación Casiopea** — radio listening post on the icy surface of Plutón, beyond the planets — [#9](stories/09-la-senal/story.md)
+- **Colonia Brasa** — small religious outpost on a Kuiper Belt asteroid — [#10](stories/10-el-reloj/story.md)
+- **Estación Argyre** — terraforming outpost, southern highlands of Mars, ~40 colonists — [#11](stories/11-la-dosis/story.md)
+- **Faro Vesta-7** — relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter — [#12](stories/12-el-faro-apagado/story.md)
 
 ## Ships
 
-- **Tortuga** — ice tug, mid-route to Ceres, outer drift (#3)
-- **Caracol** — generation ship, 800-yr voyage to Próxima Centauri (#5; year 198 at story time)
-- **La Mula** — freighter, asteroid belt run between Mars and Ceres (#7)
+- **Tortuga** — ice tug, mid-route to Ceres, outer drift — [#3](stories/03-zumbido-deriva/story.md)
+- **Caracol** — generation ship, 800-yr voyage to Próxima Centauri; year 198 at story time — [#5](stories/05-pasajero-unico/story.md)
+- **La Mula** — freighter, asteroid belt run between Mars and Ceres — [#7](stories/07-el-desvio/story.md)
 
 ## Terms / tech
 
-- **cryosleep / los dormidos / el sueño** — recurring; AI's wakeful watch over sleeping crew is established (#1)
-- **anillo / corredor** — common navigation language (orbital ring, shipping corridor)
-- **silencio** — euphemism for the contact-loss with Earth that defines the lost colonies (#2, #8)
+- **cryosleep / los dormidos / el sueño** — recurring; AI's wakeful watch over sleeping crew is established — [#1](stories/01-saturn-ai/story.md), [#5](stories/05-pasajero-unico/story.md), [#18](stories/18-la-carga/story.md), [#19](stories/19-la-boveda/story.md), [#21](stories/21-el-vigia/story.md)
+- **anillo / corredor** — common navigation language (orbital ring, shipping corridor) — [#12](stories/12-el-faro-apagado/story.md), [#21](stories/21-el-vigia/story.md)
+- **silencio** — euphemism for the contact-loss with Earth that defines the lost colonies — [#2](stories/02-nueva-andalucia/story.md), [#8](stories/08-el-ultimo-que-recuerda/story.md), [#19](stories/19-la-boveda/story.md)
 
 ## Factions / forces
 
@@ -46,10 +48,10 @@ Compact continuity reference for the lee-espanol corpus. The `story` skill reads
 
 ## Timeline anchors
 
-- **Día 412** — ARES's count at Anillo-7 (#1)
-- **Año 80 del silencio** — Nueva Andalucía's contact-loss anchor (#2)
-- **Año 85 del silencio** — Nueva Andalucía five years later (#8)
-- **Año 198 / 800** — *Caracol*'s progress to Próxima Centauri (#5)
+- **Día 412** — ARES's count at Anillo-7 — [#1](stories/01-saturn-ai/story.md)
+- **Año 80 del silencio** — Nueva Andalucía's contact-loss anchor — [#2](stories/02-nueva-andalucia/story.md)
+- **Año 85 del silencio** — Nueva Andalucía five years later — [#8](stories/08-el-ultimo-que-recuerda/story.md)
+- **Año 198 / 800** — *Caracol*'s progress to Próxima Centauri — [#5](stories/05-pasajero-unico/story.md)
 
 ## Tone reminders
 
