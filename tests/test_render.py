@@ -261,5 +261,200 @@ class LintCleanRepoTests(unittest.TestCase):
                 self.assertEqual(errors, [], f"{slug}: lint errors: {errors}")
 
 
+class AnchorConsistencyTests(unittest.TestCase):
+    """Every 'Palabras nuevas' deep link on every story page must land on a
+    vocabulario.html entry with the SAME lemma. This is the regression net for
+    the accent-collision bug (el/él, si/sí, sonar/soñar all slugify to the same
+    base): anchors are assigned with -2 suffixes in vocabulario.html, and the
+    new-words blocks must use the very same assignment, not re-derive their own."""
+
+    def test_new_words_links_hit_matching_vocab_entries(self):
+        import html as html_mod
+        import re
+
+        vocab = (PROJECT_ROOT / "vocabulario.html").read_text(encoding="utf-8")
+        entry_re = re.compile(
+            r'<div class="v-entry" id="([^"]+)"[^>]*>\s*'
+            r'<span class="v-lemma">([^<]*)</span>'
+        )
+        vocab_lemma_by_id = {
+            m.group(1): html_mod.unescape(m.group(2)) for m in entry_re.finditer(vocab)
+        }
+        self.assertTrue(vocab_lemma_by_id, "no entries parsed from vocabulario.html")
+
+        link_re = re.compile(
+            r'vocabulario\.html#([^"]+)">\s*'
+            r'<span class="nw-lemma">([^<]*)</span>'
+        )
+        checked = 0
+        for story_dir in _story_dirs_with_all_inputs():
+            text = (story_dir / "index.html").read_text(encoding="utf-8")
+            for m in link_re.finditer(text):
+                anchor, lemma = m.group(1), html_mod.unescape(m.group(2))
+                with self.subTest(slug=story_dir.name, lemma=lemma):
+                    self.assertIn(anchor, vocab_lemma_by_id,
+                                  f"dead anchor #{anchor} for lemma {lemma!r}")
+                    self.assertEqual(vocab_lemma_by_id[anchor], lemma,
+                                     f"#{anchor} points at a different entry")
+                checked += 1
+        self.assertGreater(checked, 100, "suspiciously few new-words links checked")
+
+
+class SplitSentencesTests(unittest.TestCase):
+    """split_sentences must mirror the tokenizer's END/pause/number rules exactly
+    (it powers --prefill sentence stubs and --lint's drift check)."""
+
+    def test_pause_runs_stay_inside_their_sentence(self):
+        text = "Bip... bip... bip... Cada cinco segundos."
+        self.assertEqual(render.split_sentences(text),
+                         ["Bip... bip... bip...", "Cada cinco segundos."])
+
+    def test_closing_quote_attaches_to_its_sentence(self):
+        text = 'Ella dice: "Hola." Adios.'
+        self.assertEqual(render.split_sentences(text),
+                         ['Ella dice: "Hola."', "Adios."])
+
+    def test_dot_grouped_number_is_not_a_boundary(self):
+        text = "El anno 7.012 fue largo. Fin."
+        self.assertEqual(render.split_sentences(text),
+                         ["El anno 7.012 fue largo.", "Fin."])
+
+    def test_whitespace_is_normalized(self):
+        text = "Una   frase\ncon saltos."
+        self.assertEqual(render.split_sentences(text), ["Una frase con saltos."])
+
+
+class JsPayloadTests(unittest.TestCase):
+    def test_script_close_tag_is_escaped(self):
+        out = render.js_payload([{"tr": "a</script><b>x"}])
+        self.assertNotIn("</script>", out)
+        # Still valid JSON semantics: <\/ decodes back to </ in JS.
+        self.assertIn("<\\/script>", out)
+
+
+class _StoriesSandbox:
+    """Context manager: point render.STORIES_DIR at a temp dir under tests/."""
+
+    def __init__(self):
+        self._tmp = None
+        self._orig = None
+
+    def __enter__(self) -> Path:
+        self._tmp = tempfile.TemporaryDirectory(dir=str(TESTS_DIR))
+        self._orig = render.STORIES_DIR
+        render.STORIES_DIR = Path(self._tmp.name)
+        return render.STORIES_DIR
+
+    def __exit__(self, *exc):
+        render.STORIES_DIR = self._orig
+        self._tmp.cleanup()
+        return False
+
+
+_FM = """---
+title: "T{n}"
+logline: "l"
+protagonist: "p"
+setting: "s"
+date_generated: "2026-07-12"
+length_words: "5"
+---
+
+"""
+
+
+class PrefillTests(unittest.TestCase):
+    """--prefill drafts enrichment.toml: corpus-known words copied, new words and
+    sentence translations stubbed, output must parse as valid TOML."""
+
+    def test_prefill_draft(self):
+        with _StoriesSandbox() as stories:
+            s1 = stories / "01-uno"
+            s1.mkdir()
+            (s1 / "story.md").write_text(_FM.format(n=1) + "La casa es azul.\n", encoding="utf-8")
+            (s1 / "enrichment.toml").write_text(
+                '[words.la]\ntr = "артикль"\npos = "арт."\nlemma = "la"\n'
+                '[words.casa]\ntr = "дом"\npos = "сущ."\nlemma = "la casa"\n'
+                'grammar = """\n**casa** — сущ. `ж. р.`\n"""\n'
+                '[words.es]\ntr = "есть"\npos = "глаг."\nlemma = "ser"\n'
+                '[words.azul]\ntr = "синий"\npos = "прил."\nlemma = "azul"\n'
+                '[[sentences]]\ntext = "La casa es azul."\ntr = "Дом синий."\n',
+                encoding="utf-8",
+            )
+            s2 = stories / "02-dos"
+            s2.mkdir()
+            (s2 / "story.md").write_text(
+                _FM.format(n=2) + "La casa es roja. Es grande.\n", encoding="utf-8")
+
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                render.prefill(s2, force=False)
+
+            import tomllib
+            raw = (s2 / "enrichment.toml").read_text(encoding="utf-8")
+            data = tomllib.loads(raw)
+
+            # Known words prefilled with their corpus entries (multiline grammar survives).
+            self.assertEqual(data["words"]["casa"]["tr"], "дом")
+            self.assertIn("**casa**", data["words"]["casa"]["grammar"])
+            # New words stubbed empty.
+            self.assertEqual(data["words"]["roja"]["tr"], "")
+            self.assertEqual(data["words"]["grande"]["tr"], "")
+            # One sentence stub per END mark, with extracted text and empty tr.
+            self.assertEqual([s["text"] for s in data["sentences"]],
+                             ["La casa es roja.", "Es grande."])
+            self.assertTrue(all(s["tr"] == "" for s in data["sentences"]))
+
+            # Refuses to overwrite without --force.
+            with self.assertRaises(render.RenderError):
+                render.prefill(s2, force=False)
+
+    def test_toml_str_round_trips(self):
+        import tomllib
+        cases = [
+            'plain',
+            'with "quotes" and \\backslash',
+            'multi\nline — **bold** `code [[x]]`\n',
+        ]
+        for s in cases:
+            with self.subTest(s=s):
+                parsed = tomllib.loads(f"v = {render._toml_str(s)}")["v"]
+                self.assertEqual(parsed, s)
+
+
+class LintQualityTests(unittest.TestCase):
+    """The empty-tr error (catches --prefill stubs left unfilled) and the
+    sentence-text drift warning."""
+
+    def test_empty_tr_is_an_error(self):
+        with _StoriesSandbox() as stories:
+            s1 = stories / "01-uno"
+            s1.mkdir()
+            (s1 / "story.md").write_text(_FM.format(n=1) + "Sol rojo.\n", encoding="utf-8")
+            (s1 / "enrichment.toml").write_text(
+                '[words.sol]\ntr = ""\npos = "сущ."\nlemma = "el sol"\n'
+                '[words.rojo]\ntr = "красный"\npos = "прил."\nlemma = "rojo"\n'
+                '[[sentences]]\ntext = "Sol rojo."\ntr = "Красное солнце."\n',
+                encoding="utf-8",
+            )
+            errors, warnings, infos = render.lint_story("01-uno")
+            self.assertTrue(any("empty tr" in e for e in errors), errors)
+
+    def test_sentence_text_drift_is_a_warning(self):
+        with _StoriesSandbox() as stories:
+            s1 = stories / "01-uno"
+            s1.mkdir()
+            (s1 / "story.md").write_text(_FM.format(n=1) + "Sol rojo.\n", encoding="utf-8")
+            (s1 / "enrichment.toml").write_text(
+                '[words.sol]\ntr = "солнце"\npos = "сущ."\nlemma = "el sol"\n'
+                '[words.rojo]\ntr = "красный"\npos = "прил."\nlemma = "rojo"\n'
+                '[[sentences]]\ntext = "Luna azul brillante."\ntr = "Красное солнце."\n',
+                encoding="utf-8",
+            )
+            errors, warnings, infos = render.lint_story("01-uno")
+            self.assertEqual(errors, [], errors)
+            self.assertTrue(any("drift" in w for w in warnings), warnings)
+
+
 if __name__ == "__main__":
     unittest.main()

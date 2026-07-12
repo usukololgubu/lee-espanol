@@ -267,29 +267,30 @@ Any field you omit keeps its auto-generated value. Leave numbers alone unless an
 
 ## Workflow
 
+**Step 0 is mandatory** — it does most of the mechanical work and typically leaves only a handful of genuinely new words to author.
+
+0. **Prefill the draft** — run `py .ai/skills/render/render.py --prefill stories/NN-slug`. This writes a draft `enrichment.toml`: every word/phrase already enriched in an earlier story is copied in (with a `# from NN-slug` provenance comment), genuinely new words become `tr = ""` TODO stubs, and every `[[sentences]]` entry is stubbed with the extracted `text` and an empty `tr`. Do **not** author the file from scratch — edit the draft.
 1. **Read the story `.md`** — parse frontmatter and Spanish body.
 2. **Read the profile** — calibrate the vocabulary level (don't over-explain at A1).
-3. **Tokenize the body**:
-   - Identify each word (skip digits, punctuation, whitespace)
-   - Identify sentence-END marks in order (terminator runs collapse to one mark; runs followed by a lowercase letter are pauses with no entry; dot-grouped thousands like `7.012` are numbers — see `[[sentences]]` above), including marks inside quotes
-4. **Build the words table**:
-   - For each unique lowercased form, emit `[words.<form>]` with `tr`, `pos`, `lemma`, and `grammar` (where useful)
-   - Disambiguate by sense across the whole story if the same form means different things (rare at A1; if it happens, pick the dominant sense and note the alternative in `grammar`)
-   - Proper nouns get `pos = "имя"` and no `lemma`
-5. **Build the phrases array** (`[[phrases]]`):
-   - Scan for multi-word expressions: fixed collocations (`por fin`, `tal vez`), multi-word proper nouns (`Colonia Verde`), and **idioms**
-   - For idioms, add `pos = "идиома"`, a whole-meaning `tr`, a per-word `parts` breakdown, and (where useful) a `literal` reading + `grammar` context — so the popup shows both the idiom and its words
-   - List longer phrases first conceptually; the renderer matches longest-first regardless
-6. **Build the sentences array**:
-   - One `[[sentences]]` entry per sentence-END mark, in story order (pauses get none)
-   - `text` is the full Spanish sentence, `tr` is the Russian translation
+3. **Fill the TODO stubs** (the `# --- NEW WORDS ---` section of the draft):
+   - For each stubbed form, fill `tr`, `pos`, `lemma`, and add `grammar` where useful (see the coverage policy above)
+   - Proper nouns get `pos = "имя"` and no `lemma` (delete the stub's `lemma` line)
+4. **Verify the prefilled entries against THIS story's context**:
+   - Prefilled glosses carry the *most recent prior* sense — if the word is used differently here (rare at A1), correct `tr`/`grammar` in place
+   - Conjugated-verb `grammar` blocks reference the specific form; they transfer as-is since entries are keyed by surface form
+5. **Add missing phrases/idioms** (`[[phrases]]`):
+   - The prefill only copies phrases whose exact surface form already appeared in an earlier story — scan the body for **new** fixed collocations, multi-word proper nouns, and idioms
+   - For idioms, add `pos = "идиома"`, a whole-meaning `tr`, a per-word `parts` breakdown, and (where useful) a `literal` reading + `grammar` context
+   - When a new phrase subsumes prefilled single-word entries, the singles become harmless orphans (lint reports them as warnings; delete them if you prefer a clean file)
+6. **Fill the sentence translations**:
+   - Each `[[sentences]]` stub already carries the correct `text` in pairing order — write its Russian `tr`
    - Add an optional `note` where a sentence-level explanation helps (word order, *si*-clauses, tense interplay, an idiomatic whole clause, cultural context) — this also powers Shift-to-sentence on every word in the sentence
-7. **Write the file** to `stories/NN-slug/enrichment.toml` (overwrite if exists)
-8. **Lint before handing off** — run `py .ai/skills/render/render.py --lint stories/NN-slug` and fix any reported errors (missed words, sentence-count mismatch, TOML issues) before suggesting `/render`.
+7. **Save** `stories/NN-slug/enrichment.toml` (the draft is edited in place; re-running `--prefill` needs `--force` and discards your edits)
+8. **Lint before handing off** — run `py .ai/skills/render/render.py --lint stories/NN-slug` and fix any reported errors before suggesting `/render`. Empty `tr` anywhere (an unfilled stub) is a lint **error**, so a forgotten TODO cannot reach the page.
 9. **Report to user**:
    - Path
-   - Word count and sentence count enriched
-   - Any forms you flagged as ambiguous or where grammar was particularly tricky
+   - How many entries were prefilled vs newly authored, and sentence count
+   - Any forms you flagged as ambiguous, sense-corrected, or where grammar was particularly tricky
    - Suggest next step: `/render` to build the HTML page
 
 ## Quality bar

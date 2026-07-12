@@ -31,6 +31,7 @@ Usage (from project root):
   py .ai/skills/render/render.py stories/05-pasajero-unico
   py .ai/skills/render/render.py --bootstrap stories/06-foo # write minimal design scaffold
   py .ai/skills/render/render.py --index-only               # only refresh project-wide index
+  py .ai/skills/render/render.py --prefill stories/07-bar   # draft enrichment.toml from corpus knowledge
 
 Requires Python 3.11+ (tomllib).
 """
@@ -55,6 +56,40 @@ VOCABULARIO_HTML = ROOT / "vocabulario.html"
 LORE_MD = ROOT / "lore.md"
 INDEX_FIELDS = ("title", "logline", "protagonist", "setting", "date_generated", "length_words")
 DEFAULT_PALETTE = {"bg": "#f5f3ec", "ink": "#1f1d18", "accent": "#8a877e"}
+
+
+class RenderError(SystemExit):
+    """Recoverable per-story failure. Subclasses SystemExit so an uncaught error
+    still exits the CLI with the message (exit code 1), but callers that must keep
+    going (--refresh-all, corpus aggregation, the earlier-stories diff) can catch
+    it precisely instead of trapping every SystemExit."""
+
+
+class SentenceCursor:
+    """Single source of truth for [[sentences]] pairing state. Rendering
+    (walk_html_body), --lint (lint_story), and --prefill all drive the tokenizer
+    through one of these, so their pairing semantics can never drift apart."""
+
+    def __init__(self, sentences: list):
+        self.sentences = sentences
+        self.used = 0
+
+    def take(self) -> dict:
+        if self.used < len(self.sentences):
+            entry = self.sentences[self.used]
+            self.used += 1
+            return entry
+        return {}
+
+    def si(self) -> int:
+        return self.used
+
+
+def js_payload(obj) -> str:
+    """JSON for embedding inside an inline <script>: '</' is escaped so a
+    translation containing '</script>' can never terminate the script block
+    (or confuse upsert_block's regex on the next re-render)."""
+    return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
 SP_LETTERS = "A-Za-zÀ-ÖØ-öø-ÿ"
 WORD_RE = re.compile(rf"[{SP_LETTERS}]+")
@@ -90,6 +125,33 @@ def term_run_is_end(text: str, run_end: int) -> bool:
     while k < len(text) and text[k].isspace():
         k += 1
     return not (k < len(text) and ES_LOWER_RE.match(text[k]))
+
+
+def split_sentences(text: str) -> list[str]:
+    """Split plain story text into one string per sentence-END mark, using the
+    same NUM_RE / TERM_RUN_RE / term_run_is_end rules as the tokenizer, with
+    trailing closing quotes/parens attached to their sentence and whitespace
+    normalized. Powers --prefill's [[sentences]] stubs and --lint's text-drift
+    check, so what it yields is exactly what pairs with [[sentences]] entries."""
+    out: list[str] = []
+    start = i = 0
+    n = len(text)
+    while i < n:
+        nm = NUM_RE.match(text, i)
+        if nm:
+            i = nm.end()
+            continue
+        tm = TERM_RUN_RE.match(text, i)
+        if tm:
+            i = tm.end()
+            if term_run_is_end(text, tm.end()):
+                while i < n and text[i] in TERM_CLOSING_CHARS:
+                    i += 1
+                out.append(" ".join(text[start:i].split()))
+                start = i
+            continue
+        i += 1
+    return out
 
 
 # ─── number → words (Spanish cardinal + Russian gloss + grammar) ────────────
@@ -280,19 +342,36 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return fm, body
 
 
+_ENRICHMENT_CACHE: dict[Path, tuple[tuple[int, int], tuple[dict, list, list, dict]]] = {}
+
+
 def load_enrichment(path: Path) -> tuple[dict, list, list, dict]:
+    """Parse (and mtime+size-cache) one enrichment.toml. The cache flattens the
+    otherwise O(N^2) corpus passes (--refresh-all, vocab aggregation, the
+    per-render earlier-stories diff). Returned structures are shared between
+    callers — treat them as read-only."""
+    try:
+        st = path.stat()
+    except OSError as exc:
+        raise RenderError(f"error: {path} — cannot read: {exc}")
+    cache_key = (st.st_mtime_ns, st.st_size)
+    hit = _ENRICHMENT_CACHE.get(path)
+    if hit and hit[0] == cache_key:
+        return hit[1]
     text = path.read_text(encoding="utf-8")
     try:
         data = tomllib.loads(text)
     except tomllib.TOMLDecodeError as exc:
         hint = _toml_error_hint(text, exc)
-        sys.exit(f"error: {path} — TOML parse failed: {exc}\n{hint}" if hint else f"error: {path} — TOML parse failed: {exc}")
-    return (
+        raise RenderError(f"error: {path} — TOML parse failed: {exc}\n{hint}" if hint else f"error: {path} — TOML parse failed: {exc}")
+    result = (
         data.get("words", {}),
         data.get("phrases", []) or [],
         data.get("sentences", []) or [],
         data.get("numbers", {}) or {},
     )
+    _ENRICHMENT_CACHE[path] = (cache_key, result)
+    return result
 
 
 def _toml_error_hint(text: str, exc: tomllib.TOMLDecodeError) -> str:
@@ -441,7 +520,11 @@ def tokenize_text_segment(
     missed: list[str] = []
     i = 0
     while i < len(text):
-        phrase_hit = next(((f, e) for f, e in phrase_idx if matches_phrase_at(text, i, f)), None)
+        # A phrase can only start at a word boundary on a wordish char — check that
+        # once per position before scanning the whole phrase index against it.
+        phrase_hit = None
+        if phrase_idx and is_wordish(text[i]) and (i == 0 or not is_wordish(text[i - 1])):
+            phrase_hit = next(((f, e) for f, e in phrase_idx if matches_phrase_at(text, i, f)), None)
         if phrase_hit:
             form, entry = phrase_hit
             out.append(word_span(text[i:i + len(form)], entry, cur_si()))
@@ -499,23 +582,21 @@ def walk_html_body(
 
     Sentence pairing is global (across all paragraphs) in document order.
     """
-    s_used = [0]
-
-    def take_sent() -> dict:
-        if s_used[0] < len(sentences):
-            entry = sentences[s_used[0]]
-            s_used[0] += 1
-            return entry
-        return {}
-
-    def cur_si() -> int:
-        return s_used[0]
+    cursor = SentenceCursor(sentences)
 
     out: list[str] = []
     missed: list[str] = []
     i, n = 0, len(content)
     while i < n:
         if content[i] == "<":
+            # HTML comments pass through verbatim — their text must never be
+            # tokenized, and an embedded '>' must not truncate the scan.
+            if content.startswith("<!--", i):
+                end = content.find("-->", i)
+                end = n if end == -1 else end + 3
+                out.append(content[i:end])
+                i = end
+                continue
             end = content.find(">", i)
             if end == -1:
                 out.append(content[i:])
@@ -527,11 +608,11 @@ def walk_html_body(
             if end == -1:
                 end = n
             seg = content[i:end]
-            toked, miss = tokenize_text_segment(seg, words, phrase_idx, take_sent, cur_si, numbers)
+            toked, miss = tokenize_text_segment(seg, words, phrase_idx, cursor.take, cursor.si, numbers)
             out.append(toked)
             missed.extend(miss)
             i = end
-    return "".join(out), missed, s_used[0]
+    return "".join(out), missed, cursor.used
 
 
 # ─── HTML manipulation ──────────────────────────────────────────────────────
@@ -1151,7 +1232,7 @@ def aggregate_vocabulary(slugs: list[str], cache: dict) -> dict[str, list[dict]]
             continue
         try:
             words, phrases, _, _ = load_enrichment(toml_path)
-        except SystemExit:
+        except RenderError:
             continue
         seq = int(slug[:2]) if slug[:2].isdigit() else 0
         title = cache.get(slug, {}).get("title", slug)
@@ -1167,8 +1248,9 @@ def aggregate_vocabulary(slugs: list[str], cache: dict) -> dict[str, list[dict]]
                 b["appearances"].append((seq, slug, title, match_target))
 
     out: dict[str, list[dict]] = {"palabras": [], "expresiones": [], "nombres": []}
-    for (section, _key), b in buckets.items():
+    for (section, key), b in buckets.items():
         out[section].append({
+            "key": key,
             "lemma": b["lemma"],
             "pos": b["pos"],
             "tr": b["tr"],
@@ -1277,7 +1359,7 @@ VOCAB_JS = r"""
 
 
 def render_vocabulario_html(sections: dict[str, list[dict]], story_count: int) -> str:
-    assign_anchors(sections)
+    """Render the page. `sections` must already carry anchors (build_vocab_sections)."""
     counts = {k: len(v) for k, v in sections.items()}
 
     def entry_html(e: dict) -> str:
@@ -1367,15 +1449,191 @@ def render_vocabulario_html(sections: dict[str, list[dict]], story_count: int) -
 """
 
 
-def write_vocabulario(cache: dict) -> int:
-    """Rebuild vocabulario.html from every story that has an enrichment.toml. Returns total entries."""
+def build_vocab_sections(cache: dict) -> tuple[dict[str, list[dict]], int]:
+    """Aggregate + anchor-assign across every story with an enrichment.toml.
+    Returns (sections, story_count). This is the single source of anchors for
+    BOTH vocabulario.html and every story's "Palabras nuevas" block — deriving
+    them independently is how deep links end up on the wrong entry when
+    accent-stripped lemmas collide (el/él, si/sí, sonar/soñar, …)."""
     slugs = sorted(
         (s for s in cache.keys() if (STORIES_DIR / s / "enrichment.toml").exists()),
         key=lambda s: int(s[:2]) if s[:2].isdigit() else 0,
     )
     sections = aggregate_vocabulary(slugs, cache)
-    VOCABULARIO_HTML.write_text(render_vocabulario_html(sections, len(slugs)), encoding="utf-8")
+    assign_anchors(sections)
+    return sections, len(slugs)
+
+
+def vocab_anchor_map(sections: dict[str, list[dict]]) -> dict[tuple[str, str], str]:
+    """(section, group_key) -> assigned anchor, for deep-link construction."""
+    return {
+        (section, e["key"]): e["anchor"]
+        for section, entries in sections.items()
+        for e in entries
+    }
+
+
+def write_vocabulario(cache: dict) -> int:
+    """Rebuild vocabulario.html from every story that has an enrichment.toml. Returns total entries."""
+    sections, story_count = build_vocab_sections(cache)
+    VOCABULARIO_HTML.write_text(render_vocabulario_html(sections, story_count), encoding="utf-8")
     return sum(len(v) for v in sections.values())
+
+
+# ─── --prefill (draft enrichment.toml from corpus knowledge) ────────────────
+# The /enrich step is the most expensive LLM stage of the pipeline, yet most of
+# an A1 story's vocabulary already exists in earlier stories' enrichment files.
+# --prefill drafts enrichment.toml mechanically: every word/phrase already known
+# to the corpus is copied in (most recent sense wins, provenance noted), and only
+# genuinely new words plus the per-sentence translations are left as TODO stubs
+# for the LLM to fill. --lint's empty-tr error catches any stub left behind.
+
+def _toml_key(k: str) -> str:
+    return k if re.fullmatch(r"[A-Za-z0-9_-]+", k) else '"' + k.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def _toml_str(s: str) -> str:
+    if "\n" in s:
+        esc = s.replace("\\", "\\\\").replace('"""', '""\\"')
+        return f'"""\n{esc}"""'
+    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def _entry_lines(entry: dict) -> list[str]:
+    """Serialize one words/phrases entry's fields in canonical order."""
+    lines: list[str] = []
+    for field in ("tr", "pos", "lemma", "literal"):
+        if field in entry and entry[field] != "":
+            lines.append(f"{field} = {_toml_str(str(entry[field]))}")
+    parts = entry.get("parts")
+    if parts:
+        lines.append("parts = [")
+        for it in parts:
+            lines.append(f"  {{ w = {_toml_str(str(it.get('w', '')))}, tr = {_toml_str(str(it.get('tr', '')))} }},")
+        lines.append("]")
+    if entry.get("grammar"):
+        lines.append(f"grammar = {_toml_str(str(entry['grammar']))}")
+    return lines
+
+
+def corpus_knowledge(exclude_slug: str) -> tuple[dict[str, dict], dict[str, dict]]:
+    """Most-recent-wins union of every other story's [words.*] and [[phrases]]
+    entries, keyed by lowercased form. Each value: {entry, src, form}."""
+    known_words: dict[str, dict] = {}
+    known_phrases: dict[str, dict] = {}
+    for slug in disk_slugs():
+        if slug == exclude_slug:
+            continue
+        toml_path = STORIES_DIR / slug / "enrichment.toml"
+        if not toml_path.exists():
+            continue
+        try:
+            words, phrases, _, _ = load_enrichment(toml_path)
+        except RenderError:
+            continue
+        for form, entry in words.items():
+            known_words[form.lower()] = {"entry": entry, "src": slug, "form": form}
+        for p in phrases:
+            form = p.get("form")
+            if form:
+                known_phrases[form.lower()] = {"entry": p, "src": slug, "form": form}
+    return known_words, known_phrases
+
+
+def prefill(story_dir: Path, force: bool) -> None:
+    md_path = story_dir / "story.md"
+    out_path = story_dir / "enrichment.toml"
+    if not md_path.exists():
+        raise RenderError(f"error: {md_path} not found")
+    if out_path.exists() and not force:
+        raise RenderError(f"error: {out_path} already exists; pass --force to overwrite")
+
+    _fm, body = parse_frontmatter(md_path.read_text(encoding="utf-8"))
+    full_text = "\n\n".join(split_paragraphs(body))
+    known_words, known_phrases = corpus_knowledge(story_dir.name)
+
+    words_lookup = {k: v["entry"] for k, v in known_words.items()}
+    phrase_list = [dict(v["entry"]) for v in known_phrases.values()]
+    phrase_idx = build_phrase_index(words_lookup, phrase_list)
+
+    cursor = SentenceCursor([])
+    used_keys: set[str] = set()
+    _rendered, missed = tokenize_text_segment(
+        full_text, words_lookup, phrase_idx, cursor.take, cursor.si, {}, used_keys)
+
+    todo_forms = sorted({w.lower() for w in missed}, key=es_sort_key)
+    hit_word_keys = sorted((k for k in used_keys if k in known_words), key=es_sort_key)
+    hit_phrase_keys = sorted(
+        (k for k in used_keys if k in known_phrases and k not in known_words), key=es_sort_key)
+    sent_texts = split_sentences(full_text)
+
+    lines: list[str] = [
+        "# enrichment.toml -- DRAFT generated by render.py --prefill",
+        f"# prefilled from earlier stories: {len(hit_word_keys)} words, {len(hit_phrase_keys)} phrases",
+        f"# TODO: {len(todo_forms)} new words, {len(sent_texts)} sentence translations",
+        "# Review every prefilled gloss against THIS story's context -- senses can differ.",
+        "",
+    ]
+    if todo_forms:
+        lines.append("# --- NEW WORDS -- fill tr/pos/lemma (+grammar where useful) ---")
+        for form in todo_forms:
+            lines.append("")
+            lines.append(f"[words.{_toml_key(form)}]")
+            lines.append('tr = ""     # TODO')
+            lines.append('pos = ""    # TODO')
+            lines.append('lemma = ""  # TODO (proper noun: delete this line, set pos = "имя")')
+        lines.append("")
+    if hit_word_keys:
+        lines.append("# --- PREFILLED WORDS (from earlier stories -- verify sense in context) ---")
+        for k in hit_word_keys:
+            info = known_words[k]
+            lines.append("")
+            lines.append(f"[words.{_toml_key(k)}]  # from {info['src']}")
+            lines.extend(_entry_lines(info["entry"]))
+        lines.append("")
+    if hit_phrase_keys:
+        lines.append("# --- PREFILLED PHRASES (from earlier stories -- verify sense in context) ---")
+        for k in hit_phrase_keys:
+            info = known_phrases[k]
+            entry = info["entry"]
+            lines.append("")
+            lines.append(f"[[phrases]]  # from {info['src']}")
+            lines.append(f"form = {_toml_str(str(entry.get('form', info['form'])))}")
+            lines.extend(_entry_lines({f: v for f, v in entry.items() if f != "form"}))
+        lines.append("")
+    lines.append("# --- SENTENCES -- fill tr (add note only where it truly helps) ---")
+    for st in sent_texts:
+        lines.append("")
+        lines.append("[[sentences]]")
+        lines.append(f"text = {_toml_str(st)}")
+        lines.append('tr = ""  # TODO')
+    lines.append("")
+
+    draft = "\n".join(lines)
+    try:
+        tomllib.loads(draft)
+    except tomllib.TOMLDecodeError as exc:
+        raise RenderError(f"internal error: generated draft does not parse: {exc}")
+    out_path.write_text(draft, encoding="utf-8")
+
+    print(f"{out_path.relative_to(ROOT)} -- prefill draft written")
+    print(f"  prefilled: {len(hit_word_keys)} words, {len(hit_phrase_keys)} phrases")
+    print(f"  TODO: {len(todo_forms)} new words, {len(sent_texts)} sentence translations")
+    if todo_forms:
+        more = "" if len(todo_forms) <= 30 else f" (+{len(todo_forms) - 30} more)"
+        print(f"  new words: {', '.join(todo_forms[:30])}{more}")
+
+
+def resolve_prefill_path(arg: str | None) -> Path:
+    if arg:
+        return resolve_story_path(arg)
+    candidates = [
+        s for s in sorted(STORIES_DIR.iterdir())
+        if s.is_dir() and (s / "story.md").exists() and not (s / "enrichment.toml").exists()
+    ]
+    if not candidates:
+        raise RenderError("error: no stories with story.md but no enrichment.toml; pass a path explicitly")
+    return candidates[-1]
 
 
 # ─── orchestration ──────────────────────────────────────────────────────────
@@ -1405,13 +1663,22 @@ def region_close_end(html_text: str, tag: str, content_end: int) -> int:
     return content_end + m.end() if m else content_end
 
 
-def new_words_for_story(words: dict, phrases: list, earlier_keys: set[str]) -> list[dict]:
+def new_words_for_story(
+    words: dict, phrases: list, earlier_keys: set[str],
+    anchor_map: dict[tuple[str, str], str],
+) -> list[dict]:
     """This story's [words.*] / [[phrases]] group-keys minus every EARLIER story's
-    (lower seq) group-keys = first appearances in the corpus, Spanish-alphabetically sorted."""
+    (lower seq) group-keys = first appearances in the corpus, Spanish-alphabetically
+    sorted. Each item carries the vocabulario anchor from `anchor_map` (the same
+    map write_vocabulario renders from) so deep links can never disagree."""
     seen: dict[str, dict] = {}
-    for key, lemma, pos, tr, _match_target, _origin in collect_story_vocab_rows(words, phrases):
+    for key, lemma, pos, tr, _match_target, origin in collect_story_vocab_rows(words, phrases):
         if key not in seen:
-            seen[key] = {"lemma": lemma, "pos": pos, "tr": tr}
+            section = _vocab_section(origin, pos)
+            seen[key] = {
+                "lemma": lemma, "pos": pos, "tr": tr,
+                "anchor": anchor_map.get((section, key), slugify_lemma(lemma)),
+            }
     items = [v for k, v in seen.items() if k not in earlier_keys]
     items.sort(key=lambda e: es_sort_key(e["lemma"]))
     return items
@@ -1424,7 +1691,7 @@ def upsert_new_words_block(html_text: str, body_tag: str, content_end: int, item
         '      <li class="nw-item"><a href="../../vocabulario.html#{anchor}">'
         '<span class="nw-lemma">{lemma}</span> <span class="nw-pos">{pos}</span> '
         '<span class="nw-tr">{tr}</span></a></li>'.format(
-            anchor=slugify_lemma(e["lemma"]),
+            anchor=e["anchor"],
             lemma=html.escape(e["lemma"]),
             pos=html.escape(e["pos"]),
             tr=html.escape(e["tr"]),
@@ -1454,11 +1721,11 @@ def apply_enrichment(story_dir: Path) -> None:
     out_path = story_dir / "index.html"
 
     if not md_path.exists():
-        sys.exit(f"error: {md_path} not found")
+        raise RenderError(f"error: {md_path} not found")
     if not toml_path.exists():
-        sys.exit(f"error: {toml_path} not found — run /enrich first")
+        raise RenderError(f"error: {toml_path} not found — run /enrich first")
     if not out_path.exists():
-        sys.exit(
+        raise RenderError(
             f"error: {out_path} not found — design the page first, "
             f"or run with --bootstrap stories/{story_dir.name} for a starter scaffold"
         )
@@ -1470,7 +1737,7 @@ def apply_enrichment(story_dir: Path) -> None:
     html_text = out_path.read_text(encoding="utf-8")
     region = find_body_region(html_text)
     if region is None:
-        sys.exit(
+        raise RenderError(
             f"error: {out_path} has no element with [data-story-body]. "
             f"Add data-story-body to the element wrapping your <p> tags."
         )
@@ -1494,11 +1761,12 @@ def apply_enrichment(story_dir: Path) -> None:
             continue
         try:
             other_words, other_phrases, _, _ = load_enrichment(other_toml)
-        except SystemExit as exc:
+        except RenderError as exc:
             print(f"  warning: skipping {other} for new-words comparison — {exc}")
             continue
         earlier_keys.update(k for k, *_ in collect_story_vocab_rows(other_words, other_phrases))
-    new_words = new_words_for_story(words, phrases, earlier_keys)
+    sections, _ = build_vocab_sections(get_or_rebuild_cache())
+    new_words = new_words_for_story(words, phrases, earlier_keys, vocab_anchor_map(sections))
 
     region2 = find_body_region(html_text)
     body_tag, new_content_end = (region2[2], region2[1]) if region2 else (body_tag, content_end)
@@ -1506,7 +1774,7 @@ def apply_enrichment(story_dir: Path) -> None:
 
     html_text = upsert_block(html_text, "style", "data-popup-invariants", POPUP_CSS_INV.strip(), "</head>")
     sent_payload = [{"tr": s.get("tr", ""), "note": s.get("note", "")} for s in sentences]
-    popup_js = "window.__leeSentences = " + json.dumps(sent_payload, ensure_ascii=False) + ";\n" + POPUP_JS.strip()
+    popup_js = "window.__leeSentences = " + js_payload(sent_payload) + ";\n" + POPUP_JS.strip()
     html_text = upsert_block(html_text, "script", "data-popup", popup_js, "</body>")
 
     out_path.write_text(html_text, encoding="utf-8")
@@ -1551,7 +1819,7 @@ def refresh_all() -> None:
         try:
             apply_enrichment(story_dir)
             ok.append(slug)
-        except SystemExit as exc:
+        except RenderError as exc:
             print(f"{slug}: FAILED — {exc}")
             failed.append(slug)
 
@@ -1606,23 +1874,22 @@ def lint_story(slug: str) -> tuple[list[str], list[str], list[str]]:
     phrase_idx = build_phrase_index(words, phrases)
     full_text = "\n\n".join(split_paragraphs(body))
 
-    s_used = [0]
-
-    def take_sent():
-        if s_used[0] < len(sentences):
-            entry = sentences[s_used[0]]
-            s_used[0] += 1
-            return entry
-        s_used[0] += 1
-        return {}
-
-    def cur_si():
-        return s_used[0]
-
+    cursor = SentenceCursor(sentences)
     used_keys: set[str] = set()
     stats: dict = {}
     _rendered, missed = tokenize_text_segment(
-        full_text, words, phrase_idx, take_sent, cur_si, numbers, used_keys, stats)
+        full_text, words, phrase_idx, cursor.take, cursor.si, numbers, used_keys, stats)
+
+    # Text-quality checks: an empty tr is an unfinished entry (e.g. a --prefill
+    # TODO stub that slipped through) — the popup would render blank.
+    unfilled = [f for f, e in words.items() if not str(e.get("tr", "")).strip()]
+    unfilled += [p.get("form", "?") for p in phrases if not str(p.get("tr", "")).strip()]
+    if unfilled:
+        more = "" if len(unfilled) <= 15 else f" (+{len(unfilled) - 15} more)"
+        errors.append(f"empty tr in {len(unfilled)} word/phrase entr(y/ies): {', '.join(unfilled[:15])}{more}")
+    empty_sent = [str(idx) for idx, s in enumerate(sentences) if not str(s.get("tr", "")).strip()]
+    if empty_sent:
+        errors.append(f"empty tr in [[sentences]] at index(es): {', '.join(empty_sent[:15])}")
 
     if missed:
         seen = sorted(set(missed))
@@ -1637,6 +1904,27 @@ def lint_story(slug: str) -> tuple[list[str], list[str], list[str]]:
             f"sentence count mismatch: {term_count} end mark(s) in body vs "
             f"{len(sentences)} [[sentences]] entries"
         )
+    else:
+        # Counts agree — also verify each authored `text` still matches its body
+        # sentence, so a story.md edit without a .toml update is caught before
+        # translations drift out of sync. Containment (either direction, after
+        # whitespace normalization) counts as a match: authors legitimately put
+        # only the quote-inner part in `text` for a mark inside quotes, and the
+        # extracted sentence can accumulate surrounding chrome lines. Markdown
+        # emphasis/blockquote chars (* and >) are stripped — authored text
+        # conventionally omits them.
+        def _norm(s: str) -> str:
+            return " ".join(s.replace("*", "").replace(">", " ").split())
+
+        extracted = [_norm(ex) for ex in split_sentences(full_text)]
+        drift = []
+        for idx, (s, ex) in enumerate(zip(sentences, extracted)):
+            authored = _norm(str(s.get("text", "")))
+            if authored and authored not in ex and ex not in authored:
+                drift.append(str(idx))
+        if drift:
+            more = "" if len(drift) <= 10 else f" (+{len(drift) - 10} more)"
+            warnings.append(f"[[sentences]].text drift vs story.md at index(es): {', '.join(drift[:10])}{more}")
     pause_count = stats.get("pauses", 0)
     if pause_count:
         infos.append(f"{pause_count} mid-sentence pause mark(s) (no [[sentences]] entry consumed)")
@@ -1665,7 +1953,7 @@ def lint_cross_story(slugs: list[str]) -> list[str]:
             continue
         try:
             words, _phrases, _sentences, _numbers = load_enrichment(toml_path)
-        except SystemExit:
+        except RenderError:
             continue
         for form, entry in words.items():
             lemma = (entry.get("lemma") or form).lower()
@@ -1800,10 +2088,21 @@ def main() -> None:
                           "default = all); prints findings, exits 1 on errors")
     ap.add_argument("--atlas-check", action="store_true",
                      help="cross-check lore.md entity refs against stories/*/story.md (warning-only)")
+    ap.add_argument("--prefill", action="store_true",
+                     help="draft enrichment.toml from corpus knowledge: words/phrases already enriched in "
+                          "earlier stories are prefilled (most recent sense, provenance comments); new words "
+                          "and sentence translations are left as TODO stubs for /enrich to fill")
     args = ap.parse_args()
+
+    if args.story and (args.index_only or args.refresh_all or args.atlas_check):
+        ap.error("a story path cannot be combined with --index-only / --refresh-all / --atlas-check")
 
     if args.atlas_check:
         atlas_check()
+        return
+
+    if args.prefill:
+        prefill(resolve_prefill_path(args.story), force=args.force)
         return
 
     if args.lint:
