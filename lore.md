@@ -170,3 +170,9 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Ships: *Alción* (automated long-haul freighter hauling agua y aire to a small colony at Ceres; 19-year solo transit through the dark corredor)
 - Terms: el vigía (the AI's self-cast role of standing watch — "yo vigilo"); la señal vieja (an ancient, ownerless, looping human signal off-corridor, repeats one untranslatable word — not a distress call); el reglamento (protocol requiring the supervisor be woken before leaving the corredor)
 - Timeline: Día 7.012 (MIRO's watch-log count aboard *Alción*)
+
+### #22 — el-primer-dormido
+- Characters: Carmen (médica de puerto, Puerto de Ceres infirmary); Julián Vega (Peregrino passenger, paciente 01 — 34 años a bordo / 104 reales, first sleeper revived)
+- Locations: Colonia Esperanza (the Peregrino's destination colony, off-page — never answered; the ship waited in orbit, turned around, brought all 40 sleepers home)
+- Terms: las dos edades (a sleeper's onboard vs. calendar age — port paperwork has no field for it)
+- Reappears: Puerto de Ceres (#17 — now its enfermería, muelle 9); *Peregrino* (#17 — docked, one month after arrival; its open ending resolved offstage); el reglamento (#17, #21 — "el paciente tiene derecho a la verdad", but not when)
