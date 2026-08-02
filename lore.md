@@ -10,12 +10,14 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Elena** — anthropologist, Nueva Andalucía — [#2](stories/02-nueva-andalucia/story.md)
 - **Marco** — navigator, ice tug *Tortuga* — [#3](stories/03-zumbido-deriva/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 - **Lucía** — biologist, Europa-3 — [#4](stories/04-algo-verde/story.md)
-- **Tomás** — maintenance engineer, *Caracol* — [#5](stories/05-pasajero-unico/story.md)
+- **Tomás** — maintenance engineer, *Caracol* — [#5](stories/05-pasajero-unico/story.md), [#24](stories/24-treinta-y-una-veces/story.md)
 - **Inés** — junior linguist, Instituto de Lenguas — [#6](stories/06-la-traductora/story.md), [#7](stories/07-el-desvio/story.md)
 - **Mateo** — cargo captain, freighter *La Mula* — [#7](stories/07-el-desvio/story.md)
 - **Don Joaquín** — old colonist, Nueva Andalucía 85 yr after silence — [#8](stories/08-el-ultimo-que-recuerda/story.md)
 - **Mariela** — radioastrónoma, Estación Casiopea — [#9](stories/09-la-senal/story.md)
 - **Sofía** — software maintainer, Colonia Brasa — [#10](stories/10-el-reloj/story.md)
+- **Sofía (cápsula 47)** — the nine-year-old sleeper aboard the *Caracol*; a distinct person from the Colonia Brasa Sofía above — [#5](stories/05-pasajero-unico/story.md), [#24](stories/24-treinta-y-una-veces/story.md)
+- **Nuria** — cryosystems technician, *Caracol*, year 604 — [#24](stories/24-treinta-y-una-veces/story.md)
 - **Dra. Ana Soto** — doctor, Estación Argyre — [#11](stories/11-la-dosis/story.md)
 - **Renata** — lighthouse keeper, Faro Vesta-7 — [#12](stories/12-el-faro-apagado/story.md)
 
@@ -33,7 +35,7 @@ Every entry in the top-level lists links to each story where that entity appears
 ## Ships
 
 - **Tortuga** — ice tug, mid-route to Ceres, outer drift — [#3](stories/03-zumbido-deriva/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
-- **Caracol** — generation ship, 800-yr voyage to Próxima Centauri; year 198 at story time — [#5](stories/05-pasajero-unico/story.md)
+- **Caracol** — generation ship, 800-yr voyage to Próxima Centauri; 500 sleepers aboard, a lone maintenance technician waking every 24 months; year 198 at [#5](stories/05-pasajero-unico/story.md), year 604 at [#24](stories/24-treinta-y-una-veces/story.md) — [#5](stories/05-pasajero-unico/story.md), [#24](stories/24-treinta-y-una-veces/story.md)
 - **La Mula** — freighter, asteroid belt run between Mars and Ceres — [#7](stories/07-el-desvio/story.md)
 
 ## Terms / tech
@@ -52,6 +54,7 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Año 80 del silencio** — Nueva Andalucía's contact-loss anchor — [#2](stories/02-nueva-andalucia/story.md)
 - **Año 85 del silencio** — Nueva Andalucía five years later — [#8](stories/08-el-ultimo-que-recuerda/story.md)
 - **Año 198 / 800** — *Caracol*'s progress to Próxima Centauri — [#5](stories/05-pasajero-unico/story.md)
+- **Año 604 / 800** — *Caracol* four centuries later; 196 years still to run — [#24](stories/24-treinta-y-una-veces/story.md)
 - **Nueve años después del zumbido** — Marco's own reckoning; places #23 nine years after his Pioneer-12 encounter in #3, and four years after the Faro Vesta-7 shutdown order in #12 — [#23](stories/23-el-faro-que-no-se-apago/story.md)
 
 ## Tone reminders
@@ -182,3 +185,10 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Terms: el corredor nuevo (the shorter, faster replacement route that emptied the old Ceres–Júpiter corridor — named in lore for the first time); *Pioneer-12* (the ~90-year-old Earth probe from #3, now named at lore level); "Tortuga. Yo te oigo." (Marco's six-hour looping answer left running on the faro's frequency)
 - Timeline: nueve años después de #3; cuatro años después del cierre del Faro Vesta-7 (#12)
 - Reappears: Marco + *Tortuga* (#3 — same ice run to Ceres, same bad coffee); Faro Vesta-7 (#12 — the ship's registry lists it CERRADO with "operadora recogida", yet the six-hour signal from #12 still goes out word for word); el corredor viejo (#12, #21); the sonda Pioneer-12 (#3 — Marco's earlier walk-away, now the thing he measures this choice against). Renata is never named or seen: the story only reads "Operadora recogida", so her top-level bullet stays at #12.
+
+### #24 — treinta-y-una-veces
+- Characters: Nuria (técnica de criosistemas aboard the *Caracol*, wakes every 24 months to audit the capsule registers); Elsa, Bruno (two of the earlier technicians whose names appear in cápsula 47's log — offstage, known only as signatures)
+- Locations: Sector C (the *Caracol*'s cryo bay holding cápsula 47 — the sector Tomás walked to in #5, now named as a place)
+- Terms: **la costumbre de la cápsula 47** — an unlogged practice passed down the technician rotation for four centuries: open the capsule, give the child a few hours, apply the memory-erasing dose, sign the register. 31 openings on record, protocol permits zero. **la dosis** (the short-term-memory eraser from #5, now the mechanism that makes the custom repeatable). **el campo de la firma** (the register's signature field — signing it is the choice).
+- Timeline: Año 604 / 800 (196 years still to run)
+- Reappears: *Caracol* + Tomás + Sofía + cápsula 47 (#5 — Tomás's postponed "mañana voy a dormirla" turns out to have been postponed 31 times by 400 years of technicians; his name is six of the entries, the first dated Año 198, the exact day of #5). The word «Aquí» that Sofía wrote in the dust in #5 is the note field of every single log entry — she writes it every time, and every time it is the first time for her. los dormidos / el sueño (#1, #5, #18, #19, #21).

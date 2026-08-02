@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treinta y una veces — registro de criosistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Alegreya:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#4a9fb5;
+  --accent-deep:#215867;
+  --bg:#eae7de;
+  --bg-spine:#dfd8c7;
+  --bg-spine-deep:#d3cab5;
+  --ink:#1b2430;
+  --ink-soft:rgba(27,36,48,.62);
+  --ink-faint:rgba(27,36,48,.38);
+  --rule:rgba(27,36,48,.24);
+  --rule-soft:rgba(27,36,48,.13);
+  --popup-bg:#1b2430;
+  --popup-ink:#eae7de;
+  --popup-ink-soft:rgba(234,231,222,.66);
+  --chip-bg:rgba(74,159,181,.24);
+  --serif:'Alegreya',Georgia,serif;
+  --display:'Zilla Slab',Georgia,serif;
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--serif);
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* ---------- ambient paper grain, slow drift ---------- */
+.grain-layer{
+  position:fixed;
+  inset:-10%;
+  width:120%;
+  height:120%;
+  pointer-events:none;
+  z-index:0;
+  opacity:.05;
+  mix-blend-mode:multiply;
+  animation:grain-drift 220s linear infinite alternate;
+}
+@keyframes grain-drift{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(-1.5%,1.2%) scale(1.01);}
+}
+
+/* ---------- back link ---------- */
+a.back{
+  position:absolute;
+  top:1.1rem;
+  left:1.2rem;
+  z-index:20;
+  font-family:var(--display);
+  font-size:.82rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  text-decoration:none;
+  border-bottom:1px dotted var(--ink-faint);
+  padding-bottom:1px;
+  transition:color .2s;
+}
+a.back:hover{color:var(--accent-deep);}
+
+/* ---------- overall spread ---------- */
+.register-spread{
+  position:relative;
+  z-index:1;
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(210px,258px) minmax(0,1fr);
+  min-height:100vh;
+}
+
+/* ---------- spine column ---------- */
+.spine-col{
+  background:
+    linear-gradient(90deg, rgba(27,36,48,.10) 0, rgba(27,36,48,0) 14px),
+    var(--bg-spine);
+  border-right:1px solid var(--rule);
+  padding:4.6rem 1.4rem 2.4rem;
+  position:relative;
+}
+.spine-col::before{
+  /* stitched binding ridge */
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:10px;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(27,36,48,.28) 0,
+    rgba(27,36,48,.28) 2px,
+    transparent 2px,
+    transparent 13px
+  );
+  opacity:.5;
+}
+
+.stamp-block{
+  text-align:center;
+  padding-bottom:1.6rem;
+  border-bottom:1px solid var(--rule-soft);
+  margin-bottom:1.6rem;
+}
+.capsule-art{
+  width:100%;
+  max-width:150px;
+  height:auto;
+  margin:0 auto;
+  display:block;
+}
+.stamp-text{
+  margin-top:.6rem;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:.92rem;
+  letter-spacing:.16em;
+  color:var(--accent-deep);
+}
+.stamp-sub{
+  font-family:var(--display);
+  font-size:.66rem;
+  letter-spacing:.14em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  margin-top:.15rem;
+}
+
+.cryo-status{
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--rule-soft);
+  margin-bottom:1.5rem;
+}
+.status-row{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+}
+.status-dot{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 0 rgba(74,159,181,.55);
+  animation:capsule-breathe 8s ease-in-out infinite;
+  flex:0 0 auto;
+}
+@keyframes capsule-breathe{
+  0%,100%{box-shadow:0 0 0 0 rgba(74,159,181,.5); opacity:.72;}
+  50%{box-shadow:0 0 13px 5px rgba(74,159,181,.35); opacity:1;}
+}
+.status-label{
+  font-family:var(--display);
+  font-size:.68rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.status-value{
+  font-family:var(--display);
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--accent-deep);
+  margin-top:.3rem;
+}
+.status-meta{
+  font-size:.86rem;
+  color:var(--ink-soft);
+  margin-top:.55rem;
+  line-height:1.5;
+}
+
+.hands-block{
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--rule-soft);
+  margin-bottom:1.5rem;
+}
+.hands-label{
+  font-family:var(--display);
+  font-size:.68rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:.5rem;
+}
+.hands-svg{
+  width:100%;
+  height:auto;
+  stroke:var(--ink);
+  stroke-width:1.4;
+  fill:none;
+}
+.hands-count{
+  margin-top:.4rem;
+  font-family:var(--display);
+  font-size:.78rem;
+  color:var(--ink-faint);
+  letter-spacing:.05em;
+}
+
+.folio{
+  font-family:var(--display);
+  font-size:.74rem;
+  letter-spacing:.08em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+}
+
+/* ---------- page column ---------- */
+.page-col{
+  padding:4.4rem clamp(1.4rem,4vw,3.4rem) 5rem;
+  position:relative;
+}
+.page-col::before{
+  /* faint ruled lines */
+  content:'';
+  position:absolute;
+  left:0;right:0;top:16.5rem;bottom:0;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 1.72em,
+    var(--rule-soft) 1.72em,
+    var(--rule-soft) calc(1.72em + 1px)
+  );
+  opacity:.55;
+  pointer-events:none;
+}
+
+.reg-header{
+  max-width:700px;
+  margin-bottom:2.1rem;
+  position:relative;
+}
+.reg-kicker{
+  font-family:var(--display);
+  font-size:.76rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent-deep);
+  margin-bottom:.5rem;
+}
+.reg-header h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(2rem,4vw,2.7rem);
+  letter-spacing:.01em;
+  margin:0 0 .5rem;
+  color:var(--ink);
+}
+.reg-meta{
+  font-family:var(--display);
+  font-size:.82rem;
+  letter-spacing:.03em;
+  color:var(--ink-soft);
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem 1rem;
+}
+.reg-meta span::after{
+  content:'·';
+  margin-left:1rem;
+  color:var(--ink-faint);
+}
+.reg-meta span:last-child::after{content:'';margin-left:0;}
+
+/* ---------- story body ---------- */
+article[data-story-body]{
+  max-width:700px;
+  position:relative;
+}
+article[data-story-body] p{
+  font-size:1.2rem;
+  line-height:1.72em;
+  margin:0 0 1.72em;
+  color:var(--ink);
+}
+article[data-story-body] p.col-rule{
+  font-family:var(--display);
+  font-style:italic;
+  font-size:1rem;
+  letter-spacing:.05em;
+  color:var(--accent-deep);
+  text-align:center;
+  border-top:1px solid var(--rule);
+  border-bottom:3px double var(--rule);
+  padding:.55em 0;
+  margin:1.6em 0 0;
+}
+article[data-story-body] h2{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:1.15rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:2.1em 0 1.1em;
+  padding-bottom:.4em;
+  border-bottom:1px solid var(--rule);
+}
+
+/* ---------- ledger blockquote ---------- */
+blockquote.ledger-log{
+  margin:0 0 1.72em;
+  padding:0;
+  border:1px solid var(--rule);
+  border-left:3px solid var(--accent);
+  background:rgba(74,159,181,.045);
+}
+.ledger-head{
+  display:grid;
+  grid-template-columns:5.6rem 6.4rem 6.6rem 8rem 1fr;
+  column-gap:.9rem;
+  padding:.55rem .9rem;
+  border-bottom:1px solid var(--rule);
+  background:rgba(27,36,48,.05);
+}
+.ledger-head .lh{
+  font-family:var(--display);
+  font-size:.68rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.ledger-head .lh:nth-child(1)::before{content:'Año';}
+.ledger-head .lh:nth-child(2)::before{content:'Duración';}
+.ledger-head .lh:nth-child(3)::before{content:'Dosis';}
+.ledger-head .lh:nth-child(4)::before{content:'Técnico';}
+.ledger-head .lh:nth-child(5)::before{content:'Nota';}
+
+.ledger-row{
+  display:grid;
+  grid-template-columns:5.6rem 6.4rem 6.6rem 8rem 1fr;
+  column-gap:.9rem;
+  padding:.62rem .9rem;
+  border-bottom:1px solid var(--rule-soft);
+  font-size:1.05rem;
+  line-height:1.4;
+}
+.ledger-row:last-child{border-bottom:none;}
+.ledger-row .cell-note{color:var(--accent-deep);font-weight:600;}
+
+/* three different registering hands, per the design brief */
+.ledger-row.hand-a .cell{font-style:normal;letter-spacing:.01em;}
+.ledger-row.hand-b .cell{font-style:italic;letter-spacing:.03em;}
+.ledger-row.hand-c .cell{font-style:italic;letter-spacing:-.005em;transform:skewX(-2.5deg);display:inline-block;}
+
+/* ---------- empty signature row (outside data-story-body) ---------- */
+.sig-appendix{
+  max-width:700px;
+  margin-top:2.6rem;
+}
+.sig-title{
+  font-family:var(--display);
+  font-size:.74rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:.6rem;
+}
+.ledger-log.sig-final{
+  border-left:3px solid var(--ink-faint);
+  background:rgba(27,36,48,.02);
+}
+.ledger-log.sig-final .ledger-row{position:relative;min-height:2.6rem;}
+.ledger-log.sig-final .cell{
+  border-bottom:1px dashed var(--rule);
+  height:1.35rem;
+}
+.ledger-log.sig-final::after{
+  content:'· sin firmar ·';
+  display:block;
+  text-align:center;
+  font-family:var(--display);
+  font-size:.68rem;
+  letter-spacing:.1em;
+  color:var(--accent);
+  opacity:.6;
+  padding:.4rem 0 .6rem;
+  text-transform:uppercase;
+}
+
+/* ---------- palabras nuevas ---------- */
+.nw{
+  max-width:700px;
+  margin-top:2.4rem;
+  border-top:1px solid var(--rule);
+  padding-top:1rem;
+}
+.nw summary{
+  cursor:pointer;
+  font-family:var(--display);
+  font-size:.86rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-deep);
+  outline:none;
+}
+.nw ol{
+  list-style:none;
+  margin:.9rem 0 0;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:.35rem .9rem;
+}
+.nw-item a{
+  display:block;
+  text-decoration:none;
+  color:var(--ink);
+  font-size:.92rem;
+  padding:.25rem 0;
+  border-bottom:1px solid var(--rule-soft);
+}
+.nw-item a:hover .nw-lemma{color:var(--accent-deep);}
+.nw-lemma{font-family:var(--display);font-style:italic;font-weight:600;}
+.nw-pos{color:var(--ink-faint);font-size:.72rem;letter-spacing:.04em;margin-left:.3rem;}
+.nw-tr{color:var(--ink-soft);margin-left:.3rem;}
+
+/* ---------- popup styling ---------- */
+.pop{
+  background:var(--popup-bg);
+  color:var(--popup-ink);
+  font-family:var(--serif);
+  font-size:.95rem;
+  line-height:1.5;
+  padding:.85rem 1rem;
+  border-radius:3px;
+  border-top:2px solid var(--accent);
+  box-shadow:0 10px 28px rgba(27,36,48,.35);
+  max-width:300px;
+  filter:blur(4px);
+  transform:translateY(4px) scale(.98);
+  transition:opacity .18s, transform .18s, filter .18s;
+}
+.pop.show{
+  filter:blur(0);
+  transform:translateY(0) scale(1);
+}
+.pop.has-grammar,
+.pop.idiom{
+  max-width:390px;
+}
+.pop .lemma{
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:600;
+  font-size:1.06rem;
+  color:var(--popup-ink);
+}
+.pop .pos{
+  display:inline-block;
+  font-family:var(--display);
+  font-size:.66rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--popup-ink-soft);
+  margin-left:.5rem;
+}
+.pop .tr{
+  margin-top:.35rem;
+  color:var(--popup-ink);
+  font-size:.98rem;
+}
+.pop .breakdown{
+  margin-top:.6rem;
+  padding-top:.5rem;
+  border-top:1px solid rgba(234,231,222,.18);
+}
+.pop .bd-row{
+  display:flex;
+  justify-content:space-between;
+  gap:.8rem;
+  font-size:.86rem;
+  padding:.15rem 0;
+}
+.pop .bd-w{font-style:italic;color:var(--accent);}
+.pop .bd-tr{color:var(--popup-ink-soft);text-align:right;}
+.pop .literal{
+  margin-top:.4rem;
+  font-size:.82rem;
+  color:var(--popup-ink-soft);
+}
+.pop .lit-label{
+  font-family:var(--display);
+  font-size:.66rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-right:.4rem;
+}
+.pop .g-block{
+  margin-top:.6rem;
+  padding-top:.55rem;
+  border-top:1px solid rgba(234,231,222,.18);
+}
+.pop .g-block p{margin:.25rem 0;}
+.pop .g-block b{
+  font-style:italic;
+  font-weight:700;
+  color:var(--accent);
+}
+.pop .g-block i{
+  font-style:normal;
+  font-family:var(--display);
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--popup-ink-soft);
+}
+.pop .g-block code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.84rem;
+  background:rgba(234,231,222,.1);
+  border:1px solid rgba(234,231,222,.2);
+  border-radius:3px;
+  padding:.05rem .3rem;
+}
+.pop .g-block u{
+  text-decoration:none;
+  background:var(--chip-bg);
+  color:var(--accent);
+  font-weight:700;
+  font-style:normal;
+  border-radius:2px;
+  padding:0 .28em;
+}
+.pop .link{
+  display:inline-block;
+  margin-top:.6rem;
+  font-family:var(--display);
+  font-size:.76rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--accent);
+  text-decoration:none;
+  border-bottom:1px solid rgba(74,159,181,.5);
+}
+.pop .link:hover{color:var(--popup-ink);border-color:var(--popup-ink);}
+.pop.sentence .s-label{
+  font-family:var(--display);
+  font-size:.66rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--popup-ink-soft);
+}
+.pop.sentence .s-tr{margin-top:.3rem;color:var(--popup-ink);}
+.pop.sentence .s-note{
+  margin-top:.55rem;
+  padding-top:.5rem;
+  border-top:1px solid rgba(234,231,222,.18);
+}
+
+article .w:hover,
+article .s:hover{
+  border-bottom-color:var(--accent-deep);
+}
+
+.reading-progress{
+  box-shadow:0 0 8px var(--accent);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:760px){
+  .register-spread{grid-template-columns:1fr;}
+  .spine-col{
+    border-right:none;
+    border-bottom:1px solid var(--rule);
+    padding:4.6rem 1.2rem 1.6rem;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem 1.4rem;
+  }
+  .spine-col::before{display:none;}
+  .stamp-block,.cryo-status,.hands-block{
+    border-bottom:none;
+    margin-bottom:0;
+    padding-bottom:0;
+  }
+  .folio{grid-column:1/-1;margin-top:.4rem;}
+  .page-col{padding:2.6rem 1.1rem 3.4rem;}
+  .page-col::before{top:13rem;}
+  .ledger-head,.ledger-row{
+    grid-template-columns:1fr 1fr;
+    row-gap:.3rem;
+  }
+  .ledger-row .cell-note{grid-column:1/-1;}
+  .ledger-head .lh:nth-child(3),
+  .ledger-head .lh:nth-child(4){display:none;}
+}
+
+@media (max-width:480px){
+  a.back{font-size:.72rem;top:.8rem;left:.8rem;}
+  .reg-header h1{font-size:1.7rem;}
+}
+</style>
+<style data-popup-invariants>
+/* Behavior-critical — designer styles override visuals via higher specificity. */
+.w, .s { cursor: help; border-bottom: 1px dotted currentColor; }
+.s { border-bottom-style: dashed; }
+/* Scope highlight: the whole sentence (when a sentence popup is open) or the whole
+   idiom span. Themed via --accent, falling back to the page's ink color. Designers may
+   override with higher specificity. */
+.w.hl, .s.hl { background: color-mix(in srgb, var(--accent, currentColor) 16%, transparent); border-radius: 2px; }
+.pop {
+  position: absolute; z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.pop.show { opacity: 1; pointer-events: auto; }
+/* invisible bridge so the cursor can travel from word into popup */
+.pop::after {
+  content: ''; position: absolute;
+  left: -12px; right: -12px;
+  height: 12px; bottom: -12px;
+}
+.pop.below::after { bottom: auto; top: -12px; }
+
+/* Reading progress hairline (auto-managed). Theme via --accent on :root or body;
+   hide entirely per-page with .reading-progress{display:none} if it doesn't fit the design. */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  width: 0; max-width: 100%;
+  background: var(--accent, currentColor);
+  z-index: 1001; pointer-events: none;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Respect users who prefer reduced motion. Disables decorative animation/transition
+   across the page; the progress hairline is also hidden. Popups still appear (no transform
+   reliance) — only their fade is shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reading-progress { display: none; }
+}
+
+/* "Palabras nuevas" block (auto-injected right after the story body; a designer may
+   instead pre-place an element with [data-new-words] anywhere to control the slot).
+   Structural only — colors/fonts inherit the page's own vars, overridable per story. */
+.nw { margin: 1.6em 0 0; }
+.nw summary { cursor: pointer; font-weight: 600; }
+.nw ol { margin: 0.6em 0 0; padding-left: 1.3em; }
+.nw-item { margin: 0.2em 0; }
+.nw-item a { color: inherit; text-decoration: none; }
+.nw-lemma { font-style: italic; }
+.nw-pos { font-size: 0.75em; opacity: 0.65; margin: 0 0.35em; }
+.nw-tr { opacity: 0.85; }
+.nw-item a:hover .nw-lemma { color: var(--accent, currentColor); }
+</style>
+</head>
+<body>
+
+<svg class="grain-layer" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <filter id="paperNoise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="noise"/>
+    <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.106  0 0 0 0 0.141  0 0 0 0 0.188  0 0 0 0.5 0"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#paperNoise)"/>
+</svg>
+
+<a class="back" href="../../index.html">← Índice</a>
+
+<div class="register-spread">
+
+  <aside class="spine-col">
+
+    <div class="stamp-block">
+      <svg class="capsule-art" viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="capGlow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4a9fb5" stop-opacity="0.35"/>
+            <stop offset="1" stop-color="#4a9fb5" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g stroke="#1b2430" stroke-width="1" opacity="0.55">
+          <line x1="14" y1="6" x2="14" y2="18"/>
+          <line x1="8" y1="12" x2="20" y2="12"/>
+          <line x1="226" y1="6" x2="226" y2="18"/>
+          <line x1="220" y1="12" x2="232" y2="12"/>
+          <line x1="14" y1="322" x2="14" y2="334"/>
+          <line x1="8" y1="328" x2="20" y2="328"/>
+          <line x1="226" y1="322" x2="226" y2="334"/>
+          <line x1="220" y1="328" x2="232" y2="328"/>
+        </g>
+        <rect x="45" y="30" width="150" height="280" rx="75" ry="75" fill="none" stroke="#1b2430" stroke-width="2"/>
+        <rect x="57" y="42" width="126" height="256" rx="63" ry="63" fill="none" stroke="#1b2430" stroke-width="1" opacity="0.5" stroke-dasharray="2 4"/>
+        <rect x="45" y="30" width="150" height="280" rx="75" ry="75" fill="url(#capGlow)"/>
+        <circle cx="120" cy="170" r="86" fill="none" stroke="#4a9fb5" stroke-width="1" stroke-dasharray="1 5" opacity="0.6"/>
+        <g fill="none" stroke="#1b2430" stroke-width="1.6" opacity="0.85">
+          <circle cx="120" cy="128" r="20"/>
+          <path d="M100 140 C 80 160, 78 210, 100 236 C 112 250, 138 250, 150 236 C 168 214, 164 168, 142 146 C 132 138, 110 134, 100 140 Z"/>
+          <path d="M104 150 C 90 168, 90 206, 108 226" stroke-width="1"/>
+          <path d="M136 150 C 150 168, 150 206, 132 226" stroke-width="1"/>
+        </g>
+        <g stroke="#1b2430" stroke-width="1" opacity="0.4">
+          <line x1="36" y1="60" x2="44" y2="60"/>
+          <line x1="36" y1="90" x2="44" y2="90"/>
+          <line x1="36" y1="120" x2="44" y2="120"/>
+          <line x1="36" y1="150" x2="44" y2="150"/>
+          <line x1="36" y1="180" x2="44" y2="180"/>
+          <line x1="36" y1="210" x2="44" y2="210"/>
+          <line x1="36" y1="240" x2="44" y2="240"/>
+          <line x1="36" y1="270" x2="44" y2="270"/>
+          <line x1="196" y1="60" x2="204" y2="60"/>
+          <line x1="196" y1="90" x2="204" y2="90"/>
+          <line x1="196" y1="120" x2="204" y2="120"/>
+          <line x1="196" y1="150" x2="204" y2="150"/>
+          <line x1="196" y1="180" x2="204" y2="180"/>
+          <line x1="196" y1="210" x2="204" y2="210"/>
+          <line x1="196" y1="240" x2="204" y2="240"/>
+          <line x1="196" y1="270" x2="204" y2="270"/>
+        </g>
+        <line x1="120" y1="30" x2="120" y2="10" stroke="#4a9fb5" stroke-width="1" opacity="0.5"/>
+        <line x1="45" y1="170" x2="20" y2="170" stroke="#4a9fb5" stroke-width="1" opacity="0.5" stroke-dasharray="2 3"/>
+        <circle cx="20" cy="170" r="3" fill="#4a9fb5" opacity="0.6"/>
+        <g stroke="#1b2430" stroke-width="1" opacity="0.3">
+          <line x1="60" y1="318" x2="60" y2="326"/>
+          <line x1="70" y1="318" x2="70" y2="323"/>
+          <line x1="80" y1="318" x2="80" y2="326"/>
+          <line x1="90" y1="318" x2="90" y2="323"/>
+          <line x1="100" y1="318" x2="100" y2="326"/>
+          <line x1="110" y1="318" x2="110" y2="323"/>
+          <line x1="130" y1="318" x2="130" y2="326"/>
+          <line x1="140" y1="318" x2="140" y2="323"/>
+          <line x1="150" y1="318" x2="150" y2="326"/>
+          <line x1="160" y1="318" x2="160" y2="323"/>
+          <line x1="170" y1="318" x2="170" y2="326"/>
+          <line x1="180" y1="318" x2="180" y2="323"/>
+        </g>
+        <text x="120" y="24" text-anchor="middle" font-family="Zilla Slab, serif" font-size="12" letter-spacing="2" fill="#1b2430" opacity="0.7">N-47</text>
+        <text x="120" y="330" text-anchor="middle" font-family="Zilla Slab, serif" font-size="8" letter-spacing="1.5" fill="#1b2430" opacity="0.45">VISTA SUPERIOR &#183; CORTE A-A</text>
+      </svg>
+      <div class="stamp-text">CÁPSULA Nº 47</div>
+      <div class="stamp-sub">Sector C &#183; nave Caracol</div>
+    </div>
+
+    <div class="cryo-status">
+      <div class="status-row">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-label">Estado criogénico</span>
+      </div>
+      <div class="status-value">Estable</div>
+      <div class="status-meta">Ciclo de sueño ininterrumpido<br>desde el año 401</div>
+    </div>
+
+    <div class="hands-block">
+      <div class="hands-label">Aperturas registradas</div>
+      <svg class="hands-svg" viewBox="0 0 196 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <line x1="4.0" y1="4" x2="4.0" y2="30" transform="rotate(-7 4.0 18)" opacity="0.55"/>
+        <line x1="10.2" y1="4" x2="10.2" y2="34" transform="rotate(-3 10.2 18)" opacity="0.7"/>
+        <line x1="16.4" y1="4" x2="16.4" y2="36" transform="rotate(0 16.4 18)" opacity="0.85"/>
+        <line x1="22.6" y1="4" x2="22.6" y2="33" transform="rotate(4 22.6 18)" opacity="0.65"/>
+        <line x1="28.8" y1="4" x2="28.8" y2="29" transform="rotate(8 28.8 18)" opacity="0.5"/>
+        <line x1="35.0" y1="4" x2="35.0" y2="30" transform="rotate(-7 35.0 18)" opacity="0.55"/>
+        <line x1="41.2" y1="4" x2="41.2" y2="34" transform="rotate(-3 41.2 18)" opacity="0.7"/>
+        <line x1="47.4" y1="4" x2="47.4" y2="36" transform="rotate(0 47.4 18)" opacity="0.85"/>
+        <line x1="53.6" y1="4" x2="53.6" y2="33" transform="rotate(4 53.6 18)" opacity="0.65"/>
+        <line x1="59.8" y1="4" x2="59.8" y2="29" transform="rotate(8 59.8 18)" opacity="0.5"/>
+        <line x1="66.0" y1="4" x2="66.0" y2="30" transform="rotate(-7 66.0 18)" opacity="0.55"/>
+        <line x1="72.2" y1="4" x2="72.2" y2="34" transform="rotate(-3 72.2 18)" opacity="0.7"/>
+        <line x1="78.4" y1="4" x2="78.4" y2="36" transform="rotate(0 78.4 18)" opacity="0.85"/>
+        <line x1="84.6" y1="4" x2="84.6" y2="33" transform="rotate(4 84.6 18)" opacity="0.65"/>
+        <line x1="90.8" y1="4" x2="90.8" y2="29" transform="rotate(8 90.8 18)" opacity="0.5"/>
+        <line x1="97.0" y1="4" x2="97.0" y2="30" transform="rotate(-7 97.0 18)" opacity="0.55"/>
+        <line x1="103.2" y1="4" x2="103.2" y2="34" transform="rotate(-3 103.2 18)" opacity="0.7"/>
+        <line x1="109.4" y1="4" x2="109.4" y2="36" transform="rotate(0 109.4 18)" opacity="0.85"/>
+        <line x1="115.6" y1="4" x2="115.6" y2="33" transform="rotate(4 115.6 18)" opacity="0.65"/>
+        <line x1="121.8" y1="4" x2="121.8" y2="29" transform="rotate(8 121.8 18)" opacity="0.5"/>
+        <line x1="128.0" y1="4" x2="128.0" y2="30" transform="rotate(-7 128.0 18)" opacity="0.55"/>
+        <line x1="134.2" y1="4" x2="134.2" y2="34" transform="rotate(-3 134.2 18)" opacity="0.7"/>
+        <line x1="140.4" y1="4" x2="140.4" y2="36" transform="rotate(0 140.4 18)" opacity="0.85"/>
+        <line x1="146.6" y1="4" x2="146.6" y2="33" transform="rotate(4 146.6 18)" opacity="0.65"/>
+        <line x1="152.8" y1="4" x2="152.8" y2="29" transform="rotate(8 152.8 18)" opacity="0.5"/>
+        <line x1="159.0" y1="4" x2="159.0" y2="30" transform="rotate(-7 159.0 18)" opacity="0.55"/>
+        <line x1="165.2" y1="4" x2="165.2" y2="34" transform="rotate(-3 165.2 18)" opacity="0.7"/>
+        <line x1="171.4" y1="4" x2="171.4" y2="36" transform="rotate(0 171.4 18)" opacity="0.85"/>
+        <line x1="177.6" y1="4" x2="177.6" y2="33" transform="rotate(4 177.6 18)" opacity="0.65"/>
+        <line x1="183.8" y1="4" x2="183.8" y2="29" transform="rotate(8 183.8 18)" opacity="0.5"/>
+        <line x1="190.0" y1="4" x2="190.0" y2="30" transform="rotate(-7 190.0 18)" opacity="0.55"/>
+      </svg>
+      <div class="hands-count">31 marcas &#183; una mano cada vez</div>
+    </div>
+
+    <div class="folio">Folio 604 &#183; Turno 02:00</div>
+
+  </aside>
+
+  <main class="page-col">
+
+    <header class="reg-header">
+      <div class="reg-kicker">Registro de criosistemas &#183; nave Caracol</div>
+      <h1>Treinta y una veces</h1>
+      <div class="reg-meta">
+        <span>Año 604 del viaje</span>
+        <span>Técnica: Nuria</span>
+        <span>Destino: Próxima Centauri</span>
+      </div>
+    </header>
+
+    <article data-story-body>
+
+<p><span class="w" data-tr="меня, мне; себя (возвр.)" data-pos="мест." data-lemma="" data-grammar="" data-si="0">Me</span> <span class="w" data-tr="(я) зову, вызываю" data-pos="глаг." data-lemma="llamar" data-grammar="**llamo** — *presente*, 1 л. ед. ч.
+" data-si="0">llamo</span> <span class="w" data-tr="Nuria — рассказчица, техник криосистем" data-pos="имя" data-lemma="" data-grammar="" data-si="0">Nuria</span><span class="s" data-tr="Меня зовут Нурия." data-si="0">.</span> <span class="w" data-tr="(я) есть, являюсь" data-pos="глаг." data-lemma="ser" data-grammar="**soy** — *presente*, 1 л. ед. ч., от **ser** («быть»).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+" data-si="1">Soy</span> <span class="w" data-tr="техник (ж. р.), специалистка" data-pos="сущ." data-lemma="la técnica" data-grammar="**técnica** — *сущ.*, ж. р., ед. ч. — &quot;техник, специалистка&quot;.
+
+Также может значить &quot;техника, методика&quot; — здесь о человеке.
+" data-si="1">técnica</span> <span class="w" data-tr="из, от, о (родит. падеж)" data-pos="предл." data-lemma="" data-grammar="" data-si="1">de</span> <span class="w" data-tr="криосистемы" data-pos="сущ." data-lemma="los criosistemas" data-grammar="**los criosistemas** — сложное сущ. м. р., мн. ч. (крио- + системы). Обычно употребляется во мн. ч.
+" data-si="1">criosistemas</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="" data-grammar="" data-si="1">en</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="1">el</span> <span class="w" data-tr="Caracol — название корабля (букв. «улитка»)" data-pos="имя" data-lemma="" data-grammar="" data-si="1">Caracol</span><span class="s" data-tr="Я техник криосистем на «Каракол»." data-si="1">.</span> <span class="w" data-tr="бодрствующий, проснувшийся" data-pos="прил." data-lemma="despierto" data-grammar="" data-si="2">Despierto</span> <span class="w" data-tr="каждый" data-pos="опр." data-lemma="cada" data-grammar="" data-si="2">cada</span> <span class="w" data-tr="двадцать четыре" data-pos="числ." data-lemma="veinticuatro" data-grammar="**veinticuatro** — &quot;двадцать четыре&quot; (одним словом, без пробелов: `veinti-` + `cuatro`).
+" data-si="2">veinticuatro</span> <span class="w" data-tr="месяцы" data-pos="сущ." data-lemma="el mes" data-grammar="**meses** — мн. ч. от **el mes** «месяц».
+
+`mes` → `mes[[es]]` (слова на согласный +`-es`).
+" data-si="2">meses</span>, <span class="w" data-tr="(я) проверяю" data-pos="глаг." data-lemma="revisar" data-grammar="" data-si="2">reviso</span> <span class="w" data-tr="(артикль м. р., мн. ч.)" data-pos="арт." data-lemma="" data-grammar="" data-si="2">los</span> <span class="w" data-tr="записи, реестр" data-pos="сущ." data-lemma="el registro" data-grammar="" data-si="2">registros</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="2">y</span> <span class="w" data-tr="снова засыпаю" data-pos="идиома" data-lemma="volver a dormir" data-grammar="**volver a + инфинитив** — идиома &quot;снова сделать что-то&quot;.
+
+*Не* &quot;вернуться, чтобы поспать&quot; в буквальном смысле — конструкция `volver a + infinitivo` показывает повтор действия: `vuelvo a dormir` = «я снова засыпаю».
+
+Спрягается только **volver**: `vuelve a dormir` («он снова засыпает»), `vuelven a dormir` («они снова засыпают»).
+" data-si="2" data-parts="[{&quot;w&quot;: &quot;vuelvo&quot;, &quot;tr&quot;: &quot;(я) возвращаюсь&quot;}, {&quot;w&quot;: &quot;a&quot;, &quot;tr&quot;: &quot;(здесь без перевода)&quot;}, {&quot;w&quot;: &quot;dormir&quot;, &quot;tr&quot;: &quot;спать&quot;}]" data-literal="возвращаюсь спать">vuelvo a dormir</span><span class="s" data-tr="Я просыпаюсь каждые двадцать четыре месяца, проверяю журналы и снова засыпаю." data-si="2">.</span></p>
+
+<p><span class="w" data-tr="сегодня" data-pos="нар." data-lemma="hoy" data-grammar="" data-si="3">Hoy</span> <span class="w" data-tr="(он/она) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+" data-si="3">es</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="3">el</span> <span class="w" data-tr="год" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="3">año</span> <span class="w" data-tr="шестьсот четыре" data-pos="числ." data-lemma="seiscientos cuatro" data-grammar="*-cientos / -cientas* согласуется в роде: **seiscientos** (м. р.) → **seiscientas** (ж. р.)." data-si="3">604</span> <span class="w" data-tr="из/от (de + el)" data-pos="предл." data-lemma="" data-grammar="**del** = **de** + **el** (слияние предлога с артиклем м. р.). `la médica del puerto` = «врач порта».
+" data-si="3">del</span> <span class="w" data-tr="поездка, путешествие" data-pos="сущ." data-lemma="el viaje" data-grammar="" data-si="3">viaje</span><span class="s" data-tr="Сегодня 604-й год путешествия." data-si="3">.</span> <span class="w" data-tr="осталось (faltan + время)" data-pos="глаг." data-lemma="faltar" data-grammar="**faltan** — *presente* от **faltar** (&quot;не хватать&quot;), 3 л. мн. ч.
+
+*Конструкция:* `faltan + время` = &quot;осталось столько-то времени&quot;. Подлежащее — само время.
+
+Здесь `faltan dieciocho meses` дословно &quot;не хватает 18 месяцев&quot; → &quot;осталось 18 месяцев&quot;. Глагол согласуется с количеством месяцев (мн. ч. → `faltan`).
+" data-si="4">Faltan</span> <span class="w" data-tr="сто" data-pos="числ." data-lemma="ciento" data-grammar="" data-si="4">ciento</span> <span class="w" data-tr="девяносто" data-pos="числ." data-lemma="noventa" data-grammar="" data-si="4">noventa</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="4">y</span> <span class="w" data-tr="шесть" data-pos="числ." data-lemma="" data-grammar="" data-si="4">seis</span> <span class="w" data-tr="годы, лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="4">años</span><span class="s" data-tr="Осталось сто девяносто шесть лет." data-si="4">.</span></p>
+
+<p><span class="w" data-tr="мой" data-pos="опр." data-lemma="" data-grammar="" data-si="5">Mi</span> <span class="w" data-tr="работа" data-pos="сущ." data-lemma="el trabajo" data-grammar="" data-si="5">trabajo</span> <span class="w" data-tr="из, от, о (родит. падеж)" data-pos="предл." data-lemma="" data-grammar="" data-si="5">de</span> <span class="w" data-tr="этот" data-pos="опр." data-lemma="este" data-grammar="" data-si="5">este</span> <span class="w" data-tr="смена; очередь" data-pos="сущ." data-lemma="el turno" data-grammar="" data-si="5">turno</span> <span class="w" data-tr="(он/она) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+" data-si="5">es</span> <span class="w" data-tr="скучный" data-pos="прил." data-lemma="aburrido" data-grammar="" data-si="5">aburrido</span>: <span class="w" data-tr="проверять, пересматривать" data-pos="глаг." data-lemma="revisar" data-grammar="**revisar** — *infinitivo*, «проверять, пересматривать».
+
+Здесь — часть перечисления обязанностей после двоеточия: `revisar el registro ... y buscar errores` = «проверять журнал ... и искать ошибки» — оба инфинитива поясняют, в чём состоит работа.
+" data-si="5">revisar</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="5">el</span> <span class="w" data-tr="журнал; запись" data-pos="сущ." data-lemma="el registro" data-grammar="" data-si="5">registro</span> <span class="w" data-tr="из, от, о (родит. падеж)" data-pos="предл." data-lemma="" data-grammar="" data-si="5">de</span> <span class="w" data-tr="(артикль ж. р., мн. ч.)" data-pos="арт." data-lemma="" data-grammar="" data-si="5">las</span> <span class="w" data-tr="пятьсот (ж. р.)" data-pos="числ." data-lemma="" data-grammar="**quinientas** — числит. &quot;500&quot;, *ж. р.* (согласуется с **almas**).
+
+Числительные 200–900 согласуются по роду: `doscientos / doscientas`, `quinientos / quinientas`, `seiscientos / seiscientas`.
+" data-si="5">quinientas</span> <span class="w" data-tr="капсулы" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="5">cápsulas</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="5">y</span> <span class="w" data-tr="искать" data-pos="глаг." data-lemma="buscar" data-grammar="**buscar** — *infinitivo*, «искать».
+
+Здесь второй инфинитив в перечислении обязанностей: `revisar ... y buscar errores` = «проверять ... и искать ошибки».
+" data-si="5">buscar</span> <span class="w" data-tr="ошибки" data-pos="сущ." data-lemma="el error" data-grammar="**errores** — мн. ч. от **el error** «ошибка» (слово на согласный + `-es`).
+" data-si="5">errores</span> <span class="w" data-tr="из, от, о (родит. падеж)" data-pos="предл." data-lemma="" data-grammar="" data-si="5">de</span> <span class="w" data-tr="программное обеспечение" data-pos="сущ." data-lemma="el software" data-grammar="**el software** — англицизм, мужской род. Используется в техническом испанском.
+" data-si="5">software</span><span class="s" data-tr="Моя работа в эту смену скучная: проверять журнал пятисот капсул и искать ошибки в программном обеспечении." data-si="5">.</span> <span class="w" data-tr="почти" data-pos="нар." data-lemma="" data-grammar="" data-si="6">Casi</span> <span class="w" data-tr="никогда" data-pos="нар." data-lemma="" data-grammar="" data-si="6">nunca</span> <span class="w" data-tr="(я) нахожу" data-pos="глаг." data-lemma="encontrar" data-grammar="**encuentro** — *presente*, 1 л. ед. ч., от **encontrar** (&quot;находить&quot;), а не сущ. &quot;встреча&quot;.
+
+*Чередование в корне:* `enc[[o]]ntrar → enc[[ue]]ntro` (o → ue под ударением).
+" data-si="6">encuentro</span> <span class="w" data-tr="никакой; ни одного" data-pos="мест." data-lemma="ninguno" data-grammar="**ninguno** — &quot;ни один; никакой&quot;. Здесь заменяет **errores**: `no encuentro [[ninguno]]` = «не нахожу ни одного (из них)».
+
+*Двойное отрицание:* `casi nunca encuentro ninguno` — испанский (как и русский) допускает два отрицания в одном предложении, они не сокращаются, а усиливают друг друга.
+" data-si="6">ninguno</span><span class="s" data-tr="Почти никогда не нахожу ни одной." data-si="6" data-note="*Двойное отрицание:* испанский, как и русский, допускает два отрицания в одном предложении — `nunca` (&quot;никогда&quot;) и `ninguno` (&quot;ни одного&quot;) усиливают друг друга, а не сокращаются в одно, как в английском.
+">.</span></p>
+
+<p><span class="w" data-tr="но" data-pos="союз" data-lemma="" data-grammar="" data-si="7">Pero</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="7">la</span> <span class="w" data-tr="капсула" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="7">cápsula</span> <span class="w" data-tr="сорок семь" data-pos="числ." data-lemma="cuarenta y siete" data-grammar="" data-si="7">47</span> <span class="w" data-tr="(он/она) имеет; (ей/ему) ... лет" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener**.
+
+*Чередование:* `t[[e]]ner → t[[ie]]ne` (e → ie). Здесь: `tiene nueve años` = «ей девять лет» (возраст в испанском выражается через **tener**, а не &quot;быть&quot;).
+" data-si="7">tiene</span> <span class="w" data-tr="тридцать" data-pos="числ." data-lemma="treinta" data-grammar="" data-si="7">treinta</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="7">y</span> <span class="w" data-tr="(неопр. артикль ж. р.); одна" data-pos="арт." data-lemma="" data-grammar="" data-si="7">una</span> <span class="w" data-tr="открытия, вскрытия" data-pos="сущ." data-lemma="la apertura" data-grammar="" data-si="7">aperturas</span><span class="s" data-tr="Но у капсулы 47 — тридцать одно вскрытие." data-si="7">.</span></p>
+
+<p class="col-rule">— <span class="w" data-tr="журнал; запись" data-pos="сущ." data-lemma="el registro" data-grammar="" data-si="8">registro</span> · <span class="w" data-tr="капсула" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="8">cápsula</span> <span class="w" data-tr="сорок семь" data-pos="числ." data-lemma="cuarenta y siete" data-grammar="" data-si="8">47</span> —</p>
+
+<blockquote class="ledger-log">
+  <div class="ledger-head" aria-hidden="true">
+    <span class="lh"></span><span class="lh"></span><span class="lh"></span><span class="lh"></span><span class="lh"></span>
+  </div>
+  <div class="ledger-row hand-a">
+    <span class="cell cell-year"><span class="w" data-tr="год" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="8">Año</span> <span class="w" data-tr="сто девяносто восемь" data-pos="числ." data-lemma="ciento noventa y ocho" data-grammar="" data-si="8">198</span><span class="s" data-tr="«— журнал · капсула 47 —» Год 198." data-si="8" data-note="*Телеграфный стиль журнала:* строки ниже пропускают глагол-связку, как в бланке или базе данных — «Год: ..., Длительность: ..., Доза: ..., Техник: ..., Запись: ...» вместо полных предложений.
+">.</span></span> <span class="cell cell-dur"><span class="w" data-tr="длительность" data-pos="сущ." data-lemma="la duración" data-grammar="**la duración** — &quot;длительность&quot;. Существительные на `-ción` всегда женского рода.
+" data-si="9">Duración</span>: <span class="w" data-tr="шесть" data-pos="числ." data-lemma="seis" data-grammar="" data-si="9">6</span> <span class="w" data-tr="ч. (сокр. от horas)" data-pos="сущ." data-lemma="la hora" data-grammar="**h** — сокращение от **horas** (&quot;часы&quot;).
+
+Единицы измерения в испанском пишутся без точки после буквы: `6 h`, а не `6 h.` — точка в тексте здесь означает конец предложения, а не часть сокращения.
+" data-si="9">h</span><span class="s" data-tr="Длительность: 6 ч." data-si="9">.</span></span> <span class="cell cell-dose"><span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+" data-si="10">Dosis</span> <span class="w" data-tr="применена, введена (о дозе)" data-pos="прил." data-lemma="aplicado" data-grammar="**aplicada** — причастие от **aplicar** (&quot;применять, вводить&quot;), употреблено как прилагательное.
+
+Согласуется в роде и числе с существительным: `dosis [[aplicada]]` (ж. р., ед. ч.) — «доза введена» (действие уже совершено).
+" data-si="10">aplicada</span><span class="s" data-tr="Доза введена." data-si="10" data-note="*Эллипсис:* глагол-связка опущена — журнальная пометка, «[доза] введена», без &quot;fue&quot; или &quot;está&quot;.
+">.</span></span> <span class="cell cell-tech"><span class="w" data-tr="техник" data-pos="сущ." data-lemma="el técnico" data-grammar="" data-si="11">Técnico</span>: <span class="w" data-tr="Tomás — имя инженера" data-pos="имя" data-lemma="" data-grammar="" data-si="11">Tomás</span><span class="s" data-tr="Техник: Томас." data-si="11">.</span></span> <span class="cell cell-note"><span class="w" data-tr="запись, пометка" data-pos="сущ." data-lemma="la nota" data-grammar="**la nota** — здесь сущ. (&quot;запись, заметка&quot; в журнале), а не форма глагола **notar** (&quot;замечать&quot;).
+" data-si="12">Nota</span>: «<span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="" data-grammar="" data-si="12">Aquí</span>»<span class="s" data-tr="Запись: «Здесь»." data-si="12">.</span></span>
+  </div>
+  <div class="ledger-row hand-b">
+    <span class="cell cell-year"><span class="w" data-tr="год" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="13">Año</span> <span class="w" data-tr="двести тридцать три" data-pos="числ." data-lemma="doscientos treinta y tres" data-grammar="*-cientos / -cientas* согласуется в роде: **doscientos** (м. р.) → **doscientas** (ж. р.)." data-si="13">233</span><span class="s" data-tr="Год 233." data-si="13">.</span></span> <span class="cell cell-dur"><span class="w" data-tr="длительность" data-pos="сущ." data-lemma="la duración" data-grammar="**la duración** — &quot;длительность&quot;. Существительные на `-ción` всегда женского рода.
+" data-si="14">Duración</span>: <span class="w" data-tr="пять" data-pos="числ." data-lemma="cinco" data-grammar="" data-si="14">5</span> <span class="w" data-tr="ч. (сокр. от horas)" data-pos="сущ." data-lemma="la hora" data-grammar="**h** — сокращение от **horas** (&quot;часы&quot;).
+
+Единицы измерения в испанском пишутся без точки после буквы: `6 h`, а не `6 h.` — точка в тексте здесь означает конец предложения, а не часть сокращения.
+" data-si="14">h</span><span class="s" data-tr="Длительность: 5 ч." data-si="14">.</span></span> <span class="cell cell-dose"><span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+" data-si="15">Dosis</span> <span class="w" data-tr="применена, введена (о дозе)" data-pos="прил." data-lemma="aplicado" data-grammar="**aplicada** — причастие от **aplicar** (&quot;применять, вводить&quot;), употреблено как прилагательное.
+
+Согласуется в роде и числе с существительным: `dosis [[aplicada]]` (ж. р., ед. ч.) — «доза введена» (действие уже совершено).
+" data-si="15">aplicada</span><span class="s" data-tr="Доза введена." data-si="15">.</span></span> <span class="cell cell-tech"><span class="w" data-tr="техник (ж. р.), специалистка" data-pos="сущ." data-lemma="la técnica" data-grammar="**técnica** — *сущ.*, ж. р., ед. ч. — &quot;техник, специалистка&quot;.
+
+Также может значить &quot;техника, методика&quot; — здесь о человеке.
+" data-si="16">Técnica</span>: <span class="w" data-tr="Elsa — техник, чьё имя встречается в журнале капсулы" data-pos="имя" data-lemma="" data-grammar="" data-si="16">Elsa</span><span class="s" data-tr="Техник: Эльса." data-si="16">.</span></span> <span class="cell cell-note"><span class="w" data-tr="запись, пометка" data-pos="сущ." data-lemma="la nota" data-grammar="**la nota** — здесь сущ. (&quot;запись, заметка&quot; в журнале), а не форма глагола **notar** (&quot;замечать&quot;).
+" data-si="17">Nota</span>: «<span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="" data-grammar="" data-si="17">Aquí</span>»<span class="s" data-tr="Запись: «Здесь»." data-si="17">.</span></span>
+  </div>
+  <div class="ledger-row hand-c">
+    <span class="cell cell-year"><span class="w" data-tr="год" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="18">Año</span> <span class="w" data-tr="четыреста один" data-pos="числ." data-lemma="cuatrocientos uno" data-grammar="**cuatrocientos uno** → **cuatrocientos un** перед сущ. м. р.: `cuatrocientos un libro`.
+
+Ж. р.: **cuatrocientas una**: `cuatrocientas una casa`.
+
+*-cientos / -cientas* согласуется в роде: **cuatrocientos** (м. р.) → **cuatrocientas** (ж. р.)." data-si="18">401</span><span class="s" data-tr="Год 401." data-si="18">.</span></span> <span class="cell cell-dur"><span class="w" data-tr="длительность" data-pos="сущ." data-lemma="la duración" data-grammar="**la duración** — &quot;длительность&quot;. Существительные на `-ción` всегда женского рода.
+" data-si="19">Duración</span>: <span class="w" data-tr="восемь" data-pos="числ." data-lemma="ocho" data-grammar="" data-si="19">8</span> <span class="w" data-tr="ч. (сокр. от horas)" data-pos="сущ." data-lemma="la hora" data-grammar="**h** — сокращение от **horas** (&quot;часы&quot;).
+
+Единицы измерения в испанском пишутся без точки после буквы: `6 h`, а не `6 h.` — точка в тексте здесь означает конец предложения, а не часть сокращения.
+" data-si="19">h</span><span class="s" data-tr="Длительность: 8 ч." data-si="19">.</span></span> <span class="cell cell-dose"><span class="w" data-tr="доза; дозы" data-pos="сущ." data-lemma="la dosis" data-grammar="**la dosis** — &quot;доза&quot;. Род женский.
+
+В ед. и мн. ч. форма одинакова: `la dosis` / `las dosis` (как **la crisis** / **las crisis**).
+" data-si="20">Dosis</span> <span class="w" data-tr="применена, введена (о дозе)" data-pos="прил." data-lemma="aplicado" data-grammar="**aplicada** — причастие от **aplicar** (&quot;применять, вводить&quot;), употреблено как прилагательное.
+
+Согласуется в роде и числе с существительным: `dosis [[aplicada]]` (ж. р., ед. ч.) — «доза введена» (действие уже совершено).
+" data-si="20">aplicada</span><span class="s" data-tr="Доза введена." data-si="20">.</span></span> <span class="cell cell-tech"><span class="w" data-tr="техник" data-pos="сущ." data-lemma="el técnico" data-grammar="" data-si="21">Técnico</span>: <span class="w" data-tr="Bruno — техник, чьё имя встречается в журнале капсулы" data-pos="имя" data-lemma="" data-grammar="" data-si="21">Bruno</span><span class="s" data-tr="Техник: Бруно." data-si="21">.</span></span> <span class="cell cell-note"><span class="w" data-tr="запись, пометка" data-pos="сущ." data-lemma="la nota" data-grammar="**la nota** — здесь сущ. (&quot;запись, заметка&quot; в журнале), а не форма глагола **notar** (&quot;замечать&quot;).
+" data-si="22">Nota</span>: «<span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="" data-grammar="" data-si="22">Aquí</span>»<span class="s" data-tr="Запись: «Здесь»." data-si="22">.</span></span>
+  </div>
+</blockquote>
+
+<p><span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="23">El</span> <span class="w" data-tr="протокол" data-pos="сущ." data-lemma="el protocolo" data-grammar="" data-si="23">protocolo</span> <span class="w" data-tr="(он/она) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+" data-si="23">es</span> <span class="w" data-tr="конечно!; ясный" data-pos="нар. / прил." data-lemma="claro" data-grammar="**Claro.** — отдельной репликой: разговорное «конечно, ну разумеется».
+
+Исходно прил. **claro** = «ясный, светлый».
+" data-si="23">claro</span>: <span class="w" data-tr="(неопр. артикль ж. р.); одна" data-pos="арт." data-lemma="" data-grammar="" data-si="23">una</span> <span class="w" data-tr="капсула" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="23">cápsula</span> <span class="w" data-tr="себя, себе (возвр.)" data-pos="мест." data-lemma="" data-grammar="**se** — возвратная частица: `se llama` = «зовётся» (букв. «называет себя»).
+" data-si="23">se</span> <span class="w" data-tr="(он/она) открывает; открой!" data-pos="глаг." data-lemma="abrir" data-grammar="**abre** — форма от **abrir**.
+
+*Presente* 3 л. ед.: `abr·[[e]]`. Здесь: `Julián abre los ojos` — «Хулиан открывает глаза».
+" data-si="23">abre</span> <span class="w" data-tr="только; один" data-pos="нар." data-lemma="" data-grammar="**solo** — два употребления: «только» (`solo yo` = «только я») и «один, в одиночестве» (`estoy solo` = «я один»).
+" data-si="23">solo</span> <span class="w" data-tr="по, через, из-за" data-pos="предл." data-lemma="" data-grammar="" data-si="23">por</span> <span class="w" data-tr="чрезвычайная ситуация" data-pos="сущ." data-lemma="la emergencia" data-grammar="" data-si="23">emergencia</span> <span class="w" data-tr="врач (ж.); медицинская" data-pos="сущ. / прил." data-lemma="la médica" data-grammar="**médica** — здесь сущ. ж. р., &quot;врач (женщина)&quot;. Муж. форма — **el médico**.
+
+Как прил. (&quot;медицинская&quot;) согласуется с сущ.: `el archivo [[médico]]` (м.), `la consulta [[médica]]` (ж.).
+" data-si="23">médica</span><span class="s" data-tr="Протокол ясен: капсулу открывают только в случае медицинской чрезвычайной ситуации." data-si="23">.</span> <span class="w" data-tr="здесь, сюда" data-pos="нар." data-lemma="" data-grammar="" data-si="24">Aquí</span> <span class="w" data-tr="не, нет" data-pos="нар." data-lemma="" data-grammar="" data-si="24">no</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber** («есть, имеется»).
+
+`hay treinta y nueve camas más` = «есть ещё тридцать девять кроватей».
+" data-si="24">hay</span> <span class="w" data-tr="ни одна, никакая" data-pos="опр." data-lemma="ninguno" data-grammar="**ninguna** — *ж. р., ед. ч.* от **ninguno** (&quot;никакой&quot;).
+
+Здесь перед **emergencia** (ж. р.) — полная форма: `ninguna emergencia` = «никакой чрезвычайной ситуации».
+" data-si="24">ninguna</span> <span class="w" data-tr="чрезвычайная ситуация" data-pos="сущ." data-lemma="la emergencia" data-grammar="" data-si="24">emergencia</span><span class="s" data-tr="Здесь нет никакой чрезвычайной ситуации." data-si="24">.</span> <span class="w" data-tr="есть, имеется" data-pos="глаг." data-lemma="haber" data-grammar="**hay** — безличная форма от **haber** («есть, имеется»).
+
+`hay treinta y nueve camas más` = «есть ещё тридцать девять кроватей».
+" data-si="25">Hay</span> <span class="w" data-tr="тридцать" data-pos="числ." data-lemma="treinta" data-grammar="" data-si="25">treinta</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="25">y</span> <span class="w" data-tr="(неопр. артикль ж. р.); одна" data-pos="арт." data-lemma="" data-grammar="" data-si="25">una</span> <span class="w" data-tr="открытия, вскрытия" data-pos="сущ." data-lemma="la apertura" data-grammar="" data-si="25">aperturas</span> <span class="w" data-tr="в, на" data-pos="предл." data-lemma="" data-grammar="" data-si="25">en</span> <span class="w" data-tr="четыреста" data-pos="числ." data-lemma="cuatrocientos" data-grammar="" data-si="25">cuatrocientos</span> <span class="w" data-tr="годы, лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="25">años</span><span class="s" data-tr="За четыреста лет — тридцать одно вскрытие." data-si="25">.</span></p>
+
+<p><span class="w" data-tr="некоторые" data-pos="мест." data-lemma="alguno" data-grammar="**algunos** — *мест.*, м. р., мн. ч.
+
+Перед сущ. мн. ч.: **algunos días** = &quot;некоторые дни&quot;.
+" data-si="26">Algunos</span> <span class="w" data-tr="имена" data-pos="сущ." data-lemma="el nombre" data-grammar="" data-si="26">nombres</span> <span class="w" data-tr="себя, себе (возвр.)" data-pos="мест." data-lemma="" data-grammar="**se** — возвратная частица: `se llama` = «зовётся» (букв. «называет себя»).
+" data-si="26">se</span> <span class="w" data-tr="(они) повторяются" data-pos="глаг." data-lemma="repetir" data-grammar="**repiten** — *presente*, 3 л. мн. ч., от **repetir** (&quot;повторять&quot;); здесь возвратно, **se repiten**.
+
+*Чередование в корне:* `rep[[e]]tir → rep[[i]]ten` (e → i). `nombres se repiten` = «имена повторяются».
+" data-si="26">repiten</span><span class="s" data-tr="Некоторые имена повторяются." data-si="26">.</span> <span class="w" data-tr="Tomás — имя инженера" data-pos="имя" data-lemma="" data-grammar="" data-si="27">Tomás</span> <span class="w" data-tr="(он/она) находится, есть" data-pos="глаг." data-lemma="estar" data-grammar="**está** — *presente*, 3 л. ед. ч., от **estar** («быть, находиться»).
+
+*Неправильный* + ударение: `estoy · estás · está · estamos · estáis · están`.
+
+`tu mundo ya no está` = «твоего мира больше нет».
+" data-si="27">está</span> <span class="w" data-tr="шесть" data-pos="числ." data-lemma="" data-grammar="" data-si="27">seis</span> <span class="w" data-tr="раза" data-pos="сущ." data-lemma="la vez" data-grammar="**veces** — мн. ч. от **la vez** «раз».
+
+`ve[[z]]` → `ve[[c]]es` (z → c перед `-es`). **Treinta y nueve veces** «тридцать девять раз».
+" data-si="27">veces</span><span class="s" data-tr="Томас встречается шесть раз." data-si="27" data-note="*Необычное употребление* **estar**: не &quot;находится&quot;, а &quot;встречается, фигурирует (в записях)&quot; — `Tomás está seis veces` = «имя Томас встречается шесть раз».
+">.</span></p>
+
+<p><span class="w" data-tr="(я) читаю" data-pos="глаг." data-lemma="leer" data-grammar="**leo** — *presente*, 1 л. ед. ч., от **leer** («читать»): `Leo las notas otra vez` = «Я снова читаю записи».
+
+*Внимание:* в других рассказах **Leo** (с заглавной) — имя персонажа; здесь это форма глагола, заглавная буква — просто начало предложения.
+" data-si="28">Leo</span> <span class="w" data-tr="(артикль ж. р., мн. ч.)" data-pos="арт." data-lemma="" data-grammar="" data-si="28">las</span> <span class="w" data-tr="заметки" data-pos="сущ." data-lemma="la nota" data-grammar="" data-si="28">notas</span> <span class="w" data-tr="снова, ещё раз" data-pos="нар." data-lemma="" data-grammar="" data-si="28">otra vez</span><span class="s" data-tr="Я снова читаю записи." data-si="28">.</span> <span class="w" data-tr="всегда" data-pos="нар." data-lemma="siempre" data-grammar="" data-si="29">Siempre</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="29">la</span> <span class="w" data-tr="та же самая" data-pos="прил." data-lemma="mismo" data-grammar="" data-si="29">misma</span> <span class="w" data-tr="слово" data-pos="сущ." data-lemma="la palabra" data-grammar="" data-si="29">palabra</span><span class="s" data-tr="Всегда одно и то же слово." data-si="29">.</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="30">La</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="30">niña</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="30">la</span> <span class="w" data-tr="(она) пишет" data-pos="глаг." data-lemma="escribir" data-grammar="**escribe** — *presente*, 3 л. ед. ч., от **escribir** (&quot;писать&quot;).
+
+`escrib·[[ir]]` → `escrib·[[e]]`.
+" data-si="30">escribe</span> <span class="w" data-tr="каждый раз" data-pos="нар." data-lemma="" data-grammar="" data-si="30">cada vez</span>, <span class="w" data-tr="с" data-pos="предл." data-lemma="" data-grammar="" data-si="30">con</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="30">el</span> <span class="w" data-tr="палец" data-pos="сущ." data-lemma="el dedo" data-grammar="" data-si="30">dedo</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="30">y</span> <span class="w" data-tr="немного (чего-то)" data-pos="нар." data-lemma="" data-grammar="**un poco de** + сущ. — &quot;немного чего-то&quot;: `un poco de polvo` = «немного пыли».
+" data-si="30">un poco de</span> <span class="w" data-tr="пыль" data-pos="сущ." data-lemma="el polvo" data-grammar="" data-si="30">polvo</span>, <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="30">y</span> <span class="w" data-tr="каждый раз" data-pos="нар." data-lemma="" data-grammar="" data-si="30">cada vez</span> <span class="w" data-tr="(он/она) есть, является" data-pos="глаг." data-lemma="ser" data-grammar="**es** — *presente*, 3 л. ед. ч., от **ser** («быть»).
+
+*Неправильный.* Спряж.: `soy · eres · es · somos · sois · son`.
+" data-si="30">es</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="30">la</span> <span class="w" data-tr="первая" data-pos="числ." data-lemma="primero" data-grammar="" data-si="30">primera</span> <span class="w" data-tr="раз" data-pos="сущ." data-lemma="la vez" data-grammar="" data-si="30">vez</span> <span class="w" data-tr="для, чтобы" data-pos="предл." data-lemma="" data-grammar="" data-si="30">para</span> <span class="w" data-tr="она" data-pos="мест." data-lemma="" data-grammar="" data-si="30">ella</span><span class="s" data-tr="Девочка пишет его каждый раз пальцем и щепоткой пыли, и каждый раз для неё это первый раз." data-si="30" data-note="*Смысловой центр рассказа:* для девочки в капсуле каждое пробуждение — не повторение, а первый раз. Память стирается дозой при каждом сне, и `cada vez` (&quot;каждый раз&quot;) для неё буквально означает &quot;заново&quot;, без памяти о предыдущих разах.
+">.</span></p>
+
+<h2><span class="w" data-tr="сектор, отсек" data-pos="сущ." data-lemma="el sector" data-grammar="" data-si="31">Sector</span> <span class="w" data-tr="Си — название сектора / панели" data-pos="имя" data-lemma="" data-grammar="" data-si="31">C</span></h2>
+
+<p><span class="w" data-tr="(я) иду; собираюсь" data-pos="глаг." data-lemma="ir" data-grammar="**voy** — *presente*, 1 л. ед. ч., от **ir** («идти»).
+
+`voy a + инфинитив` — *futuro próximo*: `voy a ver` = «пойду посмотреть».
+
+`voy a + место` — обычное движение: `voy a la cocina` = «иду на кухню».
+" data-si="31">Voy</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="31">a</span> <span class="w" data-tr="видеть" data-pos="глаг." data-lemma="ver" data-grammar="" data-si="31">ver</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="31">la</span> <span class="w" data-tr="капсула" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="31">cápsula</span> <span class="w" data-tr="сорок семь" data-pos="числ." data-lemma="cuarenta y siete" data-grammar="" data-si="31">47</span><span class="s" data-tr="Сектор C. Иду посмотреть капсулу 47." data-si="31">.</span> <span class="w" data-tr="внутри" data-pos="нар." data-lemma="" data-grammar="" data-si="32">Dentro</span> <span class="w" data-tr="(он/она) спит" data-pos="глаг." data-lemma="dormir" data-grammar="**duerme** — *presente*, 3 л. ед. ч., от **dormir** («спать»).
+
+*Чередование в корне:* `d[[o]]rmir → d[[ue]]rme` (o → ue под ударением).
+" data-si="32">duerme</span> <span class="w" data-tr="(неопр. артикль ж. р.); одна" data-pos="арт." data-lemma="" data-grammar="" data-si="32">una</span> <span class="w" data-tr="девочка" data-pos="сущ." data-lemma="la niña" data-grammar="" data-si="32">niña</span> <span class="w" data-tr="из, от, о (родит. падеж)" data-pos="предл." data-lemma="" data-grammar="" data-si="32">de</span> <span class="w" data-tr="девять" data-pos="числ." data-lemma="" data-grammar="" data-si="32">nueve</span> <span class="w" data-tr="годы, лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="32">años</span><span class="s" data-tr="Внутри спит девятилетняя девочка." data-si="32">.</span> <span class="w" data-tr="(он/она) имеет; (ей/ему) ... лет" data-pos="глаг." data-lemma="tener" data-grammar="**tiene** — *presente*, 3 л. ед. ч., от **tener**.
+
+*Чередование:* `t[[e]]ner → t[[ie]]ne` (e → ie). Здесь: `tiene nueve años` = «ей девять лет» (возраст в испанском выражается через **tener**, а не &quot;быть&quot;).
+" data-si="33">Tiene</span> <span class="w" data-tr="девять" data-pos="числ." data-lemma="" data-grammar="" data-si="33">nueve</span> <span class="w" data-tr="годы, лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="33">años</span> <span class="w" data-tr="(уже) в течение, вот уже" data-pos="предл." data-lemma="" data-grammar="**desde hace** + время — сколько времени длится действие.
+
+`desde hace mucho tiempo` = «уже долгое время».
+" data-si="33">desde hace</span> <span class="w" data-tr="четыреста" data-pos="числ." data-lemma="cuatrocientos" data-grammar="" data-si="33">cuatrocientos</span><span class="s" data-tr="Ей девять лет — вот уже четыреста лет." data-si="33" data-note="*Ключевая фраза рассказа:* `tiene nueve años` = «ей девять лет», `desde hace cuatrocientos [años]` = «уже четыреста лет» (слово `años` опущено — оно уже названо чуть раньше).
+
+Девочке физически девять лет, но её сон длится четыреста лет: доза стирает память при каждом пробуждении, поэтому для неё самой время не движется.
+">.</span></p>
+
+<p><span class="w" data-tr="(я) могу" data-pos="глаг." data-lemma="poder" data-grammar="**puedo** — *presente*, 1 л. ед. ч., от **poder** («мочь»).
+
+*Чередование:* `p[[o]]der → p[[ue]]do` (o → ue).
+" data-si="34">Puedo</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="" data-si="34">escribir</span> <span class="w" data-tr="(неопр. артикль м. р.); один" data-pos="арт." data-lemma="" data-grammar="" data-si="34">un</span> <span class="w" data-tr="отчёт, рапорт" data-pos="сущ." data-lemma="el informe" data-grammar="**el informe** — сущ. *м. р.*, хотя оканчивается на `-e`.
+" data-si="34">informe</span><span class="s" data-tr="Я могу написать отчёт." data-si="34">.</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="35">El</span> <span class="w" data-tr="система" data-pos="сущ." data-lemma="el sistema" data-grammar="**el sistema** — сущ. *м. р.* *Исключение:* оканчивается на `-a`, но мужского рода (греч. происхождение, как **el problema**).
+" data-si="35">sistema</span> <span class="w" data-tr="(он/она) идёт, едет" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти, лететь»).
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+" data-si="35">va</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="35">a</span> <span class="w" data-tr="закрыть" data-pos="глаг." data-lemma="cerrar" data-grammar="**cerrar** — инфинитив, «закрыть».
+
+В спряжении корень меняется `e → ie`: `c[[ie]]rra` («закрывает»), но в инфинитиве — `c[[e]]rrar`.
+" data-si="35">cerrar</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="35">la</span> <span class="w" data-tr="капсула" data-pos="сущ." data-lemma="la cápsula" data-grammar="" data-si="35">cápsula</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="35">y</span> <span class="w" data-tr="никто" data-pos="мест." data-lemma="" data-grammar="" data-si="35">nadie</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="35">la</span> <span class="w" data-tr="(он/она) идёт, едет" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти, лететь»).
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+" data-si="35">va</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="35">a</span> <span class="w" data-tr="открыть" data-pos="глаг." data-lemma="abrir" data-grammar="**abrir** — *infinitivo*.
+
+В обороте **va a abrir** = &quot;собирается открыть&quot; (*futuro próximo*).
+" data-si="35">abrir</span> <span class="w" data-tr="больше, ещё" data-pos="нар." data-lemma="" data-grammar="" data-si="35">más</span><span class="s" data-tr="Система закроет капсулу, и больше никто её не откроет." data-si="35">.</span> <span class="w" data-tr="Софи́я — имя девочки в капсуле 47" data-pos="имя" data-lemma="" data-grammar="" data-si="36">Sofía</span> <span class="w" data-tr="(он/она) идёт, едет" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти, лететь»).
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+" data-si="36">va</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="36">a</span> <span class="w" data-tr="спать" data-pos="глаг." data-lemma="dormir" data-grammar="**dormir** — *infinitivo* («спать»). `La miro dormir` = «Я смотрю, как она спит».
+" data-si="36">dormir</span> <span class="w" data-tr="(артикль м. р., мн. ч.)" data-pos="арт." data-lemma="" data-grammar="" data-si="36">los</span> <span class="w" data-tr="сто" data-pos="числ." data-lemma="ciento" data-grammar="" data-si="36">ciento</span> <span class="w" data-tr="девяносто" data-pos="числ." data-lemma="noventa" data-grammar="" data-si="36">noventa</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="36">y</span> <span class="w" data-tr="шесть" data-pos="числ." data-lemma="" data-grammar="" data-si="36">seis</span> <span class="w" data-tr="годы, лет" data-pos="сущ." data-lemma="el año" data-grammar="" data-si="36">años</span> <span class="w" data-tr="что; который" data-pos="союз" data-lemma="" data-grammar="" data-si="36">que</span> <span class="w" data-tr="осталось (faltan + время)" data-pos="глаг." data-lemma="faltar" data-grammar="**faltan** — *presente* от **faltar** (&quot;не хватать&quot;), 3 л. мн. ч.
+
+*Конструкция:* `faltan + время` = &quot;осталось столько-то времени&quot;. Подлежащее — само время.
+
+Здесь `faltan dieciocho meses` дословно &quot;не хватает 18 месяцев&quot; → &quot;осталось 18 месяцев&quot;. Глагол согласуется с количеством месяцев (мн. ч. → `faltan`).
+" data-si="36">faltan</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="36">y</span> <span class="w" data-tr="(он/она) идёт, едет" data-pos="глаг." data-lemma="ir" data-grammar="**va** — *presente*, 3 л. ед. ч., от **ir** («идти, лететь»).
+
+*Неправильный.* Спряж.: `voy · vas · va · vamos · vais · van`.
+" data-si="36">va</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="36">a</span> <span class="w" data-tr="прибыть, добраться" data-pos="глаг." data-lemma="llegar" data-grammar="**llegar** — *инфинитив* «прибывать».
+
+После **para** идёт инфинитив: **para llegar** «чтобы добраться».
+" data-si="36">llegar</span> <span class="w" data-tr="целая, невредимая" data-pos="прил." data-lemma="entero" data-grammar="**entera** — *прил.*, ж. р., ед. ч. от **entero** (&quot;целый&quot;); согласуется с **Sofía**.
+
+`va a llegar [[entera]]` = «долетит целой» (без потерь, невредимой).
+" data-si="36">entera</span><span class="s" data-tr="София проспит оставшиеся сто девяносто шесть лет и долетит целой и невредимой." data-si="36">.</span></p>
+
+<p><span class="w" data-tr="или" data-pos="союз" data-lemma="o" data-grammar="" data-si="37">O</span> <span class="w" data-tr="(я) могу" data-pos="глаг." data-lemma="poder" data-grammar="**puedo** — *presente*, 1 л. ед. ч., от **poder** («мочь»).
+
+*Чередование:* `p[[o]]der → p[[ue]]do` (o → ue).
+" data-si="37">puedo</span> <span class="w" data-tr="писать" data-pos="глаг." data-lemma="escribir" data-grammar="" data-si="37">escribir</span> <span class="w" data-tr="мой" data-pos="опр." data-lemma="" data-grammar="" data-si="37">mi</span> <span class="w" data-tr="имя, название" data-pos="сущ." data-lemma="el nombre" data-grammar="" data-si="37">nombre</span><span class="s" data-tr="Или я могу написать своё имя." data-si="37">.</span></p>
+
+<p><span class="w" data-tr="(я) смотрю" data-pos="глаг." data-lemma="mirar" data-grammar="**miro** — *presente*, 1 л. ед. ч., от **mirar** («смотреть»). `Miro el campo vacío` = «Я смотрю на пустую графу».
+
+*Внимание:* в других рассказах заглавное **MIRO** — имя бортовой системы корабля; здесь это просто форма глагола со строчной буквы (стоит в начале предложения).
+" data-si="38">Miro</span> <span class="w" data-tr="(артикль м. р.)" data-pos="арт." data-lemma="" data-grammar="" data-si="38">el</span> <span class="w" data-tr="поле (графа бланка/формы)" data-pos="сущ." data-lemma="el campo" data-grammar="**el campo** — здесь &quot;поле&quot; в смысле графы бланка/журнала (место для заполнения), а не &quot;поле, местность&quot;.
+
+`el campo vacío del registro` = «пустая графа журнала» — незаполненное место для имени техника.
+" data-si="38">campo</span> <span class="w" data-tr="вакуум; пустота" data-pos="сущ." data-lemma="el vacío" data-grammar="**el vacío** — &quot;вакуум, пустота&quot;. Род мужской. В контексте космоса — открытый космос между станциями.
+" data-si="38">vacío</span> <span class="w" data-tr="из/от (de + el)" data-pos="предл." data-lemma="" data-grammar="**del** = **de** + **el** (слияние предлога с артиклем м. р.). `la médica del puerto` = «врач порта».
+" data-si="38">del</span> <span class="w" data-tr="журнал; запись" data-pos="сущ." data-lemma="el registro" data-grammar="" data-si="38">registro</span> <span class="w" data-tr="много, долго" data-pos="нар." data-lemma="mucho" data-grammar="" data-si="38">mucho</span> <span class="w" data-tr="время" data-pos="сущ." data-lemma="el tiempo" data-grammar="" data-si="38">tiempo</span><span class="s" data-tr="Я долго смотрю на пустую графу журнала." data-si="38">.</span></p>
+
+<p><span class="w" data-tr="потом, после" data-pos="нар." data-lemma="después" data-grammar="" data-si="39">Después</span> <span class="w" data-tr="(я) иду; собираюсь" data-pos="глаг." data-lemma="ir" data-grammar="**voy** — *presente*, 1 л. ед. ч., от **ir** («идти»).
+
+`voy a + инфинитив` — *futuro próximo*: `voy a ver` = «пойду посмотреть».
+
+`voy a + место` — обычное движение: `voy a la cocina` = «иду на кухню».
+" data-si="39">voy</span> <span class="w" data-tr="к, в, на (предлог); (винит. падеж лица)" data-pos="предл." data-lemma="" data-grammar="" data-si="39">a</span> <span class="w" data-tr="(артикль ж. р.); её" data-pos="арт." data-lemma="" data-grammar="Два значения: **la** как артикль ж. р. (`la nave` — «корабль») и **la** как объектное местоимение «её» (`la voy a repetir` — «я её повторю»).
+" data-si="39">la</span> <span class="w" data-tr="кухня" data-pos="сущ." data-lemma="la cocina" data-grammar="" data-si="39">cocina</span> <span class="w" data-tr="автоматическая" data-pos="прил." data-lemma="automático" data-grammar="" data-si="39">automática</span> <span class="w" data-tr="и" data-pos="союз" data-lemma="" data-grammar="" data-si="39">y</span> <span class="w" data-tr="(я) беру" data-pos="глаг." data-lemma="tomar" data-grammar="**tomo** — *presente*, 1 л. ед. ч., от **tomar** («брать»).
+
+`Le tomo la mano` = «беру его за руку» (*дословно* «ему беру руку» — принадлежность выражена через **le**, без притяжательного).
+" data-si="39">tomo</span> <span class="w" data-tr="два" data-pos="числ." data-lemma="" data-grammar="" data-si="39">dos</span> <span class="w" data-tr="печенья (мн.)" data-pos="сущ." data-lemma="la galleta" data-grammar="" data-si="39">galletas</span><span class="s" data-tr="Потом я иду в автоматическую кухню и беру два печенья." data-si="39">.</span></p>
+
+    </article>
+
+    <div data-new-words class="nw">
+  <summary>Palabras nuevas (11)</summary>
+  <ol>
+      <li class="nw-item"><a href="../../vocabulario.html#la-apertura"><span class="nw-lemma">la apertura</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">открытия, вскрытия</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#aplicado"><span class="nw-lemma">aplicado</span> <span class="nw-pos">прил.</span> <span class="nw-tr">применена, введена (о дозе)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#bruno"><span class="nw-lemma">bruno</span> <span class="nw-pos">имя</span> <span class="nw-tr">Bruno — техник, чьё имя встречается в журнале капсулы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#cada-vez"><span class="nw-lemma">cada vez</span> <span class="nw-pos">нар.</span> <span class="nw-tr">каждый раз</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#los-criosistemas"><span class="nw-lemma">los criosistemas</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">криосистемы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#elsa"><span class="nw-lemma">elsa</span> <span class="nw-pos">имя</span> <span class="nw-tr">Elsa — техник, чьё имя встречается в журнале капсулы</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#la-emergencia"><span class="nw-lemma">la emergencia</span> <span class="nw-pos">сущ.</span> <span class="nw-tr">чрезвычайная ситуация</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#entero"><span class="nw-lemma">entero</span> <span class="nw-pos">прил.</span> <span class="nw-tr">целая, невредимая</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#nuria"><span class="nw-lemma">nuria</span> <span class="nw-pos">имя</span> <span class="nw-tr">Nuria — рассказчица, техник криосистем</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#un-poco-de"><span class="nw-lemma">un poco de</span> <span class="nw-pos">нар.</span> <span class="nw-tr">немного (чего-то)</span></a></li>
+      <li class="nw-item"><a href="../../vocabulario.html#vuelvo-a-dormir"><span class="nw-lemma">vuelvo a dormir</span> <span class="nw-pos">идиома</span> <span class="nw-tr">снова засыпаю</span></a></li>
+  </ol>
+</div>
+
+    <div class="sig-appendix">
+      <div class="sig-title">Próxima entrada &#183; fila 32</div>
+      <div class="ledger-log sig-final" aria-hidden="true">
+        <div class="ledger-head">
+          <span class="lh"></span><span class="lh"></span><span class="lh"></span><span class="lh"></span><span class="lh"></span>
+        </div>
+        <div class="ledger-row">
+          <span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script data-popup>
+window.__leeSentences = [{"tr": "Меня зовут Нурия.", "note": ""}, {"tr": "Я техник криосистем на «Каракол».", "note": ""}, {"tr": "Я просыпаюсь каждые двадцать четыре месяца, проверяю журналы и снова засыпаю.", "note": ""}, {"tr": "Сегодня 604-й год путешествия.", "note": ""}, {"tr": "Осталось сто девяносто шесть лет.", "note": ""}, {"tr": "Моя работа в эту смену скучная: проверять журнал пятисот капсул и искать ошибки в программном обеспечении.", "note": ""}, {"tr": "Почти никогда не нахожу ни одной.", "note": "*Двойное отрицание:* испанский, как и русский, допускает два отрицания в одном предложении — `nunca` (\"никогда\") и `ninguno` (\"ни одного\") усиливают друг друга, а не сокращаются в одно, как в английском.\n"}, {"tr": "Но у капсулы 47 — тридцать одно вскрытие.", "note": ""}, {"tr": "«— журнал · капсула 47 —» Год 198.", "note": "*Телеграфный стиль журнала:* строки ниже пропускают глагол-связку, как в бланке или базе данных — «Год: ..., Длительность: ..., Доза: ..., Техник: ..., Запись: ...» вместо полных предложений.\n"}, {"tr": "Длительность: 6 ч.", "note": ""}, {"tr": "Доза введена.", "note": "*Эллипсис:* глагол-связка опущена — журнальная пометка, «[доза] введена», без \"fue\" или \"está\".\n"}, {"tr": "Техник: Томас.", "note": ""}, {"tr": "Запись: «Здесь».", "note": ""}, {"tr": "Год 233.", "note": ""}, {"tr": "Длительность: 5 ч.", "note": ""}, {"tr": "Доза введена.", "note": ""}, {"tr": "Техник: Эльса.", "note": ""}, {"tr": "Запись: «Здесь».", "note": ""}, {"tr": "Год 401.", "note": ""}, {"tr": "Длительность: 8 ч.", "note": ""}, {"tr": "Доза введена.", "note": ""}, {"tr": "Техник: Бруно.", "note": ""}, {"tr": "Запись: «Здесь».", "note": ""}, {"tr": "Протокол ясен: капсулу открывают только в случае медицинской чрезвычайной ситуации.", "note": ""}, {"tr": "Здесь нет никакой чрезвычайной ситуации.", "note": ""}, {"tr": "За четыреста лет — тридцать одно вскрытие.", "note": ""}, {"tr": "Некоторые имена повторяются.", "note": ""}, {"tr": "Томас встречается шесть раз.", "note": "*Необычное употребление* **estar**: не \"находится\", а \"встречается, фигурирует (в записях)\" — `Tomás está seis veces` = «имя Томас встречается шесть раз».\n"}, {"tr": "Я снова читаю записи.", "note": ""}, {"tr": "Всегда одно и то же слово.", "note": ""}, {"tr": "Девочка пишет его каждый раз пальцем и щепоткой пыли, и каждый раз для неё это первый раз.", "note": "*Смысловой центр рассказа:* для девочки в капсуле каждое пробуждение — не повторение, а первый раз. Память стирается дозой при каждом сне, и `cada vez` (\"каждый раз\") для неё буквально означает \"заново\", без памяти о предыдущих разах.\n"}, {"tr": "Сектор C. Иду посмотреть капсулу 47.", "note": ""}, {"tr": "Внутри спит девятилетняя девочка.", "note": ""}, {"tr": "Ей девять лет — вот уже четыреста лет.", "note": "*Ключевая фраза рассказа:* `tiene nueve años` = «ей девять лет», `desde hace cuatrocientos [años]` = «уже четыреста лет» (слово `años` опущено — оно уже названо чуть раньше).\n\nДевочке физически девять лет, но её сон длится четыреста лет: доза стирает память при каждом пробуждении, поэтому для неё самой время не движется.\n"}, {"tr": "Я могу написать отчёт.", "note": ""}, {"tr": "Система закроет капсулу, и больше никто её не откроет.", "note": ""}, {"tr": "София проспит оставшиеся сто девяносто шесть лет и долетит целой и невредимой.", "note": ""}, {"tr": "Или я могу написать своё имя.", "note": ""}, {"tr": "Я долго смотрю на пустую графу журнала.", "note": ""}, {"tr": "Потом я иду в автоматическую кухню и беру два печенья.", "note": ""}];
+(function(){
+  var pop = null, active = null, hovered = null, isTouch = false, hlEls = [];
+  var sentences = window.__leeSentences || [];
+  function ensurePop(){
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'pop';
+    document.body.appendChild(pop);
+    return pop;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+  function dictKey(lemma){
+    return lemma.replace(/^(el |la |los |las |un |una |unos |unas )/i,'').trim();
+  }
+  function mdToHtml(md){
+    if(!md) return '';
+    var s = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.split(/\n\n+/).map(function(p){
+      p = p.replace(/`([^`]+)`/g, function(_, c){
+        return '<code>' + c.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>') + '</code>';
+      });
+      p = p.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+      p = p.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+      p = p.replace(/\[\[([^\]]+)\]\]/g, '<u>$1</u>');
+      return '<p>' + p + '</p>';
+    }).join('');
+  }
+  function sentenceHtml(tr, note){
+    return '<div class="s-label">traducción</div>' +
+      '<div class="s-tr">'+escapeHtml(tr)+'</div>' +
+      (note ? '<div class="g-block s-note">'+mdToHtml(note)+'</div>' : '');
+  }
+  function clearHl(){
+    for (var i=0;i<hlEls.length;i++) hlEls[i].classList.remove('hl');
+    hlEls = [];
+  }
+  function setHl(els){
+    clearHl();
+    for (var i=0;i<els.length;i++) els[i].classList.add('hl');
+    hlEls = els;
+  }
+  // forceSentence: true when Shift is held — render any word as its full-sentence popup.
+  function show(el, forceSentence){
+    var p = ensurePop();
+    var asSentence = el.classList.contains('s') || (forceSentence && el.classList.contains('w'));
+    if (asSentence){
+      var str = '', snote = '';
+      if (el.classList.contains('s')){ str = el.dataset.tr || ''; snote = el.dataset.note || ''; }
+      else { var s = sentences[+el.dataset.si] || {}; str = s.tr || ''; snote = s.note || ''; }
+      p.classList.add('sentence');
+      p.classList.remove('idiom');
+      p.classList.toggle('has-grammar', !!snote);
+      p.innerHTML = sentenceHtml(str, snote);
+    } else {
+      p.classList.remove('sentence');
+      var tr = el.dataset.tr || '', pos = el.dataset.pos || '', lemma = el.dataset.lemma || '', grammar = el.dataset.grammar || '';
+      var rawParts = el.dataset.parts || '', literal = el.dataset.literal || '';
+      var isIdiom = !!rawParts || !!literal || pos === 'идиома';
+      var displayLemma = lemma || el.textContent;
+      var linkHtml = lemma
+        ? '<a class="link" href="https://www.spanishdict.com/translate/' + encodeURIComponent(dictKey(lemma)) + '" target="_blank" rel="noopener">SpanishDict ↗</a>'
+        : '';
+      var breakdownHtml = '';
+      if (rawParts){
+        try {
+          var arr = JSON.parse(rawParts);
+          if (arr && arr.length){
+            breakdownHtml = '<div class="breakdown">' + arr.map(function(it){
+              return '<div class="bd-row"><span class="bd-w">'+escapeHtml(it.w)+'</span>'+
+                     '<span class="bd-tr">'+escapeHtml(it.tr)+'</span></div>';
+            }).join('') + '</div>';
+          }
+        } catch(_){}
+      }
+      var literalHtml = literal ? '<div class="literal"><span class="lit-label">досл.</span> '+escapeHtml(literal)+'</div>' : '';
+      var grammarHtml = grammar ? '<div class="g-block">'+mdToHtml(grammar)+'</div>' : '';
+      p.classList.toggle('has-grammar', !!grammar || !!breakdownHtml || !!literal);
+      p.classList.toggle('idiom', isIdiom);
+      p.innerHTML =
+        '<div class="lemma">'+escapeHtml(displayLemma)+'</div>' +
+        (pos ? '<div class="pos">'+escapeHtml(pos)+'</div>' : '') +
+        '<div class="tr">'+escapeHtml(tr)+'</div>' +
+        breakdownHtml + literalHtml + grammarHtml + linkHtml;
+    }
+    p.classList.add('show');
+    position(p, el);
+    if (active && active!==el) active.classList.remove('active');
+    el.classList.add('active');
+    active = el;
+    // Scope highlight: whole sentence (all spans sharing data-si) or whole idiom span.
+    if (asSentence){
+      var si = el.dataset.si;
+      var set = si != null
+        ? Array.prototype.slice.call(document.querySelectorAll('.w[data-si="'+si+'"], .s[data-si="'+si+'"]'))
+        : [];
+      setHl(set.length ? set : [el]);
+    } else if (isIdiom){
+      setHl([el]);
+    } else {
+      clearHl();
+    }
+  }
+  function hide(){
+    hovered = null;
+    clearHl();
+    if (!pop) return;
+    pop.classList.remove('show');
+    if (active){ active.classList.remove('active'); active = null; }
+  }
+  function position(p, el){
+    var r = el.getBoundingClientRect();
+    var ph = p.offsetHeight || 120, pw = p.offsetWidth || 220;
+    var top = window.scrollY + r.top - ph - 12, below = false;
+    if (top < window.scrollY + 8){ top = window.scrollY + r.bottom + 12; below = true; }
+    var left = window.scrollX + r.left - 10;
+    if (left + pw > window.scrollX + window.innerWidth - 12) left = window.scrollX + window.innerWidth - pw - 12;
+    if (left < window.scrollX + 8) left = window.scrollX + 8;
+    // top/left are document coordinates. The popup is positioned relative to its
+    // offsetParent (e.g. a position:relative <body> shifted down by a child's
+    // margin), whose origin may differ from the document origin — subtract it so
+    // the popup lands on the correct side of the word instead of over it.
+    var host = p.offsetParent;
+    if (host){
+      var hr = host.getBoundingClientRect(), cs = getComputedStyle(host);
+      top -= hr.top + window.scrollY + (parseFloat(cs.borderTopWidth) || 0);
+      left -= hr.left + window.scrollX + (parseFloat(cs.borderLeftWidth) || 0);
+    }
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.classList.toggle('below', below);
+  }
+  document.addEventListener('mouseover', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (el){ hovered = el; show(el, e.shiftKey); }
+  });
+  document.addEventListener('mouseout', function(e){
+    if (isTouch) return;
+    var el = e.target.closest('.w, .s');
+    if (!el) return;
+    var to = e.relatedTarget;
+    if (to && to.closest && (to.closest('.w, .s') === el || to.closest('.pop'))) return;
+    hide();
+  });
+  // Holding Shift turns any word popup into its full-sentence popup; releasing reverts.
+  function onShift(e){
+    if (e.key !== 'Shift' || !hovered) return;
+    if (hovered.classList.contains('w')) show(hovered, e.shiftKey);
+  }
+  document.addEventListener('keydown', onShift);
+  document.addEventListener('keyup', onShift);
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.w, .s'), onPop = e.target.closest('.pop');
+    if (el){ if (active === el) hide(); else { hovered = el; show(el, e.shiftKey); } }
+    else if (!onPop) hide();
+  });
+  document.addEventListener('touchstart', function(){ isTouch = true; }, {passive:true});
+  window.addEventListener('scroll', function(){ if (active && pop) position(pop, active); }, {passive:true});
+  window.addEventListener('resize', function(){ if (active && pop) position(pop, active); });
+
+  // Reading progress hairline — appended to body, width tracks scroll percentage.
+  var bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  document.body.appendChild(bar);
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // Vocabulario deep-link: #hl=<urlencoded lemma> highlights and scrolls to the first
+  // matching word/expression span. Matches data-lemma case-insensitively; when a span
+  // carries no data-lemma (proper nouns and lemma-less idioms render it empty on
+  // purpose — see render SKILL.md), falls back to comparing its visible text instead.
+  try {
+    if (location.hash.indexOf('#hl=') === 0) {
+      var hlTarget = decodeURIComponent(location.hash.slice(4)).toLowerCase();
+      if (hlTarget) {
+        var hlAll = document.querySelectorAll('.w');
+        var hlMatches = [];
+        for (var hi = 0; hi < hlAll.length; hi++) {
+          var hlEl = hlAll[hi];
+          var hlLemma = (hlEl.dataset.lemma || '').toLowerCase();
+          var hlHit = hlLemma ? hlLemma === hlTarget : (hlEl.textContent || '').trim().toLowerCase() === hlTarget;
+          if (hlHit) hlMatches.push(hlEl);
+        }
+        if (hlMatches.length) {
+          for (var hj = 0; hj < hlMatches.length; hj++) hlMatches[hj].classList.add('hl');
+          hlMatches[0].scrollIntoView({block: 'center'});
+        }
+      }
+    }
+  } catch (_) {}
+})();
+</script>
+</body>
+</html>
