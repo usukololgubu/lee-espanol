@@ -8,7 +8,7 @@ Every entry in the top-level lists links to each story where that entity appears
 
 - **ARES** — AI, Anillo-7 observatory at Saturn — [#1](stories/01-saturn-ai/story.md)
 - **Elena** — anthropologist, Nueva Andalucía — [#2](stories/02-nueva-andalucia/story.md)
-- **Marco** — navigator, ice tug *Tortuga* — [#3](stories/03-zumbido-deriva/story.md)
+- **Marco** — navigator, ice tug *Tortuga* — [#3](stories/03-zumbido-deriva/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 - **Lucía** — biologist, Europa-3 — [#4](stories/04-algo-verde/story.md)
 - **Tomás** — maintenance engineer, *Caracol* — [#5](stories/05-pasajero-unico/story.md)
 - **Inés** — junior linguist, Instituto de Lenguas — [#6](stories/06-la-traductora/story.md), [#7](stories/07-el-desvio/story.md)
@@ -28,18 +28,18 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Estación Casiopea** — radio listening post on the icy surface of Plutón, beyond the planets — [#9](stories/09-la-senal/story.md)
 - **Colonia Brasa** — small religious outpost on a Kuiper Belt asteroid — [#10](stories/10-el-reloj/story.md)
 - **Estación Argyre** — terraforming outpost, southern highlands of Mars, ~40 colonists — [#11](stories/11-la-dosis/story.md)
-- **Faro Vesta-7** — relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter — [#12](stories/12-el-faro-apagado/story.md)
+- **Faro Vesta-7** — relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter — [#12](stories/12-el-faro-apagado/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 
 ## Ships
 
-- **Tortuga** — ice tug, mid-route to Ceres, outer drift — [#3](stories/03-zumbido-deriva/story.md)
+- **Tortuga** — ice tug, mid-route to Ceres, outer drift — [#3](stories/03-zumbido-deriva/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 - **Caracol** — generation ship, 800-yr voyage to Próxima Centauri; year 198 at story time — [#5](stories/05-pasajero-unico/story.md)
 - **La Mula** — freighter, asteroid belt run between Mars and Ceres — [#7](stories/07-el-desvio/story.md)
 
 ## Terms / tech
 
 - **cryosleep / los dormidos / el sueño** — recurring; AI's wakeful watch over sleeping crew is established — [#1](stories/01-saturn-ai/story.md), [#5](stories/05-pasajero-unico/story.md), [#18](stories/18-la-carga/story.md), [#19](stories/19-la-boveda/story.md), [#21](stories/21-el-vigia/story.md)
-- **anillo / corredor** — common navigation language (orbital ring, shipping corridor) — [#12](stories/12-el-faro-apagado/story.md), [#21](stories/21-el-vigia/story.md)
+- **anillo / corredor** — common navigation language (orbital ring, shipping corridor) — [#12](stories/12-el-faro-apagado/story.md), [#21](stories/21-el-vigia/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 - **silencio** — euphemism for the contact-loss with Earth that defines the lost colonies — [#2](stories/02-nueva-andalucia/story.md), [#8](stories/08-el-ultimo-que-recuerda/story.md), [#19](stories/19-la-boveda/story.md)
 
 ## Factions / forces
@@ -52,6 +52,7 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Año 80 del silencio** — Nueva Andalucía's contact-loss anchor — [#2](stories/02-nueva-andalucia/story.md)
 - **Año 85 del silencio** — Nueva Andalucía five years later — [#8](stories/08-el-ultimo-que-recuerda/story.md)
 - **Año 198 / 800** — *Caracol*'s progress to Próxima Centauri — [#5](stories/05-pasajero-unico/story.md)
+- **Nueve años después del zumbido** — Marco's own reckoning; places #23 nine years after his Pioneer-12 encounter in #3, and four years after the Faro Vesta-7 shutdown order in #12 — [#23](stories/23-el-faro-que-no-se-apago/story.md)
 
 ## Tone reminders
 
@@ -176,3 +177,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Locations: Colonia Esperanza (the Peregrino's destination colony, off-page — never answered; the ship waited in orbit, turned around, brought all 40 sleepers home)
 - Terms: las dos edades (a sleeper's onboard vs. calendar age — port paperwork has no field for it)
 - Reappears: Puerto de Ceres (#17 — now its enfermería, muelle 9); *Peregrino* (#17 — docked, one month after arrival; its open ending resolved offstage); el reglamento (#17, #21 — "el paciente tiene derecho a la verdad", but not when)
+
+### #23 — el-faro-que-no-se-apago
+- Terms: el corredor nuevo (the shorter, faster replacement route that emptied the old Ceres–Júpiter corridor — named in lore for the first time); *Pioneer-12* (the ~90-year-old Earth probe from #3, now named at lore level); "Tortuga. Yo te oigo." (Marco's six-hour looping answer left running on the faro's frequency)
+- Timeline: nueve años después de #3; cuatro años después del cierre del Faro Vesta-7 (#12)
+- Reappears: Marco + *Tortuga* (#3 — same ice run to Ceres, same bad coffee); Faro Vesta-7 (#12 — the ship's registry lists it CERRADO with "operadora recogida", yet the six-hour signal from #12 still goes out word for word); el corredor viejo (#12, #21); the sonda Pioneer-12 (#3 — Marco's earlier walk-away, now the thing he measures this choice against). Renata is never named or seen: the story only reads "Operadora recogida", so her top-level bullet stays at #12.

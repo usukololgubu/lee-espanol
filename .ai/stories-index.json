@@ -174,5 +174,13 @@
     "setting": "Puerto de Ceres, enfermería del muelle 9",
     "date_generated": "2026-07-12",
     "length_words": "251"
+  },
+  "23-el-faro-que-no-se-apago": {
+    "title": "El faro que no se apagó",
+    "logline": "El registro dice que el faro está cerrado, pero cada seis horas la señal vuelve.",
+    "protagonist": "navigator (Marco)",
+    "setting": "ice tug Tortuga, old shipping corridor between Ceres and Júpiter, near Faro Vesta-7",
+    "date_generated": "2026-08-02",
+    "length_words": "276"
   }
 }
