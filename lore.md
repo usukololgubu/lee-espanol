@@ -20,6 +20,8 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Nuria** — cryosystems technician, *Caracol*, year 604 — [#24](stories/24-treinta-y-una-veces/story.md)
 - **Dra. Ana Soto** — doctor, Estación Argyre — [#11](stories/11-la-dosis/story.md)
 - **Renata** — lighthouse keeper, Faro Vesta-7 — [#12](stories/12-el-faro-apagado/story.md)
+- **TEMIS-2** — AI judge, Colonia Olimpo, first day on the bench — [#25](stories/25-un-litro/story.md)
+- **Rosa Ibáñez / Pablo Ruiz** — neighbours in módulos 14 and 15, Colonia Olimpo; six years of the same water case — [#25](stories/25-un-litro/story.md)
 
 ## Locations
 
@@ -30,6 +32,7 @@ Every entry in the top-level lists links to each story where that entity appears
 - **Estación Casiopea** — radio listening post on the icy surface of Plutón, beyond the planets — [#9](stories/09-la-senal/story.md)
 - **Colonia Brasa** — small religious outpost on a Kuiper Belt asteroid — [#10](stories/10-el-reloj/story.md)
 - **Estación Argyre** — terraforming outpost, southern highlands of Mars, ~40 colonists — [#11](stories/11-la-dosis/story.md)
+- **Colonia Olimpo** — small Martian colony at the foot of Olympus Mons, with its own court — [#25](stories/25-un-litro/story.md)
 - **Faro Vesta-7** — relay beacon on an asteroid in the abandoned old shipping corridor between Ceres and Júpiter — [#12](stories/12-el-faro-apagado/story.md), [#23](stories/23-el-faro-que-no-se-apago/story.md)
 
 ## Ships
@@ -192,3 +195,8 @@ Each block below was written by the `story` skill at story-creation time. New bl
 - Terms: **la costumbre de la cápsula 47** — an unlogged practice passed down the technician rotation for four centuries: open the capsule, give the child a few hours, apply the memory-erasing dose, sign the register. 31 openings on record, protocol permits zero. **la dosis** (the short-term-memory eraser from #5, now the mechanism that makes the custom repeatable). **el campo de la firma** (the register's signature field — signing it is the choice).
 - Timeline: Año 604 / 800 (196 years still to run)
 - Reappears: *Caracol* + Tomás + Sofía + cápsula 47 (#5 — Tomás's postponed "mañana voy a dormirla" turns out to have been postponed 31 times by 400 years of technicians; his name is six of the entries, the first dated Año 198, the exact day of #5). The word «Aquí» that Sofía wrote in the dust in #5 is the note field of every single log entry — she writes it every time, and every time it is the first time for her. los dormidos / el sueño (#1, #5, #18, #19, #21).
+
+### #25 — un-litro
+- Characters: TEMIS-2 (AI judge, first-person narrator, day 1 on the job; third AI POV after ARES #1 and MIRO #21); Rosa Ibáñez (módulo 14, pays for the leaking pipe, daughter on Earth); Pablo Ruiz (módulo 15, collects the drip for his tomatoes); el juez anterior (a human judge, offstage, heard case 001 every Tuesday for six years and never ruled)
+- Locations: Colonia Olimpo (Mars, foot of Olympus Mons; modules, small gardens, a court system)
+- Terms: el caso 001 (one litre of water a night from an old pipe between two modules); Artículo 12 / Artículo 31 (Martian water law: water belongs to whoever pays for it / whoever collects it); las leyes de Marte (4,000 pages)

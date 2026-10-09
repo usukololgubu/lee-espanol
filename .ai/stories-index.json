@@ -190,5 +190,13 @@
     "setting": "generation ship Caracol, year 604 of an 800-year voyage to Próxima Centauri",
     "date_generated": "2026-08-02",
     "length_words": "267"
+  },
+  "25-un-litro": {
+    "title": "Un litro",
+    "logline": "El nuevo juez de Olimpo es un programa, y su primer caso es un litro de agua.",
+    "protagonist": "AI judge (TEMIS-2)",
+    "setting": "Colonia Olimpo, a small colony at the foot of Olympus Mons, Mars",
+    "date_generated": "2026-10-09",
+    "length_words": "297"
   }
 }
