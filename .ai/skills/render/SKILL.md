@@ -117,7 +117,7 @@ Named archetypes (mix freely with new ones):
 
 The archetype determines: page chrome and "edges" (paper, console frame, card border), typography family, palette discipline (paper inks vs. console phosphors vs. plate-printed CMYK), layout primitive (single column / two-column / framed / gridded / freeform marginalia), motion sensibility (paper rustle vs. scanline drift vs. ink bleed vs. dial sway), and **what the metadata strip becomes** (file number, accession, dispatch number, frequency band, postal stamp).
 
-**Archetype log**: read the last 3 lines of `.ai/archetypes.jsonl` (one JSON object per line: `{"slug", "archetype", "palette", "font_pair", "colors": {"bg", "ink", "accent"}}` where `slug` is the full folder name `NN-slug`). Do not reuse any of those three archetypes (or their dominant palette / font pair) for the new render. After picking, append a one-line JSON entry for this story — including the three hex colors that the index card-grid uses as the per-card hover preview. This replaces the older "scan all prior `stories/*/index.html`" rule — that scan is no longer needed.
+**Archetype log**: read the last 3 lines of `.ai/archetypes.jsonl` (one JSON object per line: `{"slug", "archetype", "palette", "font_pair", "colors": {"bg", "ink", "accent"}}` where `slug` is the full folder name `NN-slug`). Do not reuse any of those three archetypes (or their dominant palette / font pair) for the new render. After picking, append a one-line JSON entry for this story — including the three hex colors (the accent colors this story's row in the index). This replaces the older "scan all prior `stories/*/index.html`" rule — that scan is no longer needed.
 
 ## Functional contract — same across all stories
 
@@ -341,30 +341,32 @@ Every render of `apply_enrichment` computes this story's **first-appearance** vo
 
 ### Index page (project-wide landing)
 
-A single project-wide index lives at `index.html` (project root). It is a 2-column card grid, newest-first, so the most recent story sits at the top-left and is visible without scrolling.
+A single project-wide index lives at `index.html` (project root). It is a single-column ledger, newest-first, so the most recent story sits at the top and is visible without scrolling.
 
-**Aesthetic**: compact typewriter — explicitly **distinct** from any individual story's design (no parchment, no manuscript ornament, no sci-fi gold-on-navy, no SVG illustrations). Quiet, tight, hairline-bordered cards that frame the stories without competing visually.
+**Aesthetic**: compact typewriter — explicitly **distinct** from any individual story's design (no parchment, no manuscript ornament, no sci-fi gold-on-navy, no SVG illustrations). Quiet, hairline-ruled rows that frame the stories without competing visually.
 
 - Background: warm off-white / paper (`#f5f3ec`)
-- Text: typewriter-ink dark (`#1f1d18`) + greys; **no color accent** beyond grayscale
+- Text: typewriter-ink dark (`#1f1d18`) + greys. The only color is each story's own accent (`colors.accent` from its `.ai/archetypes.jsonl` line), shown at rest as the row's left rule and number color via the inline `--card-accent` variable.
 - Font: a single typewriter monospace family — *Courier Prime* (regular + bold + italic)
-- Layout: double-rule masthead, brief intro paragraph, `Índice · N entradas` heading row, then a 2-column grid of hairline-bordered cards; thin colophon. Each card shows: top row `NN · YY·MM·DD`, the Spanish title in tracked uppercase, italic `protagonist · setting`, and `N palabras` at the bottom.
+- Layout: double-rule masthead, brief intro paragraph, `Índice · N entradas` heading row (plus the "Vocabulario" link), then one row per story; thin colophon. Each row shows the number, the Spanish title, the one-line Spanish `logline` from frontmatter (falls back to `protagonist · setting` when missing), and on the right the date `YY·MM·DD` and `N palabras`.
+- **Read state**: a small inline script keeps visited slugs in `localStorage`; read rows get `.is-read` (dimmed, accent dot hidden).
 - No rounded corners, no shadows, no SVG illustrations, no big display numerals. Hairline rules only.
-- Mobile: single column.
 
-**Refresh policy**: rebuild the entries block every time a story is rendered. The helper script (`render.py`) maintains `.ai/stories-index.json` as a per-slug cache; rendering one story updates only that slug's entry and rewrites the entries block from the cache (incremental). `--index-only` and a missing/stale cache force a full disk rescan. Stories are sorted by folder name **descending** so seq 12 appears first.
+**Refresh policy**: rebuild the entries block every time a story is rendered. The helper script (`render.py`) maintains `.ai/stories-index.json` as a per-slug cache; rendering one story updates only that slug's entry and rewrites the entries block (between `<!-- STORIES:START -->` / `<!-- STORIES:END -->`) from the cache (incremental). `--index-only` and a missing/stale cache force a full disk rescan. Stories are sorted by folder name **descending**, so the newest is first.
 
-Per-entry markup template (the `href` is relative to the project-root `index.html`):
+Per-entry markup (generated by `render_entry()`; the `href` is relative to the project-root `index.html`):
 
 ```html
-<a class="entry" href="stories/NN-slug/index.html">
-  <div class="row1">
-    <span class="num">{NN, two-digit}</span>
-    <span class="date">{YY·MM·DD}</span>
+<a class="entry" data-slug="NN-slug" href="stories/NN-slug/index.html" style="--card-accent:#hex">
+  <span class="num">{NN, two-digit}</span>
+  <div class="body">
+    <div class="e-title">{Spanish title}</div>
+    <div class="logline">{logline}</div>
   </div>
-  <div class="e-title">{Spanish title}</div>
-  <div class="meta">{protagonist} · {setting}</div>
-  <div class="words">{length_words} palabras</div>
+  <div class="aside">
+    <span class="date">{YY·MM·DD}</span>
+    <span class="words">{length_words} palabras</span>
+  </div>
 </a>
 ```
 
@@ -410,7 +412,7 @@ py .ai/skills/render/render.py --prefill stories/06-foo           # draft enrich
 Requires Python 3.11+ (`tomllib`). Reports sentences paired and any words missing from `[words.*]` so you can extend `enrich` and re-run.
 
 - **`--refresh-all`**: loops every `stories/NN-slug/` with `story.md` + `enrichment.toml` + `index.html`, re-runs `apply_enrichment` on each (idempotent — safe to run any time popup JS/CSS invariants change and need rolling out to all pages), skip-and-reports (never aborts) on a per-story failure, then does one `refresh_index_full()` (which also regenerates `vocabulario.html`).
-- **`--lint [story]`**: operates on `story.md`'s *source* text, not the rendered HTML — dry-runs the same tokenizer used at render time. No story arg lints all 21; one arg lints just that story. **Errors** (exit 1): TOML parse failure, missing `story.md`/`enrichment.toml`, tokens in the body with no `[words.*]`/phrase entry ("missed words"), sentence-END-mark count in the body ≠ `len([[sentences]])` (counted by the very same tokenizer pass rendering uses — terminator runs collapse to one mark, runs followed by a lowercase letter are pauses, dot-grouped thousands are numbers; see "Sentence marks — ends vs pauses"), frontmatter missing an `INDEX_FIELDS` key, and **empty `tr`** in any `[words.*]` / `[[phrases]]` / `[[sentences]]` entry (an unfinished entry — e.g. a `--prefill` TODO stub left unfilled — would render a blank popup). Mid-sentence pause marks are reported as `info:` lines. **Warnings** (exit 0): orphan `[words.*]`/`[[phrases]]` entries never matched in the body (often because a longer `[[phrases]]` entry already consumes that text — see e.g. story 19's standalone `va`/`a`/`ser` entries, fully shadowed by its `va a ser` phrase), **`[[sentences]].text` drift** — when the counts match but an authored `text` no longer corresponds to its body sentence (whitespace-normalized, markdown `*`/`>` stripped, containment in either direction counts as a match — so quote-inner-only `text` entries stay legal), and corpus-wide consistency notes (same lemma tagged with a different `pos` across stories; the same surface form mapped to different lemmas — some of these are legitimate, e.g. `la` as article vs. object pronoun). Output is one line per story (`NN-slug: OK` or itemized findings) plus a summary; **pure ASCII**, no arrows/checkmarks.
+- **`--lint [story]`**: operates on `story.md`'s *source* text, not the rendered HTML — dry-runs the same tokenizer used at render time. No story arg lints every story; one arg lints just that story. **Errors** (exit 1): TOML parse failure, missing `story.md`/`enrichment.toml`, tokens in the body with no `[words.*]`/phrase entry ("missed words"), sentence-END-mark count in the body ≠ `len([[sentences]])` (counted by the very same tokenizer pass rendering uses — terminator runs collapse to one mark, runs followed by a lowercase letter are pauses, dot-grouped thousands are numbers; see "Sentence marks — ends vs pauses"), frontmatter missing an `INDEX_FIELDS` key, and **empty `tr`** in any `[words.*]` / `[[phrases]]` / `[[sentences]]` entry (an unfinished entry — e.g. a `--prefill` TODO stub left unfilled — would render a blank popup). Mid-sentence pause marks are reported as `info:` lines. **Warnings** (exit 0): orphan `[words.*]`/`[[phrases]]` entries never matched in the body (often because a longer `[[phrases]]` entry already consumes that text — see e.g. story 19's standalone `va`/`a`/`ser` entries, fully shadowed by its `va a ser` phrase), **`[[sentences]].text` drift** — when the counts match but an authored `text` no longer corresponds to its body sentence (whitespace-normalized, markdown `*`/`>` stripped, containment in either direction counts as a match — so quote-inner-only `text` entries stay legal), and corpus-wide consistency notes (same lemma tagged with a different `pos` across stories; the same surface form mapped to different lemmas — some of these are legitimate, e.g. `la` as article vs. object pronoun). Output is one line per story (`NN-slug: OK` or itemized findings) plus a summary; **pure ASCII**, no arrows/checkmarks.
 - **`--atlas-check`**: warning-only (always exit 0). Parses bolded entity entries (`- **Name** — …`) from `lore.md`'s top-level lists (stopping at "Per-story deltas"), greps each name across every `stories/*/story.md` body, and flags a story where the entity appears but its `lore.md` ref list is missing that `#N` — plus any `[#N](path)` markdown link in `lore.md` pointing at a nonexistent file. Understands both the plain `(#N)` and linked `[#N](path)` ref styles, so it works regardless of which form `lore.md` is in.
 - **`--prefill [story]`**: mechanical first pass for the `enrich` skill (see its workflow). Tokenizes the new story with the union of every earlier story's `[words.*]` / `[[phrases]]` entries (most recent sense wins) and writes a draft `enrichment.toml`: known entries copied in with `# from NN-slug` provenance comments, genuinely new words as `tr = ""` TODO stubs, and one `[[sentences]]` stub per END mark with the extracted `text` pre-filled and `tr = ""`. Refuses to overwrite an existing `enrichment.toml` without `--force`. The draft always parses as valid TOML; `--lint`'s empty-`tr` error guarantees no stub can slip through to render.
 
@@ -436,7 +438,7 @@ The workflow has a **design** phase (steps 1–6, produces an enrichment-free HT
 1. Read `stories/NN-slug/story.md` (frontmatter + body). If `stories/NN-slug/enrichment.toml` already exists, skim its `[sentences]` / `[words.*]` for tone cues; otherwise carry on — apply-enrichment (step 7) is what actually needs it.
 2. Read `profile.md` for tone calibration.
 3. **Pick the found-document framing first.** Identify what in-universe artifact this story should *be* (see the Found-document framing section): the protagonist's log, a letter, a customs form, an observation sheet, a manuscript page, a system console dump, etc. Lock the artifact before any visual decisions.
-4. **Pick the format archetype** from the named list (or invent a fresh one). Read the last 3 lines of `.ai/archetypes.jsonl` and do not reuse any of those archetypes (or their dominant palette / font pair). After deciding, append a one-line JSON entry `{"slug":"NN-slug","archetype":"…","palette":"…","font_pair":"…","colors":{"bg":"#hex","ink":"#hex","accent":"#hex"}}` to `.ai/archetypes.jsonl`. The three hex colors should be the page's dominant background, primary text, and accent — they power the per-card hover preview on the project-wide index.
+4. **Pick the format archetype** from the named list (or invent a fresh one). Read the last 3 lines of `.ai/archetypes.jsonl` and do not reuse any of those archetypes (or their dominant palette / font pair). After deciding, append a one-line JSON entry `{"slug":"NN-slug","archetype":"…","palette":"…","font_pair":"…","colors":{"bg":"#hex","ink":"#hex","accent":"#hex"}}` to `.ai/archetypes.jsonl`. The three hex colors should be the page's dominant background, primary text, and accent — the accent colors this story's row in the project-wide index.
 5. **Invoke the `frontend-design` skill** to plan the visual approach *within the chosen archetype's idiom* — palette, font pairing, page chrome, marginalia, motion family. The skill's output should serve the artifact, not generic "story page" aesthetics.
 6. **Design the page from scratch** at `stories/NN-slug/index.html`:
    - If starting clean, run `py .ai/skills/render/render.py --bootstrap stories/NN-slug` for a minimal scaffold (plain text in `<p>` tags inside `<article data-story-body>`).
